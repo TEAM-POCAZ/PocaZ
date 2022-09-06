@@ -25,15 +25,18 @@ tailwind.config 세팅
 `npm install zustand`
 zustand 설치
 store/store.js 생성
-devtool 설치 필요
+- redux devtool 설치 필요
 
 `npm i react-query`
 react-query 설치
 
 `npm install react-router-dom@6`
 react-router-dom@6 설치
-// https://ostarblog.tistory.com/9
-// https://guiyomi.tistory.com/118
+-  https://ostarblog.tistory.com/9
+-  https://guiyomi.tistory.com/118
 
 `npm i axios`
 axios 설치
+
+`npm i -D eslint-config-prettier eslint-plugin-prettier`
+Prettier와 ESLint 상호운용을 위한 패키지 설치  
