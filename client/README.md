@@ -37,3 +37,6 @@ react-router-dom@6 설치
 
 `npm i axios`
 axios 설치
+
+`npm i -D eslint-config-prettier eslint-plugin-prettier`
+Prettier와 ESLint 상호운용을 위한 패키지 설치  
