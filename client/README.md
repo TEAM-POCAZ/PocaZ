@@ -11,7 +11,7 @@ gitignore 추가
 eslint 설치
 
 `npx install-peerdeps --dev eslint-config-airbnb`
-airbnb 코드 규칙 적용
+-삭제
 
 `npm install -D prettier`
 프리티어 설치

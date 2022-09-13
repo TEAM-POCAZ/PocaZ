@@ -20,6 +20,7 @@ const Home = () => {
       >
         button
       </button>
+      <div>별이님 컴퓨터가문제입니다.</div>
     </div>
   )
 }
