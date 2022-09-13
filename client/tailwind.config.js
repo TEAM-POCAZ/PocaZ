@@ -4,12 +4,12 @@ module.exports = {
   theme: {
     extend: {
       width: {
-        '480': '480px',
-      }
+        480: '480px',
+      },
     },
     screens: {
-      'mm': {'max': '767px'},
-    }
+      mm: { max: '767px' },
+    },
   },
   plugins: [],
 }
