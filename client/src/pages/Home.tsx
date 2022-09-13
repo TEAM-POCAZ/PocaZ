@@ -13,7 +13,6 @@ const Home = () => {
   }
 
   return (
-
     <div className="bg-black">
       <div className="bg mm:bg-inherit relative w-screen h-screen">
         <div className="txtBox mm:hidden fixed top-2/4 left-1/2 text-center">
@@ -29,4 +28,4 @@ const Home = () => {
   )
 }
 
-export default Home;
+export default Home
