@@ -50,7 +50,10 @@
     "@typescript-eslint/parser": "^5.36.1",
     "autoprefixer": "^10.4.8",
     "eslint": "^8.23.0",
+<<<<<<< HEAD
     "eslint-config-airbnb": "^19.0.4",
+=======
+>>>>>>> 17959b8d39010ccb8f66848fe8e6f803b6b25b2e
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-jsx-a11y": "^6.5.1",

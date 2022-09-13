@@ -1,0 +1,6 @@
+- npm start
+  - ts-node로 돌립니다. 개발할 땐 이거 쓰시면 됩니다.
+- npm run build 
+  - ts를 js로 컴파일 합니다.
+- npm run build:start 
+  - ts를 js로 컴파일 한걸 실행합니다.
