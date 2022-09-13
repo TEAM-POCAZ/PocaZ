@@ -12,6 +12,8 @@ const Home = () => {
     navigate('/store')
   }
 
+  console.log('Home!')
+
   return (
     <div className="bg-black">
       <div className="bg mm:bg-inherit relative w-screen h-screen">
