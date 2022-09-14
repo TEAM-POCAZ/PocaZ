@@ -1,16 +1,18 @@
-import React from 'react'
+import React, { Children } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { Route, Routes } from 'react-router-dom'
-import Home from 'pages/Home'
+import Main from 'pages/Main'
 import Community from 'pages/Community'
+import Layout from 'pages/Layout'
 
 function App() {
   return (
     <>
+      <Layout />
       <Router>
         <Routes>
-          <Route path="/*" element={<Home />} />
-          <Route path="/store" element={<Community />} />
+          <Route path="/" element={<Main />} />
+          <Route path="/Community" element={<Community />} />
         </Routes>
       </Router>
     </>

@@ -5,7 +5,7 @@ const Community = () => {
   return (
     <>
       <div className="text-3xl font-bold underline text-blue-500">Hello 커뮤니티입니다</div>
-      <Link to="Home">홈으로</Link>
+      {/* <Link to="Main">홈으로</Link> */}
     </>
   )
 }
