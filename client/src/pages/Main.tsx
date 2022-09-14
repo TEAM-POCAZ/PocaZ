@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import ador from 'pages/img/ador.jpeg'
-import Layout from './Layout'
+import Layout from 'utils/Layout'
 
 const Main = () => {
   return (
