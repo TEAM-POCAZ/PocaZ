@@ -1,8 +1,8 @@
 import React, { Children } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Header from 'pages/Header'
-import Footer from 'pages/Footer'
-import BtmMenu from 'pages/BtmMenu'
+import Header from 'components/Header'
+import Footer from 'components/Footer'
+import BtmMenu from 'components/BtmMenu'
 
 type btnClickEvent = React.MouseEvent<HTMLElement, MouseEvent>
 
