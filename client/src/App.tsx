@@ -8,11 +8,10 @@ import Layout from 'pages/Layout'
 function App() {
   return (
     <>
-      <Layout />
       <Router>
         <Routes>
           <Route path="/" element={<Main />} />
-          <Route path="/Community" element={<Community />} />
+          <Route path="Community" element={<Community />} />
         </Routes>
       </Router>
     </>
