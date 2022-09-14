@@ -6,7 +6,7 @@ import Community from 'pages/Community'
 const BtmMenu = () => {
   console.log('하단 고정 메뉴')
   return (
-    <div className="btmMenu sticky bottom-0 left-0 h-12 bg-white z-50">
+    <div className="btmMenu sticky bottom-0 left-0 h-12 bg-white border-t border-gray-400 box-border z-50">
       <ul className="flex items-center justify-around h-full">
         <li>
           <Link to="/">홈</Link>
