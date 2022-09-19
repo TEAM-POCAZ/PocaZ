@@ -2,7 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 const Footer = () => {
-  console.log('푸터')
   return (
     <footer className="p-3.5 bg-black">
       <div className="footerLogo">
