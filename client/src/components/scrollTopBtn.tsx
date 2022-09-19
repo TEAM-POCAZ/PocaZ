@@ -5,9 +5,6 @@ const scrollTopBtn = () => {
   const handleFlow = () => {
     setScrollY(window.pageYOffset)
   }
-  useEffect(() => {
-    console.log('ScrollY is ', scrollY)
-  }, [scrollY])
 
   const handleTop = () => {
     window.scrollTo({
