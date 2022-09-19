@@ -13,6 +13,18 @@
   body {
     background: #000;
   }
+  .changeHeader {
+    position: sticky;
+    color: black;
+    background-color: #fff;
+    width: 100%;
+    top: 0;
+    left: 0;
+    border-bottom: 1px solid #ebebeb;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    animation: fixHeader 0.3s;
+    z-index: 501;
+  }
 }
 
 /* [별이] 작업 중 ~ tailwind config js 로 옮길 예정 ~ */
@@ -82,5 +94,14 @@
 @media screen and (max-width: 767px) {
   body {
     background: none;
+  }
+}
+
+@keyframes fixHeader {
+  0% {
+    top: -5rem;
+  }
+  100% {
+    top: 0;
   }
 }
