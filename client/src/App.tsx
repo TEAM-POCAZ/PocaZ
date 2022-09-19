@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router-dom'
 
 import Main from 'pages/Main'
 import Community from 'pages/Community'
-import ChatList from 'pages/ChatList'
+import ChatMain from 'pages/ChatMain'
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/Community" element={<Community />} />
-          <Route path="/chat/list" element={<ChatList />} />
+          <Route path="/chat/list" element={<ChatMain />} />
         </Routes>
       </Router>
     </>
