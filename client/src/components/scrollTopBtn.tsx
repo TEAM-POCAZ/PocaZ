@@ -30,7 +30,7 @@ const scrollTopBtn = () => {
   return (
     <>
       <div onClick={handleTop}>
-        <h3>스크롤탑</h3>
+        <h3 className="text-white">스크롤탑</h3>
       </div>
     </>
   )
