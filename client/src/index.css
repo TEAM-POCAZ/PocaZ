@@ -73,3 +73,14 @@
     background-position: 100% 0%;
   }
 }
+
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+  body {
+    background: none;
+  }
+}
+@media screen and (max-width: 767px) {
+  body {
+    background: none;
+  }
+}
