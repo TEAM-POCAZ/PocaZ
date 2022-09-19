@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Header from 'components/Header'
 import Footer from 'components/Footer'
 import BtmMenu from 'components/BtmMenu'
+import ScrollTopBtn from 'components/scrollTopBtn'
 
 type btnClickEvent = React.MouseEvent<HTMLElement, MouseEvent>
 
@@ -30,6 +31,7 @@ const Layout = ({ children }: any) => {
           <Header />
           {children}
           <Footer />
+          <ScrollTopBtn />
           <BtmMenu />
         </div>
       </div>
