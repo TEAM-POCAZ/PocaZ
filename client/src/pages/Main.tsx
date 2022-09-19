@@ -14,10 +14,10 @@ const Main = () => {
         <div className="mainSlide">
           <Swiper className="h-96">
             <SwiperSlide>
-              <img className="w-full object-cover" src={mainSlideBn1} alt={mainSlideBn1} />
+              <img className="w-full h-full object-cover" src={mainSlideBn1} alt={mainSlideBn1} />
             </SwiperSlide>
             <SwiperSlide>
-              <img className="w-full object-cover" src={mainSlideBn2} alt={mainSlideBn2} />
+              <img className="w-full h-full object-cover" src={mainSlideBn2} alt={mainSlideBn2} />
             </SwiperSlide>
           </Swiper>
         </div>
