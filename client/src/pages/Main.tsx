@@ -3,20 +3,21 @@ import React from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import 'swiper/css/pagination'
-import ador from 'assets/img/ador.jpeg'
 import Layout from 'utils/Layout'
+import mainSlideBn1 from 'assets/img/main_slide_bn1.jpeg'
+import mainSlideBn2 from 'assets/img/main_slide_bn2.jpeg'
 
 const Main = () => {
   return (
     <>
       <Layout>
         <div className="mainSlide">
-          <Swiper onSwiper={(swiper) => console.log(swiper)}>
+          <Swiper className="h-96">
             <SwiperSlide>
-              <img src={ador} />
+              <img className="w-full object-cover" src={mainSlideBn1} alt={mainSlideBn1} />
             </SwiperSlide>
             <SwiperSlide>
-              <img src={ador} />
+              <img className="w-full object-cover" src={mainSlideBn2} alt={mainSlideBn2} />
             </SwiperSlide>
           </Swiper>
         </div>
