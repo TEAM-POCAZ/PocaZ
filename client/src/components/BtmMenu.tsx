@@ -15,7 +15,7 @@ const BtmMenu = () => {
           <Link to="/*">장터</Link>
         </li>
         <li>
-          <Link to="/">포카톡</Link>
+          <Link to="/chat/list">포카톡</Link>
         </li>
         <li>
           <Link to="/Community">커뮤니티</Link>

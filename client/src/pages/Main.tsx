@@ -3,7 +3,7 @@ import React from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import 'swiper/css/pagination'
-import ador from 'pages/img/ador.jpeg'
+import ador from 'assets/img/ador.jpeg'
 import Layout from 'utils/Layout'
 
 const Main = () => {
