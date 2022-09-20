@@ -12,7 +12,7 @@ class Socket {
     });
 
     this.io.on('connection', (so) => {
-      console.log('Socket connected :)');
+      console.log('Socket connected :)!!');
       //   so.on('message', (ee: any) => {
       //     console.log(ee);
       //   });
