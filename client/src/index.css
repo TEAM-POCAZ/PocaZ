@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .my-custom-style {
+    @apply rounded-b-lg shadow-md;
+    color: red;
+  }
+}

@@ -1,6 +1,8 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-
+import { Helmet } from 'react-helmet-async'
+import GoogleButton from 'components/GoogleButton'
+import AppleButton from 'components/AppleButton'
 type btnClickEvent = React.MouseEvent<HTMLElement, MouseEvent>
 
 const Home = () => {
@@ -12,16 +14,14 @@ const Home = () => {
   }
 
   return (
-    <div className="text-3xl font-bold underline text-green-500">
-      Hello
-      <button
-        className="flex justify-center mt-5 bg-blue-500 text-white p-3 text-center rounded-xl w-3/4 mx-auto"
-        onClick={onClickNextPage}
-      >
-        button
-      </button>
-      <div>별이님 컴퓨터가문제입니다.</div>
-    </div>
+    <>
+      <Helmet>
+        <title>Hello World22</title>
+      </Helmet>
+      <h1 className="my-custom-style">모르겠고 여기에 로그인 페이지 구현할꺼임22</h1>
+      <GoogleButton></GoogleButton>
+      <AppleButton></AppleButton>
+    </>
   )
 }
 

@@ -10,22 +10,6 @@ services:
       - /app/node_modules
     init: true
 
-  # react_c:
-  #   build:
-  #     context: ./reactts
-  #     dockerfile: Dockerfile.dev
-  #   container_name: react_c
-  #   ports:
-  #     - "3000:3000"
-  #   volumes:
-  #     - ./reactts:/app
-  #     - /app/node_modules
-  #   environment:
-  #     - WATCHPACK_POLLING=true
-  #   stdin_open: true
-  #   tty: true
-  #   init: true
-
   nginx_c:
     container_name: nginx_c
     image: nginx:stable-alpine
@@ -38,7 +22,7 @@ services:
       - "80:80"
       - "443:443"
     environment:
-      - NGINX_HOST=localhost
+      - NGINX_HOST=slowtest.ml
     restart: unless-stopped
     depends_on:
       - api_c
