@@ -25,6 +25,9 @@
     animation: fixHeader 0.3s;
     z-index: 501;
   }
+  .bestPoca .swiper-wrapperx {
+    height: auto;
+  }
 }
 
 /* [별이] 작업 중 ~ tailwind config js 로 옮길 예정 ~ */
