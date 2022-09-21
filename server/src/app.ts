@@ -5,6 +5,7 @@ import helemt from 'helmet';
 import { config } from './config';
 
 import chatRoomRouter from './router/chatRoom';
+import postRouter from './router/post';
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(helemt());
 app.use(cors());
 
 app.use('/chatRoom', chatRoomRouter);
+app.use('/post', postRouter);
 
 app.listen(+config.host.port, () => {
   console.log(`listening on port ${+config.host.port}`);
