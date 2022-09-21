@@ -49,6 +49,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-scroll-to-bottom": "^4.2.0",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
     "autoprefixer": "^10.4.8",
@@ -61,6 +62,7 @@
     "eslint-plugin-react-hooks": "^4.3.0",
     "postcss": "^8.4.16",
     "prettier": "^2.7.1",
+    "react-emoji": "^0.5.0",
     "tailwindcss": "^3.1.8"
   }
 }
