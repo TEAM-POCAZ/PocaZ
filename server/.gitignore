@@ -131,4 +131,4 @@ dist
 .pnp.*
 
 # db test in local env (will be deprecated before merge to main)
-src/controller/db.ts
+# src/controller/db.ts

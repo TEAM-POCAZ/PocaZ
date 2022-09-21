@@ -1,10 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 
-export const getChatRoom = (
+export const searchChatRoom = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   res.send('chatroom!');
-  
 };

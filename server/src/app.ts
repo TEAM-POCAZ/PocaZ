@@ -5,6 +5,7 @@ import helemt from 'helmet';
 import { config } from './config';
 
 import { initSocket, getSocketIO } from './connection/socket';
+import { db } from './db/database';
 
 import chatRoomRouter from './router/chatRoom';
 import postRouter from './router/post';
