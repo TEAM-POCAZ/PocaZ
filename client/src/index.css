@@ -5,7 +5,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,800&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.5/dist/web/static/pretendard.css');
 
-@layer base {
+@layer components {
   html {
     /* main font */
     font-family: 'Montserrat', Pretendard sans-serif;
@@ -26,7 +26,28 @@
     z-index: 501;
   }
   .bestPoca .swiper-wrapperx {
+    /* swiper-wrapper height 고정값 해제 */
     height: auto;
+  }
+  .mainSlide .swiper-button-prev {
+    left: 0;
+  }
+  .mainSlide .swiper-button-next {
+    right: 0;
+  }
+  .mainSlide .swiper-button-next,
+  .mainSlide .swiper-button-prev {
+    color: #fff;
+  }
+  .mainSlide .swiper-button-next::after,
+  .mainSlide .swiper-button-prev::after {
+    padding: 14px;
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.5);
+  }
+  .mainSlide .swiper-pagination {
+    color: #fff;
+    font-size: 12px;
   }
 }
 
