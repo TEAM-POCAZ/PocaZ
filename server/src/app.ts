@@ -7,6 +7,7 @@ import { config } from './config';
 import { initSocket, getSocketIO } from './connection/socket';
 
 import chatRoomRouter from './router/chatRoom';
+import postRouter from './router/post';
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(helemt());
 app.use(cors());
 
 app.use('/chatRoom', chatRoomRouter);
+app.use('/post', postRouter);
 
 const server = app.listen(+config.host.port, () => {
   console.log(`listening on port ${+config.host.port}`);
