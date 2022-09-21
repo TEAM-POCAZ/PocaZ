@@ -6,4 +6,5 @@ export const getChatRoom = (
   next: NextFunction
 ) => {
   res.send('chatroom!');
+  
 };
