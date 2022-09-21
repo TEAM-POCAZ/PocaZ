@@ -19,7 +19,7 @@ const Layout = ({ children }: any) => {
 
   return (
     <div className="bg-black">
-      <div className="bg mm:bg-inherit relative w-screen h-screen">
+      <div className="bg mm:bg-inherit relative w-screen">
         <div className="txtBox mm:hidden tt:hidden fixed top-2/4 left-1/2 text-center">
           <h2 className="text-white italic text-6xl font-extrabold">POCAZ.</h2>
           <h3 className="mt-3 mb-3 mm2:text-2xl text-blue-900 text-3xl font-light">
@@ -27,7 +27,7 @@ const Layout = ({ children }: any) => {
           </h3>
           <h4 className="text-6xl">😍 🥰 😘</h4>
         </div>
-        <div className="mobileWrap tt:static tt:w-full tt:block mm:static mm:block mm:w-full h-screen absolute top-0 right-0 w-[480px] mr-10 bg-white">
+        <div className="mobileWrap tt:static tt:w-full tt:block mm:static mm:block mm:w-full absolute top-0 right-0 w-[480px] mr-10 bg-white">
           <Header />
           {children}
           <Footer />
