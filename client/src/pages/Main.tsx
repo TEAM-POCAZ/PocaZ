@@ -1,27 +1,45 @@
 import React from 'react'
 // import { useNavigate } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation, Pagination, Autoplay, A11y } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/pagination'
+import 'swiper/css/navigation'
+import 'swiper/css/autoplay'
 import Layout from 'utils/Layout'
 import mainSlideBn1 from 'assets/img/main_slide_bn1.jpeg'
 import mainSlideBn2 from 'assets/img/main_slide_bn2.jpeg'
+import mainSlideBn3 from 'assets/img/main_slide_bn3.gif'
 
 const Main = () => {
   return (
     <>
       <Layout>
-        <div className="mainSlide">
-          <Swiper className="h-96">
-            <SwiperSlide>
-              <img className="w-full h-full object-cover" src={mainSlideBn1} alt={mainSlideBn1} />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img className="w-full h-full object-cover" src={mainSlideBn2} alt={mainSlideBn2} />
-            </SwiperSlide>
-          </Swiper>
+        <div className="mainContentsWrap">
+          <div className="mainSlide">
+            <Swiper
+              modules={[Navigation, Pagination, A11y, Autoplay]}
+              navigation
+              pagination={{ clickable: true, type: 'fraction' }}
+              autoplay={{
+                delay: 6000,
+                disableOnInteraction: false,
+              }}
+              className="h-96"
+            >
+              <SwiperSlide>
+                <img className="w-full h-full object-cover" src={mainSlideBn1} alt={mainSlideBn1} />
+              </SwiperSlide>
+              <SwiperSlide>
+                <img className="w-full h-full object-cover" src={mainSlideBn2} alt={mainSlideBn2} />
+              </SwiperSlide>
+              <SwiperSlide>
+                <img className="w-full h-full object-cover" src={mainSlideBn3} alt={mainSlideBn3} />
+              </SwiperSlide>
+            </Swiper>
+          </div>
 
-          <div className="mainContentsWrap px-3.5 bg-white">
+          <div className="px-3.5 bg-white">
             <div className="boardWrap">
               <h2>최근 게시물</h2>
               <div className="boardList">
