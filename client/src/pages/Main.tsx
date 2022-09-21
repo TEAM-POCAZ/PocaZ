@@ -39,44 +39,52 @@ const Main = () => {
             </Swiper>
           </div>
 
-          <div className="px-3.5 bg-white">
-            <div className="boardWrap">
-              <h2>최근 게시물</h2>
+          <div className="px-3.5 mt-7 bg-white">
+            <div className="boardWrap mb-6">
+              <h2 className="flex mb-3.5 text-2xl font-extrabold">
+                최근 게시물<i className="ri-arrow-drop-right-line"></i>
+              </h2>
               <div className="boardList">
                 <ul>
-                  <li>
-                    <h4>포카에 대한 게시물을 올려 주세요.포카에 대한 게시물을 올려 주세요.</h4>
-                    <time>2022.08.29</time>
-                  </li>
-                  <li>
-                    <h4>
-                      포카에 대한 게시물을 올려 주세요.포카에 대한 게시물을 올려 주세요.포카에 대한
-                      게시물을 올려 주세요.
+                  <li className="flex justify-between mb-3.5">
+                    <h4 className="mr-3.5 text-sm font-normal whitespace-nowrap text-ellipsis overflow-hidden">
+                      포카에 대한 게시물을 올려 주세요.포카에 대한 게시물을 올려 주세요.
                     </h4>
-                    <time>2022.08.29</time>
+                    <time className="text-sm font-normal">2022.08.29</time>
                   </li>
-                  <li>
-                    <h4>포카에 대한 게시물을 올려 주세요.</h4>
-                    <time>2022.08.29</time>
-                  </li>
-                  <li>
-                    <h4>
-                      포카에 대한 게시물을 올려 주세요.포카에 대한 게시물을 올려 주세요.포카에 대한
-                      게시물을 올려 주세요.
+                  <li className="flex justify-between mb-3.5">
+                    <h4 className="mr-3.5 text-sm font-normal whitespace-nowrap text-ellipsis overflow-hidden">
+                      포카에 대한 게시물을 올려 주세요.포카에 대한 게시물을 올려 주세요.
                     </h4>
-                    <time>2022.08.29</time>
+                    <time className="text-sm font-normal">2022.08.29</time>
                   </li>
-                  <li>
-                    <h4>포카에 대한 게시물을 올려 주세요.</h4>
-                    <time>2022.08.29</time>
+                  <li className="flex justify-between mb-3.5">
+                    <h4 className="mr-3.5 text-sm font-normal whitespace-nowrap text-ellipsis overflow-hidden">
+                      포카에 대한 게시물을 올려 주세요.포카에 대한 게시물을 올려 주세요.
+                    </h4>
+                    <time className="text-sm font-normal">2022.08.29</time>
+                  </li>
+                  <li className="flex justify-between mb-3.5">
+                    <h4 className="mr-3.5 text-sm font-normal whitespace-nowrap text-ellipsis overflow-hidden">
+                      포카에 대한 게시물을 올려 주세요.포카에 대한 게시물을 올려 주세요.
+                    </h4>
+                    <time className="text-sm font-normal">2022.08.29</time>
+                  </li>
+                  <li className="flex justify-between mb-3.5">
+                    <h4 className="mr-3.5 text-sm font-normal whitespace-nowrap text-ellipsis overflow-hidden">
+                      포카에 대한 게시물을 올려 주세요.포카에 대한 게시물을 올려 주세요.
+                    </h4>
+                    <time className="text-sm font-normal">2022.08.29</time>
                   </li>
                 </ul>
               </div>
             </div>
-            <div className="bestPoca">
-              <div className="subject">
-                <h3>BEST 포카</h3>
-                <h4>내 콜렉트북 한 자리를 차지할 HOT한 포카 😘</h4>
+            <div className="bestPoca mb-6">
+              <div className="subject mb-3.5">
+                <h3 className="text-2xl font-extrabold">BEST 포카</h3>
+                <h4 className="text-gray-500 text-sm">
+                  내 콜렉트북 한 자리를 차지할 HOT한 포카 😘
+                </h4>
               </div>
               <Swiper slidesPerView={2.4} spaceBetween={14} className="">
                 <SwiperSlide className="">
@@ -85,13 +93,14 @@ const Main = () => {
                     src={mainSlideBn1}
                     alt={mainSlideBn1}
                   />
-                  <div className="">
-                    <p className="group-name">NewJeans</p>
-                    <p className="member-name">민지</p>
-                    <p className="poca-detail">뉴진스 공방 포카</p>
-                    <p className="poca-desc">민지 얼굴 도라방스 😢</p>
-                    <p className="poca-price">
-                      <span>25,000</span>원
+                  <div className="pocaListWrap mt-1 text-xs">
+                    <p className="groupName font-extrabold">THEBOYZ</p>
+                    <p className="memberName text-sm">현재</p>
+                    <p className="pocaDetail text-base">블룸블룸 공방 포카</p>
+                    <p className="pocaDesc mb-1 text-gray-500">현재 얼굴이 다 했어요</p>
+                    <p className="pocaPrice font-medium text-base">
+                      <span>25,000</span>
+                      <span className="won">원</span>
                     </p>
                   </div>
                 </SwiperSlide>
@@ -125,10 +134,12 @@ const Main = () => {
                 </SwiperSlide>
               </Swiper>
             </div>
-            <div className="newPoca">
-              <div className="subject">
-                <h3>최근 올라온 포카</h3>
-                <h4>내 콜렉트북 한 자리를 차지할 HOT한 포카 😘</h4>
+            <div className="newPoca mb-6">
+              <div className="subject mb-3.5">
+                <h3 className="text-2xl font-extrabold">최근 올라온 포카</h3>
+                <h4 className="text-gray-500 text-sm">
+                  내 콜렉트북 한 자리를 차지할 HOT한 포카 😘
+                </h4>
               </div>
               <Swiper slidesPerView={2.4} spaceBetween={14} className="">
                 <SwiperSlide className="">
@@ -137,13 +148,14 @@ const Main = () => {
                     src={mainSlideBn1}
                     alt={mainSlideBn1}
                   />
-                  <div className="">
-                    <p className="group-name">NewJeans</p>
-                    <p className="member-name">민지</p>
-                    <p className="poca-detail">뉴진스 공방 포카</p>
-                    <p className="poca-desc">민지 얼굴 도라방스 😢</p>
-                    <p className="poca-price">
-                      <span>25,000</span>원
+                  <div className="pocaListWrap mt-1 text-xs">
+                    <p className="groupName font-extrabold">THEBOYZ</p>
+                    <p className="memberName text-sm">현재</p>
+                    <p className="pocaDetail text-base">블룸블룸 공방 포카</p>
+                    <p className="pocaDesc mb-1 text-gray-500">현재 얼굴이 다 했어요</p>
+                    <p className="pocaPrice font-medium text-base">
+                      <span>25,000</span>
+                      <span className="won">원</span>
                     </p>
                   </div>
                 </SwiperSlide>
@@ -177,10 +189,10 @@ const Main = () => {
                 </SwiperSlide>
               </Swiper>
             </div>
-            <div className="boardBoast">
-              <div className="subject">
-                <h3>포꾸 자랑</h3>
-                <h4>하늘 아래 똑같은 포카는 없다 🤩</h4>
+            <div className="boardBoast mb-6">
+              <div className="subject mb-3.5">
+                <h3 className="text-2xl font-extrabold">포꾸 자랑</h3>
+                <h4 className="text-gray-500 text-sm">하늘 아래 똑같은 포카는 없다 🤩</h4>
               </div>
               <div className="boastGallery">
                 <ul>
