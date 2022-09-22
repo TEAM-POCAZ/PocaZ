@@ -1,9 +1,9 @@
 import express from 'express';
 
-import { getChatRoom } from '../controller/chatRoom';
+import { searchChatRoom } from '../controller/chatRoom';
 
 const router = express.Router();
 
-router.get('/', getChatRoom);
+router.post('/', searchChatRoom);
 
 export default router;

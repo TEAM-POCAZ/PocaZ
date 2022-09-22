@@ -5,6 +5,7 @@ import helemt from 'helmet';
 import { config } from './config';
 
 import { initSocket, getSocketIO } from './connection/socket';
+import { db } from './db/database';
 
 import chatRoomRouter from './router/chatRoom';
 import postRouter from './router/post';
@@ -21,9 +22,12 @@ app.use(cors());
 app.use('/chatRoom', chatRoomRouter);
 app.use('/post', postRouter);
 
+db.getConnection().then(() => {
+  console.log('mysql connected :)');
+});
+
 const server = app.listen(+config.host.port, () => {
   console.log(`listening on port ${+config.host.port}`);
 });
 
 initSocket(server);
-console.log(getSocketIO());
