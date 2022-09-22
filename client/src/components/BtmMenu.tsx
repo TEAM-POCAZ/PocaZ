@@ -21,7 +21,7 @@ const BtmMenu = () => {
           </Link>
         </li>
         <li>
-          <Link to="/">
+          <Link to="/chat/list">
             <i className="ri-chat-heart-line block text-center text-2xl leading-none"></i>
             <p className="text-xs">CHAT</p>
           </Link>
