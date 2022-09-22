@@ -19,15 +19,10 @@ module.exports = {
       // => @media (max-width: 1023px) { ... }
 
       mm: { max: '767px' },
-<<<<<<< HEAD
       // => @media (max-width: 767px) { ... }
 
       sm: { max: '639px' },
       // => @media (max-width: 639px) { ... }
-=======
-      mm2: { max: '1170px' },
-      tt: { min: '768px', max: '1023px' },
->>>>>>> dev
     },
   },
   plugins: [],
