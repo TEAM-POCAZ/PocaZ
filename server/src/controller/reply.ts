@@ -19,7 +19,7 @@ interface IReplyM extends IReply {
 
 router.get('/:category/:post', async (req, res) => {
   const conn = await pool.getConnection();
-
+  console.log('test test');
   const [oneDepth]: [IReplyM[], FieldPacket[]] = await conn.execute(
     `${tranSQL.reply} AND pid IS NULL`,
     [req.params.post]

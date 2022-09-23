@@ -8,6 +8,7 @@ import { initSocket, getSocketIO } from './connection/socket';
 
 import chatRoomRouter from './router/chatRoom';
 import postRouter from './router/post';
+import marketRouter from './router/market';
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(cors());
 
 app.use('/chatRoom', chatRoomRouter);
 app.use('/post', postRouter);
+app.use('/market', marketRouter);
 
 const server = app.listen(+config.host.port, () => {
   console.log(`listening on port ${+config.host.port}`);
