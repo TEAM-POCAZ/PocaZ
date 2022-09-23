@@ -26,4 +26,3 @@ const server = app.listen(+config.host.port, () => {
 });
 
 initSocket(server);
-console.log(getSocketIO());

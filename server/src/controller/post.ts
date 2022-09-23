@@ -1,9 +1,11 @@
 import express from 'express';
 const router = express.Router();
 import replyRouter from './reply';
+import likesRouter from './likes';
 import { tranSQL } from '../utils/tranSQL';
 
 router.use('/reply', replyRouter);
+router.use('/likes', likesRouter);
 
 router.get('/:category', async (req, res) => {
   const postList = await tranSQL.getOne(
@@ -17,13 +19,11 @@ router.get('/:category', async (req, res) => {
             p.createAt			AS createAt,	-- post create Date
             ifnull(rep.cnt,0)  	AS replyCnt,	-- post reply cnt
             img.path	  		AS filePath		-- post main img src
-        -- 	img.filePath		AS filePath		-- post main img src
        FROM Post p
       INNER JOIN USER u ON p.user = u.id
        LEFT JOIN (SELECT id, count(*) as cnt
                     FROM Reply
                    GROUP BY id) rep on p.id = rep.id
-      --   LEFT JOIN (SELECT image.post, f.filePath
        LEFT JOIN (SELECT image.post, f.path
                     FROM PostImage image
                     LEFT JOIN File f on image.file = f.id
@@ -62,7 +62,9 @@ router.get('/:category/:post', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const [{ category, user, title, content }] = req.body;
+  const [{ category, user, title, content }]: [
+    { category: number; user: number; title: string; content: string }
+  ] = req.body;
   const insertId = await tranSQL.postOne(
     `INSERT INTO Post(category, user, title, content)
      VALUES (?)

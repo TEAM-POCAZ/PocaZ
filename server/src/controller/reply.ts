@@ -2,51 +2,50 @@ import express from 'express';
 import { tranSQL } from '../utils/tranSQL';
 const router = express.Router();
 import pool from '../controller/db';
+import { RowDataPacket, FieldPacket } from 'mysql2/promise';
 
-let conn: any;
-pool.getConnection().then((res) => {
-  conn = res;
-});
+interface IReply extends RowDataPacket {
+  id: number;
+  pid: number | null;
+  user: number;
+  nickname: string;
+  profileImage: string;
+  content: string;
+  createAt: any;
+}
+interface IReplyM extends IReply {
+  reply: IReply[];
+}
 
 router.get('/:category/:post', async (req, res) => {
-  const [oneDepth] = await conn.query(
-    `
-      SELECT  r.id,             -- reply id
-              r.user,           -- user id
-              u.nickname,       -- user nickname
-              u.profileImage,   -- user profile img
-              r.content,        -- reply content
-              r.createAt        -- reply created date
-        FROM  Reply r
-        INNER JOIN USER u ON r.user = u.id
-       WHERE  post = ?
-         AND  pid IS NULL`,
+  const conn = await pool.getConnection();
+
+  const [oneDepth]: [IReplyM[], FieldPacket[]] = await conn.execute(
+    `${tranSQL.reply} AND pid IS NULL`,
     [req.params.post]
   );
 
-  const [twoDepth] = await conn.query(
-    `
-      SELECT	r.id,           -- reply id
-              r.pid,          -- parent of reply
-              r.user,         -- user id
-              u.nickname,     -- user nickname
-              u.profileImage, -- user profile img
-              r.content,      -- reply content
-              r.createAt      -- reply created Date
-        FROM  Reply r
-       INNER JOIN USER u ON r.user = u.id
-       WHERE  post = ?
-         AND  pid IS NOT NULL`,
+  const [twoDepth]: [IReply[], FieldPacket[]] = await conn.query(
+    `${tranSQL.reply} AND pid IS NOT NULL`,
     [req.params.post]
   );
   res.send(
-    oneDepth.map((preply: { reply: any; id: any }) => {
-      preply.reply = twoDepth.filter(
-        (rep: { pid: any }) => rep.pid == preply.id
-      );
+    oneDepth.map((preply: IReplyM) => {
+      preply.reply = twoDepth.filter((rep: IReply) => rep.pid == preply.id);
       return preply;
     })
   );
+});
+
+router.get('/:category/:post/:id', async (req, res) => {
+  const { post, id } = req.params;
+  const reply = await tranSQL.getOne(
+    `${tranSQL.reply}
+      AND r.post = ?
+      AND r.id   = ?`,
+    [post, id]
+  );
+  res.send(reply);
 });
 
 router.post('/:category/:post', async (req, res) => {
@@ -60,8 +59,8 @@ router.post('/:category/:post', async (req, res) => {
   res.redirect(`/post/${category}/${post}`);
 });
 
-router.put('/:category/:post/:reply', async (req, res) => {
-  const { category, post, reply: id } = req.params;
+router.put('/:category/:post/:id', async (req, res) => {
+  const { category, post, id } = req.params;
   const { user, content } = req.body;
   await tranSQL.putOne(
     `UPDATE Reply
@@ -75,16 +74,16 @@ router.put('/:category/:post/:reply', async (req, res) => {
   res.redirect(`/post/${category}/${post}`);
 });
 
-router.delete('/:category/:post/:reply', async (req, res) => {
-  const { category, post, reply: id } = req.params;
+router.delete('/:category/:post/:id', async (req, res) => {
+  const { category, post, id } = req.params;
   const { user } = req.body;
 
   await tranSQL.putOne(
     `DELETE FROM Reply
-        WHERE id = ?
-          AND user = ?
-          AND post = ?
-      `,
+      WHERE id   = ?
+        AND user = ?
+        AND post = ?
+    `,
     [id, user, parseInt(post)]
   );
   res.redirect(`/post/${category}/${post}`);
