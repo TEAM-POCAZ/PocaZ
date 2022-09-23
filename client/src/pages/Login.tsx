@@ -2,6 +2,8 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import Google from '../images/google.png'
+import Apple from '../images/apple.png'
+import Twitter from '../images/twitter.png'
 type btnClickEvent = React.MouseEvent<HTMLElement, MouseEvent>
 
 const Login = () => {
@@ -12,8 +14,23 @@ const Login = () => {
     navigate('/community')
   }
 
+  const logout = () => {
+    fetch('/api/logout')
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data)
+      })
+    navigate('/')
+  }
+
   const google = () => {
     window.open('/api/google', '_self')
+  }
+  const twitter = () => {
+    window.open('/api/twitter', '_self')
+  }
+  const apple = () => {
+    window.open('/api/apple', '_self')
   }
 
   return (
@@ -30,6 +47,14 @@ const Login = () => {
               <img src={Google} alt="" className="icon"></img>
               Google
             </div>
+            <div className="loginButton twitter" onClick={twitter}>
+              <img src={Twitter} alt="" className="icon"></img>
+              twitter
+            </div>
+            <div className="loginButton apple" onClick={apple}>
+              <img src={Apple} alt="" className="icon"></img>
+              apple
+            </div>
           </div>
           <div className="center">
             <div className="line" />
@@ -39,6 +64,9 @@ const Login = () => {
             <input type="text" placeholder="Username" />
             <input type="text" placeholder="Password" />
             <button className="submit">Login</button>
+            <button className="submit mt-5" onClick={logout}>
+              Logout
+            </button>
           </div>
         </div>
       </div>

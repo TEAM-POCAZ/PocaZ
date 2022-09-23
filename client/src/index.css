@@ -174,10 +174,12 @@
   .google {
     background-color: #df4930;
   }
-  .facebook {
-    background-color: #507cc0;
+  .apple {
+    background-color: white;
+    border-color: black;
+    color: black;
   }
-  .github {
+  .twitter {
     background-color: black;
   }
 

@@ -1,4 +1,4 @@
-import express from "express";
+import express, { urlencoded } from "express";
 import passportSetup from "../config/passport-setup";
 
 import { connect as mongoose_connect } from "mongoose";
@@ -17,6 +17,9 @@ app.use(
     proxy: true,
   })
 );
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -37,6 +40,16 @@ app.get("/me", (req, res) => {
   res.json(req.user);
 });
 
+app.get("/logout", (req, res) => {
+  if (req.user) {
+    req.logOut(() => {
+      res.json({ status: "success" });
+    });
+  } else {
+    res.json({ status: "error", message: "not logined before" });
+  }
+});
+
 app.get(
   "/google",
   passport.authenticate("google", {
@@ -48,6 +61,28 @@ app.get("/signin-google", passport.authenticate("google"), (req, res) => {
   console.log(req.user);
   res.redirect("/LoginSuccessed");
 });
+
+app.get(
+  "/twitter",
+  passport.authenticate("twitter", {
+    scope: ["profile", "email"],
+  })
+);
+
+app.get("/signin-twitter", passport.authenticate("twitter"), (req, res) => {
+  res.redirect("/LoginSuccessed");
+});
+
+app.get("/apple", passport.authenticate("apple"));
+
+app.post(
+  "/signin-apple",
+  express.urlencoded(),
+  passport.authenticate("apple"),
+  (req, res) => {
+    res.redirect("/LoginSuccessed");
+  }
+);
 
 app.listen(4000, () => {
   console.log(`

@@ -18,6 +18,7 @@
     "@types/node": "^18.7.14",
     "@types/passport": "^1.0.11",
     "@types/passport-google-oauth20": "^2.0.11",
+    "@types/passport-twitter": "^1.0.37",
     "@typescript-eslint/eslint-plugin": "^5.38.0",
     "@typescript-eslint/parser": "^5.38.0",
     "eslint": "^8.23.1",
@@ -29,6 +30,7 @@
     "typescript": "^4.8.2"
   },
   "dependencies": {
+    "@nicokaiser/passport-apple": "^1.0.1",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.2",
@@ -37,7 +39,8 @@
     "moment": "^2.29.4",
     "mongoose": "^6.6.1",
     "passport": "^0.6.0",
-    "passport-google-oauth20": "^2.0.0"
+    "passport-google-oauth20": "^2.0.0",
+    "passport-twitter": "^1.0.4"
   },
   "nodemonConfig": {
     "watch": [
