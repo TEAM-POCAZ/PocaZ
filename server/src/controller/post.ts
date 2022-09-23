@@ -9,25 +9,28 @@ router.use('/likes', likesRouter);
 
 router.get('/:category', async (req, res) => {
   const postList = await tranSQL.getOne(
-    `SELECT	p.id			    AS id,		  	-- post id
-            p.title				AS title, 		-- post title
-            p.viewCount			AS viewCount,	-- post view count
-            p.content		  	AS content,		-- post text
-            u.id			  	AS userId,		-- user key
-            u.nickname			AS nickname,	-- user nickname
+    `SELECT	p.id			              AS id,		  	-- post id
+            p.title				          AS title, 		-- post title
+            IFNULL(p.viewCount,0)		AS viewCount,	-- post view count
+            p.content		  	    AS content,		-- post text
+            u.id			  	      AS userId,		-- user key
+            u.nickname			    AS nickname,	-- user nickname
             u.profileImage	    AS profileImage,-- user profile image
-            p.createAt			AS createAt,	-- post create Date
-            ifnull(rep.cnt,0)  	AS replyCnt,	-- post reply cnt
-            img.path	  		AS filePath		-- post main img src
+            p.createAt			    AS createAt,	-- post create Date
+            IFNULL(rep.cnt,0)  	AS replyCnt,	-- post reply cnt
+            img.path	  		    AS filePath		-- post main img src
        FROM Post p
       INNER JOIN USER u ON p.user = u.id
        LEFT JOIN (SELECT id, count(*) as cnt
                     FROM Reply
                    GROUP BY id) rep on p.id = rep.id
-       LEFT JOIN (SELECT image.post, f.path
-                    FROM PostImage image
-                    LEFT JOIN File f on image.file = f.id
-                   LIMIT 1) img on p.id = img.post
+       LEFT JOIN (SELECT pi.post  as post,
+                         f.path   as path
+                    FROM (SELECT post, min(file) as main
+                            FROM PostImage
+                           GROUP BY post) pi
+                    LEFT JOIN File f ON pi.main = f.id
+                  ) img on p.id = img.post
       WHERE p.category = ?
       AND p.deleteAt IS NULL
       LIMIT ?`,
@@ -38,13 +41,13 @@ router.get('/:category', async (req, res) => {
 
 router.get('/:category/:post', async (req, res) => {
   const postDetail = await tranSQL.getOne(
-    `SELECT	p.title		  		AS title,			  -- post title
-          p.viewCount	    	AS viewCount,		-- post view count
-          p.content	   			AS text,			  -- post text
-          u.id      			  AS userId,			-- user key
-          u.nickname		    AS nickname,		-- user nickname
-          u.profileImage    AS profileImage,-- user profile image
-          likes.cnt         AS likesCnt			-- post like cnt
+    `SELECT	p.title		  		  AS title,			  -- post title
+          IFNULL(p.viewCount,0) 	AS viewCount,		-- post view count
+          p.content	   			  AS text,			  -- post text
+          u.id      			    AS userId,			-- user key
+          u.nickname		      AS nickname,		-- user nickname
+          u.profileImage      AS profileImage,-- user profile image
+          IFNULL(likes.cnt,0) AS likesCnt			-- post like cnt
     FROM Post p
    INNER JOIN USER u ON p.user = u.id
     LEFT JOIN (SELECT post, ifnull(count(*), 0) as cnt
