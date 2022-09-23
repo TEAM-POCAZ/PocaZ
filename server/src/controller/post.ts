@@ -1,11 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import replyRouter from './reply';
-import likesRouter from './likes';
 import { tranSQL } from '../utils/tranSQL';
-
-router.use('/reply', replyRouter);
-router.use('/likes', likesRouter);
 
 router.get('/:category', async (req, res) => {
   const postList = await tranSQL.getOne(
@@ -19,7 +14,7 @@ router.get('/:category', async (req, res) => {
             p.createAt			    AS createAt,	-- post create Date
             IFNULL(rep.cnt,0)  	AS replyCnt,	-- post reply cnt
             img.path	  		    AS filePath		-- post main img src
-       FROM Post p
+            FROM Post p
       INNER JOIN USER u ON p.user = u.id
        LEFT JOIN (SELECT id, count(*) as cnt
                     FROM Reply
@@ -40,6 +35,7 @@ router.get('/:category', async (req, res) => {
 });
 
 router.get('/:category/:post', async (req, res) => {
+  const { category, post } = req.params;
   const postDetail = await tranSQL.getOne(
     `SELECT	p.title		  		  AS title,			  -- post title
           IFNULL(p.viewCount,0) 	AS viewCount,		-- post view count
@@ -47,19 +43,18 @@ router.get('/:category/:post', async (req, res) => {
           u.id      			    AS userId,			-- user key
           u.nickname		      AS nickname,		-- user nickname
           u.profileImage      AS profileImage,-- user profile image
-          IFNULL(likes.cnt,0) AS likesCnt			-- post like cnt
+          IFNULL((SELECT count(*) cnt
+             FROM LikeManage
+            WHERE post = ?), 0) AS likesCnt     -- post like cnt
     FROM Post p
    INNER JOIN USER u ON p.user = u.id
-    LEFT JOIN (SELECT post, ifnull(count(*), 0) as cnt
-                 FROM LikeManage
-                GROUP BY post) likes ON p.id = likes.post
     LEFT JOIN (SELECT id, count(*) as cnt
                   FROM Reply
                 GROUP BY id) rep on p.id = rep.id
    WHERE p.category = ?
      AND p.id = ?
      AND p.deleteAt IS NULL`,
-    [req.params.category, req.params.post]
+    [post, category, post]
   );
   res.send(postDetail);
 });

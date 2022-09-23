@@ -2,6 +2,11 @@ import express from 'express';
 import { tranSQL } from '../utils/tranSQL';
 const router = express.Router();
 
+router.get('/', async (req, res) => {
+  console.log('works');
+  res.send('works');
+});
+
 router.post('/:post/:user', async (req, res) => {
   const { post, user } = req.params;
   tranSQL.putOne(
