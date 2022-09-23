@@ -3,11 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "production": "node dist/app.js",
     "build": "tsc -p .",
-    "start": "nodemon -L --watch \"src/**/*.ts\" --exec \"ts-node\" src/app.ts"
+    "start": "nodemon -L --inspect=0.0.0.0:9229 --signal SIGINT --nolazy ./src/app.ts"
   },
   "keywords": [],
   "author": "",
@@ -15,9 +14,17 @@
   "devDependencies": {
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
+    "@types/express-session": "^1.17.5",
     "@types/node": "^18.7.14",
-    "express": "^4.18.1",
+    "@types/passport": "^1.0.11",
+    "@types/passport-google-oauth20": "^2.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.38.0",
+    "@typescript-eslint/parser": "^5.38.0",
+    "eslint": "^8.23.1",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "nodemon": "^2.0.19",
+    "prettier": "^2.7.1",
     "ts-node": "^10.9.1",
     "typescript": "^4.8.2"
   },
@@ -25,6 +32,20 @@
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.2",
-    "moment": "^2.29.4"
+    "express": "^4.18.1",
+    "express-session": "^1.17.3",
+    "moment": "^2.29.4",
+    "mongoose": "^6.6.1",
+    "passport": "^0.6.0",
+    "passport-google-oauth20": "^2.0.0"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "./src/**/*.ts"
+    ],
+    "ext": "ts",
+    "execMap": {
+      "ts": "node --require ts-node/register"
+    }
   }
 }

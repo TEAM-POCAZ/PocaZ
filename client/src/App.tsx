@@ -1,16 +1,18 @@
 import { BrowserRouter as Router } from 'react-router-dom'
 import { Route, Routes } from 'react-router-dom'
-import Home from 'pages/Home'
 import Community from 'pages/Community'
 import { HelmetProvider } from 'react-helmet-async'
+import Login from 'pages/Login'
+import LoginSuccessed from 'pages/LoginSuccessed'
 
 function App() {
   return (
     <HelmetProvider>
       <Router>
         <Routes>
-          <Route path="/*" element={<Home />} />
-          <Route path="/store" element={<Community />} />
+          <Route path="/*" element={<Login />} />
+          <Route path="/community" element={<Community />} />
+          <Route path="/loginsuccessed" element={<LoginSuccessed></LoginSuccessed>} />
         </Routes>
       </Router>
     </HelmetProvider>

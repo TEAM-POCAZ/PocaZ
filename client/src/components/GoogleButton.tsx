@@ -25,7 +25,7 @@ function GoogleButton() {
   useEffect(() => {
     window.addEventListener('load', () => {
       google.accounts.id.initialize({
-        client_id: '624353687612-hm39h6ipg3pa0oa74psd0f6icmkf7tch.apps.googleusercontent.com',
+        client_id: '552100542945-vang57mc6baqmku7l31gpqjol1ijai0i.apps.googleusercontent.com',
         callback: handleCredentialResponse,
       })
       google.accounts.id.renderButton(
