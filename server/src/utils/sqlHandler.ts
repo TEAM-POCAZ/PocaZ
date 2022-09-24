@@ -1,10 +1,5 @@
-import { FieldPacket, OkPacket, ResultSetHeader, RowDataPacket } from 'mysql2';
+import { FieldPacket, RowDataPacket } from 'mysql2';
 import db from '../db/database';
-
-interface Test extends RowDataPacket {
-  id: number;
-  name: string;
-}
 
 export const sqlHandler = async <T extends RowDataPacket>(
   sql: string,
