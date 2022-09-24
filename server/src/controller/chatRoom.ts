@@ -1,6 +1,6 @@
 import { RowDataPacket } from 'mysql2';
 import { Request, Response, NextFunction } from 'express';
-import db from '../db/database';
+
 import { sqlHandler } from '../utils/sqlHandler';
 
 interface Test extends RowDataPacket {
@@ -13,8 +13,8 @@ export const searchChatRoom = async (
   res: Response,
   next: NextFunction
 ) => {
-  const [rows] = await sqlHandler('SELECT * FROM Test');
-  console.log(rows);
+  const rows: Test[] = await sqlHandler('SELECT * FROM Test');
+  console.log(rows[0]);
   res.status(200).json(rows);
 };
 
