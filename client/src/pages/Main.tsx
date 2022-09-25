@@ -10,6 +10,7 @@ import Layout from 'utils/Layout'
 import mainSlideBn1 from 'assets/img/main_slide_bn1.jpeg'
 import mainSlideBn2 from 'assets/img/main_slide_bn2.jpeg'
 import mainSlideBn3 from 'assets/img/main_slide_bn3.gif'
+import axios from 'axios'
 
 const Main = () => {
   return (
@@ -45,6 +46,21 @@ const Main = () => {
                 최근 게시물<i className="ri-arrow-drop-right-line"></i>
               </h2>
               <div className="boardList">
+                {/* 더미데이터 테스트 */}
+                <button
+                  onClick={() => {
+                    axios
+                      .get('http://localhost:8000/post/1')
+                      .then((data) => {
+                        console.log(data.data)
+                      })
+                      .catch((e) => {
+                        console.log(e)
+                      })
+                  }}
+                >
+                  더미데이터 테스트입니다롱
+                </button>
                 <ul>
                   <li className="flex justify-between mb-3.5">
                     <h4 className="mr-3.5 text-sm font-normal whitespace-nowrap text-ellipsis overflow-hidden">
