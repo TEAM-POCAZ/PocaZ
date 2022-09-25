@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom'
 import Main from 'pages/Main'
-import Community from 'pages/Community'
+import CommunityList from 'pages/CommunityList'
 import 'remixicon/fonts/remixicon.css'
 
 const BtmMenu = () => {
@@ -21,13 +21,13 @@ const BtmMenu = () => {
           </Link>
         </li>
         <li>
-          <Link to="/">
+          <Link to="/chat/list">
             <i className="ri-chat-heart-line block text-center text-2xl leading-none"></i>
             <p className="text-xs">CHAT</p>
           </Link>
         </li>
         <li>
-          <Link to="/Community">
+          <Link to="/CommunityList">
             <i className="ri-emotion-happy-line block text-center text-2xl leading-none"></i>
             <p className="text-xs">FREEZONE</p>
           </Link>

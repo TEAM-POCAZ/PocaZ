@@ -131,7 +131,11 @@ dist
 .pnp.*
 
 # db test in local env (will be deprecated before merge to main)
+<<<<<<< HEAD
 src/controller/db.ts
 
 # image files uploads storage
 uploads/
+=======
+# src/controller/db.ts
+>>>>>>> dev
