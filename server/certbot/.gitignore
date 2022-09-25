@@ -1,0 +1,8 @@
+/conf/accounts
+/conf/archive
+/conf/csr
+/conf/keys
+/conf/live
+/conf/renewal
+/conf/renewal-hooks
+/www

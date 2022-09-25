@@ -12,6 +12,12 @@ client id: 552100542945-vang57mc6baqmku7l31gpqjol1ijai0i.apps.googleusercontent.
 client secret : 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
 
 
-트위터
-client id: Zl1a2IiUQOXySJC4XSnS3Abl4
-client secret : N3iCgepp8HCBkoOYxpGD7Za5AjigEnEMm0hdqlCFZvRCJwxBqR
+트위터 2.0
+api key: cEdWN25DTk13SklLYmdfYTVYdXQ6MTpjaQ
+api key secret: PTWsFd8J-Vub_Kav5229mPBSNkZh3NeDhDrBPIC8CnFXHrnVt0
+
+수동으로 하려니 다음 파라미터를 authorize 엔드포인트에 전달해야 함
+code_challange, code_challenge_method, state
+
+passport-oauth2 에서 state: true,
+        pkce: true, 켜주면 됨

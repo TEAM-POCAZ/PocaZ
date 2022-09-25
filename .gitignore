@@ -1,3 +1,2 @@
-run.ps1
 /socatrunner
-server
+/server/apits/AuthKey*

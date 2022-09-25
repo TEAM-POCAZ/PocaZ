@@ -1,6 +1,6 @@
 import express, { urlencoded } from "express";
 import passportSetup from "../config/passport-setup";
-
+import cors from "cors";
 import { connect as mongoose_connect } from "mongoose";
 import { User, IUser } from "../models/user-model";
 import keys from "../config/keys";
@@ -8,6 +8,7 @@ import expressSession from "express-session";
 import passport from "passport";
 
 const app = express();
+app.use(cors({}));
 app.use(
   expressSession({
     secret: [keys.session.cookieKey],
@@ -64,12 +65,10 @@ app.get("/signin-google", passport.authenticate("google"), (req, res) => {
 
 app.get(
   "/twitter",
-  passport.authenticate("twitter", {
-    scope: ["profile", "email"],
-  })
+  passport.authenticate("oauth2", { scope: ["users.read", "tweet.read"] })
 );
 
-app.get("/signin-twitter", passport.authenticate("twitter"), (req, res) => {
+app.get("/signin-twitter", passport.authenticate("oauth2"), (req, res) => {
   res.redirect("/LoginSuccessed");
 });
 
