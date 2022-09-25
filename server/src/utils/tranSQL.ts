@@ -18,7 +18,8 @@ const tranSQL = {
    */
   postOne: async (
     sql: string,
-    list?: (string | number | (string | number)[])[]
+    // list?: (string | number | (string | number)[])[]
+    list?: any
   ) => {
     const conn = await pool.getConnection();
     const insertId: string = await conn

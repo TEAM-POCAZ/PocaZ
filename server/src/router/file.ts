@@ -1,8 +1,8 @@
 import express from 'express';
 
-import marketRouter from '../controller/market';
+import fileRouter from '../controller/file';
 const router = express.Router();
 
-router.use('/', marketRouter);
+router.use('/', fileRouter);
 
 export default router;

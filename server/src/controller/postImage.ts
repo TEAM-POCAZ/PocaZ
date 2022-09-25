@@ -16,13 +16,42 @@ router.get('/:category/:post', async (req, res) => {
   res.send(imgList);
 });
 
-router.post('/:category/:post', (req, res) => {
+router.post('/:category/:post', async (req, res) => {
+  const { post } = req.params;
+  const [filesKeys]: [number[]] = req.body;
+  await tranSQL.postOne(
+    `INSERT INTO PostImage (file, post)
+     VALUES ?`,
+    [
+      ((num: number) => {
+        const postFile = [];
+        const postId = parseInt(post);
+        for (let i = 0; i < num; i += 1) {
+          postFile.push([postId, filesKeys[i]]);
+        }
+      })(filesKeys.length),
+    ]
+  );
   res.send('currently developing...');
 });
-router.put('/:category/:post', (req, res) => {
-  res.send('currently developing...');
-});
-router.delete('/:category/:post', (req, res) => {
-  res.send('currently developing...');
-});
-export default router;
+
+// router.delete('/:category/:post', async (req, res) => {
+//   const { post } = req.params;
+//   const [filesKeys]: [number[]] = req.body;
+//   await tranSQL.postOne(
+//     `DELETE FROM PostImage
+//       WHERE post = ?
+//         AND file IN ?`,
+//     [
+//       post,
+//       ((num: number) => {
+//         const postFile = [];
+//         for (let i = 0; i < num; i += 1) {
+//           postFile.push([filesKeys[i]]);
+//         }
+//       })(filesKeys.length),
+//     ]
+//   );
+//   res.send('currently developing...');
+// });
+// export default router;

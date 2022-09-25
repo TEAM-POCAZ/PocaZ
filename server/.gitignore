@@ -132,3 +132,6 @@ dist
 
 # db test in local env (will be deprecated before merge to main)
 src/controller/db.ts
+
+# image files uploads storage
+uploads/
