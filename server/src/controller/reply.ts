@@ -1,34 +1,21 @@
 import express from 'express';
-import { tranSQL } from '../utils/tranSQL';
 const router = express.Router();
-import pool from '../controller/db';
 import { RowDataPacket, FieldPacket } from 'mysql2/promise';
-
-interface IReply extends RowDataPacket {
-  id: number;
-  pid: number | null;
-  user: number;
-  nickname: string;
-  profileImage: string;
-  content: string;
-  createAt: any;
-}
-interface IReplyM extends IReply {
-  reply: IReply[];
-}
+import { IReply, IReplyM } from '../interface/IReply';
+import { tranSQL } from '../utils/tranSQL';
+import { sqlHandler } from '../utils/sqlHandler';
 
 router.get('/:category/:post', async (req, res) => {
-  const conn = await pool.getConnection();
-  console.log('test test');
-  const [oneDepth]: [IReplyM[], FieldPacket[]] = await conn.execute(
+  const [oneDepth]: [IReplyM[], FieldPacket[]] = await sqlHandler(
     `${tranSQL.reply} AND pid IS NULL`,
     [req.params.post]
   );
 
-  const [twoDepth]: [IReply[], FieldPacket[]] = await conn.query(
+  const [twoDepth]: [IReplyM[], FieldPacket[]] = await sqlHandler(
     `${tranSQL.reply} AND pid IS NOT NULL`,
     [req.params.post]
   );
+
   res.send(
     oneDepth.map((preply: IReplyM) => {
       preply.reply = twoDepth.filter((rep: IReply) => rep.pid == preply.id);
