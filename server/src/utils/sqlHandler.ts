@@ -1,7 +1,7 @@
-import { FieldPacket, RowDataPacket } from 'mysql2';
+import { FieldPacket, ResultSetHeader, RowDataPacket } from 'mysql2';
 import db from '../db/database';
 
-export const sqlHandler = async <T extends RowDataPacket>(
+export const sqlInsertHandler = async <T extends ResultSetHeader>(
   sql: string,
   list?: any
 ) => {
@@ -9,7 +9,10 @@ export const sqlHandler = async <T extends RowDataPacket>(
   try {
     await conn.beginTransaction();
 
-    const [rows, fields]: [T[], FieldPacket[]] = await conn.execute(sql, list);
+    const [rows]: [ResultSetHeader, FieldPacket[]] = await conn.execute(
+      sql,
+      list
+    );
     await conn.commit();
 
     return rows;
@@ -21,4 +24,17 @@ export const sqlHandler = async <T extends RowDataPacket>(
   }
 };
 
-// FieldPacket[]
+export const sqlSelectHandler = async <T extends RowDataPacket>(
+  sql: string,
+  list?: any
+) => {
+  const conn = await db.getPool().getConnection();
+  try {
+    const [rows]: [T[], FieldPacket[]] = await conn.execute(sql, list);
+    return rows;
+  } catch (err) {
+    throw err;
+  } finally {
+    conn.release();
+  }
+};
