@@ -8,6 +8,7 @@ import { initSocket, getSocketIO } from './connection/socket';
 
 import chatRoomRouter from './router/chatRoom';
 import postRouter from './router/post';
+import chatRouter from './router/chat';
 import marketRouter from './router/market';
 
 const app = express();
@@ -16,10 +17,11 @@ app.use(express.json());
 app.use(morgan('dev'));
 app.use(helemt());
 
-// TODO -  cors 다 열어놓으면 안됨 나중에 수정필요!
+// TODO - cors 다 열어놓으면 안됨 나중에 수정필요!
 app.use(cors());
 
 app.use('/chatRoom', chatRoomRouter);
+app.use('/chat', chatRouter);
 app.use('/post', postRouter);
 app.use('/market', marketRouter);
 
