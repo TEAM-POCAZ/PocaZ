@@ -15,7 +15,7 @@ router.get('/:category', async (req, res) => {
             IFNULL(rep.cnt,0)  	AS replyCnt,	-- post reply cnt
             img.path	  		    AS filePath		-- post main img src
             FROM Post p
-      INNER JOIN USER u ON p.user = u.id
+      INNER JOIN User u ON p.user = u.id
        LEFT JOIN (SELECT id, count(*) as cnt
                     FROM Reply
                    GROUP BY id) rep on p.id = rep.id
@@ -35,7 +35,7 @@ router.get('/:category', async (req, res) => {
 });
 
 router.get('/:category/:post', async (req, res) => {
-  const { category, post } = req.params;
+  const { category, post }: { category: string; post: string } = req.params;
   const postDetail = await tranSQL.getOne(
     `SELECT	p.title		  		  AS title,			  -- post title
           IFNULL(p.viewCount,0) 	AS viewCount,		-- post view count
@@ -47,7 +47,7 @@ router.get('/:category/:post', async (req, res) => {
              FROM LikeManage
             WHERE post = ?), 0) AS likesCnt     -- post like cnt
     FROM Post p
-   INNER JOIN USER u ON p.user = u.id
+   INNER JOIN User u ON p.user = u.id
     LEFT JOIN (SELECT id, count(*) as cnt
                   FROM Reply
                 GROUP BY id) rep on p.id = rep.id
@@ -73,8 +73,8 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:category/:post', async (req, res) => {
-  const { category, post } = req.params;
-  const { title, content } = req.body;
+  const { category, post }: { category: string; post: string } = req.params;
+  const { title, content }: { title: string; content: string } = req.body;
   await tranSQL.putOne(
     `
    UPDATE Post
@@ -89,7 +89,7 @@ router.put('/:category/:post', async (req, res) => {
 });
 
 router.delete('/:category/:post', async (req, res) => {
-  const { category, post } = req.params;
+  const { category, post }: { category: string; post: string } = req.params;
   await tranSQL.putOne(
     `
     UPDATE Post

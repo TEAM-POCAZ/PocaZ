@@ -1,26 +1,20 @@
-import pool from '../controller/db';
+import db from '../db/database';
 
 const tranSQL = {
-  // Method
-  getOne: async (
-    sql: string,
-    list?: (string | number | (string | number)[])[]
-  ) => {
-    const conn = await pool.getConnection();
+  // Method collections
+  getOne: async (sql: string, list?: any) => {
+    const conn = await db.getPool().getConnection();
     const [result] = await conn.query(sql, list);
     return result;
   },
   /**
    * function that post only one post.
    * @param {string}sql - put standard SQL syntax with '?'
-   * @param {(string | number | (string | number)[])[]}list - put params in array type
+   * @param {any}list - put params in array type
    * @returns {number} get primary key of posted one
    */
-  postOne: async (
-    sql: string,
-    list?: (string | number | (string | number)[])[]
-  ) => {
-    const conn = await pool.getConnection();
+  postOne: async (sql: string, list?: any) => {
+    const conn = await db.getPool().getConnection();
     const insertId: string = await conn
       .query(sql, list)
       .then((res: any) => {
@@ -28,7 +22,6 @@ const tranSQL = {
       })
       .catch((err) => {
         conn.rollback();
-        conn.release();
         throw err;
       })
       .finally(() => {
@@ -36,41 +29,33 @@ const tranSQL = {
       });
     return insertId;
   },
-  putOne: async (
-    sql: string,
-    list?: (string | number | (string | number)[])[]
-  ) => {
-    const conn = await pool.getConnection();
+  putOne: async (sql: string, list?: any) => {
+    const conn = await db.getPool().getConnection();
     try {
-      conn.beginTransaction();
-      conn.query(sql, list);
-      conn.commit();
+      await conn.beginTransaction();
+      await conn.execute(sql, list);
+      await conn.commit();
     } catch (err) {
       await conn.rollback();
-      conn.release();
       throw err;
     } finally {
       conn.release();
     }
   },
-  getMany: async (
-    ...args: [sql: string, list?: (string | number | (string | number)[])[]][]
-  ) => {
-    const conn = await pool.getConnection();
-    const result: any[] = [];
-    args.forEach(async ([sql, list]) => {
-      result.push(await conn.query(sql, list));
-    });
-    return result;
-  },
+  // getMany: async (...args: [sql: string, list?: any][]) => {
+  //   const conn = await db.getPool().getConnection();
+  //   const result: any[] = [];
+  //   args.forEach(async ([sql, list]) => {
+  //     result.push(await conn.execute(sql, list));
+  //   });
+  //   return result;
+  // },
   /**
-   * POST more than one query on one transaction
-   * @param {[sql: string, list?: (string | number | (string | number)[])[]]} args
+   * POST more than one execute on one transaction
+   * @param {[sql: string, list?: any]} args
    */
-  queryMany: async (
-    ...args: [sql: string, list?: (string | number | (string | number)[])[]][]
-  ) => {
-    const conn = await pool.getConnection();
+  queryMany: async (...args: [sql: string, list?: any][]) => {
+    const conn = await db.getPool().getConnection();
     try {
       conn.beginTransaction();
       args.forEach(async ([sql, list]) => {
@@ -79,7 +64,6 @@ const tranSQL = {
       conn.commit();
     } catch (err) {
       await conn.rollback();
-      conn.release();
       throw err;
     } finally {
       conn.release();
@@ -96,12 +80,65 @@ const tranSQL = {
           r.content,      -- reply content
           r.createAt      -- reply created Date
     FROM  Reply r
-   INNER JOIN USER u ON r.user = u.id
+   INNER JOIN User u ON r.user = u.id
    WHERE  post = ?`,
   agency: `
    SELECT id, name
      FROM Agency
-    WHERE 1 = 1`,
+    WHERE 1 = 1 `,
+  artistGroup: `
+   SELECT id,
+          englishName,
+          koreanName,
+          grouplogoUrl
+     FROM ArtistGroup
+    WHERE 1 = 1 `,
+  artist: `
+   SELECT id,
+          stageName,
+          realName
+     FROM Artist
+    WHERE 1 = 1 `,
+  photocard: `
+  SELECT pc.id        AS id,            -- photocard id
+         a.stageName  AS stageName,     -- artist stage name
+         pc.path      AS img,           -- photocard img src
+         pc.name      AS name,          -- photocard name
+         pc.description AS description, -- photocard description
+         pc.createAt  AS createAt       -- photocard published
+    FROM Photocard pc
+   INNER JOIN Artist a on pc.artist = a.id
+   WHERE 1 = 1 `,
+  galmang: `
+   SELECT id, user, photocard
+     FROM GalmangPhotoCard
+    WHERE 1 = 1 `,
+
+  market: {
+    main: `
+      SELECT a.stageName    AS stageName,	  -- current stage Name
+             ag.englishName AS groupName,	  -- current group Name
+             u.nickname     AS nickname,    -- user nickname
+             u.profileImage AS profileImage,-- user profile image
+             pc.path        AS pocaImg,     -- poca image
+             pc.name		    AS pocaName,	  -- photocard Name
+             pc.description	AS description, -- photocard description
+             pcs.price      AS price,		    -- photocard sell Price
+             pcs.tradeStatus  AS tradeStatus  -- sell status
+             `,
+    detail: `
+            ,pcs.title       AS title,       -- photocard sell title
+             pcs.description AS sellDesc     -- photocard sell description`,
+    from: `
+     FROM PhotocardSellArticle pcs
+        INNER JOIN User u ON pcs.user = u.id
+        LEFT JOIN Photocard pc on pcs.photocard = pc.id
+             -- LEFT JOIN because photocard seller want to submit
+             -- would not exists on POCAZ Database
+        LEFT JOIN Artist a on pc.artist = a.id
+        LEFT JOIN ArtistGroup ag on a.artistGroup = ag.id
+       WHERE 1 = 1`,
+  },
 };
 
 export { tranSQL };

@@ -3,7 +3,7 @@ import { tranSQL } from '../utils/tranSQL';
 const router = express.Router();
 
 router.get('/:category/:post', async (req, res) => {
-  const { post } = req.params;
+  const { post }: { post: string } = req.params;
   const imgList = await tranSQL.getOne(
     `SELECT pi.post, f.path
        FROM
@@ -16,13 +16,26 @@ router.get('/:category/:post', async (req, res) => {
   res.send(imgList);
 });
 
-router.post('/:category/:post', (req, res) => {
+router.post('/:category/:post', async (req, res) => {
+  const { post }: { post: string } = req.params;
+  const { filesKeys } = req.body;
+  await tranSQL.postOne(
+    `INSERT INTO PostImage (file, post)
+     VALUES ?`,
+    [filesKeys.map((file: number) => [post, file])]
+  );
   res.send('currently developing...');
 });
-router.put('/:category/:post', (req, res) => {
-  res.send('currently developing...');
-});
-router.delete('/:category/:post', (req, res) => {
+
+router.delete('/:category/:post', async (req, res) => {
+  const { post }: { post: string } = req.params;
+  const { filesKeys } = req.body;
+  await tranSQL.postOne(
+    `DELETE FROM PostImage
+      WHERE post = ?
+        AND file IN (?)`,
+    [post, filesKeys]
+  );
   res.send('currently developing...');
 });
 export default router;

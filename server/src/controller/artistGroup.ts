@@ -1,16 +1,17 @@
 import express from 'express';
 const router = express.Router();
 import { tranSQL } from '../utils/tranSQL';
+import { IArtistGroup } from '../interface/IArtistGroup';
 
 router.get('/', async (req, res) => {
-  res.send(await tranSQL.getOne(tranSQL.agency));
+  res.send(await tranSQL.getOne(tranSQL.artistGroup));
 });
 
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
   res.send(
     await tranSQL.getOne(
-      `${tranSQL.agency}
+      `${tranSQL.artistGroup}
        ${tranSQL.where('id')}`,
       [id]
     )
@@ -18,26 +19,32 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const [{ agency }]: [{ agency: string }] = req.body;
-  console.log([agency]);
+  const artistGroups: IArtistGroup[] = req.body;
   await tranSQL.postOne(
-    `INSERT INTO Agency (name)
-     VALUES (?)`,
-    [[agency]]
+    `INSERT INTO ArtistGroup (englishName, koreanName, grouplogoUrl)
+     VALUES ?`,
+    [
+      artistGroups.map((artistGroup: IArtistGroup) => {
+        const { englishName, koreanName, grouplogoUrl } = artistGroup;
+        return [englishName, koreanName, grouplogoUrl];
+      }),
+    ]
   );
   res.send('correctly sended');
 });
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const [{ agency }]: [{ agency: string }] = req.body;
+  const [{ englishName, koreanName, grouplogoUrl }]: [IArtistGroup] = req.body;
   tranSQL.putOne(
-    `UPDATE Agency
-        SET name = ?
+    `UPDATE ArtistGroup
+        SET englishName   = ?,
+            koreanName    = ?,
+            grouplogoUrl  = ?
       WHERE 1 = 1
       ${tranSQL.where('id')}
     `,
-    [agency, id]
+    [englishName, koreanName, grouplogoUrl, id]
   );
 
   res.send('correctly sended');
@@ -46,7 +53,7 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   const { id }: { id: string } = req.params;
   tranSQL.putOne(
-    `DELETE FROM Agency
+    `DELETE FROM ArtistGroup
       WHERE 1 = 1
      ${tranSQL.where('id')}`,
     [id]

@@ -10,6 +10,8 @@ import chatRoomRouter from './router/chatRoom';
 import postRouter from './router/post';
 import chatRouter from './router/chat';
 import marketRouter from './router/market';
+import fileRouter from './router/file';
+import artistRouter from './router/artist';
 
 const app = express();
 
@@ -24,6 +26,8 @@ app.use('/chatRoom', chatRoomRouter);
 app.use('/chat', chatRouter);
 app.use('/post', postRouter);
 app.use('/market', marketRouter);
+app.use('/file', fileRouter);
+app.use('/artist', artistRouter);
 
 const server = app.listen(+config.host.port, () => {
   console.log(`listening on port ${+config.host.port}`);
