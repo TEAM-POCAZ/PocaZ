@@ -1,10 +1,28 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+
 import Layout from 'utils/Layout'
 import { Link } from 'react-router-dom'
 
 const ChatMain = () => {
   const [name, setName] = useState('') //TODO login 정보에서 가져오기(store)
   const [room, setRoom] = useState('') //TODO 1:1채팅방 room은 어떻게 만들까?
+  const [roomData, setRoomdata] = useState([])
+
+  useEffect(() => {
+    async function getRooms() {
+      try {
+        const response = await axios.get(`http://localhost:8080/chatroom/1`)
+        console.log(response.data)
+
+        // setDetail(response.data.data);
+        // setLoading(false);
+      } catch (e) {
+        console.log('axios get Error')
+      }
+    }
+    getRooms()
+  }, [])
 
   return (
     <Layout>
