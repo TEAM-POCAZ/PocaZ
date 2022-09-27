@@ -3,15 +3,15 @@ const router = express.Router();
 import { RowDataPacket, FieldPacket } from 'mysql2/promise';
 import { IReply, IReplyM } from '../interface/IReply';
 import { tranSQL } from '../utils/tranSQL';
-import { sqlHandler } from '../utils/sqlHandler';
+import { sqlSelectHandler } from '../utils/sqlHandler';
 
 router.get('/:category/:post', async (req, res) => {
-  const [oneDepth]: [IReplyM[], FieldPacket[]] = await sqlHandler(
+  const oneDepth: IReplyM[] = await sqlSelectHandler(
     `${tranSQL.reply} AND pid IS NULL`,
     [req.params.post]
   );
 
-  const [twoDepth]: [IReplyM[], FieldPacket[]] = await sqlHandler(
+  const twoDepth: IReply[] = await sqlSelectHandler(
     `${tranSQL.reply} AND pid IS NOT NULL`,
     [req.params.post]
   );
