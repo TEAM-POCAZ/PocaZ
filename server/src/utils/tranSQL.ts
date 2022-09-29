@@ -81,7 +81,7 @@ const tranSQL = {
           r.createAt      -- reply created Date
     FROM  Reply r
    INNER JOIN User u ON r.user = u.id
-   WHERE  post = ?`,
+   WHERE  1 = 1`,
   agency: `
    SELECT id, name
      FROM Agency

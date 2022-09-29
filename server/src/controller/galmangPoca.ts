@@ -1,47 +1,42 @@
-import express from 'express';
-const router = express.Router();
+import { Request, Response, NextFunction } from 'express';
 import { tranSQL } from '../utils/tranSQL';
 import { IGalmang } from '../interface/IGalmang';
 
-router.get('/:user', async (req, res) => {
-  const { user } = req.params;
-  res.send(
-    await tranSQL.getOne(
-      `${tranSQL.galmang}
-       ${tranSQL.where('user')}`,
-      [user]
-    )
-  );
-});
-
-router.post('/', async (req, res) => {
-  const galmangs: IGalmang[] = req.body;
-  try {
-    await tranSQL.postOne(
-      `INSERT INTO GalmangPhotoCard (user, photocard)
-         VALUES ?`,
-      [
-        galmangs.map((galmang: IGalmang) => {
-          const { user, photocard } = galmang;
-          return [user, photocard];
-        }),
-      ]
+export default {
+  getGalmang: async (req: Request, res: Response) => {
+    const { user } = req.params;
+    res.send(
+      await tranSQL.getOne(
+        `${tranSQL.galmang}
+         ${tranSQL.where('user')}`,
+        [user]
+      )
     );
-    res.send('correctly sended');
-  } catch (err) {
-    throw err;
-  }
-});
-
-router.delete('/:id', async (req, res) => {
-  const { id }: { id: string } = req.params;
-  await tranSQL.putOne(
-    `DELETE FROM GalmangPhotoCard
-      WHERE 1 = 1
-     ${tranSQL.where('id')}`,
-    [id]
-  );
-  res.send(`${id} removed!`);
-});
-
-export default router;
+  },
+  writeGalmang: async (req: Request, res: Response) => {
+    const { user } = req.params;
+    const galmangs: number[] = req.body;
+    // const galmangs: IGalmang[] = req.body;
+    try {
+      await tranSQL.postOne(
+        `INSERT INTO GalmangPhotoCard (user, photocard)
+           VALUES ?`,
+        [galmangs.map((galmang: number) => [user, galmang])]
+      );
+      res.send('correctly sended');
+    } catch (err) {
+      throw err;
+    }
+  },
+  deleteGalmang: async (req: Request, res: Response) => {
+    const { id, user } = req.params;
+    await tranSQL.putOne(
+      `DELETE FROM GalmangPhotoCard
+        WHERE 1 = 1
+       ${tranSQL.where('id')}
+       ${tranSQL.where('user')}`,
+      [id, user]
+    );
+    res.send(`${id} removed!`);
+  },
+};

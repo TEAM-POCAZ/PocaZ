@@ -1,0 +1,1435 @@
+openapi: 3.0.3
+info:
+  title: 'POCAZ REST API 관리 페이지'
+  description: |-
+    POCAZ 내 client가 server에 요청하는 방법을 기술한 페이지입니다.
+
+    서버 관리자는 본인이 담당한 API를 개발 후 현재 페이지에 기술해주시길 바랍니다. 감사합니다.
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: http://localhost:8000/
+  - url: http://localhost:8080/
+tags:
+  - name: 'post'
+    description: '커뮤니티 게시글 관리 API'
+    externalDocs:
+      description: '커뮤니티 와이어프레임 미리보기'
+      url: 'https://whimsical.com/main-community-MfzuWWCq96LRMyhvJ1SQSu'
+  - name: 'file'
+    description: 'POCAZ 파일/이미지 관리 통합 API( 개발중... )'
+  - name: 'postImage'
+    description: '커뮤니티 게시글 이미지 관리 API( 개발중...)'
+  - name: 'reply'
+    description: '커뮤니티 게시글 덧글 관리 API'
+  - name: 'LikeManage'
+    description: '유저와 게시글의 좋아요 관계 관리 API'
+  - name: 'agency'
+    description: '소속사(엔터테인먼트) 관리 API(멤버 등록전 필수 입력)'
+  - name: 'artistGroup'
+    description: '아이돌 그룹 정보 관리 API'
+  - name: 'artist'
+    description: '아이돌 멤버 개별 관리 API'
+  - name: 'photocard'
+    description: '포토카드 개별 관리 API'
+  - name: 'galmangPoca'
+    description: '유저 개인별 갈망포카 관리 API'
+    externalDocs:
+      description: '수집하고자 하는 욕망이 강한 개인별 인기 포카'
+      url: 'https://docs.google.com/spreadsheets/d/1dzhBXaaWtO2csTXuuzKSFeqxQeusko4roApY0ZESK-A/edit#gid=1484967714'
+  - name: 'market'
+    description: 'POCAZ 스토어 관리 API'
+paths:
+  /post/{category}:
+    get:
+      summary: 모든 게시물을 가져옵니다.
+      operationId: getPosts
+      tags:
+        - post
+      parameters:
+        - name: category
+          in: path
+          required: true
+          description: The category key of posts
+          schema:
+            type: string
+          example: '1'
+      description: Update an existing pet by Id
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: category not found
+        '405':
+          description: Validation exception
+
+  /post:
+    post:
+      tags:
+        - post
+      summary: 게시글 하나를 작성합니다.
+      description: ''
+      operationId: postPost
+      requestBody:
+        description: 수정할 내용을 입력해요
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  category:
+                    type: string
+                    example: 1
+                  user:
+                    type: string
+                    example: 10
+                  title:
+                    type: string
+                    example: 제목이에용
+                  content:
+                    type: string
+                    example: 내용이에용
+      responses:
+        '200':
+          description: succusefully posted!
+        '405':
+          description: Invalid input
+  /post/{category}/{post}:
+    get:
+      summary: 게시글 하나를 가져옵니다
+      operationId: getPost
+      tags:
+        - post
+      parameters:
+        - name: category
+          in: path
+          required: true
+          description: The category key of posts
+          schema:
+            type: string
+          example: '1'
+        - name: post
+          in: path
+          required: true
+          description: The key of post
+          schema:
+            type: string
+      description: Update an existing pet by Id
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: category not found
+        '405':
+          description: Validation exception
+
+  /post/{category}/{post}/{user}:
+    put:
+      summary: 게시글 하나를 수정합니다.
+      description: ''
+      operationId: updatePost
+      tags:
+        - post
+      parameters:
+        - name: category
+          in: path
+          required: true
+          description: The category key of posts
+          schema:
+            type: string
+          example: 1
+        - name: post
+          in: path
+          required: true
+          description: The key of post
+          schema:
+            type: string
+          example: 1
+        - name: user
+          in: path
+          description: ID of user that need to post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      requestBody:
+        description: 수정할 내용을 입력해요
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  user:
+                    type: string
+                    example: 10
+                  title:
+                    type: string
+                    example: 제목이에용
+                  content:
+                    type: string
+                    example: 내용이에용
+      responses:
+        '405':
+          description: Invalid input
+    delete:
+      summary: 게시글 하나를 제거합니다.
+      description: ''
+      operationId: deletePost
+      tags:
+        - post
+      parameters:
+        - name: category
+          in: path
+          required: true
+          description: The category key of posts
+          schema:
+            type: string
+          example: 1
+        - name: post
+          in: path
+          required: true
+          description: The key of post
+          schema:
+            type: string
+          example: 11
+        - name: user
+          in: path
+          description: ID of user that need to post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 10
+      responses:
+        '200':
+          description: successfully erased!
+        '400':
+          description: Invalid post
+        '404':
+          description: Not Found
+  /post/reply/{category}/{post}:
+    get:
+      tags:
+        - reply
+      summary: 게시글의 모든 댓글을 조회합니다.
+      description: ''
+      operationId: getReplys
+      parameters:
+        - name: category
+          in: path
+          description: category of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+        - name: post
+          in: path
+          description: id of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReplyM'
+        '400':
+          description: Invalid post
+  /post/reply/{category}/{post}/{user}:
+    post:
+      tags:
+        - reply
+      summary: 덧글 하나를 작성합니다.
+      description: ''
+      operationId: postReply
+      parameters:
+        - name: category
+          in: path
+          description: category of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+        - name: post
+          in: path
+          description: id of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 9
+        - name: user
+          in: path
+          description: id of user
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 10
+      requestBody:
+        description: 입력할 내용을 입력해요
+        content:
+          application/json:
+            schema:
+              # type: array
+              # items:
+              type: object
+              properties:
+                pid:
+                  type: number
+                  example: null
+                content:
+                  type: string
+                  example: 댓글글 내용이에용
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reply'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Reply'
+        default:
+          description: successful operation
+  /post/reply/{category}/{post}/{id}:
+    get:
+      tags:
+        - reply
+      summary: 댓글 하나를 조회합니다.
+      description: ''
+      operationId: getReply
+      parameters:
+        - name: category
+          in: path
+          description: category of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+        - name: post
+          in: path
+          description: id of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+        - name: id
+          in: path
+          description: id of reply
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reply'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Reply'
+        '400':
+          description: Invalid post
+  /post/reply/{category}/{post}/{user}/{id}:
+    put:
+      tags:
+        - reply
+      summary: 댓글을 수정합니다.
+      description: This can only be done by the logged in user.
+      operationId: updateReply
+      parameters:
+        - name: category
+          in: path
+          description: category of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+        - name: post
+          in: path
+          description: id of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 9
+        - name: user
+          in: path
+          description: id of user
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 10
+        - name: id
+          in: path
+          description: id of reply
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      requestBody:
+        description: Update an existent user in the store
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                # user:
+                #   type: integer
+                #   format: int64
+                #   example: 3
+                content:
+                  type: string
+                  example: string cheese
+      responses:
+        default:
+          description: successful operation
+    delete:
+      tags:
+        - reply
+      summary: 댓글을 삭제합니다.
+      description: This can only be done by the logged in user.
+      operationId: deleteReply
+      parameters:
+        - name: category
+          in: path
+          description: category of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+        - name: post
+          in: path
+          description: id of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 9
+        - name: user
+          in: path
+          description: id of reply
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 10
+        - name: id
+          in: path
+          description: id of reply
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      responses:
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found
+  /post/likes/{user}:
+    get:
+      tags:
+        - LikeManage
+      summary: 유저가 누른 좋아요 합계를 조회합니다.
+      description: This can only be done by the logged in user.
+      operationId: totalLikes
+      parameters:
+        - name: user
+          in: path
+          description: id of user
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Likes'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Likes'
+        '400':
+          description: Invalid post
+  /post/likes/{post}/{user}:
+    get:
+      tags:
+        - LikeManage
+      summary: 유저의 게시글 단위 좋아요 갯수 조회
+      description: ''
+      operationId: getPostLikes
+      parameters:
+        - name: post
+          in: path
+          description: category of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+        - name: user
+          in: path
+          description: category of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Likes'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Likes'
+        '400':
+          description: Invalid post
+    post:
+      tags:
+        - LikeManage
+      summary: 좋아요~
+      description: ''
+      operationId: writeLikes
+      parameters:
+        - name: post
+          in: path
+          description: category of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+        - name: user
+          in: path
+          description: category of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      responses:
+        '200':
+          description: successful operation
+    delete:
+      tags:
+        - LikeManage
+      summary: 좋아요 취소
+      description: ''
+      operationId: deleteLikes
+      parameters:
+        - name: post
+          in: path
+          description: category of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+        - name: user
+          in: path
+          description: category of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      responses:
+        '200':
+          description: successful operation
+  /post/img/{category}/{post}:
+    get:
+      tags:
+        - postImage
+      summary: 이미지를 봅니다.
+      description: ''
+      operationId: getPostImg
+      parameters:
+        - name: category
+          in: path
+          description: category of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+        - name: post
+          in: path
+          description: id of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PostImage'
+        '400':
+          description: Invalid post
+    post:
+      tags:
+        - postImage
+      summary: 업로드한 이미지 경로를 해당 게시글과 연결합니다.
+      description: '반드시 이미지 업로드 기록이 File에 남아있어야 연결이 됩니다.'
+      operationId: linkPostImage
+      parameters:
+        - name: category
+          in: path
+          description: category of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+        - name: post
+          in: path
+          description: id of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      requestBody:
+        description: 수정할 내용을 입력해요
+        content:
+          application/json:
+            schema:
+              # type: array
+              # items:
+              type: object
+              properties:
+                fileskeys:
+                  type: integer
+                  format: int64
+                  example: [1, 2, 3]
+      responses:
+        '200':
+          description: Successful operation
+    delete:
+      tags:
+        - postImage
+      summary: 게시글과 이미지 사이의 링크를 제거합니다.
+      description: ''
+      operationId: deletePostImage
+      parameters:
+        - name: category
+          in: path
+          description: category of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+        - name: post
+          in: path
+          description: id of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      responses:
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'image not found'
+  # /file:
+  #   post:
+  #     tags:
+  #     - file
+  #     summary: "uploads an image"
+  #     description: ""
+  #     operationId: "uploadFile"
+  #     requestBody:
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             type: object
+  #             properties:
+  #               orderId:
+  #                 type: integer
+  #               userId:
+  #                 type: integer
+  #               fileName:
+  #                 type: string
+  #                 format: binary
+  #     responses:
+  #       "200":
+  #         description: "successful operation"
+  /artist/agency:
+    post:
+      tags:
+        - agency
+      summary: '소속사를 입력'
+      description: '아이돌이 소속된 소속사를 입력하세요. (미입력시 멤버 등록 불가)'
+      operationId: 'uploadAgency'
+      requestBody:
+        description: 수정할 내용을 입력해요
+        content:
+          application/json:
+            schema:
+              # type: array
+              # items:
+              # type: object
+              # properties:
+              # fileskeys:
+              type: string
+              example: ['1', '2', '3']
+      responses:
+        '200':
+          description: 'successful operation'
+    get:
+      tags:
+        - agency
+      summary: '소속사를 전체 조회'
+      description: ''
+      operationId: 'getAgencies'
+      responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Agency'
+  /artist/agency/{id}:
+    get:
+      tags:
+        - agency
+      summary: '소속사 하나를 조회'
+      description: ''
+      operationId: 'getAgency'
+      parameters:
+        - name: id
+          in: path
+          description: category of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Agency'
+    put:
+      tags:
+        - agency
+      summary: '소속사를 입력'
+      description: '아이돌이 소속된 소속사를 입력하세요. (미입력시 멤버 등록 불가)'
+      operationId: 'modifyAgency'
+      parameters:
+        - name: id
+          in: path
+          description: category of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      requestBody:
+        description: 소속사 이름을 수정해요
+        content:
+          application/json:
+            schema:
+              # type: array
+              # items:
+              # type: object
+              # properties:
+              # fileskeys:
+              type: string
+              example: ['MSG']
+      responses:
+        '200':
+          description: 'successful operation'
+    delete:
+      tags:
+        - agency
+      summary: 소속사 하나를 제거합니다.
+      description: ''
+      operationId: deleteAgency
+      parameters:
+        - name: id
+          in: path
+          description: category of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 5
+      responses:
+        '200':
+          description: successfully erased!
+        '400':
+          description: Invalid post
+        '404':
+          description: Not Found
+  /artist/group:
+    post:
+      tags:
+        - artistGroup
+      summary: '소속사를 입력'
+      description: '아이돌이 소속된 소속사를 입력하세요. (미입력시 멤버 등록 불가)'
+      operationId: 'writeGroup'
+      requestBody:
+        description: 수정할 내용을 입력해요
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ArtistGroup'
+                # type: object
+                # properties:
+                # fileskeys:
+                # type: string
+                # example: ['1','2','3']
+      responses:
+        '200':
+          description: 'successful operation'
+    get:
+      tags:
+        - artistGroup
+      summary: '소속사를 전체 조회'
+      description: ''
+      operationId: 'getGroups'
+      responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArtistGroup'
+  /artist/group/{id}:
+    get:
+      tags:
+        - artistGroup
+      summary: '그룹 하나를 조회'
+      description: ''
+      operationId: 'getGroup'
+      parameters:
+        - name: id
+          in: path
+          description: category of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArtistGroup'
+    put:
+      tags:
+        - artistGroup
+      summary: 아이돌 그룹 정보 수정
+      description: '아이돌이 소속된 소속사를 입력하세요. (미입력시 멤버 등록 불가)'
+      operationId: 'modifyGroup'
+      parameters:
+        - name: id
+          in: path
+          description: category of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      requestBody:
+        description: 수정할 내용을 입력해요
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ArtistGroup'
+      responses:
+        '200':
+          description: 'successful operation'
+    delete:
+      tags:
+        - artistGroup
+      summary: 아이돌 그룹 제거
+      description: ''
+      operationId: deleteGroup
+      parameters:
+        - name: id
+          in: path
+          description: 아이돌 그룹의 key 값
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 4
+      responses:
+        '200':
+          description: successfully erased!
+        '400':
+          description: Invalid post
+        '404':
+          description: Not Found
+  /artist/poca:
+    post:
+      tags:
+        - photocard
+      summary: 신규 포토카드 입력
+      description: 'DB에 없는 포토카드 등록'
+      operationId: writePhotocard
+      requestBody:
+        description: 수정할 내용을 입력해요
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Photocard'
+      responses:
+        '200':
+          description: 'successful operation'
+    get:
+      tags:
+        - photocard
+      summary: DB상 포토카드 전체 조회
+      description: ''
+      operationId: getPhotocards
+      responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Photocard'
+  /artist/poca/{id}:
+    get:
+      tags:
+        - photocard
+      summary: '포토카드 개별 조회'
+      description: ''
+      operationId: getPhotocard
+      parameters:
+        - name: id
+          in: path
+          description: category of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Photocard'
+    put:
+      tags:
+        - photocard
+      summary: 포토카드 정보 수정
+      description: ''
+      operationId: modifyPhotocard
+      parameters:
+        - name: id
+          in: path
+          description: id of photocard
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      requestBody:
+        description: 수정할 내용을 입력해요
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Photocard'
+      responses:
+        '200':
+          description: 'successful operation'
+    delete:
+      tags:
+        - photocard
+      summary: 포토카드 제거( DB 수정 전까지는 사용하지 말것)
+      description: ''
+      operationId: deletePhotocard
+      parameters:
+        - name: id
+          in: path
+          description: 포토카드의 key 값
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      responses:
+        '200':
+          description: successfully erased!
+        '400':
+          description: Invalid post
+        '404':
+          description: Not Found
+  /artist/galmang/{user}:
+    post:
+      tags:
+        - galmangPoca
+      summary: 유저 갈망포카 입력
+      description: ''
+      operationId: writeGalmang
+      parameters:
+        - name: user
+          in: path
+          description: 포토카드의 key 값
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      requestBody:
+        description: 내용을 입력해요
+        content:
+          application/json:
+            schema:
+              type: integer
+              example: [1, 2]
+      responses:
+        '200':
+          description: 'successful operation'
+    get:
+      tags:
+        - galmangPoca
+      summary: 유저 본인의 갈망포카 전체 조회
+      description: ''
+      operationId: 'getGalmang'
+      parameters:
+        - name: user
+          in: path
+          description: 포토카드의 key 값
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Galmang'
+  /artist/galmang/{user}/{id}:
+    delete:
+      tags:
+        - galmangPoca
+      summary: 유저 갈망포카 제거
+      description: ''
+      operationId: deleteGalmang
+      parameters:
+        - name: user
+          in: path
+          description: 갈망포카 key 값
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+        - name: id
+          in: path
+          description: 갈망포카 key 값
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 2
+      responses:
+        '200':
+          description: successfully erased!
+        '400':
+          description: Invalid post
+        '404':
+          description: Not Found
+  /artist:
+    post:
+      tags:
+        - artist
+      summary: 신규 가수 입력
+      description: 'DB에 없는 아이돌 등록'
+      operationId: writeArtist
+      requestBody:
+        description: 수정할 내용을 입력해요
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Artist'
+                # type: object
+                # properties:
+                # fileskeys:
+                # type: string
+                # example: ['1','2','3']
+      responses:
+        '200':
+          description: 'successful operation'
+    get:
+      tags:
+        - artist
+      summary: DB상 가수 전체 조회
+      description: ''
+      operationId: 'getArtists'
+      responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Artist'
+  /artist/{id}:
+    get:
+      tags:
+        - artist
+      summary: '멤버 개별 조회'
+      description: ''
+      operationId: 'getArtist'
+      parameters:
+        - name: id
+          in: path
+          description: category of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      responses:
+        '200':
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Artist'
+    put:
+      tags:
+        - artist
+      summary: 아이돌 멤버 정보 수정
+      description: 아이돌이 세부 정보를 수정
+      operationId: modifyArtist
+      parameters:
+        - name: id
+          in: path
+          description: category of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      requestBody:
+        description: 수정할 내용을 입력해요
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Artist'
+      responses:
+        '200':
+          description: 'successful operation'
+    delete:
+      tags:
+        - artist
+      summary: 아이돌 멤버 제거
+      description: ''
+      operationId: deleteArtist
+      parameters:
+        - name: id
+          in: path
+          description: 아이돌 그룹의 key 값
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 18
+      responses:
+        '200':
+          description: successfully erased!
+        '400':
+          description: Invalid post
+        '404':
+          description: Not Found
+  /market:
+    get:
+      tags:
+        - market
+      summary: '장터 전체 조회'
+      description: ''
+      operationId: 'getMarkets'
+      responses:
+        '200':
+          description: 'successful operation'
+  /market/{id}:
+    get:
+      tags:
+        - market
+      summary: '장터 글 개별 조회'
+      description: ''
+      operationId: 'getMarket'
+      parameters:
+        - name: id
+          in: path
+          description: category of post
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      responses:
+        '200':
+          description: 'successful operation'
+
+components:
+  schemas:
+    Post:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        title:
+          type: string
+          example: nljkucta
+        viewCount:
+          type: integer
+          format: int64
+          example: 0
+        content:
+          type: string
+          example: gpmhuyiczphvygcjujgwdbhsbzszulugdfjbrhabzwfu
+        userId:
+          type: integer
+          format: int64
+          example: 10,
+        nickname:
+          type: string
+          example: 임현형
+        profileImage:
+          type: string
+        createAt:
+          type: string
+        replyCnt:
+          type: integer
+        filePath:
+          type: string
+    Reply:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        pid:
+          type: integer
+          format: int64
+          example: 1
+        user:
+          type: integer
+          format: int64
+          example: 1
+        nickname:
+          type: string
+          example: 엄준식
+        content:
+          type: string
+          example: gpmhuyiczphvygcjujgwdbhsbzszulugdfjbrhabzwfu
+        createAt:
+          type: string
+          example: 2022-09-28T04:32:58.000Z
+    ReplyM:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        pid:
+          type: integer
+          format: int64
+          example: 1
+        user:
+          type: integer
+          format: int64
+        nickname:
+          type: string
+          example: 엄준식
+        content:
+          type: string
+          example: gpmhuyiczphvygcjujgwdbhsbzszulugdfjbrhabzwfu
+        createAt:
+          type: string
+          example: 2022-09-28T04:32:58.000Z
+        reply:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reply'
+    Likes:
+      type: object
+      properties:
+        post:
+          type: integer
+          example: 1
+        user:
+          type: integer
+          example: 1
+    PostImage:
+      type: object
+      properties:
+        post:
+          type: string
+          example: 1
+        path:
+          type: string
+          example: https://byeolikim.github.io/pocaz-frame/img/18.jpeg
+    Agency:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: JYP
+    ArtistGroup:
+      type: object
+      properties:
+        englishName:
+          type: string
+          example: 'BlackPink'
+        koreanName:
+          type: string
+          example: '블랙핑크'
+        grouplogoUrl:
+          type: string
+          example: 'https://www.ygfamily.com/upload/artists/album/9595/32.jpg'
+    Artist:
+      type: object
+      properties:
+        agency:
+          type: number
+          example: 1
+        artistGroup:
+          type: string
+          example: 3
+        stageName:
+          type: string
+          example: 지수
+        realName:
+          type: string
+          example: exponential
+    Photocard:
+      type: object
+      properties:
+        artist:
+          type: integer
+          example: 1
+        path:
+          type: string
+          example: 'https://www.naver.com'
+        name:
+          type: string
+          example: '포카칩'
+        description:
+          type: string
+          example: '좋은 포카입니다.'
+    Galmang:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        user:
+          type: integer
+          example: 1
+        photocard:
+          type: integer
+          example: 1
