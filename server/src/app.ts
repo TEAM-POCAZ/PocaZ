@@ -2,6 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import helemt from 'helmet';
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
+import path from 'path';
 import { config } from './config';
 
 import { initSocket, getSocketIO } from './connection/socket';
@@ -15,6 +18,10 @@ import artistRouter from './router/artist';
 
 const app = express();
 
+const swaggerYaml = YAML.load(
+  path.join(__dirname, './middleware/swagger/swagger.yaml')
+);
+
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(helemt());
@@ -22,6 +29,7 @@ app.use(helemt());
 // TODO - cors 다 열어놓으면 안됨 나중에 수정필요!
 app.use(cors());
 
+app.use('/api-yaml', swaggerUi.serve, swaggerUi.setup(swaggerYaml));
 app.use('/chatRoom', chatRoomRouter);
 app.use('/chat', chatRouter);
 app.use('/post', postRouter);

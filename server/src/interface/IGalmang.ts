@@ -1,4 +1,4 @@
 export interface IGalmang {
-  user: number;
+  user?: number;
   photocard: number;
 }

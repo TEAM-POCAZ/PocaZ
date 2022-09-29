@@ -5,8 +5,8 @@ import db from '../db/database';
  * usage
  */
 if (process.argv.length === 2) {
-  console.log('인원을 입력하지 않으면 100명이 생성됩니다.');
-  console.log('usage: node userRandCreate.js [number]');
+  console.log('숫자를 입력하지 않으면 기본으로 100개씩 생성됩니다.');
+  console.log('usage: ts-node src/data/postDummy.ts [number]');
 }
 
 const argsNumber = parseInt(process.argv[2] ?? 100);
@@ -102,11 +102,15 @@ const sellElement = (userCnt: number, pcCnt: number) => [
       await conn.query(`SELECT count(*) cnt FROM PostCategory`);
     for (let i = 0; i < argsNumber; i += 1)
       value.push(postElement(userCnt, categoryCnt));
+    const [[{ cnt: postCnt }]]: [RowDataPacket[], FieldPacket[]] =
+      await conn.query(`SELECT count(*) cnt FROM Post`);
     await conn.query(
       `INSERT INTO Post (user, category, title, content)
        VALUES ?`,
       [value]
     );
+    const [[{ cnt: fileCnt }]]: [RowDataPacket[], FieldPacket[]] =
+      await conn.query(`SELECT count(*) cnt FROM File`);
 
     await conn.query(
       `
@@ -133,7 +137,8 @@ const sellElement = (userCnt: number, pcCnt: number) => [
       [
         ((fileNumber) => {
           const linkList = [];
-          for (let i = 1; i <= fileNumber; i += 1) linkList.push([i, i]);
+          for (let i = 1; i <= fileNumber; i += 1)
+            linkList.push([i + postCnt, i + fileCnt]);
           return linkList;
         })(argsNumber),
       ]
@@ -157,6 +162,9 @@ const sellElement = (userCnt: number, pcCnt: number) => [
     for (let i = 0; i < argsNumber; i += 1)
       value.push(sellElement(userCnt, pcCnt));
     // console.log(value);
+
+    const [[{ cnt: sellCnt }]]: [RowDataPacket[], FieldPacket[]] =
+      await conn.query(`SELECT count(*) cnt FROM PhotocardSellArticle`);
     await conn.query(
       `INSERT INTO PhotocardSellArticle (photocard, user, title, price, viewCount, description, tradeStatus)
        VALUES ?`,
@@ -192,7 +200,7 @@ const sellElement = (userCnt: number, pcCnt: number) => [
         ((fileNumber) => {
           const linkList = [];
           for (let i = 1; i <= fileNumber; i += 1)
-            linkList.push([i + fileCnt, i]);
+            linkList.push([i + fileCnt, i + sellCnt]);
           return linkList;
         })(argsNumber),
       ]

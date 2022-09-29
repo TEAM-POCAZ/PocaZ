@@ -1,8 +1,10 @@
 import express from 'express';
-
-import fileRouter from '../controller/file';
 const router = express.Router();
 
-router.use('/', fileRouter);
+import { upload, uploadFiles, deleteFiles } from '../controller/file';
+
+router.post('/', upload.array('img', 10), uploadFiles);
+
+router.delete('/:file', deleteFiles);
 
 export default router;
