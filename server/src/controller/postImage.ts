@@ -22,17 +22,17 @@ export default {
        VALUES ?`,
       [filesKeys.map((file: number) => [post, file])]
     );
-    res.send('currently developing...');
+    res.send('images added!!');
   },
   deleteImages: async (req: Request, res: Response) => {
     const { post } = req.params;
     const { filesKeys } = req.body;
     await tranSQL.postOne(
       `DELETE FROM PostImage
-        WHERE post = ?
+        WHERE post =  ?
           AND file IN (?)`,
       [post, filesKeys]
     );
-    res.send('currently developing...');
+    res.send('successfully erased');
   },
 };

@@ -25,9 +25,9 @@ tags:
       description: '커뮤니티 와이어프레임 미리보기'
       url: 'https://whimsical.com/main-community-MfzuWWCq96LRMyhvJ1SQSu'
   - name: 'file'
-    description: 'POCAZ 파일/이미지 관리 통합 API( 개발중... )'
+    description: 'POCAZ 파일/이미지 관리 통합 API'
   - name: 'postImage'
-    description: '커뮤니티 게시글 이미지 관리 API( 개발중...)'
+    description: '커뮤니티 게시글 이미지 관리 API'
   - name: 'reply'
     description: '커뮤니티 게시글 덧글 관리 API'
   - name: 'LikeManage'
@@ -328,7 +328,7 @@ paths:
                 $ref: '#/components/schemas/Reply'
         default:
           description: successful operation
-  /post/reply/{category}/{post}/{id}:
+  /post/reply/{id}:
     get:
       tags:
         - reply
@@ -336,22 +336,6 @@ paths:
       description: ''
       operationId: getReply
       parameters:
-        - name: category
-          in: path
-          description: category of post
-          required: true
-          schema:
-            type: integer
-            format: int64
-          example: 1
-        - name: post
-          in: path
-          description: id of post
-          required: true
-          schema:
-            type: integer
-            format: int64
-          example: 1
         - name: id
           in: path
           description: id of reply
@@ -648,22 +632,18 @@ paths:
             format: int64
           example: 1
       requestBody:
-        description: 수정할 내용을 입력해요
         content:
           application/json:
             schema:
-              # type: array
-              # items:
               type: object
-              properties:
-                fileskeys:
-                  type: integer
-                  format: int64
-                  example: [1, 2, 3]
+              example:
+                filesKeys:
+                  - 1
+                  - 2
       responses:
         '200':
           description: Successful operation
-    delete:
+    patch:
       tags:
         - postImage
       summary: 게시글과 이미지 사이의 링크를 제거합니다.
@@ -686,34 +666,42 @@ paths:
             type: integer
             format: int64
           example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                filesKeys:
+                  - 1
+                  - 2
       responses:
         '400':
           description: 'Invalid ID supplied'
         '404':
           description: 'image not found'
-  # /file:
-  #   post:
-  #     tags:
-  #     - file
-  #     summary: "uploads an image"
-  #     description: ""
-  #     operationId: "uploadFile"
-  #     requestBody:
-  #       content:
-  #         multipart/form-data:
-  #           schema:
-  #             type: object
-  #             properties:
-  #               orderId:
-  #                 type: integer
-  #               userId:
-  #                 type: integer
-  #               fileName:
-  #                 type: string
-  #                 format: binary
-  #     responses:
-  #       "200":
-  #         description: "successful operation"
+  /file:
+    post:
+      tags:
+        - file
+      summary: 서버에 파일을 등록합니다. 그리고 db상 파일의 키값을 가져옵니다.
+      description: '실제 요청으로는 한꺼번에 이미지 여러 개 등록할 수 있습니다.'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                img:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+        '500':
+          description: unexpected field!
   /artist/agency:
     post:
       tags:
@@ -796,11 +784,6 @@ paths:
         content:
           application/json:
             schema:
-              # type: array
-              # items:
-              # type: object
-              # properties:
-              # fileskeys:
               type: string
               example: ['MSG']
       responses:
@@ -832,8 +815,8 @@ paths:
     post:
       tags:
         - artistGroup
-      summary: '소속사를 입력'
-      description: '아이돌이 소속된 소속사를 입력하세요. (미입력시 멤버 등록 불가)'
+      summary: '그룹 입력'
+      description: '아이돌이 소속 그룹을 입력하세요.'
       operationId: 'writeGroup'
       requestBody:
         description: 수정할 내용을 입력해요
@@ -843,18 +826,13 @@ paths:
               type: array
               items:
                 $ref: '#/components/schemas/ArtistGroup'
-                # type: object
-                # properties:
-                # fileskeys:
-                # type: string
-                # example: ['1','2','3']
       responses:
         '200':
           description: 'successful operation'
     get:
       tags:
         - artistGroup
-      summary: '소속사를 전체 조회'
+      summary: '그룹 전체 조회'
       description: ''
       operationId: 'getGroups'
       responses:
@@ -1218,7 +1196,7 @@ paths:
     delete:
       tags:
         - artist
-      summary: 아이돌 멤버 제거
+      summary: 아이돌 멤버 제거(사용 불가 API입니다.)
       description: ''
       operationId: deleteArtist
       parameters:
@@ -1370,6 +1348,34 @@ components:
         path:
           type: string
           example: https://byeolikim.github.io/pocaz-frame/img/18.jpeg
+    Files:
+      type: object
+      properties:
+        fieldname:
+          type: string
+          example: 'img'
+        originalname:
+          type: string
+          example: 'pocaz.sql'
+        encoding:
+          type: string
+          example: '7bit'
+        mimetype:
+          type: string
+          example: 'application/x-sql'
+        destination:
+          type: string
+          example: 'uploads/'
+        filename:
+          type: string
+          format: binary
+          example: 'pocaz.sql'
+        path:
+          type: string
+          example: 'uploads\\pocaz.sql'
+        size:
+          type: number
+          example: 9689
     Agency:
       type: object
       properties:

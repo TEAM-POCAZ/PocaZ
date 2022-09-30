@@ -3,20 +3,33 @@ import path from 'path';
 import { tranSQL } from '../utils/tranSQL';
 import multer from 'multer';
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
+const fileStorage = multer.diskStorage({
+  // 저장 폴더 위치
+  destination: (req: Request, file: Express.Multer.File, cb) => {
     cb(null, 'uploads/');
   },
-  filename: (req, file, cb) => {
-    cb(null, new Date().valueOf() + path.extname(file.originalname));
+  //파일 이름
+  // filename: (req: Request, file: Express.Multer.File, cb) => {
+  //   cb(
+  //     null,
+  //     `${new Date().valueOf()}${file.filename}${path.extname(
+  //       file.originalname
+  //     )}`
+  //   );
+  // },
+});
+const multerUpload = multer({
+  storage: fileStorage,
+  limits: {
+    fileSize: 20 * 1024 * 1024, // 20MB 로 제한
   },
 });
 
-const upload = multer({ storage });
-
 const uploadFiles = async (req: Request, res: Response) => {
+  // console.log(req.files);
+  // console.log(req.body);
   const files = req.files as Express.Multer.File[];
-  if (files?.length === 0) res.send('please send more than one');
+  if (files?.length === 0) res.send('please send more than ones');
   else {
     const fileId: string = await tranSQL.postOne(
       `
@@ -41,15 +54,4 @@ const uploadFiles = async (req: Request, res: Response) => {
   }
 };
 
-const deleteFiles = async (req: Request, res: Response) => {
-  const { file } = req.params;
-  tranSQL.putOne(
-    `
-    DELETE FROM File
-     WHERE 1 = 1
-       AND id = ?`,
-    [file]
-  );
-};
-
-export { upload, uploadFiles, deleteFiles };
+export { multerUpload, uploadFiles };

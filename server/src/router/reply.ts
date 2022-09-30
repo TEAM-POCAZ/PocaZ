@@ -4,7 +4,7 @@ import replys from '../controller/reply';
 
 router.get('/:category/:post', replys.getReplys);
 
-router.get('/:category/:post/:id', replys.getReply);
+router.get('/:id', replys.getReply);
 
 router.post('/:category/:post/:user', replys.writeReply);
 
