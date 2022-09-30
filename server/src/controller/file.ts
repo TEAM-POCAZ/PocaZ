@@ -1,9 +1,8 @@
-import express from 'express';
+import { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import { tranSQL } from '../utils/tranSQL';
 import multer from 'multer';
 
-const router = express.Router();
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads/');
@@ -15,7 +14,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-router.post('/', upload.array('img', 10), async (req, res) => {
+const uploadFiles = async (req: Request, res: Response) => {
   const files = req.files as Express.Multer.File[];
   if (files?.length === 0) res.send('please send more than one');
   else {
@@ -40,9 +39,9 @@ router.post('/', upload.array('img', 10), async (req, res) => {
       })(fileId)
     );
   }
-});
+};
 
-router.delete('/:file', async (req, res) => {
+const deleteFiles = async (req: Request, res: Response) => {
   const { file } = req.params;
   tranSQL.putOne(
     `
@@ -51,6 +50,6 @@ router.delete('/:file', async (req, res) => {
        AND id = ?`,
     [file]
   );
-});
+};
 
-export default router;
+export { upload, uploadFiles, deleteFiles };

@@ -1,8 +1,16 @@
 import express from 'express';
-
-import marketRouter from '../controller/market';
 const router = express.Router();
 
-router.use('/', marketRouter);
+import markets from '../controller/market';
+
+router.post('/', markets.writeMarket);
+
+router.get('/', markets.getMarkets);
+
+router.get('/:id', markets.getMarket);
+
+router.put('/:id', markets.modifyMarket);
+
+router.delete('/:id', markets.deleteMarket);
 
 export default router;
