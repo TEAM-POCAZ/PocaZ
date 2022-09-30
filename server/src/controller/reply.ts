@@ -1,92 +1,72 @@
-import express from 'express';
+import { Request, Response, NextFunction } from 'express';
+import { IReply, IReplyM } from '../interface/IReply';
 import { tranSQL } from '../utils/tranSQL';
-const router = express.Router();
-import pool from '../controller/db';
-import { RowDataPacket, FieldPacket } from 'mysql2/promise';
+import { sqlSelectHandler } from '../utils/sqlHandler';
 
-interface IReply extends RowDataPacket {
-  id: number;
-  pid: number | null;
-  user: number;
-  nickname: string;
-  profileImage: string;
-  content: string;
-  createAt: any;
-}
-interface IReplyM extends IReply {
-  reply: IReply[];
-}
+export default {
+  getReplys: async (req: Request, res: Response) => {
+    const oneDepth: IReplyM[] = await sqlSelectHandler(
+      `${tranSQL.reply} AND pid IS NULL`,
+      [req.params.post]
+    );
 
-router.get('/:category/:post', async (req, res) => {
-  const conn = await pool.getConnection();
-  console.log('test test');
-  const [oneDepth]: [IReplyM[], FieldPacket[]] = await conn.execute(
-    `${tranSQL.reply} AND pid IS NULL`,
-    [req.params.post]
-  );
+    const twoDepth: IReply[] = await sqlSelectHandler(
+      `${tranSQL.reply} AND pid IS NOT NULL`,
+      [req.params.post]
+    );
 
-  const [twoDepth]: [IReply[], FieldPacket[]] = await conn.query(
-    `${tranSQL.reply} AND pid IS NOT NULL`,
-    [req.params.post]
-  );
-  res.send(
-    oneDepth.map((preply: IReplyM) => {
-      preply.reply = twoDepth.filter((rep: IReply) => rep.pid == preply.id);
-      return preply;
-    })
-  );
-});
+    res.send(
+      oneDepth.map((preply: IReplyM) => {
+        preply.reply = twoDepth.filter((rep: IReply) => rep.pid == preply.id);
+        return preply;
+      })
+    );
+  },
+  getReply: async (req: Request, res: Response) => {
+    const { post, id } = req.params;
+    const reply = await tranSQL.getOne(
+      `${tranSQL.reply}
+       ${tranSQL.where('r.post')}
+       ${tranSQL.where('r.id')}`,
+      [post, id]
+    );
+    res.send(reply);
+  },
+  writeReply: async (req: Request, res: Response) => {
+    const { category, post, user } = req.params;
+    const { pid, content } = req.body;
+    await tranSQL.postOne(
+      `INSERT INTO Reply (post, pid, user, content)
+      VALUES ( ? )`,
+      [[parseInt(post), pid, user, content]]
+    );
+    res.send('successfully replied!');
+  },
+  modifyReply: async (req: Request, res: Response) => {
+    const { category, post, id, user } = req.params;
+    const { content } = req.body;
+    console.log(user, id, post, content);
+    await tranSQL.putOne(
+      `UPDATE Reply
+          SET content = ?
+        WHERE id = ?
+          AND user = ?
+          AND post = ?`,
+      [content, id, user, post]
+    );
+    res.send('successfully modified');
+    // res.redirect(`/post/${category}/${post}`);
+  },
+  deleteReply: async (req: Request, res: Response) => {
+    const { category, post, id, user } = req.params;
 
-router.get('/:category/:post/:id', async (req, res) => {
-  const { post, id } = req.params;
-  const reply = await tranSQL.getOne(
-    `${tranSQL.reply}
-      AND r.post = ?
-      AND r.id   = ?`,
-    [post, id]
-  );
-  res.send(reply);
-});
-
-router.post('/:category/:post', async (req, res) => {
-  const { category, post } = req.params;
-  const { pid, user, content } = req.body;
-  await tranSQL.postOne(
-    `INSERT INTO Reply (post, pid, user, content)
-    VALUES ( ? )`,
-    [[parseInt(post), pid, user, content]]
-  );
-  res.redirect(`/post/${category}/${post}`);
-});
-
-router.put('/:category/:post/:id', async (req, res) => {
-  const { category, post, id } = req.params;
-  const { user, content } = req.body;
-  await tranSQL.putOne(
-    `UPDATE Reply
-        SET content = ?
-      WHERE id = ?
-        AND user = ?
-        AND post = ?
-    `,
-    [content, id, user, parseInt(post)]
-  );
-  res.redirect(`/post/${category}/${post}`);
-});
-
-router.delete('/:category/:post/:id', async (req, res) => {
-  const { category, post, id } = req.params;
-  const { user } = req.body;
-
-  await tranSQL.putOne(
-    `DELETE FROM Reply
-      WHERE id   = ?
-        AND user = ?
-        AND post = ?
-    `,
-    [id, user, parseInt(post)]
-  );
-  res.redirect(`/post/${category}/${post}`);
-});
-
-export default router;
+    await tranSQL.putOne(
+      `DELETE FROM Reply
+        WHERE id   = ?
+          AND user = ?
+          AND post = ?`,
+      [id, user, post]
+    );
+    res.redirect(`/post/${category}/${post}`);
+  },
+};

@@ -1,32 +1,57 @@
-import express from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { tranSQL } from '../utils/tranSQL';
-const router = express.Router();
 
-router.get('/', async (req, res) => {
-  console.log('works');
-  res.send('works');
-});
+export default {
+  totalLikes: async (req: Request, res: Response) => {
+    const { user } = req.params;
 
-router.post('/:post/:user', async (req, res) => {
-  const { post, user } = req.params;
-  tranSQL.putOne(
-    `
-    INSERT INTO LikeManage (post, user)
-    VALUES ( ? , ? )`,
-    [post, user]
-  );
-});
+    res.send(
+      await tranSQL.getOne(
+        `SELECT IFNULL(count(*),0) cnt
+             FROM LikeManage
+            WHERE 1 = 1
+        ${tranSQL.where('user')}`,
+        [user]
+      )
+    );
+  },
+  getPostLikes: async (req: Request, res: Response) => {
+    const { post, user } = req.params;
 
-router.delete('/:post/:user', async (req, res) => {
-  const { post, user } = req.params;
-  tranSQL.putOne(
-    `
-    DELETE FROM LikeManage
-     WHERE 1 = 1
-       AND post = ?
-       AND user = ?`,
-    [post, user]
-  );
-});
-
-export default router;
+    res.send(
+      await tranSQL.getOne(
+        `SELECT post, IFNULL(count(user),0) cnt
+         FROM LikeManage
+        WHERE 1 = 1
+        ${tranSQL.where('post')}
+         ${tranSQL.where('user')} 
+        GROUP BY post`,
+        [post, user]
+      )
+    );
+  },
+  writeLikes: async (req: Request, res: Response) => {
+    const { post, user } = req.params;
+    res.send(
+      await tranSQL.putOne(
+        `
+        INSERT IGNORE INTO LikeManage (post, user)
+        VALUES ( ? , ? )`,
+        [post, user]
+      )
+    );
+  },
+  deleteLikes: async (req: Request, res: Response) => {
+    const { post, user } = req.params;
+    res.send(
+      await tranSQL.putOne(
+        `
+      DELETE IGNORE FROM LikeManage
+       WHERE 1 = 1
+         AND post = ?
+         AND user = ?`,
+        [post, user]
+      )
+    );
+  },
+};

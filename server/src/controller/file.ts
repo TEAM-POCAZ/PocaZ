@@ -1,43 +1,55 @@
-import express from 'express';
+import { Request, Response, NextFunction } from 'express';
+import path from 'path';
 import { tranSQL } from '../utils/tranSQL';
-const router = express.Router();
-
 import multer from 'multer';
+
 const storage = multer.diskStorage({
-  destination: (req, file, callback) => {
-    callback(null, 'uploads/');
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
   },
-  //   filename: (req, file, callback) => {
-  //     callback(null, file.originalname);
-  //   },
+  filename: (req, file, cb) => {
+    cb(null, new Date().valueOf() + path.extname(file.originalname));
+  },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
-router.post('/', upload.array('img', 10), async (req, res) => {
-  //   if (req.files === undefined) res.send('');
-  // const files = req.files?.map((file: Express.Multer.File) => [
-  //   file.originalname,
-  //   file.filename,
-  // ]);
-  // tranSQL.putOne(
-  //   `
-  //   INSERT INTO File (filename, filepath)
-  //   VALUES ?`,
-  //   files
-  // );
-});
+const uploadFiles = async (req: Request, res: Response) => {
+  const files = req.files as Express.Multer.File[];
+  if (files?.length === 0) res.send('please send more than one');
+  else {
+    const fileId: string = await tranSQL.postOne(
+      `
+      INSERT INTO File (name, path)
+      VALUES ?`,
+      [
+        files.map((file: Express.Multer.File): string[] => [
+          file.originalname,
+          file.filename,
+        ]),
+      ]
+    );
+    res.send(
+      ((fileId) => {
+        const filesKeys: number[] = [];
+        for (let i = 0; i < files.length; i += 1) {
+          filesKeys.push(parseInt(fileId) + i);
+        }
+        return filesKeys;
+      })(fileId)
+    );
+  }
+};
 
-router.delete('/:file', async (req, res) => {
+const deleteFiles = async (req: Request, res: Response) => {
   const { file } = req.params;
   tranSQL.putOne(
     `
     DELETE FROM File
      WHERE 1 = 1
-       AND post = ?
-       AND user = ?`,
+       AND id = ?`,
     [file]
   );
-});
+};
 
-export default router;
+export { upload, uploadFiles, deleteFiles };
