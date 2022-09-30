@@ -6,6 +6,6 @@ router.post('/:category/:post', images.writeImages);
 
 router.get('/:category/:post', images.getImages);
 
-router.delete('/:category/:post', images.deleteImages);
+router.patch('/:category/:post', images.deleteImages);
 
 export default router;

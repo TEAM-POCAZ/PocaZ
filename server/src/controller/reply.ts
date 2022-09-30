@@ -6,12 +6,16 @@ import { sqlSelectHandler } from '../utils/sqlHandler';
 export default {
   getReplys: async (req: Request, res: Response) => {
     const oneDepth: IReplyM[] = await sqlSelectHandler(
-      `${tranSQL.reply} AND pid IS NULL`,
+      `${tranSQL.reply}
+       AND pid IS NULL
+       ${tranSQL.where('r.post')}`,
       [req.params.post]
     );
 
     const twoDepth: IReply[] = await sqlSelectHandler(
-      `${tranSQL.reply} AND pid IS NOT NULL`,
+      `${tranSQL.reply}
+       AND pid IS NOT NULL
+       ${tranSQL.where('r.post')}`,
       [req.params.post]
     );
 
@@ -23,13 +27,13 @@ export default {
     );
   },
   getReply: async (req: Request, res: Response) => {
-    const { post, id } = req.params;
+    const { id } = req.params;
     const reply = await tranSQL.getOne(
       `${tranSQL.reply}
-       ${tranSQL.where('r.post')}
        ${tranSQL.where('r.id')}`,
-      [post, id]
+      [id]
     );
+    console.log(reply);
     res.send(reply);
   },
   writeReply: async (req: Request, res: Response) => {
@@ -67,6 +71,7 @@ export default {
           AND post = ?`,
       [id, user, post]
     );
-    res.redirect(`/post/${category}/${post}`);
+    // res.redirect(`/post/${category}/${post}`);
+    res.send('successfully erased!');
   },
 };
