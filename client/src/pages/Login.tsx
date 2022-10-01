@@ -15,7 +15,7 @@ const Login = () => {
   }
 
   const logout = () => {
-    fetch('/api/logout')
+    fetch('/api/auth/logout')
       .then((res) => res.json())
       .then((data) => {
         console.log(data)
@@ -24,13 +24,13 @@ const Login = () => {
   }
 
   const google = () => {
-    window.open('/api/google', '_self')
+    window.open('/api/auth/google', '_self')
   }
   const twitter = () => {
-    window.open('/api/twitter', '_self')
+    window.open('/api/auth/twitter', '_self')
   }
   const apple = () => {
-    window.open('/api/apple', '_self')
+    window.open('/api/auth/apple', '_self')
   }
 
   return (

@@ -14,7 +14,7 @@ const LoginSuccessed = () => {
     navigate('/community')
   }
   useEffect(() => {
-    fetch('/api/me')
+    fetch('/api/auth/me')
       .then((res) => res.json())
       .then((data) => {
         setUserData(data)

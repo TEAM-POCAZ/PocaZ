@@ -42,7 +42,7 @@ function passportSetup() {
         tokenURL: "https://api.twitter.com/2/oauth2/token",
         clientID: keys.twitter.consumerKey,
         clientSecret: keys.twitter.consumerSecret,
-        callbackURL: `${keys.url}/api/signin-twitter`,
+        callbackURL: `${keys.url}/api/auth/signin-twitter`,
         state: true,
         pkce: true,
         customHeaders: {
@@ -58,9 +58,10 @@ function passportSetup() {
         done: any
       ) {
         User.findOne({ twitterId: profile.id }).then((currentUser) => {
+          console.log("twitter login>>", profile);
           if (currentUser) {
             //이미 db에 사용자가 있다. 생성할 필요 없음
-            console.log("user is:", currentUser);
+            console.log("twitter user in DB is:", currentUser);
             done(null, currentUser);
           } else {
             //db에 사용자가 없다.
@@ -94,16 +95,16 @@ function passportSetup() {
   passport.use(
     new GoogleStrategy(
       {
-        // options for google strategy
         clientID: keys.google.clientID,
         clientSecret: keys.google.clientSecret,
-        callbackURL: `${keys.url}/api/signin-google`,
+        callbackURL: `${keys.url}/api/auth/signin-google`,
       },
       (accessToken, refreshToken, profile, done) => {
+        console.log("google login>>", profile);
         User.findOne({ googleId: profile.id }).then((currentUser) => {
           if (currentUser) {
             //이미 db에 사용자가 있다. 생성할 필요 없음
-            console.log("user is:", currentUser);
+            console.log("google user in DB is:", currentUser);
             done(null, currentUser);
           } else {
             //db에 사용자가 없다.
@@ -131,7 +132,7 @@ function passportSetup() {
         keyID: keys.apple.keyID,
         key: fs.readFileSync(path.join(cwd(), "AuthKey_6T39QCZ947.p8")),
         scope: ["email"],
-        callbackURL: `${keys.url}/api/signin-apple`,
+        callbackURL: `${keys.url}/api/auth/signin-apple`,
         passReqToCallback: true,
       },
       (
@@ -141,17 +142,11 @@ function passportSetup() {
         profile: any,
         done: Function
       ) => {
-        // idToken이 반환된다. jwt.decode(idToken) 으로 까볼 수 있다
-        // 까봐야지 사용자의 정보를 접근할 수 있다.
-        //idToken.sub가 db에 존재하는지 체크해라
-        // idToken은 사용자가 허가했다면 email을 포함하지만 name이 없다
-        // `profile` 은 비어있지만 passport 구현상 필요하다
-        //access token을 통해 profile로 넘겨줘야 하는데 애플이 아직 그렇게 구현 안했다.
         console.log("apple login>>", profile);
         User.findOne({ appleId: profile.id }).then((currentUser) => {
           if (currentUser) {
             //이미 db에 사용자가 있다. 생성할 필요 없음
-            console.log("user is:", currentUser);
+            console.log("apple user in DB is:", currentUser);
             done(null, currentUser);
           } else {
             const { id, email } = profile;
