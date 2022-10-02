@@ -3,14 +3,17 @@ import ScrollToBottom from 'react-scroll-to-bottom'
 
 import Msg from './Msg'
 
-const Messages = ({ messages, name }: any) => {
+import { IMessage } from './Chat'
+
+const Messages = ({ messages, nickName }: any) => {
+  //FIXME typescript 수정
   return (
     <ScrollToBottom className="flex-auto overflow-auto px-4 ">
       메세지창
-      {messages.map((message: any, i: any) => {
+      {messages.map((messageSrc: IMessage, i: number) => {
         return (
           <div key={i}>
-            <Msg message={message} name={name} />
+            <Msg messageSrc={messageSrc} nickName={nickName} />
           </div>
         )
       })}

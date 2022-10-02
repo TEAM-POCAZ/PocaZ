@@ -6,10 +6,10 @@ import React from 'react'
  * @returns 1:1 사용자 채팅창
  */
 
-const Msg = ({ message: { text, user, timeStamp }, name }: any) => {
-  console.log('timeStamp :>> ', timeStamp)
-  const trimmedName = name.trim().toLowerCase()
-  console.log('MSG 페이지입니다', text)
+const Msg = ({ messageSrc: { message, user, timeStamp }, nickName }: any) => {
+  // const trimmedName = nickName.trim().toLowerCase() //FIXME string으로 들어와야하는데 지금 1로 들어옴
+  const trimmedName = nickName
+
   let isSentByCurrentUser = false //FIXME  false 로 시작
   if (user === trimmedName) isSentByCurrentUser = true
 
@@ -21,7 +21,7 @@ const Msg = ({ message: { text, user, timeStamp }, name }: any) => {
       </div>
       <div className="messageBox bg-blue-700 rounded-3xl px-2 py-5 inline-block text-white max-w-fit">
         <p className="messageText colorWhite w-full letter tracking-normal float-left text-lg ">
-          {text}
+          {message}
         </p>
       </div>
     </div>
@@ -29,7 +29,7 @@ const Msg = ({ message: { text, user, timeStamp }, name }: any) => {
     <div className="messageContainer flex justify-start py-3 mt-1">
       <div className="messageBox bg-yellow-300 rounded-3xl px-2 py-5 inline-block text-white max-w-fit">
         <p className="messageText text-gray-800 w-full letter tracking-normal float-left text-base ">
-          <span className=" align-middle">{text}</span>
+          <span className=" align-middle">{message}</span>
           {/* <span className=" align-middle">여긴 텍스트</span> */}
         </p>
       </div>
