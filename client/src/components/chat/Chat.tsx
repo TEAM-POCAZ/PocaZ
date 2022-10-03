@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import dayjs from 'dayjs'
 import queryString from 'query-string'
+import { useQuery } from 'react-query'
 
 import Layout from 'utils/Layout'
 
@@ -41,7 +42,15 @@ type btnClickEvent = React.MouseEvent<HTMLElement, MouseEvent>
  */
 
 const Chat = () => {
-  const [loading, setLoading] = useState(true)
+  const { isLoading, error, data } = useQuery(
+    'getChat',
+    async () => await axios.get(`http://localhost:8080/chat/${room}`),
+  )
+
+  console.log('isLoading :>> ', isLoading)
+  console.log('data :>> ', data)
+
+  // const [loading, setLoading] = useState(true)
   const [nickName, setNickName] = useState<any>(1) //1인칭 나의 닉네임 //FIXME 1 이 나인것으로 가정함
   const [room, setRoom] = useState<any>('호준호준')
   const [users, setUsers] = useState('')
@@ -59,18 +68,18 @@ const Chat = () => {
     const { room } = queryString.parse(location.search)
     setRoom(room)
 
-    async function getChat() {
+    async function getChatList() {
       try {
         const response = await axios.get(`http://localhost:8080/chat/${room}`)
 
         const apiNewMsg = response.data
         setMessages((prev) => [...prev, ...apiNewMsg])
-        setLoading(false)
+        // setLoading(false)
       } catch (e) {
         console.log('axios get Error')
       }
     }
-    getChat()
+    getChatList()
   }, [location.search])
 
   const sendMessage = (event: btnClickEvent) => {
@@ -94,7 +103,7 @@ const Chat = () => {
 
   return (
     <Layout>
-      {loading ? (
+      {isLoading ? (
         <>로딩중입니다</>
       ) : (
         <div className="outerContainer flex justify-center items-center h-screen bg-gray-800">

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import { useQuery } from 'react-query'
 
 import Layout from 'utils/Layout'
 import { Link } from 'react-router-dom'
@@ -14,28 +15,37 @@ interface IChatRoom {
 }
 
 const ChatMain = () => {
-  const [loading, setLoading] = useState(true)
+  const getChatList = async () => {
+    const { data } = await axios.get(`http://localhost:8080/chatroom/1`)
+    return data
+  }
+
+  const { isLoading, error, data: roomData }: any = useQuery('getChatList', getChatList)
+
+  console.log('isLoading :>> ', isLoading)
+
+  console.log('roomData :>> ', roomData)
+  console.log('error :>> ', error)
+
   const [name, setName] = useState('') //TODO login 정보에서 가져오기(store)
   const [room, setRoom] = useState('') //TODO 1:1채팅방 room은 어떻게 만들까?
-  const [roomData, setRoomData] = useState<IChatRoom[]>([])
+  // const [roomData, setRoomData] = useState<IChatRoom[]>([])
 
-  useEffect(() => {
-    async function getRooms() {
-      try {
-        const response = await axios.get(`http://localhost:8080/chatroom/1`)
-        setRoomData(response.data)
-
-        setLoading(false)
-      } catch (e) {
-        console.log('axios get Error')
-      }
-    }
-    getRooms()
-  }, [])
+  // useEffect(() => {
+  //   async function getRooms() {
+  //     try {
+  //       const response = await axios.get(`http://localhost:8080/chatroom/1`)
+  //       setRoomData(response.data)
+  //     } catch (e) {
+  //       console.log('axios get Error')
+  //     }
+  //   }
+  //   getRooms()
+  // }, [])
 
   return (
     <Layout>
-      {loading ? (
+      {isLoading ? (
         <>loading 중</>
       ) : (
         <>
@@ -64,7 +74,7 @@ const ChatMain = () => {
             </Link>
           </div>
 
-          {roomData.map((item) => {
+          {roomData.map((item: IChatRoom) => {
             //FIXME key값 수정필요
             return (
               <div className="m-2 border-2 flex flex-col" key={item.chatRoom}>
