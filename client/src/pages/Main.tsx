@@ -212,28 +212,12 @@ const Main = () => {
                 <h4 className="text-gray-500 text-sm">하늘 아래 똑같은 포카는 없다 🤩</h4>
               </div>
               <div className="boastGallery">
-                <ul>
-                  <li>
-                    <img
-                      className="w-full h-full object-cover"
-                      src={mainSlideBn1}
-                      alt={mainSlideBn1}
-                    />
-                  </li>
-                  <li>
-                    <img
-                      className="w-full h-full object-cover"
-                      src={mainSlideBn1}
-                      alt={mainSlideBn1}
-                    />
-                  </li>
-                  <li>
-                    <img
-                      className="w-full h-full object-cover"
-                      src={mainSlideBn1}
-                      alt={mainSlideBn1}
-                    />
-                  </li>
+                <ul className="grid gap-4 grid-cols-3 grid-rows-3">
+                  {users.map((user: any) => (
+                    <li key={user.id}>
+                      <img src={user.filePath} className="w-full h-full object-cover" />
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
