@@ -5,7 +5,12 @@ import Msg from './Msg'
 
 import { IMessage } from './Chat'
 
-const Messages = ({ messages, nickName }: any) => {
+interface IMessages {
+  messages: IMessage[]
+  nickName: string
+}
+
+const Messages = ({ messages, nickName }: IMessages) => {
   //FIXME typescript 수정
   return (
     <ScrollToBottom className="flex-auto overflow-auto px-4 ">
