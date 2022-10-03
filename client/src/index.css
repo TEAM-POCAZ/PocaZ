@@ -64,6 +64,9 @@
     opacity: 1;
     transition: 0.4s;
   }
+  .boardList ul li:nth-child(n + 6) {
+    display: none;
+  }
 }
 
 /* [별이] 작업 중 ~ tailwind config js 로 옮길 예정 ~ */
