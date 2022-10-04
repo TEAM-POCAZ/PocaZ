@@ -19,7 +19,7 @@ import artistRouter from './router/artist';
 const app = express();
 
 const swaggerYaml = YAML.load(
-  path.join(__dirname, './middleware/swagger/swagger.yaml')
+  path.join(__dirname, '../src/middleware/swagger/swagger.yaml')
 );
 
 app.use(express.json());
