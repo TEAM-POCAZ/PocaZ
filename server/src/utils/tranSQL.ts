@@ -116,7 +116,8 @@ const tranSQL = {
 
   market: {
     main: `
-      SELECT a.stageName    AS stageName,	  -- current stage Name
+      SELECT pcs.id         AS id,          -- sell post id
+             a.stageName    AS stageName,	  -- current stage Name
              ag.englishName AS groupName,	  -- current group Name
              u.nickname     AS nickname,    -- user nickname
              u.profileImage AS profileImage,-- user profile image
