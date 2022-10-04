@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+
 import { useQuery } from 'react-query'
 
 import Layout from 'utils/Layout'
 import { Link } from 'react-router-dom'
+
+import { apis } from '../utils/api'
 
 interface IChatRoom {
   chatRoom: number
@@ -16,7 +18,7 @@ interface IChatRoom {
 
 const ChatMain = () => {
   const getChatList = async () => {
-    const { data } = await axios.get<IChatRoom[]>(`http://localhost:8080/chatroom/1`)
+    const { data } = await apis.getChatList(1) // id를 담아보낸다.
     return data
   }
 
@@ -24,11 +26,11 @@ const ChatMain = () => {
     isLoading,
     error,
     data: roomData,
-  } = useQuery<IChatRoom[], Error>('getChatList', getChatList)
+  } = useQuery<IChatRoom[], Error>('getChatList', getChatList, { staleTime: 30000 })
 
   if (error) console.log('"axois", error.message :>> ', 'axois', error.message)
 
-  const [name, setName] = useState('') //TODO login 정보에서 가져오기(store)
+  const [name, setName] = useState(1) //FIXME  login 정보에서 가져오기(store)
   const [room, setRoom] = useState('') //TODO 1:1채팅방 room은 어떻게 만들까?
 
   return (
@@ -43,7 +45,7 @@ const ChatMain = () => {
               <div className="m-2 border-2 flex flex-col" key={item.chatRoom}>
                 <Link
                   onClick={(e) => (!roomData ? e.preventDefault() : null)}
-                  to={`/chat?room=${item.chatRoom}`}
+                  to={`/chat?room=${item.chatRoom}&name=${name}`}
                   className="flex"
                 >
                   <div className="m-3">
