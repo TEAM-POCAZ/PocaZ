@@ -22,11 +22,6 @@ export interface IMessage {
   id?: number
   updateAt?: string
 }
-// interface IMessage {
-//   user: any
-//   text: string
-//   timestamp?: string
-// }
 
 type btnClickEvent = React.MouseEvent<HTMLElement, MouseEvent>
 
@@ -73,22 +68,14 @@ const Chat = () => {
 
   const sendMessage = async (event: btnClickEvent) => {
     event.preventDefault()
-
     if (text) {
-      const newMessage = {
-        user: nickName,
-        message: text,
-        timeStamp: thisTime,
-      }
-
       const newMessage2 = {
         user: nickName,
         message: text,
-        chatRoom: 1,
+        chatRoom: room,
       }
 
       const { data } = await apis.postChat(newMessage2)
-      console.log('"post",data :>> ', 'post', data)
 
       // setMessages((prev) => [...prev, newMessage])
       await setMessages((prev) => [...prev, data])
