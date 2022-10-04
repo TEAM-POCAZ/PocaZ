@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import axios from 'axios'
 import dayjs from 'dayjs'
 import queryString from 'query-string'
 import { useQuery } from 'react-query'
 
 import Layout from 'utils/Layout'
+import { apis } from 'utils/api'
 
 import InfoBar from './InfoBar'
 import Messages from './Messages'
@@ -44,7 +44,6 @@ type btnClickEvent = React.MouseEvent<HTMLElement, MouseEvent>
 const Chat = () => {
   const [nickName, setNickName] = useState<any>(1) //1인칭 나의 닉네임 //FIXME 1 이 나인것으로 가정함
   const [room, setRoom] = useState<any>('호준호준')
-  const [users, setUsers] = useState('')
   const [text, setText] = useState('')
   const [messages, setMessages] = useState<IMessage[]>([
     {
@@ -54,20 +53,25 @@ const Chat = () => {
   ])
   const navigate = useNavigate()
   const thisTime = dayjs().format('HH:mm') // for timeStamp
+
   const getChat = async () => {
-    const { room } = queryString.parse(location.search)
+    const { room, name } = queryString.parse(location.search)
     setRoom(room)
-    const { data } = await axios.get(`http://localhost:8080/chat/${room}`)
+    setNickName(name)
+
+    const { data } = await apis.getChat(room)
     setMessages((prev) => [...prev, ...data])
     return data
   }
-  const { isLoading, error, data: loadMsg }: any = useQuery('getChat', getChat)
+  const { isLoading, error, data } = useQuery<IMessage[], Error>('getChat', getChat, {
+    refetchOnWindowFocus: false,
+  })
 
-  useEffect(() => {
-    console.log('loadMsg변화시 :>> ', loadMsg)
-  }, [loadMsg])
+  // useEffect(() => {
+  //   console.log('loadMsg변화시 :>> ', loadMsg)
+  // }, [loadMsg])
 
-  const sendMessage = (event: btnClickEvent) => {
+  const sendMessage = async (event: btnClickEvent) => {
     event.preventDefault()
 
     if (text) {
@@ -76,7 +80,18 @@ const Chat = () => {
         message: text,
         timeStamp: thisTime,
       }
-      setMessages((prev) => [...prev, newMessage])
+
+      const newMessage2 = {
+        user: nickName,
+        message: text,
+        chatRoom: 1,
+      }
+
+      const { data } = await apis.postChat(newMessage2)
+      console.log('"post",data :>> ', 'post', data)
+
+      // setMessages((prev) => [...prev, newMessage])
+      await setMessages((prev) => [...prev, data])
       setText('')
     }
     // if (message) {
