@@ -26,7 +26,7 @@ const ChatMain = () => {
     isLoading,
     error,
     data: roomData,
-  } = useQuery<IChatRoom[], Error>('getChatList', getChatList, { staleTime: 30000 })
+  } = useQuery<IChatRoom[], Error>('getChatList', getChatList)
 
   if (error) console.log('"axois", error.message :>> ', 'axois', error.message)
 
