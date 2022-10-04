@@ -1,10 +1,7 @@
 import { FieldPacket, ResultSetHeader, RowDataPacket } from 'mysql2';
 import db from '../db/database';
 
-export const sqlInsertHandler = async <T extends ResultSetHeader>(
-  sql: string,
-  list?: any
-) => {
+export const sqlInsertHandler = async (sql: string, list?: any) => {
   const conn = await db.getPool().getConnection();
   try {
     await conn.beginTransaction();

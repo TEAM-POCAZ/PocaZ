@@ -16,6 +16,8 @@ import marketRouter from './router/market';
 import fileRouter from './router/file';
 import artistRouter from './router/artist';
 
+const API = '/api';
+
 const app = express();
 
 const swaggerYaml = YAML.load(
@@ -30,12 +32,13 @@ app.use(helemt());
 app.use(cors());
 
 app.use('/api-yaml', swaggerUi.serve, swaggerUi.setup(swaggerYaml));
-app.use('/chatRoom', chatRoomRouter);
-app.use('/chat', chatRouter);
-app.use('/post', postRouter);
-app.use('/market', marketRouter);
-app.use('/file', fileRouter);
-app.use('/artist', artistRouter);
+
+app.use(`${API}/chatRoom`, chatRoomRouter);
+app.use(`${API}/chat`, chatRouter);
+app.use(`${API}/post`, postRouter);
+app.use(`${API}/market`, marketRouter);
+app.use(`${API}/file`, fileRouter);
+app.use(`${API}/artist`, artistRouter);
 
 const server = app.listen(+config.host.port, () => {
   console.log(`listening on port ${+config.host.port}`);
