@@ -5,6 +5,7 @@ import helemt from 'helmet';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsDoc from 'swagger-jsdoc';
 import { config } from './config';
+import { options } from './middleware/swagger';
 
 import { initSocket, getSocketIO } from './connection/socket';
 
@@ -15,7 +16,7 @@ import marketRouter from './router/market';
 import fileRouter from './router/file';
 import artistRouter from './router/artist';
 
-import { options } from './middleware/swagger';
+const API = '/api';
 
 const app = express();
 
@@ -27,12 +28,13 @@ app.use(helemt());
 app.use(cors());
 
 app.use('/api-yaml', swaggerUi.serve, swaggerUi.setup(swaggerJsDoc(options)));
-app.use('/chatRoom', chatRoomRouter);
-app.use('/chat', chatRouter);
-app.use('/post', postRouter);
-app.use('/market', marketRouter);
-app.use('/file', fileRouter);
-app.use('/artist', artistRouter);
+
+app.use(`${API}/chatRoom`, chatRoomRouter);
+app.use(`${API}/chat`, chatRouter);
+app.use(`${API}/post`, postRouter);
+app.use(`${API}/market`, marketRouter);
+app.use(`${API}/file`, fileRouter);
+app.use(`${API}/artist`, artistRouter);
 
 const server = app.listen(+config.host.port, () => {
   console.log(`listening on port ${+config.host.port}`);
