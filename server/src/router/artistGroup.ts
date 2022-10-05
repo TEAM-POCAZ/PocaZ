@@ -29,7 +29,7 @@ import groups from '../controller/artistGroup';
 
 /**
  * @swagger
- * /artist/group:
+ * /api/artist/group:
  *   post:
  *     tags:
  *     - artistGroup
@@ -53,7 +53,7 @@ router.post('/', groups.writeGroup);
 
 /**
  * @swagger
- * /artist/group:
+ * /api/artist/group:
  *   get:
  *     tags:
  *     - artistGroup
@@ -75,7 +75,7 @@ router.get('/', groups.getGroups);
 
 /**
  * @swagger
- * /artist/group/{id}:
+ * /api/artist/group/{id}:
  *   get:
  *     tags:
  *     - artistGroup
@@ -106,7 +106,7 @@ router.get('/:id', groups.getGroup);
 
 /**
  * @swagger
- * /artist/group/{id}:
+ * /api/artist/group/{id}:
  *   put:
  *     tags:
  *     - artistGroup
@@ -139,7 +139,7 @@ router.put('/:id', groups.modifyGroup);
 
 /**
  * @swagger
- * /artist/group/{id}:
+ * /api/artist/group/{id}:
  *   delete:
  *     tags:
  *     - artistGroup

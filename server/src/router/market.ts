@@ -13,7 +13,7 @@ import markets from '../controller/market';
 router.post('/', markets.writeMarket);
 /**
  * @swagger
- * /market:
+ * /api/market:
  *   get:
  *     tags:
  *     - market
@@ -29,7 +29,7 @@ router.get('/', markets.getMarkets);
 
 /**
  * @swagger
- * /market/{id}:
+ * /api/market/{id}:
  *   get:
  *     tags:
  *     - market

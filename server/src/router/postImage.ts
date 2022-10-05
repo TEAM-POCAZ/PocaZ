@@ -26,7 +26,7 @@ import images from '../controller/postImage';
 
 /**
  * @swagger
- * /post/img/{category}/{post}:
+ * /api/post/img/{category}/{post}:
  *   post:
  *     tags:
  *       - postImage
@@ -68,7 +68,7 @@ router.post('/:category/:post', images.writeImages);
 
 /**
  * @swagger
- * /post/img/{category}/{post}:
+ * /api/post/img/{category}/{post}:
  *   get:
  *     tags:
  *       - postImage
@@ -109,7 +109,7 @@ router.get('/:category/:post', images.getImages);
 
 /**
  * @swagger
- * /post/img/{category}/{post}:
+ * /api/post/img/{category}/{post}:
  *   patch:
  *     tags:
  *       - postImage

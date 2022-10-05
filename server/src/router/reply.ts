@@ -68,7 +68,7 @@ import replys from '../controller/reply';
 
 /**
  * @swagger
- * /post/reply/{category}/{post}:
+ * /api/post/reply/{category}/{post}:
  *   get:
  *     tags:
  *       - reply
@@ -106,7 +106,7 @@ router.get('/:category/:post', replys.getReplys);
 
 /**
  * @swagger
- * /post/reply/{id}:
+ * /api/post/reply/{id}:
  *   get:
  *     tags:
  *       - reply
@@ -140,7 +140,7 @@ router.get('/:id', replys.getReply);
 
 /**
  * @swagger
- * /post/reply/{category}/{post}/{user}:
+ * /api/post/reply/{category}/{post}/{user}:
  *   post:
  *     tags:
  *       - reply
@@ -205,7 +205,7 @@ router.post('/:category/:post/:user', replys.writeReply);
 
 /**
  * @swagger
- * /post/reply/{category}/{post}/{user}/{id}:
+ * /api/post/reply/{category}/{post}/{user}/{id}:
  *   put:
  *     tags:
  *       - reply
@@ -264,8 +264,7 @@ router.put('/:category/:post/:user/:id', replys.modifyReply);
 
 /**
  * @swagger
- * /post/reply/{category}/{post}/{user}/{id}:
- *
+ * /api/post/reply/{category}/{post}/{user}/{id}:
  *   delete:
  *     tags:
  *       - reply

@@ -32,7 +32,7 @@ import galmangs from '../controller/galmangPoca';
 
 /**
  * @swagger
- * /artist/galmang/{user}:
+ * /api/artist/galmang/{user}:
  *   post:
  *     tags:
  *     - galmangPoca
@@ -63,7 +63,7 @@ router.post('/:user', galmangs.writeGalmang);
 
 /**
  * @swagger
- * /artist/galmang/{user}:
+ * /api/artist/galmang/{user}:
  *   get:
  *     tags:
  *     - galmangPoca
@@ -94,7 +94,7 @@ router.get('/:user', galmangs.getGalmang);
 
 /**
  * @swagger
- * /artist/galmang/{user}/{id}:
+ * /api/artist/galmang/{user}/{id}:
  *   delete:
  *     tags:
  *     - galmangPoca

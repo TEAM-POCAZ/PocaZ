@@ -6,7 +6,7 @@ import { multerUpload, uploadFiles } from '../middleware/multer';
 /**
  * @swagger
  *
- * /file:
+ * /api/file:
  *   post:
  *     tags:
  *       - file

@@ -46,7 +46,7 @@ router.use('/galmang', galmangRouter);
 
 /**
  * @swagger
- * /artist:
+ * /api/artist:
  *   post:
  *     tags:
  *     - artist
@@ -70,7 +70,7 @@ router.post('/', artists.writeArtist);
 
 /**
  * @swagger
- * /artist:
+ * /api/artist:
  *   get:
  *     tags:
  *     - artist
@@ -92,7 +92,7 @@ router.get('/', artists.getArtists);
 
 /**
  * @swagger
- * /artist/{id}:
+ * /api/artist/{id}:
  *   get:
  *     tags:
  *     - artist
@@ -123,7 +123,7 @@ router.get('/:id', artists.getArtist);
 
 /**
  * @swagger
- * /artist/{id}:
+ * /api/artist/{id}:
  *   put:
  *     tags:
  *     - artist
@@ -156,7 +156,7 @@ router.put('/:id', artists.modifyArtist);
 
 /**
  * @swagger
- * /artist/{id}:
+ * /api/artist/{id}:
  *   delete:
  *     tags:
  *     - artist

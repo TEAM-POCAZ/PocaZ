@@ -63,7 +63,7 @@ router.use('/likes', likesRouter);
 
 /**
  * @swagger
- * /post:
+ * /api/post:
  *   post:
  *     tags: [post]
  *     summary: 게시글 하나를 작성합니다.
@@ -101,7 +101,7 @@ router.post('/', posts.writePost);
 
 /**
  * @swagger
- * /post/{category}:
+ * /api/post/{category}:
  *   get:
  *     summary: 모든 게시물을 가져옵니다.
  *     operationId: getPosts
@@ -136,7 +136,7 @@ router.get('/:category', posts.getPosts);
 
 /**
  * @swagger
- * /post/{category}/{post}:
+ * /api/post/{category}/{post}:
  *   get:
  *     summary: 게시글 하나를 가져옵니다
  *     operationId: getPost
@@ -178,7 +178,7 @@ router.get('/:category/:post', posts.getPost);
 
 /**
  * @swagger
- * /post/{category}/{post}/{user}:
+ * /api/post/{category}/{post}/{user}:
  *   put:
  *     summary: 게시글 하나를 수정합니다.
  *     description: ''
@@ -234,7 +234,7 @@ router.put('/:category/:post/:user', posts.modifyPost);
 
 /**
  * @swagger
- * /post/{category}/{post}/{user}:
+ * /api/post/{category}/{post}/{user}:
  *   delete:
  *     summary: 게시글 하나를 제거합니다.
  *     description: ''

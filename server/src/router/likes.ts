@@ -26,7 +26,7 @@ import likes from '../controller/likes';
 
 /**
  * @swagger
- * /post/likes/{user}:
+ * /api/post/likes/{user}:
  *   get:
  *     tags:
  *       - likes
@@ -60,7 +60,7 @@ router.get('/:user', likes.totalLikes);
 
 /**
  * @swagger
- * /post/likes/{post}/{user}:
+ * /api/post/likes/{post}/{user}:
  *   get:
  *     tags:
  *       - likes
@@ -102,7 +102,7 @@ router.get('/:post/:user', likes.getPostLikes);
 
 /**
  * @swagger
- * /post/likes/{post}/{user}:
+ * /api/post/likes/{post}/{user}:
  *   post:
  *     tags:
  *       - likes
@@ -135,7 +135,7 @@ router.post('/:post/:user', likes.writeLikes);
 
 /**
  * @swagger
- * /post/likes/{post}/{user}:
+ * /api/post/likes/{post}/{user}:
  *   delete:
  *     tags:
  *       - likes

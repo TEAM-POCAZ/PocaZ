@@ -32,7 +32,7 @@ import photocards from '../controller/photocard';
 
 /**
  * @swagger
- * /artist/poca:
+ * /api/artist/poca:
  *   post:
  *     tags:
  *     - photocard
@@ -54,7 +54,7 @@ import photocards from '../controller/photocard';
 router.post('/', photocards.writePhotocard);
 /**
  * @swagger
- * /artist/poca:
+ * /api/artist/poca:
  *   get:
  *     tags:
  *     - photocard
@@ -75,7 +75,7 @@ router.get('/', photocards.getPhotocards);
 
 /**
  * @swagger
- * /artist/poca/{id}:
+ * /api/artist/poca/{id}:
  *   get:
  *     tags:
  *     - photocard
@@ -105,7 +105,7 @@ router.get('/:id', photocards.getPhotocard);
 
 /**
  * @swagger
- * /artist/poca/{id}:
+ * /api/artist/poca/{id}:
  *   put:
  *     tags:
  *     - photocard
@@ -138,7 +138,7 @@ router.put('/:id', photocards.modifyPhotocard);
 
 /**
  * @swagger
- * /artist/poca/{id}:
+ * /api/artist/poca/{id}:
  *   delete:
  *     tags:
  *     - photocard

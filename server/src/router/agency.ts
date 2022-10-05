@@ -26,7 +26,7 @@ import agencies from '../controller/agency';
 
 /**
  * @swagger
- * /artist/agency:
+ * /api/artist/agency:
  *   post:
  *     tags:
  *     - agency
@@ -49,7 +49,7 @@ router.post('/', agencies.writeAgency);
 
 /**
  * @swagger
- * /artist/agency:
+ * /api/artist/agency:
  *   get:
  *     tags:
  *     - agency
@@ -70,7 +70,8 @@ router.post('/', agencies.writeAgency);
 router.get('/', agencies.getAgencies);
 
 /**
- * @swagger/artist/agency/{id}:
+ * @swagger
+ * /api/artist/agency/{id}:
  *   get:
  *     tags:
  *     - agency
@@ -100,7 +101,8 @@ router.get('/', agencies.getAgencies);
 router.get('/:id', agencies.getAgency);
 
 /**
- * @swagger/artist/agency/{id}:
+ * @swagger
+ * /api/artist/agency/{id}:
  *   put:
  *     tags:
  *     - agency
@@ -136,7 +138,8 @@ router.get('/:id', agencies.getAgency);
 router.put('/:id', agencies.modifyAgency);
 
 /**
- * @swagger/artist/agency/{id}:
+ * @swagger
+ * /api/artist/agency/{id}:
  *   delete:
  *     tags:
  *       - agency
