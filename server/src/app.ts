@@ -37,7 +37,7 @@ app.use(`${API}/file`, fileRouter);
 app.use(`${API}/artist`, artistRouter);
 
 const server = app.listen(+config.host.port, () => {
-  console.log('쉘 빌드테스트');
+  console.log('쉘 빌드테스트123123123123');
   console.log(`listening on port ${+config.host.port}`);
 });
 
