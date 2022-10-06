@@ -7,8 +7,8 @@ const CommunityWrite = () => {
   return (
     <>
       <Layout>
-        <div className="communityDetailBoxWrap">
-          <div className="communityDetailTop flex justify-between mx-2.5">
+        <div className="communityWriteBoxWrap">
+          <div className="communityWriteTop flex justify-between mx-2.5">
             <button type="button">
               <i className="ri-arrow-left-line"></i>
             </button>
