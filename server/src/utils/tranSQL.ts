@@ -4,8 +4,14 @@ const tranSQL = {
   // Method collections
   getOne: async (sql: string, list?: any) => {
     const conn = await db.getPool().getConnection();
-    const [result] = await conn.query(sql, list);
-    return result;
+    try {
+      const [result] = await conn.query(sql, list);
+      return result;
+    } catch (err) {
+      throw err;
+    } finally {
+      conn.release();
+    }
   },
   /**
    * function that post only one post.
