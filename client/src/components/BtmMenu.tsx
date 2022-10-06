@@ -1,7 +1,5 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom'
-import Main from 'pages/Main'
-import CommunityList from 'pages/CommunityList'
 import 'remixicon/fonts/remixicon.css'
 
 const BtmMenu = () => {
