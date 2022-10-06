@@ -19,7 +19,8 @@ export default {
   getMarkets: async (req: Request, res: Response) => {
     const sellList = await tranSQL.getOne(
       `${tranSQL.market.main}
-       ${tranSQL.market.from}`
+       ${tranSQL.market.from}
+       ORDER BY pcs.id`
     );
     res.send(sellList);
   },

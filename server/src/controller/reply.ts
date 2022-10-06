@@ -33,7 +33,7 @@ export default {
        ${tranSQL.where('r.id')}`,
       [id]
     );
-    console.log(reply);
+    // console.log(reply);
     res.send(reply);
   },
   writeReply: async (req: Request, res: Response) => {
