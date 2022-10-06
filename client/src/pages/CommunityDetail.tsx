@@ -24,7 +24,7 @@ const CommunityDetail = () => {
             </div>
             <time>날짜</time>
             <span className="comment">댓글 0</span>
-            <span className="hit">조회수 0</span>
+            <span className="hit">조회수가 왜 없어!!</span>
           </div>
         </div>
       </Layout>
