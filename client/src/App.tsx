@@ -9,6 +9,7 @@ import Main from 'pages/Main'
 import CommunityList from 'pages/CommunityList'
 import CommunityDetail from 'pages/CommunityDetail'
 import CommunityWrite from 'pages/CommunityWrite'
+import CommunityBoast from 'pages/CommunityBoast'
 import ChatMain from 'pages/ChatMain'
 import Chat from 'components/chat/Chat'
 
@@ -25,6 +26,7 @@ function App() {
             <Route path="CommunityList" element={<CommunityList />} />
             <Route path="CommunityDetail" element={<CommunityDetail />} />
             <Route path="CommunityWrite" element={<CommunityWrite />} />
+            <Route path="CommunityBoast" element={<CommunityBoast />} />
             <Route path="/chat/list" element={<ChatMain />} />
             <Route path="/chat" element={<Chat />} />
           </Routes>

@@ -176,10 +176,10 @@ const Main = () => {
                 <h4 className="text-gray-500 text-sm">하늘 아래 똑같은 포카는 없다 🤩</h4>
               </div>
               <div className="boastGallery">
-                <ul className="grid gap-4 grid-cols-3 grid-rows-3">
+                <ul className="grid grid-cols-3 grid-rows-3">
                   {users &&
                     users.map((user: any) => (
-                      <li key={user.id}>
+                      <li key={user.id} className="h-36">
                         <img src={user.filePath} className="w-full h-full object-cover" />
                       </li>
                     ))}
