@@ -6,7 +6,27 @@ const CommunityDetail = () => {
   return (
     <>
       <Layout>
-        <div className="text-3xl font-bold underline text-blue-500">게시물 상세가 보이겠죠....</div>
+        <div className="communityDetailBoxWrap">
+          <div className="communitDetailTop flex justify-between mx-2.5">
+            <button type="button">
+              <i className="ri-arrow-left-line"></i>
+            </button>
+            <h2 className="text-base translate-x-2.5">자유</h2>
+            <button type="button">
+              <i className="ri-more-line"></i>
+            </button>
+          </div>
+          <div className="communityDetailContents">
+            <h3>제목</h3>
+            <div className="writeWrap">
+              <div className="writeThumb">{/* <img src={} /> */}</div>
+              <span className="writeName">작성자명</span>
+            </div>
+            <time>날짜</time>
+            <span className="comment">댓글 0</span>
+            <span className="hit">조회수 0</span>
+          </div>
+        </div>
       </Layout>
     </>
   )
