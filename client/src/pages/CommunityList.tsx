@@ -20,7 +20,7 @@ const CommunityList = () => {
               type="button"
               className="absolute top-2/4 right-0 translate-y-[-50%] px-2.5 bg-black text-white rounded"
             >
-              작성
+              <Link to="/CommunityWrite">작성</Link>
             </button>
           </div>
           <div className="freeBoardSort mt-2.5 border-t border-b">
