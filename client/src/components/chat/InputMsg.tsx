@@ -1,5 +1,11 @@
 import React from 'react'
 
+/**
+ * //FIXME
+ * 함수는 인터페이스를 어떻게 만들어야할까?
+ * @param param0
+ * @returns
+ */
 const InputMsg = ({ setMessage, message, sendMessage }: any) => {
   return (
     <div>
