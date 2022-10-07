@@ -3,8 +3,9 @@ import React, { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 
 import Layout from 'utils/Layout'
-import { Link } from 'react-router-dom'
+import useStore from 'store/store'
 
+import { Link } from 'react-router-dom'
 import { apis } from '../utils/api'
 
 interface IChatRoom {
@@ -16,9 +17,13 @@ interface IChatRoom {
   profileImage: string
 }
 
+export interface IUserInfo {
+  nickName: string | number
+}
+
 const ChatMain = () => {
   const getChatList = async () => {
-    const { data } = await apis.getChatList(1) // id를 담아보낸다.
+    const { data } = await apis.getChatList(1) //FIXME id를 담아보낸다.
     return data
   }
 
@@ -28,9 +33,10 @@ const ChatMain = () => {
     data: roomData,
   } = useQuery<IChatRoom[], Error>('getChatList', getChatList)
 
-  if (error) console.log('"axois", error.message :>> ', 'axois', error.message)
+  if (error) console.log('"axois", error.message :>> ', error.message)
 
-  const [name, setName] = useState(1) //FIXME  login 정보에서 가져오기(store)
+  // const [name, setName] = useState(1) //FIXME  login 정보에서 가져오기(store) // nickName은 1인 유저로 가정한다.
+  const { userInfo } = useStore() // 광역 상태관리
   const [room, setRoom] = useState('') //TODO 1:1채팅방 room은 어떻게 만들까?
 
   return (
@@ -39,13 +45,14 @@ const ChatMain = () => {
         <>loading 중</>
       ) : (
         <>
+          <div className="m-2 border-2 flex flex-col">공지사항 컴포넌트</div>
           {roomData?.map((item: IChatRoom) => {
             //FIXME key값 수정필요
             return (
               <div className="m-2 border-2 flex flex-col" key={item.chatRoom}>
                 <Link
                   onClick={(e) => (!roomData ? e.preventDefault() : null)}
-                  to={`/chat?room=${item.chatRoom}&name=${name}`}
+                  to={`/chat?room=${item.chatRoom}&name=${userInfo?.nickName}`}
                   className="flex"
                 >
                   <div className="m-3">

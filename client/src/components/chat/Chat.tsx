@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import dayjs from 'dayjs'
 import queryString from 'query-string'
 import { useQuery } from 'react-query'
 
@@ -26,8 +25,8 @@ export interface IMessage {
 type btnClickEvent = React.MouseEvent<HTMLElement, MouseEvent>
 
 /**
- * front-back 통신 흐름
- * front -> back : api post
+ * front-back api 통신 흐름
+ * front -> back : api post // 메세지를 send 할 때
  * front <- back : socketIO.on
  *
  * back  -> front : socketIO.emit
@@ -37,7 +36,7 @@ type btnClickEvent = React.MouseEvent<HTMLElement, MouseEvent>
  */
 
 const Chat = () => {
-  const [nickName, setNickName] = useState<any>(1) //1인칭 나의 닉네임 //FIXME 1 이 나인것으로 가정함
+  const [nickName, setNickName] = useState<any>('1') //1인칭 나의 닉네임 //FIXME 1 이 나인것으로 가정함
   const [room, setRoom] = useState<any>('호준호준')
   const [text, setText] = useState('')
   const [messages, setMessages] = useState<IMessage[]>([
@@ -47,38 +46,39 @@ const Chat = () => {
     },
   ])
   const navigate = useNavigate()
-  const thisTime = dayjs().format('HH:mm') // for timeStamp
 
   const getChat = async () => {
     const { room, name } = queryString.parse(location.search)
-    setRoom(room)
-    setNickName(name)
 
-    const { data } = await apis.getChat(room)
-    setMessages((prev) => [...prev, ...data])
-    return data
+    if (room && name) {
+      setRoom(room)
+      setNickName(name)
+      const { data } = await apis.getChat(room)
+      setMessages((prev) => [...prev, ...data])
+      return data
+    }
   }
   const { isLoading, error, data } = useQuery<IMessage[], Error>('getChat', getChat, {
     refetchOnWindowFocus: false,
   })
 
   // useEffect(() => {
-  //   console.log('loadMsg변화시 :>> ', loadMsg)
-  // }, [loadMsg])
+  //   console.log('nickName :>> ', typeof nickName)
+  // }, [nickName])
 
   const sendMessage = async (event: btnClickEvent) => {
     event.preventDefault()
     if (text) {
-      const newMessage2 = {
+      const newMessage = {
         user: nickName,
         message: text,
         chatRoom: room,
       }
 
-      const { data } = await apis.postChat(newMessage2)
+      const { data } = await apis.postChat(newMessage)
 
       // setMessages((prev) => [...prev, newMessage])
-      await setMessages((prev) => [...prev, data])
+      setMessages((prev) => [...prev, data])
       setText('')
     }
     // if (message) {
@@ -101,11 +101,11 @@ const Chat = () => {
                 채팅목록으로
               </button>
             </div>
+            {/* FIXME inforbar props로 nickName 이 아니라 상대방 이름이 넘어가야함 */}
             <InfoBar room={nickName} />
-            <Messages messages={messages} nickName={nickName} />
+            <Messages messages={messages} />
             <InputMsg message={text} setMessage={setText} sendMessage={sendMessage} />
           </div>
-          {/* <TextContainer users={users} /> */}
         </div>
       )}
     </Layout>
