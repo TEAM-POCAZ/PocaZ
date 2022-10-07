@@ -7,18 +7,15 @@ import { IMessage } from './Chat'
 
 interface IMessages {
   messages: IMessage[]
-  nickName: string
 }
 
-const Messages = ({ messages, nickName }: IMessages) => {
-  //FIXME typescript 수정
+const Messages = ({ messages }: IMessages) => {
   return (
     <ScrollToBottom className="flex-auto overflow-auto px-4 ">
-      메세지창
       {messages.map((messageSrc: IMessage, i: number) => {
         return (
           <div key={i}>
-            <Msg messageSrc={messageSrc} nickName={nickName} />
+            <Msg messageSrc={messageSrc} />
           </div>
         )
       })}

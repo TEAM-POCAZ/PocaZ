@@ -1,18 +1,25 @@
 import React from 'react'
 import dayjs from 'dayjs'
 
+import useStore from 'store/store'
+
 /**
+ * sender : 메세지를 보낸 사람
+ * userInfo state의 NickName은 로그인 정보 기반
+ * sender오 userInfo.nickname을 비교하여 로그인사용자의 메세지인지를 확인한다.
  * @param {object} message post 받아온 obj를 담고 있고 채팅창에 보여줄 value
- * @param {string} name 접속한 사용자의 이름을 가져옴. 위의 user랑 비교할 값
+ * @param {string} name 접속한 사용자의 이름을 가져옴. 위의 user랑 비교할 값 // 광역에서 가져온다.
  * @returns 1:1 사용자 채팅창
  */
 
-const Msg = ({ messageSrc: { message, user, createAt }, nickName }: any) => {
+const Msg = ({ messageSrc: { message, user: sender, createAt } }: any) => {
+  const { userInfo } = useStore() // 광역 상태관리
+
   // const trimmedName = nickName.trim().toLowerCase() //FIXME string으로 들어와야하는데 지금 1로 들어옴
-  const trimmedName = nickName
+  const trimmedName = userInfo.nickName
   const MsgReceivedTime = dayjs(createAt).format('HH:mm') // for timeStamp
   let isSentByCurrentUser = false //
-  if (user == trimmedName) isSentByCurrentUser = true //FIXME type 비교 필요
+  if (sender == trimmedName) isSentByCurrentUser = true //FIXME type 비교 필요
 
   return isSentByCurrentUser ? (
     <div className="messageContainer flex justify-end py-3 mt-1">
@@ -34,10 +41,10 @@ const Msg = ({ messageSrc: { message, user, createAt }, nickName }: any) => {
           {/* <span className=" align-middle">여긴 텍스트</span> */}
         </p>
       </div>
-      <p className="sentText  flex items-center text-gray-400 tracking-tight pl-2 ">{user}</p>
       {/* <p>여긴 너이름</p> */}
-      <p>{MsgReceivedTime}</p>
+      <p className="sentText  flex items-center text-gray-400 tracking-tight pl-2 ">{sender}</p>
       {/* <p>여긴 타임스탬프</p> */}
+      <p>{MsgReceivedTime}</p>
     </div>
   )
 }
