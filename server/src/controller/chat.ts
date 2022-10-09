@@ -1,6 +1,7 @@
 import { RowDataPacket } from 'mysql2';
 import { Request, Response, NextFunction } from 'express';
 
+import { getSocketIO } from '../connection/socket';
 import { sqlInsertHandler, sqlSelectHandler } from '../utils/sqlHandler';
 
 interface IChats extends RowDataPacket {
@@ -23,6 +24,9 @@ export const getChat = async (
     [chatRoom]
   );
 
+  getSocketIO().on('connection', (socket: any) => {
+    console.log(socket);
+  });
   res.status(200).json(rows);
 };
 

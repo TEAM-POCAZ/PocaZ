@@ -38,6 +38,5 @@ app.use(`${API}/artist`, artistRouter);
 
 const server = app.listen(+config.host.port, () => {
   console.log(`listening on port ${+config.host.port}`);
+  initSocket(server);
 });
-
-initSocket(server);
