@@ -2,6 +2,9 @@ import React from 'react'
 import dayjs from 'dayjs'
 
 import useStore from 'store/store'
+import queryString from 'query-string'
+
+import { IChat } from './Chat'
 
 /**
  * sender : 메세지를 보낸 사람
@@ -12,19 +15,20 @@ import useStore from 'store/store'
  * @returns 1:1 사용자 채팅창
  */
 
-const Msg = ({ messageSrc: { message, user: sender, createAt } }: any) => {
-  const { userInfo } = useStore() // 광역 상태관리
+interface Props {
+  chat: IChat
+}
 
-  // const trimmedName = nickName.trim().toLowerCase() //FIXME string으로 들어와야하는데 지금 1로 들어옴
-  const trimmedName = userInfo.nickName
+const Msg = ({ chat }: Props) => {
+  const { room, name } = queryString.parse(location.search)
+  const { createAt, message } = chat
+
   const MsgReceivedTime = dayjs(createAt).format('HH:mm') // for timeStamp
-  let isSentByCurrentUser = false //
-  if (sender == trimmedName) isSentByCurrentUser = true //FIXME type 비교 필요
 
-  return isSentByCurrentUser ? (
+  return chat.user === +(name as string) ? (
     <div className="messageContainer flex justify-end py-3 mt-1">
       <div>
-        <p className="sentText flex items-center text-gray-400 tracking-tight">{trimmedName}</p>
+        <p className="sentText flex items-center text-gray-400 tracking-tight">{chat.user}</p>
         <p>{MsgReceivedTime}</p>
       </div>
       <div className="messageBox bg-blue-700 rounded-3xl px-2 py-5 inline-block text-white max-w-fit">
@@ -42,7 +46,7 @@ const Msg = ({ messageSrc: { message, user: sender, createAt } }: any) => {
         </p>
       </div>
       {/* <p>여긴 너이름</p> */}
-      <p className="sentText  flex items-center text-gray-400 tracking-tight pl-2 ">{sender}</p>
+      <p className="sentText  flex items-center text-gray-400 tracking-tight pl-2 ">{chat.user}</p>
       {/* <p>여긴 타임스탬프</p> */}
       <p>{MsgReceivedTime}</p>
     </div>
