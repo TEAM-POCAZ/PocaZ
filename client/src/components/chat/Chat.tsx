@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import queryString from 'query-string'
 import { useQuery } from 'react-query'
@@ -21,7 +21,12 @@ export interface IChat {
   updateAt: null | string
 }
 
-type btnClickEvent = React.MouseEvent<HTMLElement, MouseEvent>
+//FIXME 왜 안들어갈까?
+interface ILocationProps {
+  room: unknown
+  name: number | string | unknown
+  oppNickname: number | string | unknown
+}
 
 /**
  * front-back api 통신 흐름
@@ -31,14 +36,16 @@ type btnClickEvent = React.MouseEvent<HTMLElement, MouseEvent>
  * back  -> front : socketIO.emit
  * back <- front : api get
  *
- * @returns
+ * @returns 개인이 가진 채팅 목록
  */
 
 const Chat = () => {
-  const { room, name } = queryString.parse(location.search)
-  const [chats, setChats] = useState<IChat[]>([])
-
   const navigate = useNavigate()
+  const location = useLocation()
+
+  // const { room, name } = queryString.parse(location.search)
+  const [chats, setChats] = useState<IChat[]>([])
+  const { room, name, oppNickname }: any = location.state
 
   const getChat = async () => {
     if (room && name) {
@@ -79,8 +86,7 @@ const Chat = () => {
                 채팅목록으로
               </button>
             </div>
-            {/* FIXME inforbar props로 nickName 이 아니라 상대방 이름이 넘어가야함 */}
-            {/* <InfoBar room={nickName} /> */}
+            <InfoBar oppNickname={oppNickname} />
             <Messages chats={chats} />
             <InputMsg handleMessage={handleMessage} />
           </div>
