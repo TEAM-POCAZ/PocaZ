@@ -13,9 +13,8 @@ import CommunityBoast from 'pages/CommunityBoast'
 import ChatMain from 'pages/ChatMain'
 import Chat from 'components/chat/Chat'
 
-function App({ socket }: any) {
+function App() {
   const client = new QueryClient()
-  console.log(socket)
   return (
     <>
       <QueryClientProvider client={client}>
