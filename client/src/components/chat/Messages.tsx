@@ -3,19 +3,19 @@ import ScrollToBottom from 'react-scroll-to-bottom'
 
 import Msg from './Msg'
 
-import { IMessage } from './Chat'
+import { IChat } from './Chat'
 
-interface IMessages {
-  messages: IMessage[]
+interface Props {
+  chats: IChat[]
 }
 
-const Messages = ({ messages }: IMessages) => {
+const Messages = ({ chats }: Props) => {
   return (
     <ScrollToBottom className="flex-auto overflow-auto px-4 ">
-      {messages.map((messageSrc: IMessage, i: number) => {
+      {chats.map((chat: IChat, i: number) => {
         return (
           <div key={i}>
-            <Msg messageSrc={messageSrc} />
+            <Msg chat={chat} />
           </div>
         )
       })}

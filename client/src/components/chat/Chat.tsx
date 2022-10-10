@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import queryString from 'query-string'
 import { useQuery } from 'react-query'
@@ -12,17 +12,21 @@ import Messages from './Messages'
 import InputMsg from './InputMsg'
 
 //type
-export interface IMessage {
-  user: number | string
-  message: string | object
-  timestamp?: string
-  chatRoom?: number
-  createAt?: string
-  id?: number
-  updateAt?: string
+export interface IChat {
+  id: number
+  chatRoom: number
+  user: number
+  message: string
+  createAt: Date
+  updateAt: null | string
 }
 
-type btnClickEvent = React.MouseEvent<HTMLElement, MouseEvent>
+//FIXME 왜 안들어갈까?
+interface ILocationProps {
+  room: unknown
+  name: number | string | unknown
+  oppNickname: number | string | unknown
+}
 
 /**
  * front-back api 통신 흐름
@@ -32,60 +36,41 @@ type btnClickEvent = React.MouseEvent<HTMLElement, MouseEvent>
  * back  -> front : socketIO.emit
  * back <- front : api get
  *
- * @returns
+ * @returns 개인이 가진 채팅 목록
  */
 
 const Chat = () => {
-  const [nickName, setNickName] = useState<any>('1') //1인칭 나의 닉네임 //FIXME 1 이 나인것으로 가정함
-  const [room, setRoom] = useState<any>('호준호준')
-  const [text, setText] = useState('')
-  const [messages, setMessages] = useState<IMessage[]>([
-    {
-      user: '포카즈',
-      message: `${room}방에 오신것을 환영합니다.`,
-    },
-  ])
   const navigate = useNavigate()
+  const location = useLocation()
+
+  // const { room, name } = queryString.parse(location.search)
+  const [chats, setChats] = useState<IChat[]>([])
+  const { room, name, oppNickname }: any = location.state
 
   const getChat = async () => {
-    const { room, name } = queryString.parse(location.search)
-
     if (room && name) {
-      setRoom(room)
-      setNickName(name)
       const { data } = await apis.getChat(room)
-      setMessages((prev) => [...prev, ...data])
+      setChats(data)
       return data
     }
   }
-  const { isLoading, error, data } = useQuery<IMessage[], Error>('getChat', getChat, {
-    refetchOnWindowFocus: false,
+
+  const { isLoading, error, data } = useQuery<IChat[], Error>('getChat', getChat, {
+    // refetchOnWindowFocus: false,
   })
 
-  // useEffect(() => {
-  //   console.log('nickName :>> ', typeof nickName)
-  // }, [nickName])
-
-  const sendMessage = async (event: btnClickEvent) => {
-    event.preventDefault()
-    if (text) {
+  const handleMessage = async (sendMessage: string | undefined) => {
+    if (sendMessage) {
       const newMessage = {
-        user: nickName,
-        message: text,
+        user: name,
+        message: sendMessage,
         chatRoom: room,
       }
 
       const { data } = await apis.postChat(newMessage)
 
-      // setMessages((prev) => [...prev, newMessage])
-      setMessages((prev) => [...prev, data])
-      setText('')
+      setChats((prev) => [...prev, data])
     }
-    // if (message) {
-    //     socket.emit("sendMessage", { message, thisTime }, () =>
-    //         setMessage("")
-    //     );
-    // }
   }
 
   return (
@@ -101,10 +86,9 @@ const Chat = () => {
                 채팅목록으로
               </button>
             </div>
-            {/* FIXME inforbar props로 nickName 이 아니라 상대방 이름이 넘어가야함 */}
-            <InfoBar room={nickName} />
-            <Messages messages={messages} />
-            <InputMsg message={text} setMessage={setText} sendMessage={sendMessage} />
+            <InfoBar oppNickname={oppNickname} />
+            <Messages chats={chats} />
+            <InputMsg handleMessage={handleMessage} />
           </div>
         </div>
       )}

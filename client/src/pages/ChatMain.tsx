@@ -52,7 +52,14 @@ const ChatMain = () => {
               <div className="m-2 border-2 flex flex-col" key={item.chatRoom}>
                 <Link
                   onClick={(e) => (!roomData ? e.preventDefault() : null)}
-                  to={`/chat?room=${item.chatRoom}&name=${userInfo?.nickName}`}
+                  // to={`/chat?room=${item.chatRoom}&name=${userInfo?.nickName}`} //FIXME msg 쿼리스트링 때문에 일단 사용
+                  // to={`/chat?room=${item.chatRoom}`}
+                  to={`/chat`}
+                  state={{
+                    room: item.chatRoom,
+                    name: userInfo?.nickName,
+                    oppNickname: item.nickname,
+                  }}
                   className="flex"
                 >
                   <div className="m-3">

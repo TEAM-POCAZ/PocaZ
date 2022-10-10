@@ -1,5 +1,3 @@
-// socket connection 작성파일
-
 import { Server } from 'socket.io';
 
 class Socket {
