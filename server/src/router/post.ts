@@ -275,4 +275,39 @@ router.put('/:category/:post/:user', posts.modifyPost);
  */
 router.delete('/:category/:post/:user', posts.deletePost);
 
+/**
+ * @swagger
+ * /api/post/view/{category}/{post}:
+ *   patch:
+ *     summary: 게시글 하나의 조회수를 증가시킵니다.
+ *     description: ''
+ *     operationId: viewPost
+ *     tags:
+ *       - post
+ *     parameters:
+ *       - name: category
+ *         in: path
+ *         required: true
+ *         description: The category key of posts
+ *         schema:
+ *           type: string
+ *         example: 1
+ *       - name: post
+ *         in: path
+ *         required: true
+ *         description: The key of post
+ *         schema:
+ *           type: string
+ *         example: 11
+ *     responses:
+ *       '200':
+ *         description: viewCount added!
+ *       '400':
+ *         description: Invalid post
+ *       '404':
+ *         description: Not Found
+ *
+ */
+router.patch('/view/:category/:post', posts.viewPost);
+
 export default router;
