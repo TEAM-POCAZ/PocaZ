@@ -43,6 +43,8 @@ const Chat = ({ socket }: any) => {
   useEffect(() => {
     getChat()
 
+    socket.joinRoom(room)
+
     const close = socket.onSync('test', (a: any) => {
       setChats((prev) => [...prev, a])
     })

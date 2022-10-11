@@ -46,5 +46,5 @@ export const createChat = async (
 
   res.status(200).json(row[0]);
 
-  getSocketIO().emit('test', row[0]);
+  getSocketIO().to(row[0].chatRoom.toString()).emit('test', row[0]);
 };

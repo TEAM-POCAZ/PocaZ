@@ -8,8 +8,6 @@ export default class Socket {
     this.io.on('connect_error', (err) => {
       console.log('socket error', err.message)
     })
-
-    this.io.emit('ss', '1')
   }
 
   onSync(e: any, cb: any) {
@@ -23,5 +21,9 @@ export default class Socket {
     })
 
     return () => this.io.off(e)
+  }
+
+  joinRoom(val: any) {
+    this.io.emit('joinRoom', val)
   }
 }
