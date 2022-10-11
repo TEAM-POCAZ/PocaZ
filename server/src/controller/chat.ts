@@ -24,9 +24,6 @@ export const getChat = async (
     [chatRoom]
   );
 
-  getSocketIO().on('connection', (socket: any) => {
-    console.log(socket);
-  });
   res.status(200).json(rows);
 };
 
@@ -48,4 +45,6 @@ export const createChat = async (
   );
 
   res.status(200).json(row[0]);
+
+  getSocketIO().emit('test', row[0]);
 };

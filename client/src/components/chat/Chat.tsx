@@ -34,11 +34,25 @@ type btnClickEvent = React.MouseEvent<HTMLElement, MouseEvent>
  * @returns
  */
 
-const Chat = () => {
+const Chat = ({ socket }: any) => {
   const { room, name } = queryString.parse(location.search)
   const [chats, setChats] = useState<IChat[]>([])
 
   const navigate = useNavigate()
+
+  useEffect(() => {
+    getChat()
+
+    const close = socket.onSync('test', (a: any) => {
+      setChats((prev) => [...prev, a])
+    })
+
+    socket.onSync('ss', (a: any) => {
+      console.log(a)
+    })
+
+    return () => close()
+  }, [])
 
   const getChat = async () => {
     if (room && name) {
@@ -48,9 +62,9 @@ const Chat = () => {
     }
   }
 
-  const { isLoading, error, data } = useQuery<IChat[], Error>('getChat', getChat, {
-    // refetchOnWindowFocus: false,
-  })
+  // const { isLoading, error, data } = useQuery<IChat[], Error>('getChat', getChat, {
+  //   // refetchOnWindowFocus: false,
+  // })
 
   const handleMessage = async (sendMessage: string | undefined) => {
     if (sendMessage) {
@@ -61,11 +75,11 @@ const Chat = () => {
       }
 
       const { data } = await apis.postChat(newMessage)
-
-      setChats((prev) => [...prev, data])
+      // setChats((prev) => [...prev, data])
     }
   }
 
+  const isLoading = false
   return (
     <Layout>
       {isLoading ? (

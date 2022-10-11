@@ -15,7 +15,7 @@ import Chat from 'components/chat/Chat'
 
 function App({ socket }: any) {
   const client = new QueryClient()
-  console.log(socket)
+
   return (
     <>
       <QueryClientProvider client={client}>
@@ -29,7 +29,7 @@ function App({ socket }: any) {
             <Route path="CommunityWrite" element={<CommunityWrite />} />
             <Route path="CommunityBoast" element={<CommunityBoast />} />
             <Route path="/chat/list" element={<ChatMain />} />
-            <Route path="/chat" element={<Chat />} />
+            <Route path="/chat" element={<Chat socket={socket} />} />
           </Routes>
         </Router>
       </QueryClientProvider>

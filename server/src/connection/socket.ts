@@ -2,6 +2,7 @@ import { Server } from 'socket.io';
 
 class Socket {
   private io;
+  private connectedSocket: any;
   constructor(server: any) {
     this.io = new Server(server, {
       cors: {
@@ -11,9 +12,7 @@ class Socket {
 
     this.io.on('connection', (so) => {
       console.log('Socket connected :)!!');
-      //   so.on('message', (ee: any) => {
-      //     console.log(ee);
-      //   });
+      this.connectedSocket = so;
     });
   }
 }
