@@ -4,13 +4,13 @@ import passport from "passport";
 import { urlencoded } from "express";
 passportSetup();
 
-const authRoute = Router();
+const authRouter = Router();
 
-authRoute.get("/me", (req, res) => {
+authRouter.get("/me", (req, res) => {
   res.json(req.user);
 });
 
-authRoute.get("/logout", (req, res) => {
+authRouter.get("/logout", (req, res) => {
   if (req.user) {
     req.logOut(() => {
       res.json({ status: "success" });
@@ -20,24 +20,28 @@ authRoute.get("/logout", (req, res) => {
   }
 });
 
-authRoute.get(
+authRouter.get(
   "/google",
   passport.authenticate("google", {
     scope: ["profile", "email"],
   })
 );
 
-authRoute.get("/signin-google", passport.authenticate("google"), (req, res) => {
-  console.log("user in session cookie(google) >>> ", req.user);
-  res.redirect("/LoginSuccessed");
-});
+authRouter.get(
+  "/signin-google",
+  passport.authenticate("google"),
+  (req, res) => {
+    console.log("user in session cookie(google) >>> ", req.user);
+    res.redirect("/LoginSuccessed");
+  }
+);
 
-authRoute.get(
+authRouter.get(
   "/twitter",
   passport.authenticate("oauth2", { scope: ["users.read", "tweet.read"] })
 );
 
-authRoute.get(
+authRouter.get(
   "/signin-twitter",
   passport.authenticate("oauth2"),
   (req, res) => {
@@ -46,9 +50,9 @@ authRoute.get(
   }
 );
 
-authRoute.get("/apple", passport.authenticate("apple"));
+authRouter.get("/apple", passport.authenticate("apple"));
 
-authRoute.post(
+authRouter.post(
   "/signin-apple",
   urlencoded({ extended: true }),
   passport.authenticate("apple"),
@@ -57,4 +61,4 @@ authRoute.post(
     res.redirect("/LoginSuccessed");
   }
 );
-export default authRoute;
+export default authRouter;

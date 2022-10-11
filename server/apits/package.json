@@ -40,6 +40,7 @@
     "express-session": "^1.17.3",
     "moment": "^2.29.4",
     "mongoose": "^6.6.1",
+    "mysql2": "^2.3.3",
     "passport": "^0.6.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-oauth2": "^1.6.1"

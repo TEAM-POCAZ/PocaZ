@@ -10,6 +10,8 @@ services:
       - ./apits:/app
       - /app/node_modules
     init: true
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   nginx_c:
     container_name: nginx_c

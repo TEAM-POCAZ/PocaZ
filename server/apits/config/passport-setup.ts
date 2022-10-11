@@ -4,7 +4,6 @@ import AppleStrategy from "@nicokaiser/passport-apple";
 import OAuth2Strategy, {
   StrategyOptions,
   VerifyFunction,
-  InternalOAuthError,
 } from "passport-oauth2";
 import keys from "./keys";
 import { User, IUser } from "../models/user-model";
@@ -12,6 +11,7 @@ import * as fs from "fs";
 import path from "path";
 import { cwd } from "process";
 import axios from "axios";
+import { tranSQL } from "../utils/tranSQL";
 
 function passportSetup() {
   const GoogleStrategy = passport_google_oauth20.Strategy;

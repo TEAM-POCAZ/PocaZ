@@ -14,12 +14,19 @@ const config = {
     teamID: "8YG9YMXGPG", //team id
     keyID: "6T39QCZ947", //key id
   },
+  session: {
+    cookieKey: "hankhankhank",
+  },
   mongodb: {
     dbURI:
       "mongodb+srv://hsm0156:12341234@nn-oauth-test.idumgs8.mongodb.net/?retryWrites=true&w=majority",
   },
-  session: {
-    cookieKey: "hankhankhank",
+  db: {
+    host: "host.docker.internal",
+    port: 3306,
+    user: "root",
+    database: "pocaz",
+    password: "12341234",
   },
 };
 
