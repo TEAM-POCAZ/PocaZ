@@ -102,4 +102,16 @@ export default {
     );
     res.send('successfully erased!!');
   },
+  viewPost: async (req: express.Request, res: express.Response) => {
+    const { post } = req.params;
+    console.log(post);
+    await tranSQL.putOne(
+      `
+      UPDATE Post
+         SET viewCount = viewCount + 1
+       WHERE id = ?`,
+      [post]
+    );
+    res.send('viewcount added');
+  },
 };
