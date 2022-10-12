@@ -41,15 +41,15 @@ interface ILocationProps {
 
 const Chat = ({ socket }: any) => {
   const navigate = useNavigate()
-  const location = useLocation()
+  // const location = useLocation()
 
-  // const { room, name } = queryString.parse(location.search)
+  const { room, name } = queryString.parse(location.search)
   const [chats, setChats] = useState<IChat[]>([])
-  const { room, name, oppNickname }: any = location.state
+  // const { room, name, oppNickname }: any = location.state
 
   useEffect(() => {
     getChat()
-
+    console.log(room)
     socket.joinRoom(room)
 
     const close = socket.onSync('test', (a: any) => {
@@ -62,7 +62,7 @@ const Chat = ({ socket }: any) => {
   const getChat = async () => {
     if (room && name) {
       const { data } = await apis.getChat(room)
-      // setChats(data)
+      setChats(data)
       return data
     }
   }
@@ -98,7 +98,7 @@ const Chat = ({ socket }: any) => {
                 채팅목록으로
               </button>
             </div>
-            <InfoBar oppNickname={oppNickname} />
+            {/* <InfoBar oppNickname={oppNickname} /> */}
             <Messages chats={chats} />
             <InputMsg handleMessage={handleMessage} />
           </div>

@@ -19,14 +19,14 @@ interface Props {
  */
 
 const Msg = ({ chat }: Props) => {
-  // const { room, name } = queryString.parse(location.search)
+  const { room, name } = queryString.parse(location.search)
   const { userInfo } = useStore()
   const { createAt, message } = chat
 
   const MsgReceivedTime = dayjs(createAt).format('HH:mm') // for timeStamp
 
-  // return chat.user === +(name as string) ? (
-  return chat.user === userInfo.nickName ? (
+  return chat.user === +(name as string) ? (
+    // return chat.user === userInfo.nickName ? (
     <div className="messageContainer flex justify-end py-3 mt-1">
       <div>
         <p className="sentText flex items-center text-gray-400 tracking-tight">{chat.user}</p>
