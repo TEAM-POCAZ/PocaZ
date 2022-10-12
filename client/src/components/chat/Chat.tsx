@@ -39,7 +39,7 @@ interface ILocationProps {
  * @returns 개인이 가진 채팅 목록
  */
 
-const Chat = () => {
+const Chat = ({ socket }: any) => {
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -47,17 +47,29 @@ const Chat = () => {
   const [chats, setChats] = useState<IChat[]>([])
   const { room, name, oppNickname }: any = location.state
 
+  useEffect(() => {
+    getChat()
+
+    socket.joinRoom(room)
+
+    const close = socket.onSync('test', (a: any) => {
+      setChats((prev) => [...prev, a])
+    })
+
+    return () => close()
+  }, [])
+
   const getChat = async () => {
     if (room && name) {
       const { data } = await apis.getChat(room)
-      setChats(data)
+      // setChats(data)
       return data
     }
   }
 
-  const { isLoading, error, data } = useQuery<IChat[], Error>('getChat', getChat, {
-    // refetchOnWindowFocus: false,
-  })
+  // const { isLoading, error, data } = useQuery<IChat[], Error>('getChat', getChat, {
+  //   // refetchOnWindowFocus: false,
+  // })
 
   const handleMessage = async (sendMessage: string | undefined) => {
     if (sendMessage) {
@@ -68,11 +80,11 @@ const Chat = () => {
       }
 
       const { data } = await apis.postChat(newMessage)
-
-      setChats((prev) => [...prev, data])
+      // setChats((prev) => [...prev, data])
     }
   }
 
+  const isLoading = false
   return (
     <Layout>
       {isLoading ? (

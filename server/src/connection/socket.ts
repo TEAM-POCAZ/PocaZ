@@ -11,9 +11,20 @@ class Socket {
 
     this.io.on('connection', (so) => {
       console.log('Socket connected :)!!');
-      //   so.on('message', (ee: any) => {
-      //     console.log(ee);
-      //   });
+      so.on('joinRoom', (a: any) => {
+        console.log(a);
+        so.join(a);
+
+        // this.io.to(a).emit('test', '123123123');
+      });
+      // so.join('1');
+
+      // so.to('1').emit('tt', 'hihihihihhi');
+
+      // so.on('disconnect', () => {
+      //   console.log('out!!');
+      //   so.leave('1');
+      // });
     });
   }
 }
