@@ -67,8 +67,7 @@ export default {
        VALUES (?)`,
       [[category, user, title, content]]
     );
-    // res.send('succe')
-    res.redirect(`/post/${category}/${insertId}`);
+    res.send([insertId]);
   },
   modifyPost: async (req: express.Request, res: express.Response) => {
     const { category, post } = req.params;
