@@ -1,8 +1,9 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import Layout from 'utils/Layout'
 
 const CommunityDetail = () => {
+  const { category, id } = useParams()
   return (
     <>
       <Layout>
