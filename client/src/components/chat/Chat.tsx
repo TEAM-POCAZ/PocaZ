@@ -39,13 +39,25 @@ interface ILocationProps {
  * @returns 개인이 가진 채팅 목록
  */
 
-const Chat = () => {
+const Chat = ({ socket }: any) => {
   const navigate = useNavigate()
-  const location = useLocation()
+  // const location = useLocation()
 
-  // const { room, name } = queryString.parse(location.search)
+  const { room, name } = queryString.parse(location.search)
   const [chats, setChats] = useState<IChat[]>([])
-  const { room, name, oppNickname }: any = location.state
+  // const { room, name, oppNickname }: any = location.state
+
+  useEffect(() => {
+    getChat()
+    console.log(room)
+    socket.joinRoom(room)
+
+    const close = socket.onSync('test', (a: any) => {
+      setChats((prev) => [...prev, a])
+    })
+
+    return () => close()
+  }, [])
 
   const getChat = async () => {
     if (room && name) {
@@ -55,9 +67,9 @@ const Chat = () => {
     }
   }
 
-  const { isLoading, error, data } = useQuery<IChat[], Error>('getChat', getChat, {
-    // refetchOnWindowFocus: false,
-  })
+  // const { isLoading, error, data } = useQuery<IChat[], Error>('getChat', getChat, {
+  //   // refetchOnWindowFocus: false,
+  // })
 
   const handleMessage = async (sendMessage: string | undefined) => {
     if (sendMessage) {
@@ -68,11 +80,11 @@ const Chat = () => {
       }
 
       const { data } = await apis.postChat(newMessage)
-
-      setChats((prev) => [...prev, data])
+      // setChats((prev) => [...prev, data])
     }
   }
 
+  const isLoading = false
   return (
     <Layout>
       {isLoading ? (
@@ -86,7 +98,7 @@ const Chat = () => {
                 채팅목록으로
               </button>
             </div>
-            <InfoBar oppNickname={oppNickname} />
+            {/* <InfoBar oppNickname={oppNickname} /> */}
             <Messages chats={chats} />
             <InputMsg handleMessage={handleMessage} />
           </div>
