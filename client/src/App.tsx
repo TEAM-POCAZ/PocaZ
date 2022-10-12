@@ -24,8 +24,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Main />} />
             <Route path="CommunityList" element={<CommunityList />} />
-            <Route path="CommunityDetail" element={<CommunityDetail />} />
-            <Route path="CommunityWrite" element={<CommunityWrite />} />
+            <Route path="Community/:category/:id" element={<CommunityDetail />} />
+            <Route path="Community/" element={<CommunityWrite />} />
             <Route path="CommunityBoast" element={<CommunityBoast />} />
             <Route path="/chat/list" element={<ChatMain />} />
             <Route path="/chat" element={<Chat />} />
