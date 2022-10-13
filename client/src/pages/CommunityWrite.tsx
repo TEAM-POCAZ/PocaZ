@@ -18,7 +18,7 @@ const CommunityWrite = () => {
 
   const submitBtn = async () => {
     try {
-      const { data } = await axios.post('http://localhost:8000/api/post', [
+      const { data } = await axios.post('http://pocaz.ystoy.shop/api/post', [
         {
           category: cate,
           user: 1,
