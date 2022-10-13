@@ -40,6 +40,7 @@ export default {
       `SELECT	p.title		  		      AS title,		  -- post title
             IFNULL(p.viewCount,0) 	AS viewCount,	-- post view count
             p.content	   			      AS text,	    -- post text
+            p.createAt              AS createAt,  -- post create date
             u.id      			        AS userId,		-- user key
             u.nickname		          AS nickname,	-- user nickname
             u.profileImage          AS profileImage,-- user profile image
