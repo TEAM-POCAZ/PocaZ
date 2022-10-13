@@ -1,8 +1,24 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Layout from 'utils/Layout'
 
 const CommunityList = () => {
+  const [list, setList] = useState<any[] | null>(null)
+  useEffect(() => {
+    const list = async () => {
+      //const list = await axios.get('https://pocaz.ystoy.shop/api/post/1')
+      try {
+        setList(null)
+        const response = await axios.get('https://pocaz.ystoy.shop/api/post/1')
+        setList(response.data)
+      } catch (e) {
+        console.error(e)
+      }
+    }
+    list()
+  }, [])
+
   return (
     <>
       <Layout>
@@ -31,21 +47,24 @@ const CommunityList = () => {
           </div>
           <div className="h-screen">
             <ul>
-              <li>
-                <div className="boardSubject">
-                  <p>제목이 들어올 곳</p>
-                  <div>
-                    <div className="writeWrap">
-                      <div className="writeProfile">{/* <img src={} /> */}</div>
-                      <span className="writeName">작성자명</span>
+              {list &&
+                list.map((lists: any) => (
+                  <li key={lists.id}>
+                    <div className="boardSubject">
+                      <p>{lists.title}</p>
+                      <div>
+                        <div className="writeWrap">
+                          <div className="writeProfile">{/* <img src={} /> */}</div>
+                          <span className="writeName">{lists.nickname}</span>
+                        </div>
+                        <time>{lists.createAt}</time>
+                        <span className="comment">댓글 {lists.replyCnt}</span>
+                        <span className="hit">{lists.viewCount}</span>
+                      </div>
                     </div>
-                    <time>날짜</time>
-                    <span className="comment">댓글 0</span>
-                    <span className="hit">조회수</span>
-                  </div>
-                </div>
-                <div className="boardPhoto">{/* <img src={} /> */}</div>
-              </li>
+                    <div className="boardPhoto">{/* <img src={} /> */}</div>
+                  </li>
+                ))}
             </ul>
           </div>
         </div>
