@@ -7,7 +7,6 @@ const CommunityList = () => {
   const [list, setList] = useState<any[] | null>(null)
   useEffect(() => {
     const list = async () => {
-      //const list = await axios.get('https://pocaz.ystoy.shop/api/post/1')
       try {
         setList(null)
         const response = await axios.get('https://pocaz.ystoy.shop/api/post/1')
@@ -45,7 +44,7 @@ const CommunityList = () => {
               <li>최신</li>
             </ul>
           </div>
-          <div className="h-screen">
+          <div className="">
             <ul>
               {list &&
                 list.map((lists: any) => (
