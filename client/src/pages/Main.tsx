@@ -39,8 +39,8 @@ const Main = () => {
   useEffect(() => {
     axios
       .all([
-        axios.get('http://localhost:8000/api/post/1'),
-        axios.get('http://localhost:8000/api/market/'),
+        axios.get('https://pocaz.ystoy.shop/api/post/1'),
+        axios.get('https://pocaz.ystoy.shop/api/market/'),
       ])
       .then(
         axios.spread((response1: any, response2: any) => {
