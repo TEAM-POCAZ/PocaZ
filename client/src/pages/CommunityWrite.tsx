@@ -69,7 +69,7 @@ const CommunityWrite = () => {
       <Layout>
         <div className="communityWriteBoxWrap">
           <div className="communityWriteTop flex justify-between mx-2.5">
-            <button type="button">
+            <button type="button" onClick={() => navigate(-1)}>
               <i className="ri-arrow-left-line"></i>
             </button>
             <h2 className="text-base translate-x-2.5">등록 위치 선택</h2>
