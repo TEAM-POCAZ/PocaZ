@@ -38,7 +38,7 @@ export default {
   },
   writeReply: async (req: Request, res: Response) => {
     const { category, post, user } = req.params;
-    const { pid, content } = req.body;
+    const [{ pid, content }] = req.body;
     await tranSQL.postOne(
       `INSERT INTO Reply (post, pid, user, content)
       VALUES ( ? )`,
@@ -49,7 +49,7 @@ export default {
   modifyReply: async (req: Request, res: Response) => {
     const { category, post, id, user } = req.params;
     const { content } = req.body;
-    console.log(user, id, post, content);
+    // console.log(user, id, post, content);
     await tranSQL.putOne(
       `UPDATE Reply
           SET content = ?
