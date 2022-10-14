@@ -146,4 +146,7 @@
   .boastGallery ul li:nth-child(n + 10) {
     display: none;
   }
+  .listWrap .boardSubject {
+    width: calc(100% - 100px);
+  }
 }
