@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import Layout from 'utils/Layout'
+import { Link, useNavigate } from 'react-router-dom'
 import CommunityTop from './CommunityTop'
 import axios from 'axios'
 
 const CommunityBoast = () => {
   const [list, setList] = useState<any[] | null>(null)
+  const navigate = useNavigate()
   useEffect(() => {
-    const list = async () => {
+    const boastList = async () => {
       try {
         setList(null)
         const response = await axios.get('https://pocaz.ystoy.shop/api/post/2')
@@ -15,7 +17,7 @@ const CommunityBoast = () => {
         console.error(e)
       }
     }
-    list()
+    boastList()
   }, [])
   return (
     <>
@@ -25,7 +27,7 @@ const CommunityBoast = () => {
           <ul>
             {list &&
               list.map((lists: any) => (
-                <li key={lists.id}>
+                <li key={lists.id} onClick={() => navigate(`/Community/2/${lists.id}`)}>
                   <div className="boastThumb">
                     <img src={lists.filePath} />
                   </div>
