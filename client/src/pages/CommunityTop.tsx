@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 const CommunityTop = () => {
   return (
     <>
-      <div className="communityTab relative mx-2.5">
+      <div className="communityTab relative px-2.5 pb-2.5 border-b">
         <ul className="flex justify-evenly">
           <li>
             <Link to="/CommunityList">자유</Link>
@@ -15,7 +15,7 @@ const CommunityTop = () => {
         </ul>
         <button
           type="button"
-          className="absolute top-2/4 right-0 translate-y-[-50%] px-2.5 bg-black text-white rounded"
+          className="absolute top-0 right-2.5 w-12 py-px bg-black text-white rounded"
         >
           <Link to="/Community">작성</Link>
         </button>
