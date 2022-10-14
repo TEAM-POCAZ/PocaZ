@@ -18,7 +18,7 @@ const CommunityWrite = () => {
 
   const submitBtn = async () => {
     try {
-      const { data } = await axios.post('http://pocaz.ystoy.shop/api/post', [
+      const { data } = await axios.post('https://pocaz.ystoy.shop/api/post', [
         {
           category: cate,
           user: 1,
@@ -75,6 +75,7 @@ const CommunityWrite = () => {
             <h2 className="text-base translate-x-2.5">등록 위치 선택</h2>
             <div>
               <select onChange={onChange1}>
+                {/* 추후 수정 */}
                 <option value={1}>자유</option>
                 <option value={2}>자랑</option>
               </select>
