@@ -1,10 +1,12 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Layout from 'utils/Layout'
+import CommunityTop from './CommunityTop'
 
 const CommunityList = () => {
   const [list, setList] = useState<any[] | null>(null)
+  const navigate = useNavigate()
   useEffect(() => {
     const list = async () => {
       try {
@@ -22,46 +24,37 @@ const CommunityList = () => {
     <>
       <Layout>
         <div className="communityListBoxWrap">
-          <div className="communityTab relative mx-2.5">
-            <ul className="flex justify-evenly">
-              <li>
-                <Link to="/CommunityList">자유</Link>
-              </li>
-              <li>
-                <Link to="/CommunityBoast">자랑</Link>
-              </li>
-            </ul>
-            <button
-              type="button"
-              className="absolute top-2/4 right-0 translate-y-[-50%] px-2.5 bg-black text-white rounded"
-            >
-              <Link to="/Community">작성</Link>
-            </button>
-          </div>
-          <div className="freeBoardSort mt-2.5 border-t border-b">
+          <CommunityTop />
+          <div className="freeBoardSort border-b">
             <ul className="flex justify-around py-3">
               <li>인기</li>
               <li>최신</li>
             </ul>
           </div>
-          <div className="">
+          <div className="listWrap m-2.5">
             <ul>
               {list &&
-                list.map((lists: any) => (
-                  <li key={lists.id}>
-                    <div className="boardSubject">
-                      <p>{lists.title}</p>
+                list.map((lists: any, index) => (
+                  <li
+                    key={lists.id}
+                    className="flex py-2.5 border-b"
+                    onClick={() => navigate(`/Community/1/${lists.id}`)}
+                  >
+                    <div className="boardSubject w-[calc(100% - 100px)]">
+                      <p className="mr-1 mb-2.5 truncate">{lists.title}</p>
                       <div>
-                        <div className="writeWrap">
-                          <div className="writeProfile">{/* <img src={} /> */}</div>
+                        <div className="writeWrap flex items-center">
+                          <div className="writeProfile w-10 h-10 rounded-full bg-black mr-2.5"></div>
                           <span className="writeName">{lists.nickname}</span>
                         </div>
-                        <time>{lists.createAt}</time>
-                        <span className="comment">댓글 {lists.replyCnt}</span>
-                        <span className="hit">{lists.viewCount}</span>
+                        <time className="text-xs">{lists.createAt}</time>
+                        <span className="comment text-xs">댓글 {lists.replyCnt}</span>
+                        <span className="hit text-xs">조회수 {lists.viewCount}</span>
                       </div>
                     </div>
-                    <div className="boardPhoto">{/* <img src={} /> */}</div>
+                    <div className="boardPhoto w-24 h-24 border border-gray-100 overflow-hidden">
+                      <img src={lists.filePath} className="w-full min-h-full object-fill" />
+                    </div>
                   </li>
                 ))}
             </ul>
