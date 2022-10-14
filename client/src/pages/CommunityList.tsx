@@ -37,7 +37,7 @@ const CommunityList = () => {
                 list.map((lists: any, index) => (
                   <li
                     key={lists.id}
-                    className="flex py-2.5 border-b"
+                    className="flex py-2.5 border-b cursor-pointer"
                     onClick={() => navigate(`/Community/1/${lists.id}`)}
                   >
                     <div className="boardSubject w-[calc(100% - 100px)]">
