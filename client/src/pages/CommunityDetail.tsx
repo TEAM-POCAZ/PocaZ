@@ -13,6 +13,7 @@ const CommunityDetail = () => {
         setDetailContent(null)
         const response = await axios.get(`https://pocaz.ystoy.shop/api/post/${category}/${id}`)
         setDetailContent(response.data)
+        //console.log(response.data)
       } catch (e) {
         console.error(e)
       }
@@ -24,7 +25,7 @@ const CommunityDetail = () => {
     <>
       <Layout>
         <div className="communityDetailBoxWrap">
-          <div className="communitDetailTop flex justify-between mx-2.5">
+          <div className="communitDetailTop flex justify-between px-2.5 border-b">
             <button type="button" onClick={() => navigate(-1)}>
               <i className="ri-arrow-left-line"></i>
             </button>
@@ -32,21 +33,32 @@ const CommunityDetail = () => {
             <button type="button">
               <i className="ri-more-line"></i>
             </button>
+            <div>수정</div>
+            <div>삭제</div>
           </div>
-          <div className="communityDetailContents">
+          <div className="communityDetailContents mt-2.5">
             {DetailContent &&
               DetailContent.map((DetailContents: any, index) => (
-                <div key={DetailContents.id}>
-                  <h3>{DetailContents.title}</h3>
-                  <div className="writeWrap">
-                    <div className="writeThumb">{/* <img src={} /> */}</div>
-                    <span className="writeName">{DetailContents.nickname}</span>
+                <div key={DetailContents.id} className="mb-3.5">
+                  <div className="mb-2.5 pb-2.5 px-2.5 border-b">
+                    <h3 className="pb-1 text-lg font-bold">{DetailContents.title}</h3>
+                    <div className="writeWrap flex items-center pb-2.5">
+                      <div className="writeThumb w-10 h-10 rounded-full bg-black mr-2.5"></div>
+                      <span className="writeName">{DetailContents.nickname}</span>
+                    </div>
+                    <time>{DetailContents.createAt}</time>&nbsp;
+                    <span className="hit">조회수 {DetailContents.viewCount}</span>
                   </div>
-                  <time>{DetailContents.createAt}</time>
-                  <span className="comment">댓글 {DetailContents.replyCnt}</span>
-                  <span className="hit">조회수 {DetailContents.viewCount}</span>
+                  <div className="px-2.5 pb-2.5">
+                    <div className="attachedFile"></div>
+                    <p className="break-all">{DetailContents.text}</p>
+                  </div>
+                  <button className="flex items-center justify-center w-full bg-blue-800 text-white likeBtn">
+                    👍🏻 좋아요가 들어올 영역
+                  </button>
                 </div>
               ))}
+            <div className="replyWrap"></div>
           </div>
         </div>
       </Layout>
