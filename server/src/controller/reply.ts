@@ -20,10 +20,11 @@ export default {
     );
 
     res.send(
-      oneDepth.map((preply: IReplyM) => {
-        preply.reply = twoDepth.filter((rep: IReply) => rep.pid == preply.id);
-        return preply;
-      })
+      // oneDepth.map((preply: IReplyM) => {
+      //   preply.reply = twoDepth.filter((rep: IReply) => rep.pid == preply.id);
+      //   return preply;
+      // }
+      [oneDepth, twoDepth]
     );
   },
   getReply: async (req: Request, res: Response) => {
