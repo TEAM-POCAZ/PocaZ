@@ -26,9 +26,9 @@ const CommunityList = () => {
         <div className="communityListBoxWrap">
           <CommunityTop />
           <div className="freeBoardSort border-b">
-            <ul className="flex justify-around py-3">
-              <li>인기</li>
-              <li>최신</li>
+            <ul className="flex justify-around text-center cursor-pointer">
+              <li className="flex-auto py-3">인기</li>
+              <li className="flex-auto py-3">최신</li>
             </ul>
           </div>
           <div className="listWrap m-2.5">
@@ -47,8 +47,8 @@ const CommunityList = () => {
                           <div className="writeProfile w-10 h-10 rounded-full bg-black mr-2.5"></div>
                           <span className="writeName">{lists.nickname}</span>
                         </div>
-                        <time className="text-xs">{lists.createAt}</time>
-                        <span className="comment text-xs">댓글 {lists.replyCnt}</span>
+                        <time className="text-xs">{lists.createAt}</time>&nbsp;
+                        <span className="comment text-xs">댓글 {lists.replyCnt}</span>&nbsp;
                         <span className="hit text-xs">조회수 {lists.viewCount}</span>
                       </div>
                     </div>
