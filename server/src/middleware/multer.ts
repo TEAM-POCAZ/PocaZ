@@ -1,22 +1,25 @@
 import { Request, Response, NextFunction } from 'express';
+import multer from 'multer';
 import path from 'path';
 import { tranSQL } from '../utils/tranSQL';
-import multer from 'multer';
 
 const fileStorage = multer.diskStorage({
   // 저장 폴더 위치
   destination: (req: Request, file: Express.Multer.File, cb) => {
     cb(null, 'uploads/');
   },
-  //파일 이름
-  // filename: (req: Request, file: Express.Multer.File, cb) => {
-  //   cb(
-  //     null,
-  //     `${new Date().valueOf()}${file.filename}${path.extname(
-  //       file.originalname
-  //     )}`
-  //   );
-  // },
+  // 파일 이름
+  filename: (req: Request, file: Express.Multer.File, cb) => {
+    cb(
+      null,
+      `${new Date().valueOf()}${Buffer.from(
+        file.originalname,
+        'latin1'
+      ).toString('utf8')}`
+
+      // 확장자 부분 ${path.extname(file.originalname)}
+    );
+  },
 });
 const multerUpload = multer({
   storage: fileStorage,
@@ -26,11 +29,13 @@ const multerUpload = multer({
 });
 
 const uploadFiles = async (req: Request, res: Response) => {
-  // console.log(req.files);
+  // console.log(req);
   // console.log(req.body);
   const files = req.files as Express.Multer.File[];
-  if (files?.length === 0) res.send('please send more than ones');
-  else {
+  if (files?.length === 0) {
+    res.send('please send more than ones');
+    return;
+  } else {
     const fileId: string = await tranSQL.postOne(
       `
       INSERT INTO File (name, path)

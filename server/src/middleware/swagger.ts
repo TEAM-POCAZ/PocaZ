@@ -9,7 +9,7 @@ const swaggerDefinition = {
     description: `POCAZ 내 client가 server에 요청하는 방법을 기술한 페이지입니다.
     서버 관리자는 본인이 담당한 API를 개발 후 현재 페이지에 기술해주시길 바랍니다. 감사합니다.`, // Description (optional)
   },
-  host: `localhost:${+config.host.port}`, // Host (optional)
+  // host: `localhost:${+config.host.port}`, // Host (optional)
   basePath: '/', // Base path (optional)
   servers: [
     {
@@ -17,6 +17,9 @@ const swaggerDefinition = {
     },
     {
       url: 'http://localhost:8080/',
+    },
+    {
+      url: 'https://pocaz.ystoy.shop/',
     },
   ],
 };
