@@ -27,6 +27,7 @@ app.use(helemt());
 // TODO - cors 다 열어놓으면 안됨 나중에 수정필요!
 app.use(cors());
 
+app.use(express.static('uploads'));
 app.use('/api-yaml', swaggerUi.serve, swaggerUi.setup(swaggerJsDoc(options)));
 
 app.use(`${API}/chatRoom`, chatRoomRouter);
