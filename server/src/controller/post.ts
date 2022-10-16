@@ -14,7 +14,7 @@ export default {
         AND p.deleteAt IS NULL
         ORDER BY ${sortBy === 'boast' ? 'LikesCnt DESC, ' : ''} p.createAt DESC 
         LIMIT ?`,
-      [category, 100]
+      [category, 1000]
     );
     res.send(postList);
   },
