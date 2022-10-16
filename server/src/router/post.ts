@@ -101,41 +101,6 @@ router.post('/', posts.writePost);
 
 /**
  * @swagger
- * /api/post/{category}:
- *   get:
- *     summary: 모든 게시물을 가져옵니다.
- *     operationId: getPosts
- *     tags: [post]
- *     parameters:
- *       - name: category
- *         in: path
- *         required: true
- *         description: The category key of posts
- *         schema:
- *           type: string
- *         example: '1'
- *     description: Update an existing pet by Id
- *     responses:
- *       '200':
- *         description: Successful operation
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Post'
- *       '400':
- *         description: Invalid ID supplied
- *       '404':
- *         description: category not found
- *       '405':
- *         description: Validation exception
- */
-
-router.get('/:category', posts.getPosts);
-
-/**
- * @swagger
  * /api/post/{category}/{post}:
  *   get:
  *     summary: 게시글 하나를 가져옵니다
@@ -178,6 +143,50 @@ router.get('/:category/:post', posts.getPost);
 
 /**
  * @swagger
+ * /api/post/{category}:
+ *   get:
+ *     summary: 모든 게시물을 가져옵니다.
+ *     operationId: getPosts
+ *     tags: [post]
+ *     parameters:
+ *       - name: category
+ *         in: path
+ *         required: true
+ *         description: The category key of posts
+ *         schema:
+ *           type: string
+ *         example: '1'
+ *       - name: sortBy
+ *         in: query
+ *         required: true
+ *         description: input sort keyword - 최신, 인기
+ *         schema:
+ *           type: string
+ *           enum:
+ *             - recent
+ *             - boast
+ *     description: Update an existing pet by Id
+ *     responses:
+ *       '200':
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Post'
+ *       '400':
+ *         description: Invalid ID supplied
+ *       '404':
+ *         description: category not found
+ *       '405':
+ *         description: Validation exception
+ */
+
+router.get('/:category/', posts.getPosts);
+
+/**
+ * @swagger
  * /api/post/{category}/{post}/{user}:
  *   put:
  *     summary: 게시글 하나를 수정합니다.
@@ -217,9 +226,6 @@ router.get('/:category/:post', posts.getPost);
  *             items:
  *               type: object
  *               properties:
- *                 user:
- *                   type: string
- *                   example: 10
  *                 title:
  *                   type: string
  *                   example: 제목이에용
