@@ -21,6 +21,16 @@ const CommunityDetail = () => {
     Detail()
   }, [])
 
+  const deleteAction = async () => {
+    try {
+      const del = await axios.delete(`https://pocaz.ystoy.shop/api/post/${category}/${id}/1`)
+      alert('게시글 삭제 완료!')
+      navigate('/CommunityList')
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   return (
     <>
       <Layout>
@@ -34,7 +44,7 @@ const CommunityDetail = () => {
               <i className="ri-more-line"></i>
             </button>
             <div>수정</div>
-            <div>삭제</div>
+            <button onClick={deleteAction}>삭제</button>
           </div>
           <div className="communityDetailContents mt-2.5">
             {DetailContent &&
