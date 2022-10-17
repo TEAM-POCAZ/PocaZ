@@ -107,7 +107,7 @@ const Main = () => {
                     users.map((user: any) => (
                       <li key={user.id} className="flex justify-between mb-3.5">
                         <h4 className="mr-3.5 text-sm font-normal whitespace-nowrap text-ellipsis overflow-hidden">
-                          {user.content}
+                          {user.title}
                         </h4>
                         <time className="timeWrap text-sm font-normal">{user.createAt}</time>
                       </li>

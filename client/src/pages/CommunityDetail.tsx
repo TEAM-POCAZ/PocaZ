@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import Layout from 'utils/Layout'
 import axios from 'axios'
+import LikeBtn from '../components/Square/LikeBtn'
 
 import CommentList from '../components/Square/CommentList'
 
@@ -12,10 +13,14 @@ const CommunityDetail = () => {
   const [DetailContent, setDetailContent] = useState<any[] | null>(null)
   const [comments, setComments] = useState<any[] | null>(null)
   const [reply, setReply] = useState<any[] | null>(null)
+  const [replyCnt, setReplyCnt] = useState(0)
   const navigate = useNavigate()
+  const [like, setLike] = useState(false)
   useEffect(() => {
     const Detail = async () => {
       try {
+        await axios.patch(`https://pocaz.ystoy.shop/api/post/view/${category}/${id}`)
+
         setDetailContent(null)
         const response = await axios.get(`https://pocaz.ystoy.shop/api/post/${category}/${id}`)
         setDetailContent(response.data)
@@ -26,6 +31,16 @@ const CommunityDetail = () => {
     }
     Detail()
   }, [])
+
+  useEffect(() => {
+    ;(async () => {
+      const {
+        data: [toggleLike],
+      } = await axios.get(`https://pocaz.ystoy.shop/api/post/likes/${id}/1`)
+      toggleLike ? setLike(true) : setLike(false)
+    })()
+  }, [like])
+
   const onReplyChange = (e: any) => {
     // console.log(reply)
     setReply(e.target.value)
@@ -78,6 +93,16 @@ const CommunityDetail = () => {
     }
   }
 
+  const onToggleLike = () => {
+    if (like) {
+      axios.delete(`https://pocaz.ystoy.shop/api/post/likes/${id}/1`)
+      setLike(false)
+    } else {
+      axios.post(`https://pocaz.ystoy.shop/api/post/likes/${id}/1`)
+      setLike(true)
+    }
+  }
+
   useEffect(() => {
     ;(async () => {
       try {
@@ -94,6 +119,7 @@ const CommunityDetail = () => {
           }),
         )
         // console.log(originComments)
+        setReplyCnt(originComments.length + replyComments.length)
       } catch (e) {
         console.error(e)
       }
@@ -125,15 +151,14 @@ const CommunityDetail = () => {
                       <span className="writeName">{DetailContents.nickname}</span>
                     </div>
                     <time>{DetailContents.createAt}</time>&nbsp;
+                    <span>댓글 수:{replyCnt}</span>
                     <span className="hit">조회수 {DetailContents.viewCount}</span>
                   </div>
                   <div className="px-2.5 pb-2.5">
                     <div className="attachedFile"></div>
                     <p className="break-all">{DetailContents.text}</p>
                   </div>
-                  <button className="flex items-center justify-center w-full bg-blue-800 text-white likeBtn">
-                    👍🏻 좋아요가 들어올 영역
-                  </button>
+                  <LikeBtn like={like} onClick={onToggleLike} />
                 </div>
               ))}
             <div className="replyWrap px-2.5">
