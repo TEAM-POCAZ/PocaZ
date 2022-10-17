@@ -16,6 +16,7 @@ const CommunityDetail = () => {
   const [replyCnt, setReplyCnt] = useState(0)
   const navigate = useNavigate()
   const [like, setLike] = useState(false)
+  const [img, setImg] = useState('')
   useEffect(() => {
     const Detail = async () => {
       try {
@@ -24,7 +25,13 @@ const CommunityDetail = () => {
         setDetailContent(null)
         const response = await axios.get(`https://pocaz.ystoy.shop/api/post/${category}/${id}`)
         setDetailContent(response.data)
+        const { data }: { data: any } = await axios.get(
+          `https://pocaz.ystoy.shop/api/post/img/${category}/${id}`,
+        )
+        const [{ path: imgPath }] = data
+        setImg(imgPath)
         //console.log(response.data)
+        console.log(imgPath)
       } catch (e) {
         console.error(e)
       }
@@ -155,7 +162,9 @@ const CommunityDetail = () => {
                     <span className="hit">조회수 {DetailContents.viewCount}</span>
                   </div>
                   <div className="px-2.5 pb-2.5">
-                    <div className="attachedFile"></div>
+                    <div className="attachedFile">
+                      <img src={img} />
+                    </div>
                     <p className="break-all">{DetailContents.text}</p>
                   </div>
                   <LikeBtn like={like} onClick={onToggleLike} />

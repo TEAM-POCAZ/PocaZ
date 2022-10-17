@@ -52,8 +52,13 @@ const CommunityList = () => {
                         <span className="hit text-xs">조회수 {lists.viewCount}</span>
                       </div>
                     </div>
-                    <div className="boardPhoto w-24 h-24 border border-gray-100 overflow-hidden">
-                      <img src={lists.filePath} className="w-full min-h-full object-fill" />
+                    <div className="boardPhoto w-24 h-24 overflow-hidden">
+                      {lists.filePath ? (
+                        <img
+                          src={lists.filePath}
+                          className="w-full min-h-full object-fill border border-gray-100"
+                        />
+                      ) : null}
                     </div>
                   </li>
                 ))}
