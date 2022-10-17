@@ -31,7 +31,7 @@ const BtmMenu = () => {
           </Link>
         </li>
         <li>
-          <Link to="/">
+          <Link to="/login">
             <i className="ri-user-line block text-center text-2xl leading-none"></i>
             <p className="text-xs">MY PAGE</p>
           </Link>

@@ -13,6 +13,8 @@ import CommunityBoast from 'pages/CommunityBoast'
 import CommunitySearchResult from 'pages/CommunitySearchResult'
 import ChatMain from 'pages/ChatMain'
 import Chat from 'components/chat/Chat'
+import Login from 'pages/Login'
+import LoginSuccessed from 'pages/LoginSuccessed'
 
 function App({ socket }: any) {
   const client = new QueryClient()
@@ -31,6 +33,8 @@ function App({ socket }: any) {
             <Route path="CommunitySearchResult" element={<CommunitySearchResult />} />
             <Route path="/chat/list" element={<ChatMain />} />
             <Route path="/chat" element={<Chat socket={socket} />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/loginsuccessed" element={<LoginSuccessed></LoginSuccessed>} />
           </Routes>
         </Router>
       </QueryClientProvider>
