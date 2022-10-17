@@ -11,9 +11,9 @@ export default class Socket {
   constructor(baseURL: string) {
     this.io = io(baseURL)
 
-    this.io.on('connect_error', (err) => {
-      console.log('socket error', err.message)
-    })
+    // this.io.on('connect_error', (err) => {
+    //   console.log('socket error', err.message)
+    // })
   }
 
   onSync(e: any, cb: any) {

@@ -51,12 +51,14 @@ const Chat = ({ socket }: any) => {
     getChat()
     socket.joinRoom(room)
 
-    const close = socket.onSync('test', (a: any) => {
-      setChats((prev) => [...prev, a])
+    const close = socket.onSync('test', (message: any) => {
+      setChats((prev) => [...prev, message])
+      //TODO 이 a 값을 zustand에도 넣는다.
+      // 이 값을 chatlist도 바라보게한다.
     })
 
     // clear up function 이라고 하며 unmount 시 실행됨
-    return () => close() // useEffect 동작 전 실행됨
+    // return () => close() // useEffect 동작 전 실행됨
   }, [])
 
   const getChat = async () => {
@@ -79,9 +81,9 @@ const Chat = ({ socket }: any) => {
         chatRoom: room,
       }
 
-      socket.emitSync('sendMessage', newMessage)
+      // socket.emitSync('sendMessage', newMessage)
+      await apis.postChat(newMessage) // post로 보낼 때
       // const { data } = await apis.postChat(newMessage)
-      // await apis.postChat(newMessage) // post로 보낼 때
       // setChats((prev) => [...prev, data])
     }
   }
