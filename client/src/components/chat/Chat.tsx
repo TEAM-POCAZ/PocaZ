@@ -49,14 +49,14 @@ const Chat = ({ socket }: any) => {
 
   useEffect(() => {
     getChat()
-    console.log(room)
     socket.joinRoom(room)
 
     const close = socket.onSync('test', (a: any) => {
       setChats((prev) => [...prev, a])
     })
 
-    return () => close()
+    // clear up function 이라고 하며 unmount 시 실행됨
+    return () => close() // useEffect 동작 전 실행됨
   }, [])
 
   const getChat = async () => {
@@ -79,7 +79,9 @@ const Chat = ({ socket }: any) => {
         chatRoom: room,
       }
 
-      const { data } = await apis.postChat(newMessage)
+      socket.emitSync('sendMessage', newMessage)
+      // const { data } = await apis.postChat(newMessage)
+      // await apis.postChat(newMessage) // post로 보낼 때
       // setChats((prev) => [...prev, data])
     }
   }
@@ -91,10 +93,10 @@ const Chat = ({ socket }: any) => {
         <>로딩중입니다</>
       ) : (
         <div className="outerContainer flex justify-center items-center h-screen bg-gray-800">
-          <div className="container flex flex-col justify-between bg-white rounded-lg h-2/3 w-5/6 ">
+          <div className=" flex flex-col justify-between bg-white rounded-lg h-2/3 w-5/6 ">
             <h1>하이 여긴 챗</h1>
             <div className="flex">
-              <button onClick={() => navigate(-1)} className="border">
+              <button onClick={() => navigate('/chat/list')} className="border">
                 채팅목록으로
               </button>
             </div>

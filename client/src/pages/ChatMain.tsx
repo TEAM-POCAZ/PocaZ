@@ -31,13 +31,15 @@ const ChatMain = () => {
     isLoading,
     error,
     data: roomData,
-  } = useQuery<IChatRoom[], Error>('getChatList', getChatList)
+  } = useQuery<IChatRoom[], Error>('getChatList', getChatList, {
+    // refetchInterval: 1000, // 1초마다 갱신
+  })
 
   if (error) console.log('"axois", error.message :>> ', error.message)
 
   // const [name, setName] = useState(1) //FIXME  login 정보에서 가져오기(store) // nickName은 1인 유저로 가정한다.
   const { userInfo } = useStore() // 광역 상태관리
-  const [room, setRoom] = useState('') //TODO 1:1채팅방 room은 어떻게 만들까?
+  // const [room, setRoom] = useState('') //TODO 1:1채팅방 room은 어떻게 만들까?
 
   return (
     <Layout>
