@@ -149,4 +149,10 @@
   .listWrap .boardSubject {
     width: calc(100% - 100px);
   }
+  .likeOn {
+    background: #2f4fef;
+  }
+  .likeOff {
+    background-color: #ededed;
+  }
 }
