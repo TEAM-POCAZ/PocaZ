@@ -10,6 +10,7 @@ import CommunityList from 'pages/CommunityList'
 import CommunityDetail from 'pages/CommunityDetail'
 import CommunityWrite from 'pages/CommunityWrite'
 import CommunityBoast from 'pages/CommunityBoast'
+import CommunitySearchResult from 'pages/CommunitySearchResult'
 import ChatMain from 'pages/ChatMain'
 import Chat from 'components/chat/Chat'
 
@@ -27,6 +28,7 @@ function App({ socket }: any) {
             <Route path="Community/:category/:id" element={<CommunityDetail />} />
             <Route path="Community/" element={<CommunityWrite />} />
             <Route path="CommunityBoast" element={<CommunityBoast />} />
+            <Route path="CommunitySearchResult" element={<CommunitySearchResult />} />
             <Route path="/chat/list" element={<ChatMain />} />
             <Route path="/chat" element={<Chat socket={socket} />} />
           </Routes>
