@@ -91,9 +91,9 @@ const tranSQL = {
     img.path	  		        AS filePath		-- post main img src `,
     listsFrom: `FROM Post p
     INNER JOIN User u ON p.user = u.id
-    LEFT JOIN (SELECT id, count(*) as cnt
+    LEFT JOIN (SELECT post, count(*) as cnt
                 FROM Reply
-                GROUP BY id) rep on p.id = rep.id
+                GROUP BY post) rep on p.id = rep.post
     LEFT JOIN (SELECT pi.post  as post,
                     f.path   as path
                 FROM (SELECT post, min(file) as main
