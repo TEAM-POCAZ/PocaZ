@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import queryString from 'query-string'
-import { useQuery } from 'react-query'
 
+import useStore from 'store/store'
 import Layout from 'utils/Layout'
 import { apis } from 'utils/api'
 
@@ -40,19 +40,22 @@ interface ILocationProps {
  */
 
 const Chat = ({ socket }: any) => {
-  const navigate = useNavigate()
-  // const location = useLocation()
-
-  const { room, name } = queryString.parse(location.search)
   const [chats, setChats] = useState<IChat[]>([])
-  // const { room, name, oppNickname }: any = location.state
+  const { setNewMsg } = useStore()
+
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { room, name } = queryString.parse(location.search)
+
+  const { oppNickname }: any = location.state //TODO 지워야함
 
   useEffect(() => {
     getChat()
     socket.joinRoom(room)
 
-    const close = socket.onSync('test', (message: any) => {
+    socket.onSync('test', (message: any) => {
       setChats((prev) => [...prev, message])
+      setNewMsg(message)
       //TODO 이 a 값을 zustand에도 넣는다.
       // 이 값을 chatlist도 바라보게한다.
     })
@@ -94,15 +97,9 @@ const Chat = ({ socket }: any) => {
       {isLoading ? (
         <>로딩중입니다</>
       ) : (
-        <div className="outerContainer flex justify-center items-center h-screen bg-gray-800">
-          <div className=" flex flex-col justify-between bg-white rounded-lg h-2/3 w-5/6 ">
-            <h1>하이 여긴 챗</h1>
-            <div className="flex">
-              <button onClick={() => navigate('/chat/list')} className="border">
-                채팅목록으로
-              </button>
-            </div>
-            {/* <InfoBar oppNickname={oppNickname} /> */}
+        <div className="flex items-center justify-center bg-gray-800 h-[80vh] outerContainer">
+          <div className="flex flex-col justify-between w-5/6 bg-white rounded-lg h-2/3">
+            <InfoBar oppNickname={oppNickname} navigate={navigate} />
             <Messages chats={chats} />
             <InputMsg handleMessage={handleMessage} />
           </div>

@@ -14,7 +14,13 @@ import ChatMain from 'pages/ChatMain'
 import Chat from 'components/chat/Chat'
 
 function App({ socket }: any) {
-  const client = new QueryClient()
+  const client = new QueryClient({
+    defaultOptions: {
+      queries: {
+        notifyOnChangeProps: 'tracked',
+      },
+    },
+  })
   return (
     <>
       <QueryClientProvider client={client}>
