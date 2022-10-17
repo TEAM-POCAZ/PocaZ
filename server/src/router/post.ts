@@ -143,6 +143,39 @@ router.get('/:category/:post', posts.getPost);
 
 /**
  * @swagger
+ * /api/post/search:
+ *   get:
+ *     summary: 키워드에 맞는 게시물을 가져옵니다.
+ *     operationId: searchPost
+ *     tags: [post]
+ *     parameters:
+ *       - name: keyword
+ *         in: query
+ *         required: true
+ *         description: 게시글 검색 키워드
+ *         schema:
+ *           type: string
+ *     description: none
+ *     responses:
+ *       '200':
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Post'
+ *       '400':
+ *         description: Invalid ID supplied
+ *       '404':
+ *         description: category not found
+ *       '405':
+ *         description: Validation exception
+ */
+router.get('/search', posts.searchPost);
+
+/**
+ * @swagger
  * /api/post/{category}:
  *   get:
  *     summary: 모든 게시물을 가져옵니다.
@@ -164,7 +197,7 @@ router.get('/:category/:post', posts.getPost);
  *           type: string
  *           enum:
  *             - recent
- *             - boast
+ *             - popular
  *     description: Update an existing pet by Id
  *     responses:
  *       '200':
