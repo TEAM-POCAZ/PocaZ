@@ -3,9 +3,15 @@ import { Link, useParams, useNavigate } from 'react-router-dom'
 import Layout from 'utils/Layout'
 import axios from 'axios'
 
+import CommentList from '../components/Square/CommentList'
+
 const CommunityDetail = () => {
   const { category, id } = useParams()
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
   const [DetailContent, setDetailContent] = useState<any[] | null>(null)
+  const [comments, setComments] = useState<any[] | null>(null)
+  const [reply, setReply] = useState<any[] | null>(null)
   const navigate = useNavigate()
   useEffect(() => {
     const Detail = async () => {
@@ -20,7 +26,79 @@ const CommunityDetail = () => {
     }
     Detail()
   }, [])
+  const onReplyChange = (e: any) => {
+    // console.log(reply)
+    setReply(e.target.value)
+  }
+  const onReplySubmit = async () => {
+    try {
+      const { data } = await axios.post(
+        `https://pocaz.ystoy.shop/api/post/reply/${category}/${id}/1`,
+        [
+          {
+            pid: null,
+            content: reply,
+          },
+        ],
+      )
+      // console.log('성공')
+      // console.log(data)
+      alert('등록 완료!')
+      window.location.reload()
+    } catch (err: any) {
+      console.error(err)
+    }
+  }
 
+  const modifyAction = () => {
+    // try {
+    //   navigate('/Community', { state: { category, id } })
+    // } catch (e) {
+    //   console.error(e)
+    // }
+    useEffect(() => {
+      const modify = async () => {
+        const { data } = await axios.get('`https://pocaz.ystoy.shop/api/post/${category}/${id}')
+        return data
+      }
+      modify().then((result) => {
+        setTitle(result.title)
+        setContent(result.content)
+      })
+    }, [])
+  }
+
+  const deleteAction = async () => {
+    try {
+      const del = await axios.delete(`https://pocaz.ystoy.shop/api/post/${category}/${id}/1`)
+      alert('게시글 삭제 완료!')
+      navigate('/CommunityList')
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  useEffect(() => {
+    ;(async () => {
+      try {
+        setComments(null)
+        const response = await axios.get(
+          `https://pocaz.ystoy.shop/api/post/reply/${category}/${id}`,
+        )
+        const [originComments, replyComments]: [originComments: any, replyComments: any] =
+          response.data
+        setComments(
+          originComments.map((preply: any) => {
+            preply.reply = replyComments.filter((rep: any) => rep.pid == preply.id)
+            return preply
+          }),
+        )
+        // console.log(originComments)
+      } catch (e) {
+        console.error(e)
+      }
+    })()
+  }, [])
   return (
     <>
       <Layout>
@@ -33,8 +111,8 @@ const CommunityDetail = () => {
             <button type="button">
               <i className="ri-more-line"></i>
             </button>
-            <div>수정</div>
-            <div>삭제</div>
+            <button onClick={modifyAction}>수정</button>
+            <button onClick={deleteAction}>삭제</button>
           </div>
           <div className="communityDetailContents mt-2.5">
             {DetailContent &&
@@ -58,7 +136,13 @@ const CommunityDetail = () => {
                   </button>
                 </div>
               ))}
-            <div className="replyWrap"></div>
+            <div className="replyWrap px-2.5">
+              <CommentList comments={comments} />
+              <div className="commentWriteBtn">
+                <textarea className="border" onChange={onReplyChange} />
+                <button onClick={onReplySubmit}>댓글 등록</button>
+              </div>
+            </div>
           </div>
         </div>
       </Layout>
