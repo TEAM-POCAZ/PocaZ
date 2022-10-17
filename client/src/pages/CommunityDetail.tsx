@@ -12,6 +12,7 @@ const CommunityDetail = () => {
   const [DetailContent, setDetailContent] = useState<any[] | null>(null)
   const [comments, setComments] = useState<any[] | null>(null)
   const [reply, setReply] = useState<any[] | null>(null)
+  const [replyCnt, setReplyCnt] = useState(0)
   const navigate = useNavigate()
   useEffect(() => {
     const Detail = async () => {
@@ -94,6 +95,7 @@ const CommunityDetail = () => {
           }),
         )
         // console.log(originComments)
+        setReplyCnt(originComments.length + replyComments.length)
       } catch (e) {
         console.error(e)
       }
@@ -125,6 +127,7 @@ const CommunityDetail = () => {
                       <span className="writeName">{DetailContents.nickname}</span>
                     </div>
                     <time>{DetailContents.createAt}</time>&nbsp;
+                    <span>댓글 수:{replyCnt}</span>
                     <span className="hit">조회수 {DetailContents.viewCount}</span>
                   </div>
                   <div className="px-2.5 pb-2.5">
