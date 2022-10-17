@@ -1,3 +1,158 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,800&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.5/dist/web/static/pretendard.css');
+
+@layer components {
+  html {
+    /* main font */
+    font-family: 'Montserrat', Pretendard sans-serif;
+  }
+  body {
+    background: #000;
+  }
+
+  .bg .txtBox {
+    margin-top: -80px;
+    margin-left: -450px;
+  }
+  .bg .txtBox h3 {
+    transition: 0.8s all cubic-bezier(0.215, 0.61, 0.355, 1);
+    -webkit-background: linear-gradient(90deg, #2f4fef 40%, #fff 95%);
+    -moz-background: linear-gradient(90deg, #2f4fef 40%, #fff 95%);
+    background: linear-gradient(90deg, #2f4fef 40%, #fff 95%);
+    -webkit-animation: Bar 3s ease infinite;
+    animation: Bar 3s ease infinite;
+    background-size: 200% 800%;
+    background-position: 80% 0%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  @-webkit-keyframes Bar {
+    0% {
+      background-position: 100% 0%;
+    }
+
+    55% {
+      background-position: 60% 100%;
+    }
+
+    100% {
+      background-position: 100% 0%;
+    }
+  }
+
+  @-moz-keyframes Bar {
+    0% {
+      background-position: 100% 0%;
+    }
+
+    55% {
+      background-position: 60% 100%;
+    }
+
+    100% {
+      background-position: 100% 0%;
+    }
+  }
+
+  @keyframes Bar {
+    0% {
+      background-position: 100% 0%;
+    }
+
+    55% {
+      background-position: 45% 0%;
+    }
+
+    100% {
+      background-position: 100% 0%;
+    }
+  }
+
+  @media only screen and (min-width: 768px) and (max-width: 1023px) {
+  }
+  @media screen and (max-width: 767px) {
+    body {
+      background: none;
+    }
+  }
+
+  @keyframes fixHeader {
+    0% {
+      top: -5rem;
+    }
+    100% {
+      top: 0;
+    }
+  }
+
+  .changeHeader {
+    position: sticky;
+    color: black;
+    background-color: #fff;
+    width: 100%;
+    top: 0;
+    left: 0;
+    border-bottom: 1px solid #ebebeb;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    animation: fixHeader 0.3s;
+    z-index: 501;
+  }
+  .bestPoca .swiper-wrapperx {
+    /* swiper-wrapper height 고정값 해제 */
+    height: auto;
+  }
+  .mainSlide .swiper-button-prev {
+    left: 0;
+  }
+  .mainSlide .swiper-button-next {
+    right: 0;
+  }
+  .mainSlide .swiper-button-next,
+  .mainSlide .swiper-button-prev {
+    color: #fff;
+  }
+  .mainSlide .swiper-button-next::after,
+  .mainSlide .swiper-button-prev::after {
+    padding: 14px;
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.5);
+  }
+  .mainSlide .swiper-pagination {
+    color: #fff;
+    font-size: 12px;
+  }
+
+  .topBtn {
+    position: absolute;
+    right: 14px;
+    width: 40px;
+    height: 40px;
+    opacity: 0;
+    transition: 0.4s;
+    border-radius: 50%;
+    background: #ededed;
+  }
+  .topBtn.active {
+    opacity: 1;
+    transition: 0.4s;
+  }
+  .boardList ul li:nth-child(n + 6) {
+    display: none;
+  }
+  .boastGallery ul li:nth-child(n + 10) {
+    display: none;
+  }
+  .listWrap .boardSubject {
+    width: calc(100% - 100px);
+  }
+  .likeOn {
+    background: #2f4fef;
+  }
+  .likeOff {
+    background-color: #ededed;
+  }
+}
