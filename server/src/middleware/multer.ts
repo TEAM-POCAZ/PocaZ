@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import multer from 'multer';
 import path from 'path';
+import { v4 } from 'uuid';
 import { tranSQL } from '../utils/tranSQL';
 
 const fileStorage = multer.diskStorage({
@@ -12,11 +13,9 @@ const fileStorage = multer.diskStorage({
   filename: (req: Request, file: Express.Multer.File, cb) => {
     cb(
       null,
-      `${new Date().valueOf()}${Buffer.from(
-        file.originalname,
-        'latin1'
-      ).toString('utf8')}`
+      `${new Date().valueOf()}${v4()}${path.extname(file.originalname)}`
 
+      // ${Buffer.from(file.originalname,'latin1').toString('utf8')}
       // 확장자 부분 ${path.extname(file.originalname)}
     );
   },
