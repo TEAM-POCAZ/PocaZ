@@ -31,7 +31,7 @@ const LoginSuccessed = () => {
     <>
       <Layout>
         <button onClick={onClickNextPage}>커뮤니티가기</button>
-        <h3>사용자 데이터: {JSON.stringify(userData)}</h3>
+        <h3 className="break-all">사용자 데이터: {JSON.stringify(userData)}</h3>
       </Layout>
     </>
   )

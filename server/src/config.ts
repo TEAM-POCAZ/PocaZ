@@ -9,18 +9,10 @@ function required(key: string, defaultValue?: string): string {
   return value;
 }
 
-function processUrl(key: string): string {
-  let url = required(key);
-  if (process.env.NODE_ENV !== "production") {
-    url = "http://localhost:8000";
-  }
-  return url;
-}
-
 export const config = {
   host: {
     port: required("HOST_PORT"),
-    url: processUrl("HOST_URL"),
+    url: required("HOST_URL"),
   },
   db: {
     host: required("DB_HOST"),

@@ -10,20 +10,13 @@ passportSetup();
 const authRouter = Router();
 
 authRouter.get("/me", checkAuthenticated, (req, res) => {
-  if (!req.user) {
-    throw new Error("not logined before");
-  }
   return res.json(req.user);
 });
 
 authRouter.get("/logout", checkAuthenticated, (req, res) => {
-  if (req.user) {
     req.logOut(() => {
       return res.json({ status: "success" });
     });
-  } else {
-    throw new Error("not logined before");
-  }
 });
 
 authRouter.post("/withdrawal", checkAuthenticated, async (req, res) => {
