@@ -8,7 +8,7 @@ const btnList = [
   { id: 1, title: 'STORE', icon: 'ri-store-line', to: '/*' },
   { id: 2, title: 'CHAT', icon: 'ri-chat-heart-line', to: '/chat/list' },
   { id: 3, title: 'FREEZONE', icon: 'ri-emotion-happy-line', to: '/CommunityList' },
-  { id: 4, title: 'MY PAGE', icon: 'ri-user-line', to: '/' },
+  { id: 4, title: 'MY PAGE', icon: 'ri-user-line', to: '/login' },
 ]
 
 const BtmMenu = () => {
