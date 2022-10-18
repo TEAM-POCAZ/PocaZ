@@ -8,7 +8,7 @@
             "request": "attach",
             "skipFiles": [
                 "<node_internals>/**",
-                "${workspaceFolder}/server/apits/node_modules/**/*.js",
+                "${workspaceFolder}/server/node_modules/**/*.js",
             ],
             "restart": true,
         }

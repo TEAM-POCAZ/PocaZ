@@ -35,7 +35,6 @@ app.use(
     secret: [config.session.cookieKey],
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: true },
     proxy: true,
   })
 );

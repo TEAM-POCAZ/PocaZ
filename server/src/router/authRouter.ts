@@ -4,27 +4,31 @@ import passport from "passport";
 import { urlencoded } from "express";
 import type { ErrorRequestHandler } from "express";
 import { User } from "../utils/user";
+import { checkAuthenticated } from "../middleware/checkAuthenticated";
 passportSetup();
 
 const authRouter = Router();
 
-authRouter.get("/me", (req, res) => {
+authRouter.get("/me", checkAuthenticated, (req, res) => {
+  if (!req.user) {
+    throw new Error("not logined before");
+  }
   return res.json(req.user);
 });
 
-authRouter.get("/logout", (req, res) => {
+authRouter.get("/logout", checkAuthenticated, (req, res) => {
   if (req.user) {
     req.logOut(() => {
       return res.json({ status: "success" });
     });
   } else {
-    return res.json({ status: "error", message: "not logined before" });
+    throw new Error("not logined before");
   }
 });
 
-authRouter.post("/withdrawal", async (req, res) => {
+authRouter.post("/withdrawal", checkAuthenticated, async (req, res) => {
   if (!req.user) {
-    return res.json({ status: "error", message: "not logined user" });
+    throw new Error("not logined before");
   }
   await User.softDelete(req.user!.id!);
   req.logOut(() => {});

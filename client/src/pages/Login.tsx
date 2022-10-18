@@ -9,13 +9,13 @@ type btnClickEvent = React.MouseEvent<HTMLElement, MouseEvent>
 const Login = () => {
   const navigate = useNavigate()
 
-  let API = process.env.REACT_APP_HOST_URL as string
-  if (process.env.NODE_ENV !== 'production') {
-    API = 'http://localhost:8000'
-  }
+  const API = process.env.REACT_APP_HOST_URL as string
+  // if (process.env.NODE_ENV !== 'production') {
+  //   API = 'http://localhost:8000'
+  // }
 
   const logout = () => {
-    fetch(`${API}/api/auth/logout`)
+    fetch(`${API}/api/auth/logout`, { credentials: 'include' })
       .then((res) => res.json())
       .then((data) => {
         console.log(data)
@@ -76,7 +76,7 @@ const Login = () => {
               </button>
               <br></br>
               <button className="submit mt-5" onClick={logout}>
-                로그아웃하기
+                로그아웃하기2
               </button>
               <br></br>
               localhost에서는 구글만 테스트가능<br></br>
