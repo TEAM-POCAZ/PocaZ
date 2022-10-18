@@ -6,11 +6,22 @@ import LikeBtn from '../components/Square/LikeBtn'
 
 import CommentList from '../components/Square/CommentList'
 
+interface IPostDetail {
+  title: string
+  viewCount: number
+  text: string
+  createAt: string
+  userId: number
+  nickname: string
+  profileImage?: string
+  likesCnt: number
+}
+
 const CommunityDetail = () => {
   const { category, id } = useParams()
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-  const [DetailContent, setDetailContent] = useState<any[] | null>(null)
+  const [DetailContent, setDetailContent] = useState<IPostDetail | null>(null)
   const [comments, setComments] = useState<any[] | null>(null)
   const [reply, setReply] = useState<any[] | null>(null)
   const [replyCnt, setReplyCnt] = useState(0)
@@ -24,7 +35,7 @@ const CommunityDetail = () => {
 
         setDetailContent(null)
         const response = await axios.get(`https://pocaz.ystoy.shop/api/post/${category}/${id}`)
-        setDetailContent(response.data)
+        setDetailContent(response.data[0])
         const { data }: { data: any } = await axios.get(
           `https://pocaz.ystoy.shop/api/post/img/${category}/${id}`,
         )
@@ -73,21 +84,11 @@ const CommunityDetail = () => {
   }
 
   const modifyAction = () => {
-    // try {
-    //   navigate('/Community', { state: { category, id } })
-    // } catch (e) {
-    //   console.error(e)
-    // }
-    useEffect(() => {
-      const modify = async () => {
-        const { data } = await axios.get('`https://pocaz.ystoy.shop/api/post/${category}/${id}')
-        return data
-      }
-      modify().then((result) => {
-        setTitle(result.title)
-        setContent(result.content)
-      })
-    }, [])
+    if (DetailContent && DetailContent.userId === 1) {
+      navigate('/Community', { state: { category, id } })
+    } else {
+      alert('너는 수정 못함요')
+    }
   }
 
   const deleteAction = async () => {
@@ -148,28 +149,27 @@ const CommunityDetail = () => {
             <button onClick={deleteAction}>삭제</button>
           </div>
           <div className="communityDetailContents mt-2.5">
-            {DetailContent &&
-              DetailContent.map((DetailContents: any, index) => (
-                <div key={DetailContents.id} className="mb-3.5">
-                  <div className="mb-2.5 pb-2.5 px-2.5 border-b">
-                    <h3 className="pb-1 text-lg font-bold">{DetailContents.title}</h3>
-                    <div className="writeWrap flex items-center pb-2.5">
-                      <div className="writeThumb w-10 h-10 rounded-full bg-black mr-2.5"></div>
-                      <span className="writeName">{DetailContents.nickname}</span>
-                    </div>
-                    <time>{DetailContents.createAt}</time>&nbsp;
-                    <span>댓글 수:{replyCnt}</span>
-                    <span className="hit">조회수 {DetailContents.viewCount}</span>
+            {DetailContent && (
+              <div key={DetailContent.userId} className="mb-3.5">
+                <div className="mb-2.5 pb-2.5 px-2.5 border-b">
+                  <h3 className="pb-1 text-lg font-bold">{DetailContent.title}</h3>
+                  <div className="writeWrap flex items-center pb-2.5">
+                    <div className="writeThumb w-10 h-10 rounded-full bg-black mr-2.5"></div>
+                    <span className="writeName">{DetailContent.nickname}</span>
                   </div>
-                  <div className="px-2.5 pb-2.5">
-                    <div className="attachedFile">
-                      <img src={img} />
-                    </div>
-                    <p className="break-all">{DetailContents.text}</p>
-                  </div>
-                  <LikeBtn like={like} onClick={onToggleLike} />
+                  <time>{DetailContent.createAt}</time>&nbsp;
+                  <span>댓글 수:{replyCnt}</span>
+                  <span className="hit">조회수 {DetailContent.viewCount}</span>
                 </div>
-              ))}
+                <div className="px-2.5 pb-2.5">
+                  <div className="attachedFile">
+                    <img src={img} />
+                  </div>
+                  <p className="break-all">{DetailContent.text}</p>
+                </div>
+                <LikeBtn like={like} onClick={onToggleLike} />
+              </div>
+            )}
             <div className="replyWrap px-2.5">
               <CommentList comments={comments} />
               <div className="commentWriteBtn">

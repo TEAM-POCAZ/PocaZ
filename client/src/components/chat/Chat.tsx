@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import queryString from 'query-string'
-import { useQuery } from 'react-query'
 
+import useStore from 'store/store'
 import Layout from 'utils/Layout'
 import { apis } from 'utils/api'
 
@@ -40,23 +40,28 @@ interface ILocationProps {
  */
 
 const Chat = ({ socket }: any) => {
-  const navigate = useNavigate()
-  // const location = useLocation()
-
-  const { room, name } = queryString.parse(location.search)
   const [chats, setChats] = useState<IChat[]>([])
-  // const { room, name, oppNickname }: any = location.state
+  const { setNewMsg } = useStore()
+
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { room, name } = queryString.parse(location.search)
+
+  const { oppNickname }: any = location.state //TODO 지워야함
 
   useEffect(() => {
     getChat()
-    console.log(room)
     socket.joinRoom(room)
 
-    const close = socket.onSync('test', (a: any) => {
-      setChats((prev) => [...prev, a])
+    socket.onSync('test', (message: any) => {
+      setChats((prev) => [...prev, message])
+      setNewMsg(message)
+      //TODO 이 a 값을 zustand에도 넣는다.
+      // 이 값을 chatlist도 바라보게한다.
     })
 
-    return () => close()
+    // clear up function 이라고 하며 unmount 시 실행됨
+    // return () => close() // useEffect 동작 전 실행됨
   }, [])
 
   const getChat = async () => {
@@ -79,7 +84,9 @@ const Chat = ({ socket }: any) => {
         chatRoom: room,
       }
 
-      const { data } = await apis.postChat(newMessage)
+      // socket.emitSync('sendMessage', newMessage)
+      await apis.postChat(newMessage) // post로 보낼 때
+      // const { data } = await apis.postChat(newMessage)
       // setChats((prev) => [...prev, data])
     }
   }
@@ -90,15 +97,9 @@ const Chat = ({ socket }: any) => {
       {isLoading ? (
         <>로딩중입니다</>
       ) : (
-        <div className="outerContainer flex justify-center items-center h-screen bg-gray-800">
-          <div className="container flex flex-col justify-between bg-white rounded-lg h-2/3 w-5/6 ">
-            <h1>하이 여긴 챗</h1>
-            <div className="flex">
-              <button onClick={() => navigate(-1)} className="border">
-                채팅목록으로
-              </button>
-            </div>
-            {/* <InfoBar oppNickname={oppNickname} /> */}
+        <div className="flex items-center justify-center bg-gray-800 h-[80vh] outerContainer">
+          <div className="flex flex-col justify-between w-5/6 bg-white rounded-lg h-2/3">
+            <InfoBar oppNickname={oppNickname} navigate={navigate} />
             <Messages chats={chats} />
             <InputMsg handleMessage={handleMessage} />
           </div>
