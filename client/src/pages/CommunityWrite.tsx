@@ -5,12 +5,6 @@ import 'remixicon/fonts/remixicon.css'
 import axios from 'axios'
 
 const CommunityWrite = () => {
-  // const [content, setContent] = useState({
-  //   category: 1,
-  //   user: 1,
-  //   title: '',
-  //   content: '',
-  // })
   const navigate = useNavigate()
   const [cate, setCate] = useState(1)
   // const postWrap = useRef<HTMLInputElement | null>(null)
@@ -28,9 +22,9 @@ const CommunityWrite = () => {
       const {
         data: [post],
       }: any = await axios.get(`https://pocaz.ystoy.shop/api/post/${category}/${id}`)
-      console.log(post)
       setTitle(post.title)
       setContent(post.text)
+      setCate(parseInt(category))
     }
   }
 
@@ -61,57 +55,70 @@ const CommunityWrite = () => {
     }
   }
   const submitBtn = async () => {
-    // if (postInfo.state) {
-    //   const {
-    //     state: { category, id },
-    //   }: any = postInfo
-    //   postInfo &&
-    //    await axios
-    // }
-    try {
-      const { data } = await axios.post('https://pocaz.ystoy.shop/api/post', [
-        {
-          category: cate,
-          user: 1,
-          title,
-          content,
-        },
-      ])
-      // console.log('성공')
-      // console.log(data)
-      if (img.length > 0) {
-        await fetch(`https://pocaz.ystoy.shop/api/post/img/${cate}/${data}`, {
-          method: 'POST',
+    if (postInfo.state) {
+      const {
+        state: { category, id },
+      }: any = postInfo
+      try {
+        // console.log(title, content)
+        // await axios.put(`https://pocaz.ystoy.shop/api/post/${category}/${id}/1`),
+        //   [
+        //     {
+        //       title,
+        //       content,
+        //     },
+        //   ]
+
+        await fetch(`https://pocaz.ystoy.shop/api/post/${category}/${id}/1`, {
+          method: 'PUT',
           headers: {
             'Content-type': 'application/json',
           },
-          body: JSON.stringify({
-            filesKeys: img,
-          }),
+          body: JSON.stringify([
+            {
+              title,
+              content,
+            },
+          ]),
         })
+        alert('수정완료')
+        navigate(`${category}/${id}`)
+      } catch (err) {
+        console.error(err)
       }
-      alert('등록 완료!')
-      navigate(`${cate}/${data}`)
-    } catch (err: any) {
-      console.error(err)
+    } else {
+      try {
+        const { data } = await axios.post('https://pocaz.ystoy.shop/api/post', [
+          {
+            category: cate,
+            user: 1,
+            title,
+            content,
+          },
+        ])
+        // console.log('성공')
+        // console.log(data)
+        if (img.length > 0) {
+          await fetch(`https://pocaz.ystoy.shop/api/post/img/${cate}/${data}`, {
+            method: 'POST',
+            headers: {
+              'Content-type': 'application/json',
+            },
+            body: JSON.stringify({
+              filesKeys: img,
+            }),
+          })
+        }
+        alert('등록 완료!')
+        navigate(`${cate}/${data}`)
+      } catch (err: any) {
+        console.error(err)
+      }
     }
-    // console.log(postWrap.current)
-    // console.log(postWrap2.current)
   }
-  // const getValue = (e: any) => {
-  //   setContent({
-  //     ...content,
-  //     [e.target.id]: e.target.value,
-  //   })
-  // }
-
   const onChange1 = (e: any) => {
     setCate(e.target.value)
   }
-  // const onChange1 = (e: any) => {
-  //   cateWrap.current = e.target.value
-  //   // setCate(e.target.value)
-  // }
 
   const onChange2 = (e: any) => {
     setTitle(e.target.value)
