@@ -29,6 +29,12 @@ const useStore = create(
     setUserInfo: (input) => {
       set({ nickName: input })
     },
+
+    newMsg: {}, //state
+
+    setNewMsg: (msg) => {
+      set({ newMsg: msg })
+    },
   })),
 )
 

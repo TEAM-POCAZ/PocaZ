@@ -1,17 +1,24 @@
-import socket from 'socket.io-client'
+import { io } from 'socket.io-client'
+
+interface INewMsg {
+  user: string
+  message: string | number
+  chatRoom: string
+}
 
 export default class Socket {
   private io
   constructor(baseURL: string) {
-    this.io = socket(baseURL)
+    this.io = io(baseURL)
 
-    this.io.on('connect_error', (err) => {
-      console.log('socket error', err.message)
-    })
+    // this.io.on('connect_error', (err) => {
+    //   console.log('socket error', err.message)
+    // })
   }
 
   onSync(e: any, cb: any) {
     if (!this.io.connected) {
+      console.log('this.io :>> ', this.io)
       this.io.connect()
     }
 
@@ -20,7 +27,11 @@ export default class Socket {
       cb(message)
     })
 
-    return () => this.io.off(e)
+    // return () => this.io.off(e)
+  }
+
+  emitSync(e: string, newMsg: INewMsg) {
+    this.io.emit(e, newMsg)
   }
 
   joinRoom(val: any) {
