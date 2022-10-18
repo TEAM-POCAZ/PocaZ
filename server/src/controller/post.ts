@@ -12,7 +12,9 @@ export default {
        ${tranSQL.posts.listsFrom}
         WHERE p.category = ?
         AND p.deleteAt IS NULL
-        ORDER BY ${sortBy === 'boast' ? 'LikesCnt DESC, ' : ''} p.createAt DESC 
+        ORDER BY ${
+          sortBy === 'popular' ? 'LikesCnt DESC, ' : ''
+        } p.createAt DESC 
         LIMIT ?`,
       [category, 1000]
     );
@@ -92,12 +94,22 @@ export default {
   searchPost: async (req: express.Request, res: express.Response) => {
     const {
       query: { keyword },
-    } = req;
-    await tranSQL.getOne(`
-    ${tranSQL.posts.lists}
-    ${tranSQL.posts.listsFrom}
-    WHERE p.category = ?
-      AND p.deleteAt IS NULL
-    ORDER BY p.createAt DESC`);
+    }: { query: any } = req;
+    const keywordMap: string = keyword
+      .split('.')
+      .reduce(
+        (result: string, kw: string) =>
+          `${result} OR p.title LIKE '%${kw}%' OR p.content LIKE '%${kw}%'`,
+        ''
+      );
+    res.send(
+      await tranSQL.getOne(`
+      ${tranSQL.posts.lists}
+      ${tranSQL.posts.listsFrom}
+      WHERE p.deleteAt IS NULL
+        AND 1 != 1
+      ${keywordMap}
+      ORDER BY p.id DESC`)
+    );
   },
 };
