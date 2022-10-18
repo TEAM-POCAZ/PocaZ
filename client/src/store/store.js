@@ -23,6 +23,18 @@ const useStore = create(
       // count 초기화
       set((state) => ({ count: 0 }))
     },
+
+    userInfo: { nickName: 1 }, //state
+
+    setUserInfo: (input) => {
+      set({ nickName: input })
+    },
+
+    newMsg: {}, //state
+
+    setNewMsg: (msg) => {
+      set({ newMsg: msg })
+    },
   })),
 )
 

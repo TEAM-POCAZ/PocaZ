@@ -6,6 +6,9 @@ module.exports = {
       width: {
         480: '480px',
       },
+      translate: {
+        50: '-50%',
+      },
     },
     screens: {
       '3xl': { max: '2000px' },

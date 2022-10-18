@@ -1,5 +1,3 @@
-// socket connection 작성파일
-
 import { Server } from 'socket.io';
 
 class Socket {
@@ -13,9 +11,9 @@ class Socket {
 
     this.io.on('connection', (so) => {
       console.log('Socket connected :)!!');
-      //   so.on('message', (ee: any) => {
-      //     console.log(ee);
-      //   });
+      so.on('joinRoom', (a: any) => {
+        so.join(a);
+      });
     });
   }
 }

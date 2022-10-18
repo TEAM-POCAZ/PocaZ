@@ -1,27 +1,40 @@
 import React from 'react'
+import dayjs from 'dayjs'
 
+import useStore from 'store/store'
+import queryString from 'query-string'
+
+import { IChat } from './Chat'
+
+interface Props {
+  chat: IChat
+}
 /**
- * @param {object} message text & user & timeStamp를 담고 있고 채팅창에 보여줄 value
- * @param {string} name 접속한 사용자의 이름을 가져옴. 위의 user랑 비교할 값
+ * sender : 메세지를 보낸 사람
+ * userInfo state의 NickName은 로그인 정보 기반
+ * sender오 userInfo.nickname을 비교하여 로그인사용자의 메세지인지를 확인한다.
+ * @param {object} chat post 받아온 obj를 담고 있고 채팅창에 보여줄 value
+ * @param {string} name 접속한 사용자의 이름을 가져옴. 위의 user랑 비교할 값 // 광역에서 가져온다.
  * @returns 1:1 사용자 채팅창
  */
 
-const Msg = ({ message: { text, user, timeStamp }, name }: any) => {
-  console.log('timeStamp :>> ', timeStamp)
-  const trimmedName = name.trim().toLowerCase()
-  console.log('MSG 페이지입니다', text)
-  let isSentByCurrentUser = false //FIXME  false 로 시작
-  if (user === trimmedName) isSentByCurrentUser = true
+const Msg = ({ chat }: Props) => {
+  const { room, name } = queryString.parse(location.search)
+  const { userInfo } = useStore()
+  const { createAt, message } = chat
 
-  return isSentByCurrentUser ? (
+  const MsgReceivedTime = dayjs(createAt).format('HH:mm') // for timeStamp
+
+  return chat.user === +(name as string) ? (
+    // return chat.user === userInfo.nickName ? (
     <div className="messageContainer flex justify-end py-3 mt-1">
       <div>
-        <p className="sentText flex items-center text-gray-400 tracking-tight">{trimmedName}</p>
-        <p>{timeStamp}</p>
+        <p className="sentText flex items-center text-gray-400 tracking-tight">{chat.user}</p>
+        <p>{MsgReceivedTime}</p>
       </div>
       <div className="messageBox bg-blue-700 rounded-3xl px-2 py-5 inline-block text-white max-w-fit">
         <p className="messageText colorWhite w-full letter tracking-normal float-left text-lg ">
-          {text}
+          {message}
         </p>
       </div>
     </div>
@@ -29,14 +42,11 @@ const Msg = ({ message: { text, user, timeStamp }, name }: any) => {
     <div className="messageContainer flex justify-start py-3 mt-1">
       <div className="messageBox bg-yellow-300 rounded-3xl px-2 py-5 inline-block text-white max-w-fit">
         <p className="messageText text-gray-800 w-full letter tracking-normal float-left text-base ">
-          <span className=" align-middle">{text}</span>
-          {/* <span className=" align-middle">여긴 텍스트</span> */}
+          <span className=" align-middle">{message}</span>
         </p>
       </div>
-      <p className="sentText  flex items-center text-gray-400 tracking-tight pl-2 ">{user}</p>
-      {/* <p>여긴 너이름</p> */}
-      <p>{timeStamp}</p>
-      {/* <p>여긴 타임스탬프</p> */}
+      <p className="sentText  flex items-center text-gray-400 tracking-tight pl-2 ">{chat.user}</p>
+      <p>{MsgReceivedTime}</p>
     </div>
   )
 }
