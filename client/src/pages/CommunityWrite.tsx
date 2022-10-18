@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Layout from 'utils/Layout'
 import 'remixicon/fonts/remixicon.css'
 import axios from 'axios'
@@ -13,9 +13,30 @@ const CommunityWrite = () => {
   // })
   const navigate = useNavigate()
   const [cate, setCate] = useState(1)
-  const postWrap = useRef<HTMLInputElement | null>(null)
-  const postWrap2 = useRef<HTMLTextAreaElement | null>(null)
+  // const postWrap = useRef<HTMLInputElement | null>(null)
+  // const postWrap2 = useRef<HTMLTextAreaElement | null>(null)
+  const [title, setTitle] = useState<string>('')
+  const [content, setContent] = useState<string>('')
   const [img, setImg] = useState<number[]>([])
+  const postInfo = useLocation()
+
+  const getModifyPost = async () => {
+    if (postInfo.state) {
+      const {
+        state: { category, id },
+      }: any = postInfo
+      const {
+        data: [post],
+      }: any = await axios.get(`https://pocaz.ystoy.shop/api/post/${category}/${id}`)
+      console.log(post)
+      setTitle(post.title)
+      setContent(post.text)
+    }
+  }
+
+  useEffect(() => {
+    getModifyPost()
+  }, [])
 
   const onImgSubmit = async (e: any) => {
     e.preventDefault()
@@ -40,26 +61,35 @@ const CommunityWrite = () => {
     }
   }
   const submitBtn = async () => {
+    // if (postInfo.state) {
+    //   const {
+    //     state: { category, id },
+    //   }: any = postInfo
+    //   postInfo &&
+    //    await axios
+    // }
     try {
       const { data } = await axios.post('https://pocaz.ystoy.shop/api/post', [
         {
           category: cate,
           user: 1,
-          title: postWrap.current,
-          content: postWrap2.current,
+          title,
+          content,
         },
       ])
       // console.log('성공')
       // console.log(data)
-      await fetch(`https://pocaz.ystoy.shop/api/post/img/${cate}/${data}`, {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          filesKeys: img,
-        }),
-      })
+      if (img.length > 0) {
+        await fetch(`https://pocaz.ystoy.shop/api/post/img/${cate}/${data}`, {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            filesKeys: img,
+          }),
+        })
+      }
       alert('등록 완료!')
       navigate(`${cate}/${data}`)
     } catch (err: any) {
@@ -84,11 +114,11 @@ const CommunityWrite = () => {
   // }
 
   const onChange2 = (e: any) => {
-    postWrap.current = e.target.value
+    setTitle(e.target.value)
     // setCate(e.target.value)
   }
   const onChange3 = (e: any) => {
-    postWrap2.current = e.target.value
+    setContent(e.target.value)
     // setCate(e.target.value)
   }
 
@@ -126,7 +156,7 @@ const CommunityWrite = () => {
               type="text"
               className="w-full py-3 px-2.5 border-t border-b"
               placeholder="제목을 입력해 주세요"
-              ref={postWrap}
+              value={title}
               id="title"
               onChange={onChange2}
             />
@@ -135,8 +165,8 @@ const CommunityWrite = () => {
               <textarea
                 className="w-full h-full py-2.5"
                 id="content"
-                ref={postWrap2}
                 onChange={onChange3}
+                value={content}
               />
             </div>
             <div className="attachedFileBtn py-3 border-t">

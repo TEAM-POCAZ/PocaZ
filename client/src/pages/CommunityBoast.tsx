@@ -3,6 +3,7 @@ import Layout from 'utils/Layout'
 import { Link, useNavigate } from 'react-router-dom'
 import CommunityTop from './CommunityTop'
 import axios from 'axios'
+import SearchBox from '../components/Square/SearchBox'
 
 const CommunityBoast = () => {
   const [list, setList] = useState<any[] | null>(null)
@@ -22,6 +23,7 @@ const CommunityBoast = () => {
   return (
     <>
       <Layout>
+        <SearchBox />
         <CommunityTop />
         <div className="boastListWrap">
           <ul>
