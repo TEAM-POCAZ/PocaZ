@@ -5,6 +5,7 @@ import axios from 'axios'
 import LikeBtn from '../components/Square/LikeBtn'
 
 import CommentList from '../components/Square/CommentList'
+import dayjs from 'dayjs'
 
 interface IPostDetail {
   title: string
@@ -149,27 +150,32 @@ const CommunityDetail = () => {
             <button onClick={deleteAction}>삭제</button>
           </div>
           <div className="communityDetailContents mt-2.5">
-            {DetailContent && (
-              <div key={DetailContent.userId} className="mb-3.5">
-                <div className="mb-2.5 pb-2.5 px-2.5 border-b">
-                  <h3 className="pb-1 text-lg font-bold">{DetailContent.title}</h3>
-                  <div className="writeWrap flex items-center pb-2.5">
-                    <div className="writeThumb w-10 h-10 rounded-full bg-black mr-2.5"></div>
-                    <span className="writeName">{DetailContent.nickname}</span>
+            {DetailContent &&
+              (() => {
+                const days = dayjs(DetailContent.createAt).format('YYYY-MM-DD')
+
+                return (
+                  <div key={DetailContent.userId} className="mb-3.5">
+                    <div className="mb-2.5 pb-2.5 px-2.5 border-b">
+                      <h3 className="pb-1 text-lg font-bold">{DetailContent.title}</h3>
+                      <div className="writeWrap flex items-center pb-2.5">
+                        <div className="writeThumb w-10 h-10 rounded-full bg-black mr-2.5"></div>
+                        <span className="writeName">{DetailContent.nickname}</span>
+                      </div>
+                      <time>{days}</time>&nbsp;
+                      <span>댓글 수:{replyCnt}</span>
+                      <span className="hit">조회수 {DetailContent.viewCount}</span>
+                    </div>
+                    <div className="px-2.5 pb-2.5">
+                      <div className="attachedFile">
+                        <img src={img} />
+                      </div>
+                      <p className="break-all">{DetailContent.text}</p>
+                    </div>
+                    <LikeBtn like={like} onClick={onToggleLike} />
                   </div>
-                  <time>{DetailContent.createAt}</time>&nbsp;
-                  <span>댓글 수:{replyCnt}</span>
-                  <span className="hit">조회수 {DetailContent.viewCount}</span>
-                </div>
-                <div className="px-2.5 pb-2.5">
-                  <div className="attachedFile">
-                    <img src={img} />
-                  </div>
-                  <p className="break-all">{DetailContent.text}</p>
-                </div>
-                <LikeBtn like={like} onClick={onToggleLike} />
-              </div>
-            )}
+                )
+              })()}
             <div className="replyWrap px-2.5">
               <CommentList comments={comments} />
               <div className="commentWriteBtn">

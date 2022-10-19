@@ -11,12 +11,14 @@ import mainSlideBn1 from 'assets/img/main_slide_bn1.jpeg'
 import mainSlideBn2 from 'assets/img/main_slide_bn2.jpeg'
 import mainSlideBn3 from 'assets/img/main_slide_bn3.gif'
 import axios from 'axios'
+import dayjs from 'dayjs'
 
 const Main = () => {
   const [users, setUsers] = useState<any[] | null>(null)
   const [photocards, setPhotocards] = useState<any[] | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<null>(null)
+  //const MsgReceivedTime = dayjs(createAt).format('HH:mm') // for timeStamp
 
   // useEffect(() => {
   //   const fetchUsers = async () => {
@@ -104,14 +106,18 @@ const Main = () => {
               <div className="boardList">
                 <ul>
                   {users &&
-                    users.map((user: any) => (
-                      <li key={user.id} className="flex justify-between mb-3.5">
-                        <h4 className="mr-3.5 text-sm font-normal whitespace-nowrap text-ellipsis overflow-hidden">
-                          {user.title}
-                        </h4>
-                        <time className="timeWrap text-sm font-normal">{user.createAt}</time>
-                      </li>
-                    ))}
+                    users.map((user: any) => {
+                      const days = dayjs(user.createAt).format('YYYY-MM-DD')
+
+                      return (
+                        <li key={user.id} className="flex justify-between mb-3.5">
+                          <h4 className="mr-3.5 text-sm font-normal whitespace-nowrap text-ellipsis overflow-hidden">
+                            {user.title}
+                          </h4>
+                          <time className="timeWrap text-sm font-normal">{days}</time>
+                        </li>
+                      )
+                    })}
                 </ul>
               </div>
             </div>
