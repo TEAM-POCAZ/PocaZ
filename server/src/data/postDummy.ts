@@ -34,6 +34,9 @@ const userElement = (artistCnt: number) => [
   성[Math.floor(Math.random() * 성.length)] +
     이름[Math.floor(Math.random() * 이름.length)] +
     이름[Math.floor(Math.random() * 이름.length)],
+  성[Math.floor(Math.random() * 성.length)] +
+    이름[Math.floor(Math.random() * 이름.length)] +
+    이름[Math.floor(Math.random() * 이름.length)],
   '',
   Math.floor(Math.random() * artistCnt) + 1,
 ];
@@ -79,7 +82,7 @@ const sellElement = (userCnt: number, pcCnt: number) => [
     const value = [];
     for (let i = 0; i < argsNumber; i += 1) value.push(userElement(artistCnt));
     conn.query(
-      `INSERT INTO User (email, nickname, profileImage, artist)
+      `INSERT INTO User (email, username, nickname, profileImage, artist)
        VALUES ?`,
       [value]
     );
