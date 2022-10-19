@@ -27,25 +27,25 @@ const Msg = ({ chat }: Props) => {
 
   return chat.user === +(name as string) ? (
     // return chat.user === userInfo.nickName ? (
-    <div className="messageContainer flex justify-end py-3 mt-1">
+    <div className="flex justify-end py-3 mt-1 messageContainer">
       <div>
-        <p className="sentText flex items-center text-gray-400 tracking-tight">{chat.user}</p>
+        <p className="flex items-center tracking-tight text-gray-400 sentText">{chat.user}</p>
         <p>{MsgReceivedTime}</p>
       </div>
-      <div className="messageBox bg-blue-700 rounded-3xl px-2 py-5 inline-block text-white max-w-fit">
-        <p className="messageText colorWhite w-full letter tracking-normal float-left text-lg ">
+      <div className="inline-block px-2 py-5 text-white bg-blue-800 messageBox rounded-3xl max-w-fit">
+        <p className="float-left w-full text-lg tracking-normal messageText colorWhite letter ">
           {message}
         </p>
       </div>
     </div>
   ) : (
-    <div className="messageContainer flex justify-start py-3 mt-1">
-      <div className="messageBox bg-yellow-300 rounded-3xl px-2 py-5 inline-block text-white max-w-fit">
-        <p className="messageText text-gray-800 w-full letter tracking-normal float-left text-base ">
-          <span className=" align-middle">{message}</span>
+    <div className="flex justify-start py-3 mt-1 messageContainer">
+      <div className="inline-block px-2 py-5 bg-gray-200 messageBox rounded-3xl max-w-fit">
+        <p className="float-left w-full text-base tracking-normal messageText letter ">
+          <span className="align-middle ">{message}</span>
         </p>
       </div>
-      <p className="sentText  flex items-center text-gray-400 tracking-tight pl-2 ">{chat.user}</p>
+      <p className="flex items-center pl-2 tracking-tight text-gray-400 sentText ">{chat.user}</p>
       <p>{MsgReceivedTime}</p>
     </div>
   )

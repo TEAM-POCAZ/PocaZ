@@ -47,7 +47,7 @@ const Chat = ({ socket }: any) => {
   const location = useLocation()
   const { room, name } = queryString.parse(location.search)
 
-  const { oppNickname }: any = location.state //TODO 지워야함
+  // const { oppNickname }: any = location.state //TODO 지워야함
 
   useEffect(() => {
     getChat()
@@ -97,9 +97,9 @@ const Chat = ({ socket }: any) => {
       {isLoading ? (
         <>로딩중입니다</>
       ) : (
-        <div className="flex items-center justify-center bg-gray-800 h-[80vh] outerContainer">
-          <div className="flex flex-col justify-between w-5/6 bg-white rounded-lg h-2/3">
-            <InfoBar oppNickname={oppNickname} navigate={navigate} />
+        <div className="flex items-center justify-center bg-gray-800 outerContainer h-[100vh]">
+          <div className="flex flex-col justify-between w-full bg-white rounded-lg h-2/3">
+            {/* <InfoBar oppNickname={oppNickname} navigate={navigate} /> */}
             <Messages chats={chats} />
             <InputMsg handleMessage={handleMessage} />
           </div>

@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const api = axios.create({
   baseURL: 'http://localhost:8080/api',
-  // baseURL: 'https://pocaz.ystoy.shop/api',
+  // baseURL: 'https://slowtest.ml/api',
   headers: {
     'Content-type': 'application/json; charset=UTF-8',
     accept: 'application/json,',

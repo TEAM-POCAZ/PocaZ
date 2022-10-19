@@ -44,8 +44,10 @@ const ChatMain = () => {
     error,
     data: roomData,
   } = useQuery<IChatRoom[], Error>('getChatList', getChatList, {
-    notifyOnChangeProps: ['data'],
-    staleTime: Infinity,
+    // notifyOnChangeProps: ['data'],
+    refetchInterval: 2000,
+    refetchIntervalInBackground: true,
+
     // refetchInterval: 1000, // 1초마다 갱신
   })
 
@@ -91,7 +93,7 @@ const ChatMain = () => {
         <>loading 중</>
       ) : (
         <>
-          <div className=" h-96">
+          <div className="h-screen ">
             <div></div>
             <div className="flex flex-col m-2 border-2">공지사항 컴포넌트</div>
             <ul className="p-6 divide-y divide-slate-200">
