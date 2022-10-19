@@ -1,9 +1,30 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Layout from 'utils/Layout'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
+import axios from 'axios'
+import CommunityListItem from '../components/Square/CommunityListItem'
 
 const CommunitySearchResult = () => {
+  const [list, setList] = useState<any[] | null>(null)
   const navigate = useNavigate()
+  const keyInfo = useLocation()
+
+  // useEffect(() => {
+  //   if (keyInfo.state) {
+  //     const {
+  //       state: { keyword },
+  //     }: any = keyInfo
+  //     axios
+  //       .get(`http://localhost:8000/api/post/search/${keyword.split(' ').join('.')}`)
+  //       .then((res) => {
+  //         const { data }: any = res
+  //         setList(data)
+  //       }.catch(e) {
+  //         console.error(e)
+  //       }
+  //   }
+  // },[])
+
   return (
     <>
       <Layout>
@@ -16,9 +37,8 @@ const CommunitySearchResult = () => {
             <i className="ri-search-line"></i>
           </button>
         </div>
-        <ul>
-          <li>검색결과가 나오겠쥬</li>
-        </ul>
+
+        <CommunityListItem list={list} />
       </Layout>
     </>
   )

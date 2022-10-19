@@ -150,9 +150,11 @@
     width: calc(100% - 100px);
   }
   .likeOn {
+    display: flex;
     background: #2f4fef;
   }
   .likeOff {
+    display: flex;
     background-color: #ededed;
   }
 }
