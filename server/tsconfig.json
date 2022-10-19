@@ -1,18 +1,32 @@
+// {
+//   "compilerOptions": {
+//     "target": "ES2021", // 어떤 자바스크립트 버전으로 컴파일할지 작성
+//     "module": "CommonJS", //어떤 모듈 방식으로 컴파일할지 설정
+//     "outDir": "./dist", //컴파일 후 js 파일들이 생성되는 곳
+//     "rootDir": ".", //루트 폴더
+//     "strict": true, //strict 옵션 활성화
+//     "moduleResolution": "node", //모듈 해석 방법 설정: 'node' (Node.js)
+//     "esModuleInterop": true,
+//     "types": ["./src/type"]
+//   },
+//   "ts-node": {
+//     "esm": true,
+//     "files": true
+//   }
+// }
+
 {
   "compilerOptions": {
-    "target": "ES2021", // 어떤 자바스크립트 버전으로 컴파일할지 작성 
-    "module": "CommonJS", //어떤 모듈 방식으로 컴파일할지 설정
-    "outDir": "./dist", //컴파일 후 js 파일들이 생성되는 곳
-    "rootDir": ".", //루트 폴더
-    "strict": true, //strict 옵션 활성화
-    "moduleResolution": "node", //모듈 해석 방법 설정: 'node' (Node.js)
+    "target": "es6",
+    "module": "commonjs",
+    "allowJs": true,
+    "outDir": "./dist",
+    "strict": true,
+    "moduleResolution": "node",
+    "baseUrl": ".",
     "esModuleInterop": true,
-    "types": [
-      "./src/type"
-    ]
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   },
-  "ts-node": {
-    "esm": true,
-    "files": true,
-  },
+  "include": ["src/**/*"]
 }
