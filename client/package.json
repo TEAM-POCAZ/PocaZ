@@ -20,6 +20,7 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "react-scroll-to-bottom": "^4.2.0",
+    "react-toastify": "^9.0.8",
     "remixicon": "^2.5.0",
     "socket.io-client": "^4.5.2",
     "swiper": "^8.3.2",
