@@ -134,7 +134,7 @@
     opacity: 0;
     transition: 0.4s;
     border-radius: 50%;
-    background: #ededed;
+    background: #000;
   }
   .topBtn.active {
     opacity: 1;
@@ -149,12 +149,13 @@
   .listWrap .boardSubject {
     width: calc(100% - 100px);
   }
-  .likeOn {
+  .likeBtn button {
     display: flex;
-    background: #2f4fef;
+    align-items: center;
+    justify-content: center;
   }
-  .likeOff {
-    display: flex;
-    background-color: #ededed;
+  .likeBtn button::before {
+    padding: 3px 4px 0 0;
+    color: rgb(30 64 175);
   }
 }

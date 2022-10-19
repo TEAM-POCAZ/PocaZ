@@ -47,9 +47,9 @@ const CommunityBoast = () => {
                           <div className="writeProfile">{/* <img src={} /> */}</div>
                           <span className="writeName">{lists.nickname}</span>
                         </div>
-                        <time>{days}</time>
-                        <span className="comment">댓글 {lists.replyCnt}</span>
-                        <span className="hit">{lists.viewCount}</span>
+                        <time className="text-xs">{days}</time>&nbsp;
+                        <span className="comment text-xs">댓글 {lists.replyCnt}</span>&nbsp;
+                        <span className="hit text-xs">조회 {lists.viewCount}</span>
                       </div>
                     </div>
                   </li>
