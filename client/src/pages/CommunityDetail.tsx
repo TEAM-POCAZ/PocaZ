@@ -187,7 +187,7 @@ const CommunityDetail = () => {
                 )
               })()}
             <div className="replyWrap m-2.5 border-t ">
-              <CommentList comments={comments} />
+              <CommentList comments={comments} category={category} id={id} />
               <div className="commentWriteBtn flex mt-4">
                 <textarea className="border w-full p-2.5" onChange={onReplyChange} />
                 <button
