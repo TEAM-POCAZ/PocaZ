@@ -117,7 +117,7 @@ const Main = () => {
                         <li
                           key={user.id}
                           onClick={() => navigate(`/Community/1/${user.id}`)}
-                          className="flex justify-between mb-3.5"
+                          className="flex justify-between mb-3.5 cursor-pointer"
                         >
                           <h4 className="mr-3.5 text-sm font-normal whitespace-nowrap text-ellipsis overflow-hidden">
                             {user.title}
@@ -197,7 +197,7 @@ const Main = () => {
                       <li
                         key={user.id}
                         onClick={() => navigate(`/Community/2/${user.id}`)}
-                        className="h-36"
+                        className="h-36 cursor-pointer"
                       >
                         <img src={user.filePath} className="w-full h-full object-cover" />
                       </li>
