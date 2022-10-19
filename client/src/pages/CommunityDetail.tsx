@@ -159,7 +159,7 @@ const CommunityDetail = () => {
             <button onClick={modifyAction}>수정</button>
             <button onClick={deleteAction}>삭제</button>
           </div>
-          <div className="communityDetailContents mt-2.5">
+          <div className="communityDetailContents my-2.5">
             {DetailContent &&
               (() => {
                 const days = dayjs(DetailContent.createAt).format('YYYY-MM-DD')
@@ -173,10 +173,10 @@ const CommunityDetail = () => {
                         <span className="writeName">{DetailContent.nickname}</span>
                       </div>
                       <time>{days}</time>&nbsp;
-                      <span>댓글 수:{replyCnt}</span>
-                      <span className="hit">조회수 {DetailContent.viewCount}</span>
+                      <span>댓글 {replyCnt}</span>&nbsp;
+                      <span className="hit">조회 {DetailContent.viewCount}</span>
                     </div>
-                    <div className="px-2.5 pb-2.5">
+                    <div className="px-2.5 min-h-[300px]">
                       <div className="attachedFile">
                         <img src={img} />
                       </div>
@@ -186,11 +186,18 @@ const CommunityDetail = () => {
                   </div>
                 )
               })()}
-            <div className="replyWrap px-2.5">
-              <CommentList comments={comments} />
-              <div className="commentWriteBtn">
-                <textarea className="border" onChange={onReplyChange} />
-                <button onClick={onReplySubmit}>댓글 등록</button>
+            <div className="replyWrap m-2.5 border-t ">
+              <CommentList comments={comments} category={category} id={id} />
+              <div className="commentWriteBtn flex mt-4">
+                <textarea className="border w-full p-2.5" onChange={onReplyChange} />
+                <button
+                  onClick={onReplySubmit}
+                  className="min-w-[40px] ml-2.5 text-xs bg-blue-800 text-white"
+                >
+                  댓글
+                  <br />
+                  등록
+                </button>
               </div>
             </div>
           </div>

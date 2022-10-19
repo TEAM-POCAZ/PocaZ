@@ -9,21 +9,24 @@ const CommunitySearchResult = () => {
   const navigate = useNavigate()
   const keyInfo = useLocation()
 
-  // useEffect(() => {
-  //   if (keyInfo.state) {
-  //     const {
-  //       state: { keyword },
-  //     }: any = keyInfo
-  //     axios
-  //       .get(`http://localhost:8000/api/post/search/${keyword.split(' ').join('.')}`)
-  //       .then((res) => {
-  //         const { data }: any = res
-  //         setList(data)
-  //       }.catch(e) {
-  //         console.error(e)
-  //       }
-  //   }
-  // },[])
+  // console.log(keyInfo)
+  useEffect(() => {
+    if (keyInfo.state) {
+      const {
+        state: { keyword },
+      }: any = keyInfo
+      axios
+        .get(`https://pocaz.ystoy.shop/api/post/search/?keyword=${keyword.split(' ').join('.')}`)
+        .then((res) => {
+          const { data }: any = res
+          // console.log(
+          //   `http://localhost:8080/api/post/search/?keyword=${keyword.split(' ').join('.')}`,
+          // )
+          setList(data)
+        })
+        .catch((e) => console.error(e))
+    }
+  }, [])
 
   return (
     <>
@@ -37,8 +40,7 @@ const CommunitySearchResult = () => {
             <i className="ri-search-line"></i>
           </button>
         </div>
-
-        <CommunityListItem list={list} />
+        {list && list?.length > 0 ? <CommunityListItem list={list} /> : <div>검색 안되지롱</div>}
       </Layout>
     </>
   )

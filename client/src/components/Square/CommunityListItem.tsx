@@ -25,7 +25,7 @@ const CommentListItem = ({ list }: any) => {
                     </div>
                     <time className="text-xs">{days}</time>&nbsp;
                     <span className="comment text-xs">댓글 {lists.replyCnt}</span>&nbsp;
-                    <span className="hit text-xs">조회수 {lists.viewCount}</span>
+                    <span className="hit text-xs">조회 {lists.viewCount}</span>
                   </div>
                 </div>
                 <div className="boardPhoto w-24 h-24 overflow-hidden">
