@@ -3,9 +3,10 @@ import { Link, useParams, useNavigate } from 'react-router-dom'
 import Layout from 'utils/Layout'
 import axios from 'axios'
 import LikeBtn from '../components/Square/LikeBtn'
-
 import CommentList from '../components/Square/CommentList'
 import dayjs from 'dayjs'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 interface IPostDetail {
   title: string
@@ -40,10 +41,10 @@ const CommunityDetail = () => {
         const { data }: { data: any } = await axios.get(
           `https://pocaz.ystoy.shop/api/post/img/${category}/${id}`,
         )
-        const [{ path: imgPath }] = data
-        setImg(imgPath)
+        //const [{ path: imgPath }] = data
+        //setImg(imgPath)
         //console.log(response.data)
-        console.log(imgPath)
+        //console.log(imgPath)
       } catch (e) {
         console.error(e)
       }
@@ -77,7 +78,10 @@ const CommunityDetail = () => {
       )
       // console.log('성공')
       // console.log(data)
-      alert('등록 완료!')
+      toast.success('댓글이 등록되었습니다.', {
+        autoClose: 500,
+        position: toast.POSITION.BOTTOM_CENTER,
+      })
       window.location.reload()
     } catch (err: any) {
       console.error(err)
@@ -88,14 +92,20 @@ const CommunityDetail = () => {
     if (DetailContent && DetailContent.userId === 1) {
       navigate('/Community', { state: { category, id } })
     } else {
-      alert('너는 수정 못함요')
+      toast.success('수정 권한이 없습니다.', {
+        autoClose: 500,
+        position: toast.POSITION.BOTTOM_CENTER,
+      })
     }
   }
 
   const deleteAction = async () => {
     try {
       const del = await axios.delete(`https://pocaz.ystoy.shop/api/post/${category}/${id}/1`)
-      alert('게시글 삭제 완료!')
+      toast.success('삭제가 완료되었습니다.', {
+        autoClose: 500,
+        position: toast.POSITION.BOTTOM_CENTER,
+      })
       navigate('/CommunityList')
     } catch (e) {
       console.error(e)

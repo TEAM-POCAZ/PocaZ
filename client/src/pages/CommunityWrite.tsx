@@ -3,6 +3,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Layout from 'utils/Layout'
 import 'remixicon/fonts/remixicon.css'
 import axios from 'axios'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const CommunityWrite = () => {
   const navigate = useNavigate()
@@ -81,7 +83,10 @@ const CommunityWrite = () => {
             },
           ]),
         })
-        alert('수정완료')
+        toast.success('게시물이 수정되었습니다.', {
+          autoClose: 500,
+          position: toast.POSITION.BOTTOM_CENTER,
+        })
         navigate(`${category}/${id}`)
       } catch (err) {
         console.error(err)
@@ -109,7 +114,11 @@ const CommunityWrite = () => {
             }),
           })
         }
-        alert('등록 완료!')
+        console.log('띠용')
+        toast.success('게시물이 작성되었습니다.', {
+          autoClose: 500,
+          position: toast.POSITION.BOTTOM_CENTER,
+        })
         navigate(`${cate}/${data}`)
       } catch (err: any) {
         console.error(err)
