@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-// import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams, useLocation } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination, Autoplay, A11y } from 'swiper'
 import 'swiper/css'
@@ -15,10 +15,13 @@ import dayjs from 'dayjs'
 
 const Main = () => {
   const [users, setUsers] = useState<any[] | null>(null)
+  const [users2, setUsers2] = useState<any[] | null>(null)
   const [photocards, setPhotocards] = useState<any[] | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<null>(null)
-  //const MsgReceivedTime = dayjs(createAt).format('HH:mm') // for timeStamp
+  const navigate = useNavigate()
+  const { category } = useParams()
+  const postInfo = useLocation()
 
   // useEffect(() => {
   //   const fetchUsers = async () => {
@@ -42,13 +45,15 @@ const Main = () => {
     axios
       .all([
         axios.get('https://pocaz.ystoy.shop/api/post/1'),
+        axios.get('https://pocaz.ystoy.shop/api/post/2'),
         axios.get('https://pocaz.ystoy.shop/api/market/'),
       ])
       //async 쓰삼***
       .then(
-        axios.spread((response1: any, response2: any) => {
+        axios.spread((response1: any, response2: any, response3: any) => {
           setUsers(response1.data)
-          setPhotocards(response2.data)
+          setUsers2(response2.data)
+          setPhotocards(response3.data)
         }),
       )
       .catch((e: any) => console.log(e.response.status))
@@ -108,9 +113,12 @@ const Main = () => {
                   {users &&
                     users.map((user: any) => {
                       const days = dayjs(user.createAt).format('YYYY-MM-DD')
-
                       return (
-                        <li key={user.id} className="flex justify-between mb-3.5">
+                        <li
+                          key={user.id}
+                          onClick={() => navigate(`/Community/1/${user.id}`)}
+                          className="flex justify-between mb-3.5"
+                        >
                           <h4 className="mr-3.5 text-sm font-normal whitespace-nowrap text-ellipsis overflow-hidden">
                             {user.title}
                           </h4>
@@ -184,9 +192,13 @@ const Main = () => {
               </div>
               <div className="boastGallery">
                 <ul className="grid grid-cols-3 grid-rows-3">
-                  {users &&
-                    users.map((user: any) => (
-                      <li key={user.id} className="h-36">
+                  {users2 &&
+                    users2.map((user: any) => (
+                      <li
+                        key={user.id}
+                        onClick={() => navigate(`/Community/2/${user.id}`)}
+                        className="h-36"
+                      >
                         <img src={user.filePath} className="w-full h-full object-cover" />
                       </li>
                     ))}
