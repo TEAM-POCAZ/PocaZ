@@ -20,8 +20,12 @@
     "express-session": "^1.17.3",
     "helmet": "^6.0.0",
     "morgan": "^1.10.0",
+<<<<<<< HEAD
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
+=======
+    "mysql2": "^2.3.3",
+>>>>>>> 50e526a1d099b6f706fff060a8caeb701a871e63
     "socket.io": "^4.5.2"
   },
   "devDependencies": {
