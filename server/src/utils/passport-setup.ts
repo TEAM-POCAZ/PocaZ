@@ -1,6 +1,8 @@
 import passport, { Profile } from 'passport';
 import passport_google_oauth20 from 'passport-google-oauth20';
-// import AppleStrategy from '@nicokaiser/passport-apple';
+
+import AppleStrategy from '@nicokaiser/passport-apple';
+
 import OAuth2Strategy, {
   StrategyOptions,
   VerifyFunction,
@@ -51,8 +53,8 @@ function passportSetup() {
         },
       },
       async function (
-        accessToken: String,
-        refreshToken: String,
+        accessToken: string,
+        refreshToken: string,
         profile: any,
         done: any
       ) {
@@ -125,49 +127,49 @@ function passportSetup() {
       }
     )
   );
-  // passport.use(
-  //   new AppleStrategy(
-  //     {
-  //       clientID: config.apple.clientID,
-  //       teamID: config.apple.teamID,
-  //       keyID: config.apple.keyID,
-  //       key: fs.readFileSync(path.join(cwd(), 'AuthKey_6T39QCZ947.p8')),
-  //       scope: ['email'],
-  //       callbackURL: `${config.host.url}/api/auth/signin-apple`,
-  //       passReqToCallback: true,
-  //     },
-  //     async (
-  //       req: any,
-  //       accessToken: string,
-  //       refreshToken: string,
-  //       profile: any,
-  //       done: Function
-  //     ) => {
-  //       const username = `apple#${profile.id}`;
-  //       const users = await User.selectByUsername(username);
-  //       let user: UserDto;
-  //       if (users[0]) {
-  //         user = users[0];
-  //         console.log('apple login user exists in DB, ', user);
-  //       } else {
-  //         const userCreationDto: UserCreationDto = {
-  //           username: username,
-  //           email: profile.email,
-  //           profileImage: profile.profile_image_url,
-  //         };
-  //         const id = await User.create([userCreationDto]);
-  //         console.log('apple login user created, id: ', id);
-  //         const userDtos: UserDto[] = await User.selectById(parseInt(id));
-  //         user = userDtos[0];
-  //       }
-  //       if (User.isSoftDeleted(user)) {
-  //         done(new Error('탈퇴한 사용자입니다.'));
-  //       } else {
-  //         done(null, user);
-  //       }
-  //     }
-  //   )
-  // );
+  passport.use(
+    new AppleStrategy(
+      {
+        clientID: config.apple.clientID,
+        teamID: config.apple.teamID,
+        keyID: config.apple.keyID,
+        key: fs.readFileSync(path.join(cwd(), 'AuthKey_6T39QCZ947.p8')),
+        scope: ['email'],
+        callbackURL: `${config.host.url}/api/auth/signin-apple`,
+        passReqToCallback: true,
+      },
+      async (
+        req: any,
+        accessToken: string,
+        refreshToken: string,
+        profile: any,
+        done: Function
+      ) => {
+        const username = `apple#${profile.id}`;
+        const users = await User.selectByUsername(username);
+        let user: UserDto;
+        if (users[0]) {
+          user = users[0];
+          console.log('apple login user exists in DB, ', user);
+        } else {
+          const userCreationDto: UserCreationDto = {
+            username: username,
+            email: profile.email,
+            profileImage: profile.profile_image_url,
+          };
+          const id = await User.create([userCreationDto]);
+          console.log('apple login user created, id: ', id);
+          const userDtos: UserDto[] = await User.selectById(parseInt(id));
+          user = userDtos[0];
+        }
+        if (User.isSoftDeleted(user)) {
+          done(new Error('탈퇴한 사용자입니다.'));
+        } else {
+          done(null, user);
+        }
+      }
+    )
+  );
 }
 
 export default passportSetup;
