@@ -13,6 +13,7 @@ export const config = {
   host: {
     port: required('HOST_PORT'),
     url: required('HOST_URL'),
+    reactAppHostUrl: required('REACT_APP_HOST_URL'),
   },
   db: {
     host: required('DB_HOST'),

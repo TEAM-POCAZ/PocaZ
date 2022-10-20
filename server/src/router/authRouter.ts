@@ -5,6 +5,8 @@ import { urlencoded } from 'express';
 import type { ErrorRequestHandler } from 'express';
 import { User } from '../utils/user';
 import { checkAuthenticated } from '../middleware/checkAuthenticated';
+import { config } from '../config';
+const REACT_URL: string = config.host.reactAppHostUrl;
 passportSetup();
 
 const authRouter = Router();
@@ -40,7 +42,7 @@ authRouter.get(
   passport.authenticate('google'),
   (req, res) => {
     console.log('user in session cookie(google) >>> ', req.user);
-    res.redirect('/LoginSuccessed');
+    res.redirect(`${REACT_URL}/LoginSuccessed`);
   }
 );
 
@@ -54,7 +56,7 @@ authRouter.get(
   passport.authenticate('oauth2'),
   (req, res) => {
     console.log('user in session cookie(twitter) >>> ', req.user);
-    res.redirect('/LoginSuccessed');
+    res.redirect(`${REACT_URL}/LoginSuccessed`);
   }
 );
 
@@ -66,7 +68,7 @@ authRouter.post(
   passport.authenticate('apple'),
   (req, res) => {
     console.log('user in session cookie(apple) >>> ', req.user);
-    res.redirect('/LoginSuccessed');
+    res.redirect(`${REACT_URL}/LoginSuccessed`);
   }
 );
 
