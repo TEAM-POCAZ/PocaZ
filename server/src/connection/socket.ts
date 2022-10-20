@@ -1,19 +1,37 @@
-// socket connection 작성파일
+import { Server } from 'socket.io';
+import { createChat } from './../controller/chat';
 
-// import { Server } from 'socket.io';
+class Socket {
+  private io;
+  constructor(server: any) {
+    this.io = new Server(server, {
+      cors: {
+        origin: '*',
+      },
+    });
 
-// class Socket {
-//   constructor(server: number) {
-//     this.io = new Server(server, {
-//       cors: {
-//         origin: '*',
-//       },
-//     });
+    this.io.on('connection', (so) => {
+      console.log('Socket connected :)!!');
 
-//     this.io.on('connection', () => {
-//       console.log('Socket connected :)');
-//     });
-//   }
-// }
+      so.on('joinRoom', (a: any) => {
+        so.join(a);
+      });
 
-// const socket = new Socket(8000)
+      so.on('message', createChat);
+    });
+  }
+}
+
+let socket: any;
+export function initSocket(server: any) {
+  if (!socket) {
+    socket = new Socket(server);
+  }
+  return socket;
+}
+export function getSocketIO() {
+  if (!socket) {
+    throw new Error('Please call init first');
+  }
+  return socket.io;
+}

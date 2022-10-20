@@ -8,10 +8,17 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "esModuleInterop": true,
+    "types": [
+      "./src/type"
+    ],
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
   "include": [
     "src/**/*"
-  ]
+  ],
+  "ts-node": {
+    "esm": true,
+    "files": true
+  }
 }
