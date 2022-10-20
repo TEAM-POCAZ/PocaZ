@@ -27,12 +27,8 @@ export const getChat = async (
   res.status(200).json(rows);
 };
 
-export const createChat = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const { chatRoom, user, message } = req.body;
+export const createChat = async (data: any) => {
+  const { chatRoom, user, message } = data;
 
   const inserResult = await sqlInsertHandler(
     'INSERT INTO Chat (chatRoom, user, message) VALUES(?,?,?)',
@@ -44,7 +40,7 @@ export const createChat = async (
     [inserResult.insertId]
   );
 
-  res.status(200).json(row[0]);
+  // res.status(200).json(row[0]);
 
   getSocketIO().to(row[0].chatRoom.toString()).emit('test', row[0]);
 };
