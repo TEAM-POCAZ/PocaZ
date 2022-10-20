@@ -1,4 +1,5 @@
 import { Server } from 'socket.io';
+import { createChat } from './../controller/chat';
 
 class Socket {
   private io;
@@ -11,9 +12,12 @@ class Socket {
 
     this.io.on('connection', (so) => {
       console.log('Socket connected :)!!');
+
       so.on('joinRoom', (a: any) => {
         so.join(a);
       });
+
+      so.on('message', createChat);
     });
   }
 }

@@ -1,16 +1,16 @@
-import passport, { Profile } from "passport";
-import passport_google_oauth20 from "passport-google-oauth20";
-import AppleStrategy from "@nicokaiser/passport-apple";
+import passport, { Profile } from 'passport';
+import passport_google_oauth20 from 'passport-google-oauth20';
+// import AppleStrategy from '@nicokaiser/passport-apple';
 import OAuth2Strategy, {
   StrategyOptions,
   VerifyFunction,
-} from "passport-oauth2";
-import { User, IUser, UserCreationDto, UserDto } from "./user";
-import * as fs from "fs";
-import path from "path";
-import { cwd } from "process";
-import axios from "axios";
-import { config } from "../config";
+} from 'passport-oauth2';
+import { User, IUser, UserCreationDto, UserDto } from './user';
+import * as fs from 'fs';
+import path from 'path';
+import { cwd } from 'process';
+import axios from 'axios';
+import { config } from '../config';
 
 function passportSetup() {
   const GoogleStrategy = passport_google_oauth20.Strategy;
@@ -21,24 +21,24 @@ function passportSetup() {
     }
     override userProfile = async (accessToken: string, done: any) => {
       try {
-        const res = await axios.get("https://api.twitter.com/2/users/me", {
+        const res = await axios.get('https://api.twitter.com/2/users/me', {
           headers: { authorization: `bearer ${accessToken}` },
-          params: { "user.fields": `profile_image_url` },
+          params: { 'user.fields': `profile_image_url` },
         });
         const body = await res.data;
         const profile = body.data;
         profile._json = JSON.stringify(res.data);
         done(null, profile);
       } catch (err) {
-        return done(new Error("Failed to parse user profile"));
+        return done(new Error('Failed to parse user profile'));
       }
     };
   }
   passport.use(
     new TwitterStrategy(
       {
-        authorizationURL: "https://twitter.com/i/oauth2/authorize",
-        tokenURL: "https://api.twitter.com/2/oauth2/token",
+        authorizationURL: 'https://twitter.com/i/oauth2/authorize',
+        tokenURL: 'https://api.twitter.com/2/oauth2/token',
         clientID: config.twitter.consumerKey,
         clientSecret: config.twitter.consumerSecret,
         callbackURL: `${config.host.url}/api/auth/signin-twitter`,
@@ -47,7 +47,7 @@ function passportSetup() {
         customHeaders: {
           Authorization: `Basic ${Buffer.from(
             `${config.twitter.consumerKey}:${config.twitter.consumerSecret}`
-          ).toString("base64")}`,
+          ).toString('base64')}`,
         },
       },
       async function (
@@ -61,19 +61,19 @@ function passportSetup() {
         let user: UserDto;
         if (users[0]) {
           user = users[0];
-          console.log("twitter login user exists in DB, ", user);
+          console.log('twitter login user exists in DB, ', user);
         } else {
           const userCreationDto: UserCreationDto = {
             username: username,
             profileImage: profile.profile_image_url,
           };
           const id = await User.create([userCreationDto]);
-          console.log("twitter login user created, id: ", id);
+          console.log('twitter login user created, id: ', id);
           const userDtos: UserDto[] = await User.selectById(parseInt(id));
           user = userDtos[0];
         }
         if (User.isSoftDeleted(user)) {
-          done(new Error("탈퇴한 사용자입니다."));
+          done(new Error('탈퇴한 사용자입니다.'));
         } else {
           done(null, user);
         }
@@ -105,7 +105,7 @@ function passportSetup() {
         let user: UserDto;
         if (users[0]) {
           user = users[0];
-          console.log("google login user exists in DB, ", user);
+          console.log('google login user exists in DB, ', user);
         } else {
           const userCreationDto: UserCreationDto = {
             username: username,
@@ -113,61 +113,61 @@ function passportSetup() {
             profileImage: profile._json.picture,
           };
           const id = await User.create([userCreationDto]);
-          console.log("google login user created, id: ", id);
+          console.log('google login user created, id: ', id);
           const userDtos: UserDto[] = await User.selectById(parseInt(id));
           user = userDtos[0];
         }
         if (User.isSoftDeleted(user)) {
-          done(new Error("탈퇴한 사용자입니다."));
+          done(new Error('탈퇴한 사용자입니다.'));
         } else {
           done(null, user);
         }
       }
     )
   );
-  passport.use(
-    new AppleStrategy(
-      {
-        clientID: config.apple.clientID,
-        teamID: config.apple.teamID,
-        keyID: config.apple.keyID,
-        key: fs.readFileSync(path.join(cwd(), "AuthKey_6T39QCZ947.p8")),
-        scope: ["email"],
-        callbackURL: `${config.host.url}/api/auth/signin-apple`,
-        passReqToCallback: true,
-      },
-      async (
-        req: any,
-        accessToken: string,
-        refreshToken: string,
-        profile: any,
-        done: Function
-      ) => {
-        const username = `apple#${profile.id}`;
-        const users = await User.selectByUsername(username);
-        let user: UserDto;
-        if (users[0]) {
-          user = users[0];
-          console.log("apple login user exists in DB, ", user);
-        } else {
-          const userCreationDto: UserCreationDto = {
-            username: username,
-            email: profile.email,
-            profileImage: profile.profile_image_url,
-          };
-          const id = await User.create([userCreationDto]);
-          console.log("apple login user created, id: ", id);
-          const userDtos: UserDto[] = await User.selectById(parseInt(id));
-          user = userDtos[0];
-        }
-        if (User.isSoftDeleted(user)) {
-          done(new Error("탈퇴한 사용자입니다."));
-        } else {
-          done(null, user);
-        }
-      }
-    )
-  );
+  // passport.use(
+  //   new AppleStrategy(
+  //     {
+  //       clientID: config.apple.clientID,
+  //       teamID: config.apple.teamID,
+  //       keyID: config.apple.keyID,
+  //       key: fs.readFileSync(path.join(cwd(), 'AuthKey_6T39QCZ947.p8')),
+  //       scope: ['email'],
+  //       callbackURL: `${config.host.url}/api/auth/signin-apple`,
+  //       passReqToCallback: true,
+  //     },
+  //     async (
+  //       req: any,
+  //       accessToken: string,
+  //       refreshToken: string,
+  //       profile: any,
+  //       done: Function
+  //     ) => {
+  //       const username = `apple#${profile.id}`;
+  //       const users = await User.selectByUsername(username);
+  //       let user: UserDto;
+  //       if (users[0]) {
+  //         user = users[0];
+  //         console.log('apple login user exists in DB, ', user);
+  //       } else {
+  //         const userCreationDto: UserCreationDto = {
+  //           username: username,
+  //           email: profile.email,
+  //           profileImage: profile.profile_image_url,
+  //         };
+  //         const id = await User.create([userCreationDto]);
+  //         console.log('apple login user created, id: ', id);
+  //         const userDtos: UserDto[] = await User.selectById(parseInt(id));
+  //         user = userDtos[0];
+  //       }
+  //       if (User.isSoftDeleted(user)) {
+  //         done(new Error('탈퇴한 사용자입니다.'));
+  //       } else {
+  //         done(null, user);
+  //       }
+  //     }
+  //   )
+  // );
 }
 
 export default passportSetup;
