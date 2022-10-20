@@ -3,14 +3,19 @@ import ScrollToBottom from 'react-scroll-to-bottom'
 
 import Msg from './Msg'
 
-const Messages = ({ messages, name }: any) => {
+import { IChat } from './Chat'
+
+interface Props {
+  chats: IChat[]
+}
+
+const Messages = ({ chats }: Props) => {
   return (
-    <ScrollToBottom className="flex-auto overflow-auto px-4 ">
-      메세지창
-      {messages.map((message: any, i: any) => {
+    <ScrollToBottom className="flex-auto px-4 overflow-auto bg-gray-200 ">
+      {chats.map((chat: IChat, i: number) => {
         return (
           <div key={i}>
-            <Msg message={message} name={name} />
+            <Msg chat={chat} />
           </div>
         )
       })}

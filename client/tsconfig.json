@@ -1,11 +1,19 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "baseUrl": "./src",
     "paths": {
-      "@components/*": ["./components/*"],
-      "@hooks/*": ["./hooks/*"]
+      "@components/*": [
+        "./components/*"
+      ],
+      "@hooks/*": [
+        "./hooks/*"
+      ]
     },
     "allowJs": true,
     "skipLibCheck": true,
@@ -19,7 +27,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "sourceMap": true
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }

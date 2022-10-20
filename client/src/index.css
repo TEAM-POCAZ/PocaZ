@@ -13,6 +13,82 @@
   body {
     background: #000;
   }
+
+  .bg .txtBox {
+    margin-top: -80px;
+    margin-left: -450px;
+  }
+  .bg .txtBox h3 {
+    transition: 0.8s all cubic-bezier(0.215, 0.61, 0.355, 1);
+    -webkit-background: linear-gradient(90deg, #2f4fef 40%, #fff 95%);
+    -moz-background: linear-gradient(90deg, #2f4fef 40%, #fff 95%);
+    background: linear-gradient(90deg, #2f4fef 40%, #fff 95%);
+    -webkit-animation: Bar 3s ease infinite;
+    animation: Bar 3s ease infinite;
+    background-size: 200% 800%;
+    background-position: 80% 0%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  @-webkit-keyframes Bar {
+    0% {
+      background-position: 100% 0%;
+    }
+
+    55% {
+      background-position: 60% 100%;
+    }
+
+    100% {
+      background-position: 100% 0%;
+    }
+  }
+
+  @-moz-keyframes Bar {
+    0% {
+      background-position: 100% 0%;
+    }
+
+    55% {
+      background-position: 60% 100%;
+    }
+
+    100% {
+      background-position: 100% 0%;
+    }
+  }
+
+  @keyframes Bar {
+    0% {
+      background-position: 100% 0%;
+    }
+
+    55% {
+      background-position: 45% 0%;
+    }
+
+    100% {
+      background-position: 100% 0%;
+    }
+  }
+
+  @media only screen and (min-width: 768px) and (max-width: 1023px) {
+  }
+  @media screen and (max-width: 767px) {
+    body {
+      background: none;
+    }
+  }
+
+  @keyframes fixHeader {
+    0% {
+      top: -5rem;
+    }
+    100% {
+      top: 0;
+    }
+  }
+
   .changeHeader {
     position: sticky;
     color: black;
@@ -58,89 +134,28 @@
     opacity: 0;
     transition: 0.4s;
     border-radius: 50%;
-    background: #ededed;
+    background: #000;
   }
   .topBtn.active {
     opacity: 1;
     transition: 0.4s;
   }
-}
-
-/* [별이] 작업 중 ~ tailwind config js 로 옮길 예정 ~ */
-.bg .txtBox {
-  margin-top: -80px;
-  margin-left: -450px;
-}
-.bg .txtBox h3 {
-  transition: 0.8s all cubic-bezier(0.215, 0.61, 0.355, 1);
-  -webkit-background: linear-gradient(90deg, #2f4fef 40%, #fff 95%);
-  -moz-background: linear-gradient(90deg, #2f4fef 40%, #fff 95%);
-  background: linear-gradient(90deg, #2f4fef 40%, #fff 95%);
-  -webkit-animation: Bar 3s ease infinite;
-  animation: Bar 3s ease infinite;
-  background-size: 200% 800%;
-  background-position: 80% 0%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-@-webkit-keyframes Bar {
-  0% {
-    background-position: 100% 0%;
+  .boardList ul li:nth-child(n + 6) {
+    display: none;
   }
-
-  55% {
-    background-position: 60% 100%;
+  .boastGallery ul li:nth-child(n + 10) {
+    display: none;
   }
-
-  100% {
-    background-position: 100% 0%;
+  .listWrap .boardSubject {
+    width: calc(100% - 100px);
   }
-}
-
-@-moz-keyframes Bar {
-  0% {
-    background-position: 100% 0%;
+  .likeBtn button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-
-  55% {
-    background-position: 60% 100%;
-  }
-
-  100% {
-    background-position: 100% 0%;
-  }
-}
-
-@keyframes Bar {
-  0% {
-    background-position: 100% 0%;
-  }
-
-  55% {
-    background-position: 45% 0%;
-  }
-
-  100% {
-    background-position: 100% 0%;
-  }
-}
-
-@media only screen and (min-width: 768px) and (max-width: 1023px) {
-  body {
-    background: none;
-  }
-}
-@media screen and (max-width: 767px) {
-  body {
-    background: none;
-  }
-}
-
-@keyframes fixHeader {
-  0% {
-    top: -5rem;
-  }
-  100% {
-    top: 0;
+  .likeBtn button::before {
+    padding: 3px 4px 0 0;
+    color: rgb(30 64 175);
   }
 }

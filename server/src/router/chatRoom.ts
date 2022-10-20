@@ -4,6 +4,6 @@ import { getChatRoom } from '../controller/chatRoom';
 
 const router = express.Router();
 
-router.get('/', getChatRoom);
+router.get('/:user', getChatRoom);
 
 export default router;

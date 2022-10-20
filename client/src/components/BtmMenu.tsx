@@ -1,43 +1,31 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom'
-import Main from 'pages/Main'
-import Community from 'pages/Community'
 import 'remixicon/fonts/remixicon.css'
+import classnames from 'classnames'
+
+const btnList = [
+  { id: 0, title: 'Home', icon: 'ri-home-3-line', to: '/' },
+  { id: 1, title: 'STORE', icon: 'ri-store-line', to: '/MarketList' },
+  { id: 2, title: 'CHAT', icon: 'ri-chat-heart-line', to: '/chat/list' },
+  { id: 3, title: 'FREEZONE', icon: 'ri-emotion-happy-line', to: '/CommunityList' },
+  { id: 4, title: 'MY PAGE', icon: 'ri-user-line', to: '/login' },
+]
 
 const BtmMenu = () => {
   return (
-    <div className="btmMenu sticky bottom-0 left-0 h-14 bg-white border-t border-gray-400 box-border z-50">
+    <div className="box-border sticky bottom-0 left-0 z-50 bg-white border-t border-gray-400 btmMenu h-14">
       <ul className="flex items-center justify-around h-full">
-        <li>
-          <Link to="/">
-            <i className="ri-home-3-line block text-center text-2xl leading-none"></i>
-            <p className="text-xs">HOME</p>
-          </Link>
-        </li>
-        <li>
-          <Link to="/*">
-            <i className="ri-store-line block text-center text-2xl leading-none"></i>
-            <p className="text-xs">STORE</p>
-          </Link>
-        </li>
-        <li>
-          <Link to="/chat/list">
-            <i className="ri-chat-heart-line block text-center text-2xl leading-none"></i>
-            <p className="text-xs">CHAT</p>
-          </Link>
-        </li>
-        <li>
-          <Link to="/Community">
-            <i className="ri-emotion-happy-line block text-center text-2xl leading-none"></i>
-            <p className="text-xs">FREEZONE</p>
-          </Link>
-        </li>
-        <li>
-          <Link to="/">
-            <i className="ri-user-line block text-center text-2xl leading-none"></i>
-            <p className="text-xs">MY PAGE</p>
-          </Link>
-        </li>
+        {btnList.map((btn) => {
+          const classStr = classnames('block text-center text-2xl leading-none', btn.icon)
+          return (
+            <li key={btn.id}>
+              <Link to={btn.to}>
+                <i className={classStr}></i>
+                <p className="text-xs">{btn.title}</p>
+              </Link>
+            </li>
+          )
+        })}
       </ul>
     </div>
   )

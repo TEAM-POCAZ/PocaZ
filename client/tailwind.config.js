@@ -6,6 +6,15 @@ module.exports = {
       width: {
         480: '480px',
       },
+      translate: {
+        50: '-50%',
+      },
+      minWidth: {
+        40: '40px',
+      },
+      minHeight: {
+        300: '300px',
+      },
     },
     screens: {
       '3xl': { max: '2000px' },
