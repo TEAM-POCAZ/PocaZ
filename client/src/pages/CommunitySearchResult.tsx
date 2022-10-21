@@ -1,9 +1,33 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Layout from 'utils/Layout'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
+import axios from 'axios'
+import CommunityListItem from '../components/Square/CommunityListItem'
 
 const CommunitySearchResult = () => {
+  const [list, setList] = useState<any[] | null>(null)
   const navigate = useNavigate()
+  const keyInfo = useLocation()
+
+  // console.log(keyInfo)
+  useEffect(() => {
+    if (keyInfo.state) {
+      const {
+        state: { keyword },
+      }: any = keyInfo
+      axios
+        .get(`https://pocaz.ystoy.shop/api/post/search/?keyword=${keyword.split(' ').join('.')}`)
+        .then((res) => {
+          const { data }: any = res
+          // console.log(
+          //   `http://localhost:8080/api/post/search/?keyword=${keyword.split(' ').join('.')}`,
+          // )
+          setList(data)
+        })
+        .catch((e) => console.error(e))
+    }
+  }, [])
+
   return (
     <>
       <Layout>
@@ -16,9 +40,7 @@ const CommunitySearchResult = () => {
             <i className="ri-search-line"></i>
           </button>
         </div>
-        <ul>
-          <li>검색결과가 나오겠쥬</li>
-        </ul>
+        {list && list?.length > 0 ? <CommunityListItem list={list} /> : <div>검색 안되지롱</div>}
       </Layout>
     </>
   )

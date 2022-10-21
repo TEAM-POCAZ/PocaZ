@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import CommunityTop from './CommunityTop'
 import axios from 'axios'
 import SearchBox from '../components/Square/SearchBox'
+import dayjs from 'dayjs'
 
 const CommunityBoast = () => {
   const [list, setList] = useState<any[] | null>(null)
@@ -28,25 +29,32 @@ const CommunityBoast = () => {
         <div className="boastListWrap">
           <ul>
             {list &&
-              list.map((lists: any) => (
-                <li key={lists.id} onClick={() => navigate(`/Community/2/${lists.id}`)}>
-                  <div className="boastThumb">
-                    <img src={lists.filePath} />
-                  </div>
-                  <div className="boardSubject">
-                    <p>{lists.title}</p>
-                    <div>
-                      <div className="writeWrap">
-                        <div className="writeProfile">{/* <img src={} /> */}</div>
-                        <span className="writeName">{lists.nickname}</span>
-                      </div>
-                      <time>{lists.createAt}</time>
-                      <span className="comment">댓글 {lists.replyCnt}</span>
-                      <span className="hit">{lists.viewCount}</span>
+              list.map((lists: any) => {
+                const days = dayjs(lists.createAt).format('YYYY-MM-DD')
+                return (
+                  <li
+                    key={lists.id}
+                    onClick={() => navigate(`/Community/2/${lists.id}`)}
+                    className="cursor-pointer"
+                  >
+                    <div className="boastThumb">
+                      <img src={lists.filePath} />
                     </div>
-                  </div>
-                </li>
-              ))}
+                    <div className="boardSubject">
+                      <p>{lists.title}</p>
+                      <div>
+                        <div className="writeWrap">
+                          <div className="writeProfile">{/* <img src={} /> */}</div>
+                          <span className="writeName">{lists.nickname}</span>
+                        </div>
+                        <time className="text-xs">{days}</time>&nbsp;
+                        <span className="comment text-xs">댓글 {lists.replyCnt}</span>&nbsp;
+                        <span className="hit text-xs">조회 {lists.viewCount}</span>
+                      </div>
+                    </div>
+                  </li>
+                )
+              })}
           </ul>
         </div>
       </Layout>

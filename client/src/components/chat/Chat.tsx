@@ -84,8 +84,9 @@ const Chat = ({ socket }: any) => {
         chatRoom: room,
       }
 
+      socket.emitSync('message', newMessage)
       // socket.emitSync('sendMessage', newMessage)
-      await apis.postChat(newMessage) // post로 보낼 때
+      // await apis.postChat(newMessage) // post로 보낼 때
       // const { data } = await apis.postChat(newMessage)
       // setChats((prev) => [...prev, data])
     }

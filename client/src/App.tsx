@@ -15,6 +15,8 @@ import ChatMain from 'pages/ChatMain'
 import Chat from 'components/chat/Chat'
 import Login from 'pages/Login'
 import LoginSuccessed from 'pages/LoginSuccessed'
+import { toast, ToastContainer } from 'react-toastify'
+import MarketList from 'pages/MarketList'
 
 function App({ socket }: any) {
   const client = new QueryClient({
@@ -29,9 +31,11 @@ function App({ socket }: any) {
       <QueryClientProvider client={client}>
         {/* devtools */}
         <ReactQueryDevtools initialIsOpen={true} />
+        <ToastContainer />
         <Router>
           <Routes>
             <Route path="/" element={<Main />} />
+            <Route path="MarketList" element={<MarketList />} />
             <Route path="CommunityList" element={<CommunityList />} />
             <Route path="Community/:category/:id" element={<CommunityDetail />} />
             <Route path="Community/" element={<CommunityWrite />} />

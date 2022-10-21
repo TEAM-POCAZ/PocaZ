@@ -10,9 +10,6 @@ const Login = () => {
   const navigate = useNavigate()
 
   const API = process.env.REACT_APP_HOST_URL as string
-  // if (process.env.NODE_ENV !== 'production') {
-  //   API = 'http://localhost:8000'
-  // }
 
   const logout = () => {
     fetch(`${API}/api/auth/logout`, { credentials: 'include' })

@@ -49,4 +49,6 @@ chat의 timestamp 기능을 위해 moment 보다 가벼운 dayjs 설치
 `npm i socket.io-client`
 `npm i react-scroll-to-bottom`
 
-
+221019
+`npm i react-toastify`
+react toast 메시지(alert) 설치

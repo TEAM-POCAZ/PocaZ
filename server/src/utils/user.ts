@@ -1,5 +1,5 @@
-import { RowDataPacket } from "mysql2";
-import { tranSQL } from "./tranSQL2";
+import { RowDataPacket } from 'mysql2';
+import { tranSQL } from './tranSQL2';
 
 interface UserCreationDto {
   username?: string;
@@ -39,7 +39,8 @@ class User {
         VALUES ?`,
       [
         users.map((user: UserCreationDto) => {
-          let { username, email, nickname, profileImage, artist } = user;
+          const { username, email, profileImage, artist } = user;
+          let { nickname } = user;
           console.log(email);
           console.log(profileImage);
           if (!nickname) {
@@ -62,13 +63,13 @@ class User {
     return tranSQL.updateOrDelete(
       `UPDATE User
         SET 
-        ${email ? "email = ?," : ""}
-        ${nickname ? "nickname = ?," : ""}
-        ${profileImage ? "profileImage = ?," : ""}
-        ${artist ? "artist = ?," : ""}
+        ${email ? 'email = ?,' : ''}
+        ${nickname ? 'nickname = ?,' : ''}
+        ${profileImage ? 'profileImage = ?,' : ''}
+        ${artist ? 'artist = ?,' : ''}
         updateAt = now()
       WHERE 1 = 1
-            ${tranSQL.where("id")}`,
+            ${tranSQL.where('id')}`,
       arr
     );
   }
@@ -79,7 +80,7 @@ class User {
         SET 
         deleteAt = now()
       WHERE 1 = 1
-            ${tranSQL.where("id")}`,
+            ${tranSQL.where('id')}`,
       [id]
     );
   }
@@ -92,14 +93,14 @@ class User {
     const result = tranSQL.updateOrDelete(
       `DELETE FROM User
     WHERE 1 = 1
-   ${tranSQL.where("id")}`,
+   ${tranSQL.where('id')}`,
       [id]
     );
     return result;
   }
   static async selectById(id: number) {
     const users: Promise<IUser[]> = tranSQL.select(
-      `${tranSQL.user}${tranSQL.where("id")}`,
+      `${tranSQL.user}${tranSQL.where('id')}`,
       [id]
     );
     return users;
@@ -107,7 +108,7 @@ class User {
 
   static async selectByUsername(username: string) {
     const users: Promise<IUser[]> = tranSQL.select(
-      `${tranSQL.user}${tranSQL.where("username")}`,
+      `${tranSQL.user}${tranSQL.where('username')}`,
       [username]
     );
     return users;
@@ -115,8 +116,8 @@ class User {
 }
 
 function nicknameGenerator(length: number) {
-  const alpha = "abcdefghijklmnopqrstuvwxyz";
-  let str = "";
+  const alpha = 'abcdefghijklmnopqrstuvwxyz';
+  let str = '';
   for (let i = 0; i < length; i++)
     str += alpha[Math.floor(Math.random() * alpha.length)];
   return str;
