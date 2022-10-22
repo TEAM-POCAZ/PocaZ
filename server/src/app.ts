@@ -18,6 +18,7 @@ import marketRouter from './router/market';
 import fileRouter from './router/file';
 import artistRouter from './router/artist';
 import authRouter from './router/authRouter';
+import userRouter from './router/user';
 
 const API = '/api';
 
@@ -52,6 +53,7 @@ app.use(`${API}/post`, postRouter);
 app.use(`${API}/market`, marketRouter);
 app.use(`${API}/file`, fileRouter);
 app.use(`${API}/artist`, artistRouter);
+app.use(`${API}/user`, userRouter);
 app.use(`${API}/auth`, authRouter);
 
 const server = app.listen(+config.host.port, () => {

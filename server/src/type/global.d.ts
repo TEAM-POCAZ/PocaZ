@@ -1,8 +1,11 @@
-import { UserDto } from "../utils/user";
+import { UserDto } from '../entity/user';
 
 declare global {
   namespace Express {
-    export interface User extends UserDto {}
+    interface User extends UserDto {
+      id: number;
+    }
   }
 }
+
 export {};
