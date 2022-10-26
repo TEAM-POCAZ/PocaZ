@@ -60,7 +60,6 @@ export default {
       [content, id, user, post]
     );
     res.send('successfully modified');
-    // res.redirect(`/post/${category}/${post}`);
   },
   deleteReply: async (req: Request, res: Response) => {
     const { category, post, id, user } = req.params;
