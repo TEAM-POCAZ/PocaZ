@@ -9,8 +9,8 @@ import images from '../controller/postImage';
  *     PostImage:
  *       type: object
  *       properties:
- *         post:
- *           type: string
+ *         file:
+ *           type: number
  *           example: 1
  *         path:
  *           type: string

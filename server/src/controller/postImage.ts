@@ -5,7 +5,7 @@ export default {
   getImages: async (req: Request, res: Response) => {
     const { post } = req.params;
     const imgList = await tranSQL.getOne(
-      `SELECT pi.post, f.path
+      `SELECT pi.file, f.path
          FROM (SELECT post, file
                  FROM PostImage
                 WHERE post = ?) pi
