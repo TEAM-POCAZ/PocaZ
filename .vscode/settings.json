@@ -1,4 +1,23 @@
 {
     "cSpell.words": ["swiper"],
-    "peacock.color": "#2b27a2"
+    "peacock.color": "#2b27a2",
+    "workbench.colorCustomizations": {
+        "activityBar.activeBackground": "#3631cb",
+        "activityBar.background": "#3631cb",
+        "activityBar.foreground": "#e7e7e7",
+        "activityBar.inactiveForeground": "#e7e7e799",
+        "activityBarBadge.background": "#330e0c",
+        "activityBarBadge.foreground": "#e7e7e7",
+        "commandCenter.border": "#e7e7e799",
+        "sash.hoverBorder": "#3631cb",
+        "statusBar.background": "#2b27a2",
+        "statusBar.foreground": "#e7e7e7",
+        "statusBarItem.hoverBackground": "#3631cb",
+        "statusBarItem.remoteBackground": "#2b27a2",
+        "statusBarItem.remoteForeground": "#e7e7e7",
+        "titleBar.activeBackground": "#2b27a2",
+        "titleBar.activeForeground": "#e7e7e7",
+        "titleBar.inactiveBackground": "#2b27a299",
+        "titleBar.inactiveForeground": "#e7e7e799"
+    }
 }

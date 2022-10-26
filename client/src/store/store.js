@@ -30,6 +30,11 @@ const useStore = create(
       set({ nickName: input })
     },
 
+    socketStorage: {},
+    setSocketStorage: (socket) => {
+      set({ socketStorage: socket })
+    },
+
     newMsg: {}, //state
 
     setNewMsg: (msg) => {

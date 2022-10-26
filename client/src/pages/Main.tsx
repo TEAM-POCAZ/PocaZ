@@ -13,6 +13,8 @@ import mainSlideBn3 from 'assets/img/main_slide_bn3.gif'
 import axios from 'axios'
 import dayjs from 'dayjs'
 
+import useStore from 'store/store'
+
 const Main = () => {
   const [users, setUsers] = useState<any[] | null>(null)
   const [users2, setUsers2] = useState<any[] | null>(null)
@@ -78,13 +80,13 @@ const Main = () => {
               className="h-96"
             >
               <SwiperSlide>
-                <img className="w-full h-full object-cover" src={mainSlideBn1} alt={mainSlideBn1} />
+                <img className="object-cover w-full h-full" src={mainSlideBn1} alt={mainSlideBn1} />
               </SwiperSlide>
               <SwiperSlide>
-                <img className="w-full h-full object-cover" src={mainSlideBn2} alt={mainSlideBn2} />
+                <img className="object-cover w-full h-full" src={mainSlideBn2} alt={mainSlideBn2} />
               </SwiperSlide>
               <SwiperSlide>
-                <img className="w-full h-full object-cover" src={mainSlideBn3} alt={mainSlideBn3} />
+                <img className="object-cover w-full h-full" src={mainSlideBn3} alt={mainSlideBn3} />
               </SwiperSlide>
             </Swiper>
           </div>
@@ -104,7 +106,7 @@ const Main = () => {
             >
               더미데이터 테스트입니다롱
             </button> */}
-            <div className="boardWrap mb-6">
+            <div className="mb-6 boardWrap">
               <h2 className="flex mb-3.5 text-2xl font-extrabold">
                 최근 게시물<i className="ri-arrow-drop-right-line"></i>
               </h2>
@@ -122,17 +124,17 @@ const Main = () => {
                           <h4 className="mr-3.5 text-sm font-normal whitespace-nowrap text-ellipsis overflow-hidden">
                             {user.title}
                           </h4>
-                          <time className="timeWrap text-sm font-normal">{days}</time>
+                          <time className="text-sm font-normal timeWrap">{days}</time>
                         </li>
                       )
                     })}
                 </ul>
               </div>
             </div>
-            <div className="bestPoca mb-6">
+            <div className="mb-6 bestPoca">
               <div className="subject mb-3.5">
                 <h3 className="text-2xl font-extrabold">BEST 포카</h3>
-                <h4 className="text-gray-500 text-sm">
+                <h4 className="text-sm text-gray-500">
                   내 콜렉트북 한 자리를 차지할 HOT한 포카 😘
                 </h4>
               </div>
@@ -140,15 +142,15 @@ const Main = () => {
                 {photocards &&
                   photocards.map((photocard: any) => (
                     <SwiperSlide key={photocard.id}>
-                      <div className="pocaThumb relative h-72 lg:h-96 mm:h-60">
-                        <img src={photocard.pocaImg} className="w-full h-full object-cover" />
+                      <div className="relative pocaThumb h-72 lg:h-96 mm:h-60">
+                        <img src={photocard.pocaImg} className="object-cover w-full h-full" />
                       </div>
-                      <div className="pocaListWrap mt-1 text-xs">
-                        <p className="groupName font-extrabold">{photocard.groupName}</p>
-                        <p className="memberName text-sm">{photocard.stageName}</p>
-                        <p className="pocaDetail text-base">{photocard.pocaName}</p>
-                        <p className="pocaDesc mb-1 text-gray-500">{photocard.description}</p>
-                        <p className="pocaPrice font-medium text-base">
+                      <div className="mt-1 text-xs pocaListWrap">
+                        <p className="font-extrabold groupName">{photocard.groupName}</p>
+                        <p className="text-sm memberName">{photocard.stageName}</p>
+                        <p className="text-base pocaDetail">{photocard.pocaName}</p>
+                        <p className="mb-1 text-gray-500 pocaDesc">{photocard.description}</p>
+                        <p className="text-base font-medium pocaPrice">
                           <span>{photocard.price}</span>
                           <span className="won">원</span>
                         </p>
@@ -157,10 +159,10 @@ const Main = () => {
                   ))}
               </Swiper>
             </div>
-            <div className="newPoca mb-6">
+            <div className="mb-6 newPoca">
               <div className="subject mb-3.5">
                 <h3 className="text-2xl font-extrabold">최근 올라온 포카</h3>
-                <h4 className="text-gray-500 text-sm">
+                <h4 className="text-sm text-gray-500">
                   내 콜렉트북 한 자리를 차지할 HOT한 포카 😘
                 </h4>
               </div>
@@ -168,15 +170,15 @@ const Main = () => {
                 {photocards &&
                   photocards.map((photocard: any) => (
                     <SwiperSlide key={photocard.id}>
-                      <div className="pocaThumb relative h-72 lg:h-96 mm:h-60">
-                        <img src={photocard.pocaImg} className="w-full h-full object-cover" />
+                      <div className="relative pocaThumb h-72 lg:h-96 mm:h-60">
+                        <img src={photocard.pocaImg} className="object-cover w-full h-full" />
                       </div>
-                      <div className="pocaListWrap mt-1 text-xs">
-                        <p className="groupName font-extrabold">{photocard.groupName}</p>
-                        <p className="memberName text-sm">{photocard.stageName}</p>
-                        <p className="pocaDetail text-base">{photocard.pocaName}</p>
-                        <p className="pocaDesc mb-1 text-gray-500">{photocard.description}</p>
-                        <p className="pocaPrice font-medium text-base">
+                      <div className="mt-1 text-xs pocaListWrap">
+                        <p className="font-extrabold groupName">{photocard.groupName}</p>
+                        <p className="text-sm memberName">{photocard.stageName}</p>
+                        <p className="text-base pocaDetail">{photocard.pocaName}</p>
+                        <p className="mb-1 text-gray-500 pocaDesc">{photocard.description}</p>
+                        <p className="text-base font-medium pocaPrice">
                           <span>{photocard.price}</span>
                           <span className="won">원</span>
                         </p>
@@ -185,10 +187,10 @@ const Main = () => {
                   ))}
               </Swiper>
             </div>
-            <div className="boardBoast mb-6">
+            <div className="mb-6 boardBoast">
               <div className="subject mb-3.5">
                 <h3 className="text-2xl font-extrabold">포꾸 자랑</h3>
-                <h4 className="text-gray-500 text-sm">하늘 아래 똑같은 포카는 없다 🤩</h4>
+                <h4 className="text-sm text-gray-500">하늘 아래 똑같은 포카는 없다 🤩</h4>
               </div>
               <div className="boastGallery">
                 <ul className="grid grid-cols-3 grid-rows-3">
@@ -197,9 +199,9 @@ const Main = () => {
                       <li
                         key={user.id}
                         onClick={() => navigate(`/Community/2/${user.id}`)}
-                        className="h-36 cursor-pointer"
+                        className="cursor-pointer h-36"
                       >
-                        <img src={user.filePath} className="w-full h-full object-cover" />
+                        <img src={user.filePath} className="object-cover w-full h-full" />
                       </li>
                     ))}
                 </ul>

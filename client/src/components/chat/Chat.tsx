@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import queryString from 'query-string'
@@ -41,7 +41,7 @@ interface ILocationProps {
 
 const Chat = ({ socket }: any) => {
   const [chats, setChats] = useState<IChat[]>([])
-  const { setNewMsg } = useStore()
+  const { newMsg, setNewMsg } = useStore()
 
   const navigate = useNavigate()
   const location = useLocation()
@@ -50,7 +50,6 @@ const Chat = ({ socket }: any) => {
   // const { oppNickname }: any = location.state //TODO 지워야함
 
   useEffect(() => {
-    getChat()
     socket.joinRoom(room)
 
     socket.onSync('test', (message: any) => {
@@ -71,6 +70,9 @@ const Chat = ({ socket }: any) => {
       return data
     }
   }
+  const chatss = useMemo(() => {
+    getChat()
+  }, [])
 
   // const { isLoading, error, data } = useQuery<IChat[], Error>('getChat', getChat, {
   //   // refetchOnWindowFocus: false,
@@ -100,6 +102,7 @@ const Chat = ({ socket }: any) => {
       ) : (
         <div className="flex items-center justify-center bg-gray-800 outerContainer h-[100vh]">
           <div className="flex flex-col justify-between w-full bg-white rounded-lg h-2/3">
+            <InfoBar navigate={navigate} />
             {/* <InfoBar oppNickname={oppNickname} navigate={navigate} /> */}
             <Messages chats={chats} />
             <InputMsg handleMessage={handleMessage} />

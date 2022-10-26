@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { Route, Routes } from 'react-router-dom'
 
@@ -41,7 +41,8 @@ function App({ socket }: any) {
             <Route path="Community/" element={<CommunityWrite />} />
             <Route path="CommunityBoast" element={<CommunityBoast />} />
             <Route path="CommunitySearchResult" element={<CommunitySearchResult />} />
-            <Route path="/chat/list" element={<ChatMain />} />
+
+            <Route path="/chat/list" element={<ChatMain socket={socket} />} />
             <Route path="/chat" element={<Chat socket={socket} />} />
             <Route path="/login" element={<Login />} />
             <Route path="/loginsuccessed" element={<LoginSuccessed></LoginSuccessed>} />

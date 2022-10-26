@@ -23,7 +23,7 @@ export default class Socket {
     }
 
     this.io.on(e, (message: any) => {
-      console.log(message)
+      // console.log(message)
       cb(message)
     })
 
@@ -31,10 +31,15 @@ export default class Socket {
   }
 
   emitSync(e: string, newMsg: INewMsg) {
+    console.log('this.io :>> ', this.io)
     this.io.emit(e, newMsg)
   }
 
   joinRoom(val: any) {
+    // if (this.io.connected) {
+    //   console.log('this.io 이미됨 :>> ', this.io)
+    //   return
+    // }
     this.io.emit('joinRoom', val)
   }
 }
