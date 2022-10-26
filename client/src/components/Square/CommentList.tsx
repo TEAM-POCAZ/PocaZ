@@ -25,7 +25,7 @@ const CommentList = ({ comments, category, id }: any) => {
     if (repComment)
       try {
         // await (
-        await fetch(`https://pocaz.ystoy.shop/api/post/reply/${category}/${id}/2`, {
+        await fetch(`http://localhost:8080/api/post/reply/${category}/${id}/2`, {
           method: 'POST',
           headers: {
             'Content-type': 'application/json',

@@ -17,7 +17,7 @@ const CommunityList = () => {
     const list = async () => {
       try {
         setList(null)
-        const response = await axios.get(`https://pocaz.ystoy.shop/api/post/1/?sortBy=${sort}`)
+        const response = await axios.get(`http://localhost:8080/api/post/1/?sortBy=${sort}`)
         setList(response.data)
       } catch (e) {
         console.error(e)
