@@ -27,7 +27,7 @@ export interface IUserInfo {
  * 추가적인 메세지는 useStore에서 메세지값을 가져와서 새로 넣어준다.
  * @returns chat list 반환
  */
-const ChatMain = () => {
+const ChatMain = ({ socket }: any) => {
   const [isReceive, setIsReceive] = useState(true)
   // const [isLoading, setIsLoading] = useState(true)
   const [chatList, setChatList] = useState()
@@ -45,10 +45,10 @@ const ChatMain = () => {
     data: roomData,
   } = useQuery<IChatRoom[], Error>('getChatList', getChatList, {
     // notifyOnChangeProps: ['data'],
-    refetchInterval: 2000,
-    refetchIntervalInBackground: true,
-
+    // refetchInterval: 2000,
+    // refetchIntervalInBackground: true,
     // refetchInterval: 1000, // 1초마다 갱신
+    staleTime: Infinity,
   })
 
   // useEffect(() => {
@@ -74,18 +74,35 @@ const ChatMain = () => {
   // if (error) console.log('"axois", error.message :>> ', error.message)
 
   // const [name, setName] = useState(1) //FIXME  login 정보에서 가져오기(store) // nickName은 1인 유저로 가정한다.
+
   useEffect(() => {
-    console.log('newMsg :>> ', newMsg)
-    // console.log('roomData :>> ', roomData)
-    console.log('chatList :>> ', chatList)
+    console.log('newMsg111111 :>> ', newMsg)
+    console.log('roomData :>> ', roomData)
   }, [newMsg])
+
   // const [room, setRoom] = useState('') //TODO 1:1채팅방 room은 어떻게 만들까?
 
-  const enterRoom = (e: any) => {
-    // e.preventdefault()
-    console.log('클릭이벤트')
-    setIsReceive(false)
-  }
+  useEffect(() => {
+    console.log('roomData :>> ', roomData)
+    roomData?.forEach((item) => {
+      socket.joinRoom(String(item.chatRoom))
+      console.log('조인조인')
+    })
+    socket.onSync('test', (message: any) => {
+      // setChats((prev) => [...prev, message])
+      console.log('message 제발 :>> ', message)
+      // setNewMsg(message)
+      //TODO 이 a 값을 zustand에도 넣는다.
+      // 이 값을 chatlist도 바라보게한다.
+    })
+  }, [])
+
+  // useEffect(() => {
+  //   socket.onSync('test', (message: any) => {
+  //     // 새로운 메세지 수신
+  //     console.log('message 제발 :>> ', message)
+  //   })
+  // }, [socket])
 
   return (
     <Layout>
@@ -99,11 +116,9 @@ const ChatMain = () => {
             <ul className="p-6 divide-y divide-slate-200">
               {roomData &&
                 roomData?.map((item: IChatRoom) => {
-                  //FIXME key값 수정필요
                   return (
                     <Link
                       key={item.chatRoom}
-                      onClick={enterRoom}
                       to={`/chat?room=${item.chatRoom}&name=${userInfo?.nickName}`} //FIXME msg 쿼리스트링 때문에 일단 사용
                       // to={`/chat?room=${item.chatRoom}`}
                       // to={`/chat`}
