@@ -13,7 +13,7 @@ const CommunityBoast = () => {
     const boastList = async () => {
       try {
         setList(null)
-        const response = await axios.get('https://pocaz.ystoy.shop/api/post/2')
+        const response = await axios.get('http://localhost:8080/api/post/2')
         setList(response.data)
       } catch (e) {
         console.error(e)

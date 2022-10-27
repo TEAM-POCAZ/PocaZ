@@ -33,13 +33,13 @@ const CommunityDetail = () => {
   useEffect(() => {
     const Detail = async () => {
       try {
-        await axios.patch(`https://pocaz.ystoy.shop/api/post/view/${category}/${id}`)
+        await axios.patch(`http://localhost:8080/api/post/view/${category}/${id}`)
 
         setDetailContent(null)
-        const response = await axios.get(`https://pocaz.ystoy.shop/api/post/${category}/${id}`)
+        const response = await axios.get(`http://localhost:8080/api/post/${category}/${id}`)
         setDetailContent(response.data[0])
         const { data }: { data: any } = await axios.get(
-          `https://pocaz.ystoy.shop/api/post/img/${category}/${id}`,
+          `http://localhost:8080/api/post/img/${category}/${id}`,
         )
         //const [{ path: imgPath }] = data
         //setImg(imgPath)
@@ -56,7 +56,7 @@ const CommunityDetail = () => {
     ;(async () => {
       const {
         data: [toggleLike],
-      } = await axios.get(`https://pocaz.ystoy.shop/api/post/likes/${id}/1`)
+      } = await axios.get(`http://localhost:8080/api/post/likes/${id}/1`)
       toggleLike ? setLike(true) : setLike(false)
     })()
   }, [like])
@@ -68,7 +68,7 @@ const CommunityDetail = () => {
   const onReplySubmit = async () => {
     try {
       const { data } = await axios.post(
-        `https://pocaz.ystoy.shop/api/post/reply/${category}/${id}/1`,
+        `http://localhost:8080/api/post/reply/${category}/${id}/1`,
         [
           {
             pid: null,
@@ -101,7 +101,7 @@ const CommunityDetail = () => {
 
   const deleteAction = async () => {
     try {
-      const del = await axios.delete(`https://pocaz.ystoy.shop/api/post/${category}/${id}/1`)
+      const del = await axios.delete(`http://localhost:8080/api/post/${category}/${id}/1`)
       toast.success('삭제가 완료되었습니다.', {
         autoClose: 500,
         position: toast.POSITION.BOTTOM_CENTER,
@@ -114,10 +114,10 @@ const CommunityDetail = () => {
 
   const onToggleLike = () => {
     if (like) {
-      axios.delete(`https://pocaz.ystoy.shop/api/post/likes/${id}/1`)
+      axios.delete(`http://localhost:8080/api/post/likes/${id}/1`)
       setLike(false)
     } else {
-      axios.post(`https://pocaz.ystoy.shop/api/post/likes/${id}/1`)
+      axios.post(`http://localhost:8080/api/post/likes/${id}/1`)
       setLike(true)
     }
   }
@@ -126,9 +126,7 @@ const CommunityDetail = () => {
     ;(async () => {
       try {
         setComments(null)
-        const response = await axios.get(
-          `https://pocaz.ystoy.shop/api/post/reply/${category}/${id}`,
-        )
+        const response = await axios.get(`http://localhost:8080/api/post/reply/${category}/${id}`)
         const [originComments, replyComments]: [originComments: any, replyComments: any] =
           response.data
         setComments(
