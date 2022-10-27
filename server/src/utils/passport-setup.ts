@@ -1,4 +1,4 @@
-import passport, { Profile } from 'passport';
+import passport from 'passport';
 import passport_google_oauth20 from 'passport-google-oauth20';
 
 import AppleStrategy from '@nicokaiser/passport-apple';
@@ -7,7 +7,7 @@ import OAuth2Strategy, {
   StrategyOptions,
   VerifyFunction,
 } from 'passport-oauth2';
-import { User, IUser, UserCreationDto, UserDto } from './user';
+import { User, UserCreationDto, UserDto } from '../entity/user';
 import * as fs from 'fs';
 import path from 'path';
 import { cwd } from 'process';
@@ -59,20 +59,16 @@ function passportSetup() {
         done: any
       ) {
         const username = `twitter#${profile.id}`;
-        const users = await User.selectByUsername(username);
-        let user: UserDto;
-        if (users[0]) {
-          user = users[0];
+        let user = await User.selectByUsername(username);
+        if (user) {
           console.log('twitter login user exists in DB, ', user);
         } else {
           const userCreationDto: UserCreationDto = {
-            username: username,
+            username,
             profileImage: profile.profile_image_url,
           };
-          const id = await User.create([userCreationDto]);
-          console.log('twitter login user created, id: ', id);
-          const userDtos: UserDto[] = await User.selectById(parseInt(id));
-          user = userDtos[0];
+          user = await User.create(userCreationDto);
+          console.log('twitter login user created, id: ', user);
         }
         if (User.isSoftDeleted(user)) {
           done(new Error('탈퇴한 사용자입니다.'));
@@ -83,13 +79,12 @@ function passportSetup() {
     )
   );
 
-  passport.serializeUser((user: UserDto, done) => {
+  passport.serializeUser((user, done) => {
     done(null, user.id);
   });
 
   passport.deserializeUser((id: string, done) => {
-    User.selectById(parseInt(id)).then((users: UserDto[]) => {
-      const user = users[0];
+    User.selectById(id).then((user: UserDto) => {
       done(null, user);
     });
   });
@@ -103,21 +98,17 @@ function passportSetup() {
       },
       async (accessToken, refreshToken, profile, done) => {
         const username = `google#${profile.id}`;
-        const users = await User.selectByUsername(username);
-        let user: UserDto;
-        if (users[0]) {
-          user = users[0];
+        let user = await User.selectByUsername(username);
+        if (user) {
           console.log('google login user exists in DB, ', user);
         } else {
           const userCreationDto: UserCreationDto = {
-            username: username,
+            username,
             email: profile._json.email,
             profileImage: profile._json.picture,
           };
-          const id = await User.create([userCreationDto]);
-          console.log('google login user created, id: ', id);
-          const userDtos: UserDto[] = await User.selectById(parseInt(id));
-          user = userDtos[0];
+          user = await User.create(userCreationDto);
+          console.log('google login user created, ', user);
         }
         if (User.isSoftDeleted(user)) {
           done(new Error('탈퇴한 사용자입니다.'));
@@ -143,13 +134,11 @@ function passportSetup() {
         accessToken: string,
         refreshToken: string,
         profile: any,
-        done: Function
+        done: any
       ) => {
         const username = `apple#${profile.id}`;
-        const users = await User.selectByUsername(username);
-        let user: UserDto;
-        if (users[0]) {
-          user = users[0];
+        let user = await User.selectByUsername(username);
+        if (user) {
           console.log('apple login user exists in DB, ', user);
         } else {
           const userCreationDto: UserCreationDto = {
@@ -157,10 +146,8 @@ function passportSetup() {
             email: profile.email,
             profileImage: profile.profile_image_url,
           };
-          const id = await User.create([userCreationDto]);
-          console.log('apple login user created, id: ', id);
-          const userDtos: UserDto[] = await User.selectById(parseInt(id));
-          user = userDtos[0];
+          user = await User.create(userCreationDto);
+          console.log('apple login user created, ', user);
         }
         if (User.isSoftDeleted(user)) {
           done(new Error('탈퇴한 사용자입니다.'));
