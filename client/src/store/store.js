@@ -27,7 +27,12 @@ const useStore = create(
     userInfo: { nickName: 1 }, //state
 
     setUserInfo: (input) => {
-      set({ nickName: input })
+      set({ userInfo: input })
+    },
+
+    socketStorage: {},
+    setSocketStorage: (socket) => {
+      set({ socketStorage: socket })
     },
 
     newMsg: {}, //state

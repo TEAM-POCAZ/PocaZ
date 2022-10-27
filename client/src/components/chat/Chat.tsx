@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import queryString from 'query-string'
@@ -41,17 +41,16 @@ interface ILocationProps {
 
 const Chat = ({ socket }: any) => {
   const [chats, setChats] = useState<IChat[]>([])
-  const { setNewMsg } = useStore()
+  const { userInfo, setNewMsg } = useStore()
 
   const navigate = useNavigate()
   const location = useLocation()
   const { room, name } = queryString.parse(location.search)
 
-  const { oppNickname }: any = location.state //TODO 지워야함
+  // const { oppNickname }: any = location.state //TODO 지워야함
 
   useEffect(() => {
-    getChat()
-    socket.joinRoom(room)
+    socket.joinRoom(room) //TODO login 붙으면 조인 빼야됨
 
     socket.onSync('test', (message: any) => {
       setChats((prev) => [...prev, message])
@@ -67,10 +66,14 @@ const Chat = ({ socket }: any) => {
   const getChat = async () => {
     if (room && name) {
       const { data } = await apis.getChat(room)
+      console.log('data :>> ', data)
       setChats(data)
       return data
     }
   }
+  const chatss = useMemo(() => {
+    getChat()
+  }, [])
 
   // const { isLoading, error, data } = useQuery<IChat[], Error>('getChat', getChat, {
   //   // refetchOnWindowFocus: false,
@@ -78,8 +81,9 @@ const Chat = ({ socket }: any) => {
 
   const handleMessage = async (sendMessage: string | undefined) => {
     if (sendMessage) {
+      console.log('name, sendM :>> ', name, sendMessage, room)
       const newMessage = {
-        user: name,
+        user: userInfo.id,
         message: sendMessage,
         chatRoom: room,
       }
@@ -98,9 +102,10 @@ const Chat = ({ socket }: any) => {
       {isLoading ? (
         <>로딩중입니다</>
       ) : (
-        <div className="flex items-center justify-center bg-gray-800 h-[80vh] outerContainer">
-          <div className="flex flex-col justify-between w-5/6 bg-white rounded-lg h-2/3">
-            <InfoBar oppNickname={oppNickname} navigate={navigate} />
+        <div className="flex items-center justify-center bg-gray-800 outerContainer h-[100vh]">
+          <div className="flex flex-col justify-between w-full bg-white rounded-lg h-2/3">
+            <InfoBar navigate={navigate} />
+            {/* <InfoBar oppNickname={oppNickname} navigate={navigate} /> */}
             <Messages chats={chats} />
             <InputMsg handleMessage={handleMessage} />
           </div>

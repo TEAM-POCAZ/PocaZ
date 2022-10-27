@@ -3,7 +3,10 @@ import { useNavigate } from 'react-router-dom'
 import Layout from 'utils/Layout'
 type btnClickEvent = React.MouseEvent<HTMLElement, MouseEvent>
 
+import useStore from 'store/store'
+
 const LoginSuccessed = () => {
+  const { setUserInfo } = useStore()
   const navigate = useNavigate()
   const [userData, setUserData] = useState(null)
 
@@ -22,6 +25,7 @@ const LoginSuccessed = () => {
       .then((res) => res.json())
       .then((data) => {
         setUserData(data)
+        setUserInfo(data)
       })
       .catch((error) => {
         console.log(error)

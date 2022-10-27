@@ -11,7 +11,7 @@ interface Props {
 
 const Messages = ({ chats }: Props) => {
   return (
-    <ScrollToBottom className="flex-auto px-4 overflow-auto bg-gray-200 ">
+    <ScrollToBottom className="flex-auto px-4 overflow-auto bg-gray-100 ">
       {chats.map((chat: IChat, i: number) => {
         return (
           <div key={i}>

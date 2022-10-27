@@ -1,6 +1,7 @@
 import React from 'react'
 import 'remixicon/fonts/remixicon.css'
 
+// const InfoBar = ({ oppNickname, navigate }: any) => {
 const InfoBar = ({ oppNickname, navigate }: any) => {
   return (
     <div className="flex flex-col justify-between w-full h-24 bg-white text rounded-t-md">
@@ -10,7 +11,8 @@ const InfoBar = ({ oppNickname, navigate }: any) => {
           className="items-center m-auto mx-2 text-2xl leading-none text-center ri-arrow-left-line"
         ></i>
         <div className="flex items-center ml-1 text-lg font-medium text-slate-900">
-          {oppNickname}
+          {/* {oppNickname} */}
+          상대방이름
         </div>
       </div>
 
