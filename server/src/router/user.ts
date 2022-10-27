@@ -1,6 +1,5 @@
 import { Router } from 'express';
 
-import { Request, Response, NextFunction } from 'express';
 import { User, UserCreationDto, UserUpdateDto } from '../entity/user';
 
 const userRouter = Router();
