@@ -351,10 +351,10 @@ router.delete('/:category/:post/:user', posts.deletePost);
  */
 router.patch('/view/:category/:post', posts.viewPost);
 
-// const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-//     res.status(401);
-//     res.json({ error: err.message });
-//   };
+const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+    res.status(401);
+    res.json({ error: err.message });
+  };
 
-// router.use(errorHandler);
+router.use(errorHandler);
 export default router;

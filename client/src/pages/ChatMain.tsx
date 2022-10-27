@@ -35,6 +35,7 @@ const ChatMain = () => {
 
   const getChatList = async () => {
     const { data } = await apis.getChatList(1) //FIXME id를 담아보낸다.
+    console.log('data :>> ', data)
     setChatList(data)
     return data
   }
@@ -49,6 +50,9 @@ const ChatMain = () => {
     // refetchInterval: 1000, // 1초마다 갱신
   })
 
+  if (error) {
+    console.error('챗메인에러', error)
+  }
   // useEffect(() => {
   //   const list = async () => {
   //     try {
@@ -75,7 +79,7 @@ const ChatMain = () => {
   useEffect(() => {
     console.log('newMsg :>> ', newMsg)
     // console.log('roomData :>> ', roomData)
-    console.log('chatList :>> ', chatList)
+    console.log('chatList :>> ', roomData)
   }, [newMsg])
   // const [room, setRoom] = useState('') //TODO 1:1채팅방 room은 어떻게 만들까?
 
