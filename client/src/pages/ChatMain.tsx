@@ -30,7 +30,8 @@ export interface IUserInfo {
 const ChatMain = ({ socket }: any) => {
   const [isReceive, setIsReceive] = useState(true)
   // const [isLoading, setIsLoading] = useState(true)
-  const [chatList, setChatList] = useState()
+  const [chatList, setChatList] = useState<any>()
+  const [updatedRoom, setUpdatedRoom] = useState<any>(null)
   const { userInfo, newMsg } = useStore() // 광역 상태관리
 
   const getChatList = async () => {
@@ -82,27 +83,35 @@ const ChatMain = ({ socket }: any) => {
 
   // const [room, setRoom] = useState('') //TODO 1:1채팅방 room은 어떻게 만들까?
 
+  //TODO 새 메세지 업데이트 수정필요
+  // useEffect(() => {
+  //   if (updatedRoom) {
+  //     const newChatRooms = []
+  //     for (const value of chatList) {
+  //       if (value.chatRoom === updatedRoom.chatRoom) {
+  //         const temp = { ...value }
+
+  //         temp.message = updatedRoom.message
+  //         temp.last_chat_time = updatedRoom.createAt
+  //         console.log('temp :>> ', temp)
+  //       }
+  //       newChatRooms.push(value)
+  //     }
+  //     setChatList(newChatRooms)
+  //   }
+  // }, [updatedRoom])
+
   useEffect(() => {
     console.log('roomData :>> ', roomData)
     roomData?.forEach((item) => {
       socket.joinRoom(String(item.chatRoom))
       console.log('조인조인')
     })
-    socket.onSync('test', (message: any) => {
-      // setChats((prev) => [...prev, message])
-      console.log('message 제발 :>> ', message)
-      // setNewMsg(message)
-      //TODO 이 a 값을 zustand에도 넣는다.
-      // 이 값을 chatlist도 바라보게한다.
+    socket.onSync('alert-new-message', (message: any) => {
+      console.log('message 받은 :>> ', message)
+      setUpdatedRoom(message)
     })
-  }, [])
-
-  // useEffect(() => {
-  //   socket.onSync('test', (message: any) => {
-  //     // 새로운 메세지 수신
-  //     console.log('message 제발 :>> ', message)
-  //   })
-  // }, [socket])
+  }, [roomData])
 
   return (
     <Layout>
@@ -114,8 +123,8 @@ const ChatMain = ({ socket }: any) => {
             <div></div>
             <div className="flex flex-col m-2 border-2">공지사항 컴포넌트</div>
             <ul className="p-6 divide-y divide-slate-200">
-              {roomData &&
-                roomData?.map((item: IChatRoom) => {
+              {chatList &&
+                chatList?.map((item: IChatRoom) => {
                   return (
                     <Link
                       key={item.chatRoom}

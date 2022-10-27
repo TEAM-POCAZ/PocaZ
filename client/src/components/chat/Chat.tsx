@@ -50,7 +50,7 @@ const Chat = ({ socket }: any) => {
   // const { oppNickname }: any = location.state //TODO 지워야함
 
   useEffect(() => {
-    socket.joinRoom(room)
+    socket.joinRoom(room) //TODO login 붙으면 조인 빼야됨
 
     socket.onSync('test', (message: any) => {
       setChats((prev) => [...prev, message])
