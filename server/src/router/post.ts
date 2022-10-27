@@ -1,4 +1,5 @@
 import express from 'express';
+import type { ErrorRequestHandler } from 'express';
 
 import replyRouter from './reply';
 import likesRouter from './likes';
@@ -121,6 +122,7 @@ router.post('/', posts.writePost);
  *         description: The key of post
  *         schema:
  *           type: string
+ *         example: '1'
  *     description: Update an existing pet by Id
  *     responses:
  *       '200':
@@ -349,4 +351,10 @@ router.delete('/:category/:post/:user', posts.deletePost);
  */
 router.patch('/view/:category/:post', posts.viewPost);
 
+// const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+//     res.status(401);
+//     res.json({ error: err.message });
+//   };
+
+// router.use(errorHandler);
 export default router;
