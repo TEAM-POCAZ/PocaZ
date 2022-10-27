@@ -23,7 +23,7 @@ const CommunityWrite = () => {
       }: any = postInfo
       const {
         data: [post],
-      }: any = await axios.get(`https://pocaz.ystoy.shop/api/post/${category}/${id}`)
+      }: any = await axios.get(`http://localhost:8080/api/post/${category}/${id}`)
       setTitle(post.title)
       setContent(post.text)
       setCate(parseInt(category))
@@ -46,7 +46,7 @@ const CommunityWrite = () => {
         data: [fileId],
       } = await axios({
         method: 'post',
-        url: 'https://pocaz.ystoy.shop/api/file',
+        url: 'http://localhost:8080/api/file',
         data: formData,
         headers: {
           'Content-Type': 'multipart/form-data; charset=utf-8',
@@ -63,7 +63,7 @@ const CommunityWrite = () => {
       }: any = postInfo
       try {
         // console.log(title, content)
-        // await axios.put(`https://pocaz.ystoy.shop/api/post/${category}/${id}/1`),
+        // await axios.put(`http://localhost:8080/api/post/${category}/${id}/1`),
         //   [
         //     {
         //       title,
@@ -71,7 +71,7 @@ const CommunityWrite = () => {
         //     },
         //   ]
 
-        await fetch(`https://pocaz.ystoy.shop/api/post/${category}/${id}/1`, {
+        await fetch(`http://localhost:8080/api/post/${category}/${id}/1`, {
           method: 'PUT',
           headers: {
             'Content-type': 'application/json',
@@ -93,7 +93,7 @@ const CommunityWrite = () => {
       }
     } else {
       try {
-        const { data } = await axios.post('https://pocaz.ystoy.shop/api/post', [
+        const { data } = await axios.post('http://localhost:8080/api/post', [
           {
             category: cate,
             user: 1,
@@ -104,7 +104,7 @@ const CommunityWrite = () => {
         // console.log('성공')
         // console.log(data)
         if (img.length > 0) {
-          await fetch(`https://pocaz.ystoy.shop/api/post/img/${cate}/${data}`, {
+          await fetch(`http://localhost:8080/api/post/img/${cate}/${data}`, {
             method: 'POST',
             headers: {
               'Content-type': 'application/json',

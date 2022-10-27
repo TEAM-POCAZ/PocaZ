@@ -44,9 +44,9 @@ const Main = () => {
   useEffect(() => {
     axios
       .all([
-        axios.get('https://pocaz.ystoy.shop/api/post/1'),
-        axios.get('https://pocaz.ystoy.shop/api/post/2'),
-        axios.get('https://pocaz.ystoy.shop/api/market/'),
+        axios.get('http://localhost:8080/api/post/1'),
+        axios.get('http://localhost:8080/api/post/2'),
+        axios.get('http://localhost:8080/api/market/'),
       ])
       //async 쓰삼***
       .then(

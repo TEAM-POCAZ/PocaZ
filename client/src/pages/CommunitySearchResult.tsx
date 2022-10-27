@@ -16,7 +16,7 @@ const CommunitySearchResult = () => {
         state: { keyword },
       }: any = keyInfo
       axios
-        .get(`https://pocaz.ystoy.shop/api/post/search/?keyword=${keyword.split(' ').join('.')}`)
+        .get(`http://localhost:8080/api/post/search/?keyword=${keyword.split(' ').join('.')}`)
         .then((res) => {
           const { data }: any = res
           // console.log(
