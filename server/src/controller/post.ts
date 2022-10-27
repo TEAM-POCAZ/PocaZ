@@ -106,9 +106,9 @@ export default {
       await tranSQL.getOne(`
       ${tranSQL.posts.lists}
       ${tranSQL.posts.listsFrom}
-      WHERE p.deleteAt IS NULL
-        AND 1 != 1
-      ${keywordMap}
+      WHERE (1 != 1
+      ${keywordMap})
+      AND p.deleteAt IS NULL
       ORDER BY p.id DESC`)
     );
   },

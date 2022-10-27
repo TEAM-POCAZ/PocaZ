@@ -1,8 +1,10 @@
-import { UserDto } from "../utils/user";
+/* eslint-disable @typescript-eslint/no-empty-interface */
+import { UserDto } from '../entity/user';
 
 declare global {
-  namespace Express {
+  declare namespace Express {
     export interface User extends UserDto {}
   }
 }
+
 export {};

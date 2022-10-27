@@ -3,7 +3,7 @@ import passportSetup from '../utils/passport-setup';
 import passport from 'passport';
 import { urlencoded } from 'express';
 import type { ErrorRequestHandler } from 'express';
-import { User } from '../utils/user';
+import { User } from '../entity/user';
 import { checkAuthenticated } from '../middleware/checkAuthenticated';
 import { config } from '../config';
 const REACT_URL: string = config.host.reactAppHostUrl;
@@ -22,9 +22,6 @@ authRouter.get('/logout', checkAuthenticated, (req, res) => {
 });
 
 authRouter.post('/withdrawal', checkAuthenticated, async (req, res) => {
-  if (!req.user) {
-    throw new Error('not logined before');
-  }
   // await User.softDelete(req.user!.id!);
   req.logOut(() => {});
   return res.json({ status: 'success' });
@@ -72,7 +69,7 @@ authRouter.post(
   }
 );
 
-const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+const errorHandler: ErrorRequestHandler = (err, req, res) => {
   res.status(401);
   res.json({ error: err.message });
 };

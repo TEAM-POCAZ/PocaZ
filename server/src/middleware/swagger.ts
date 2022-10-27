@@ -13,13 +13,10 @@ const swaggerDefinition = {
   basePath: '/', // Base path (optional)
   servers: [
     {
-      url: 'https://pocaz.ystoy.shop/',
+      url: 'http://localhost:8080/',
     },
     {
       url: 'http://localhost:8000/',
-    },
-    {
-      url: 'http://localhost:8080/',
     },
   ],
 };
