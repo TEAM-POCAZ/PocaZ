@@ -35,8 +35,9 @@ const ChatMain = ({ socket }: any) => {
   const { userInfo, newMsg } = useStore() // 광역 상태관리
 
   const getChatList = async () => {
-    const { data } = await apis.getChatList(1) //FIXME id를 담아보낸다.
-    setChatList(data)
+    console.log('userInfo :>> ', userInfo, userInfo.id)
+    const { data } = await apis.getChatList(userInfo.id) //FIXME id를 담아보낸다.
+    if (!chatList) setChatList(data)
     return data
   }
 

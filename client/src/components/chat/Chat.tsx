@@ -41,7 +41,7 @@ interface ILocationProps {
 
 const Chat = ({ socket }: any) => {
   const [chats, setChats] = useState<IChat[]>([])
-  const { newMsg, setNewMsg } = useStore()
+  const { userInfo, setNewMsg } = useStore()
 
   const navigate = useNavigate()
   const location = useLocation()
@@ -66,6 +66,7 @@ const Chat = ({ socket }: any) => {
   const getChat = async () => {
     if (room && name) {
       const { data } = await apis.getChat(room)
+      console.log('data :>> ', data)
       setChats(data)
       return data
     }
@@ -80,8 +81,9 @@ const Chat = ({ socket }: any) => {
 
   const handleMessage = async (sendMessage: string | undefined) => {
     if (sendMessage) {
+      console.log('name, sendM :>> ', name, sendMessage, room)
       const newMessage = {
-        user: name,
+        user: userInfo.id,
         message: sendMessage,
         chatRoom: room,
       }
