@@ -1,7 +1,8 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
-const CommunityTop = () => {
+const CommunityTop = ({ category }) => {
   return (
     <>
       <div className="communityTab relative px-2.5 pb-2.5 border-b">
@@ -17,11 +18,13 @@ const CommunityTop = () => {
           type="button"
           className="absolute top-0 right-2.5 w-12 py-px bg-black text-white rounded"
         >
-          <Link to="/Community">작성</Link>
+          <Link to="/Community" state={{ category }}>
+            작성
+          </Link>
         </button>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default CommunityTop
+export default CommunityTop;

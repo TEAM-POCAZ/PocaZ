@@ -1,15 +1,15 @@
-import React from 'react'
-import dayjs from 'dayjs'
-import { useNavigate } from 'react-router-dom'
+import React from "react";
+import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
 
 const CommentListItem = ({ list }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <>
       <ul>
         {list &&
           list.map((lists) => {
-            const days = dayjs(lists.createAt).format('YYYY-MM-DD')
+            const days = dayjs(lists.createAt).format("YYYY-MM-DD");
             return (
               <li
                 key={lists.id}
@@ -24,23 +24,29 @@ const CommentListItem = ({ list }) => {
                       <span className="writeName">{lists.nickname}</span>
                     </div>
                     <time className="text-xs">{days}</time>&nbsp;
-                    <span className="comment text-xs">댓글 {lists.replyCnt}</span>&nbsp;
+                    <span className="comment text-xs">
+                      댓글 {lists.replyCnt}
+                    </span>
+                    &nbsp;
                     <span className="hit text-xs">조회 {lists.viewCount}</span>
                   </div>
                 </div>
                 <div className="boardPhoto w-24 h-24 overflow-hidden">
                   {lists.filePath ? (
                     <img
-                      src={lists.filePath}
+                      src={`http://localhost:8080/${lists.filePath}`}
+                      //
+                      crossOrigin="anonymous"
+                      //문제가 해결되면 crossOrigin 삭제할 예정
                       className="w-full min-h-full object-fill border border-gray-100"
                     />
                   ) : null}
                 </div>
               </li>
-            )
+            );
           })}
       </ul>
     </>
-  )
-}
-export default CommentListItem
+  );
+};
+export default CommentListItem;
