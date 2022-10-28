@@ -27,7 +27,7 @@ const MainPocaItem = () => {
         {poca &&
           poca.map((pocas) => (
             <SwiperSlide key={pocas.id}>
-              <div className="pocaThumb relative h-72 lg:h-96 mm:h-60">
+              <div className="pocaThumb relative h-72 lg:h-96 mm:h-60 rounded-xl overflow-hidden">
                 <img
                   src={pocas.pocaImg}
                   className="w-full h-full object-cover"
