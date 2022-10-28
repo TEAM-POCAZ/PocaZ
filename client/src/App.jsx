@@ -17,6 +17,8 @@ import Login from "./pages/Login";
 import LoginSuccessed from "./pages/LoginSuccessed";
 import { ToastContainer } from "react-toastify";
 import MarketList from "./pages/MarketList";
+import MarketWrite from "./pages/MarketWrite";
+import MarketDetail from "./pages/MarketDetail";
 
 function App({ socket }) {
   const client = new QueryClient({
@@ -36,6 +38,8 @@ function App({ socket }) {
           <Routes>
             <Route path="/" element={<Main />} />
             <Route path="MarketList" element={<MarketList />} />
+            <Route path="MarketWrite" element={<MarketWrite />} />
+            <Route path="MarketDetail" element={<MarketDetail />} />
             <Route path="CommunityList" element={<CommunityList />} />
             <Route
               path="Community/:category/:id"

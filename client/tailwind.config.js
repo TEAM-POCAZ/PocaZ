@@ -5,6 +5,10 @@ module.exports = {
     extend: {
       width: {
         480: "480px",
+        50: "50px",
+      },
+      height: {
+        50: "50px",
       },
       translate: {
         50: "-50%",
@@ -17,6 +21,9 @@ module.exports = {
       },
       flex: {
         50: "0 1 48%",
+      },
+      minWidth: {
+        50: "50px",
       },
     },
     screens: {

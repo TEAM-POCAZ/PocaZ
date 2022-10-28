@@ -14,7 +14,7 @@ const MarketListItem = () => {
         <ul className="flex flex-row flex-wrap justify-between">
           {result.data &&
             result.data.map((poca) => (
-              <li className="flex-[0_1_48%] mb-2.5" key={poca.id}>
+              <li className="flex-[0_1_48%] mb-3.5" key={poca.id}>
                 <div className="pocaThumb relative h-72 lg:h-96 mm:h-60 rounded-xl overflow-hidden">
                   <img
                     src={poca.pocaImg}
