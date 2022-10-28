@@ -1,14 +1,20 @@
-import React from 'react'
-import Layout from '../utils/Layout'
+import React from "react";
+import Layout from "../utils/Layout";
+import SearchBox from "../components/Square/SearchBox";
+import MarketCategory from "../components/Market/MarketCategory";
+import MarketListItem from "../components/Market/MarketListItem";
 
 const MarketList = () => {
   return (
     <>
       <Layout>
-        <h2>장터이무니다!</h2>
+        <SearchBox />
+        {/* 커뮤니티 검색창 임시 넣어 놓음요 */}
+        <MarketCategory />
+        <MarketListItem />
       </Layout>
     </>
-  )
-}
+  );
+};
 
-export default MarketList
+export default MarketList;

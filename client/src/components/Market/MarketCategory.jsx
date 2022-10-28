@@ -12,7 +12,7 @@ const IdolCateList = [
 const MarketCategory = () => {
   return (
     <>
-      <div className="bg-white h-7">
+      <div className="bg-white h-7 mb-1">
         <ul className="flex items-center justify-around h-full">
           {IdolCateList.map((cate) => {
             return (
