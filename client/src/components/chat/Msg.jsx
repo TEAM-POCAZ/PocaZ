@@ -14,8 +14,6 @@ import queryString from "query-string";
  */
 
 const Msg = ({ chat }) => {
-    console.log("🚀 ~ file: Msg.jsx ~ line 17 ~ Msg ~ chat", chat);
-    const { room, name } = queryString.parse(location.search);
     const { userInfo } = useStore();
     const { createAt, message } = chat;
 
