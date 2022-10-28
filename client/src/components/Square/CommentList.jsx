@@ -1,53 +1,56 @@
-import React, { useState } from 'react'
-import CommentListItem from './CommentListItem'
-import ReplyList from './ReplyList'
+import React, { useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+import CommentListItem from "./CommentListItem";
+import ReplyList from "./ReplyList";
 
-const CommentList = ({ comments, category, id }) => {
-  const [reReply, setReReply] = useState([false, null])
-  const [repComment, setRepComment] = useState('')
+const CommentList = ({ comments }) => {
+  const [isReply, setReply] = useState({});
+  const { category, id } = useParams();
+  const replyRef = useRef();
 
-  const commentChange = (event) => {
-    setRepComment(event.target.value)
-  }
-
-  const appendReply = (pid) => {
-    // console.log(e.target)
-    // console.log(reReply)
-    setReReply([!reReply[0], pid])
-  }
+  const toggleReply = (pid) => {
+    Object.keys(isReply).length !== 0 && Object.keys(isReply)[0] == pid
+      ? setReply({})
+      : setReply({ [pid]: true });
+  };
 
   const commentSubmit = async (event) => {
-    if (repComment)
+    if (replyRef.current.value)
       try {
-        // await (
-        await fetch(`http://localhost:8080/api/post/reply/${category}/${id}/2`, {
-          method: 'POST',
-          headers: {
-            'Content-type': 'application/json',
-          },
-          body: JSON.stringify([
-            {
-              pid: reReply[1],
-              content: repComment,
+        await fetch(
+          `http://localhost:8080/api/post/reply/${category}/${id}/2`,
+          {
+            method: "POST",
+            headers: {
+              "Content-type": "application/json",
             },
-          ]),
-        })
-        setRepComment('')
-        window.location.reload()
+            body: JSON.stringify([
+              {
+                pid: Object.entries(isReply).filter((value) => value[1])[0][0],
+                content: replyRef.current.value,
+              },
+            ]),
+          }
+        );
+        window.location.reload();
       } catch (err) {
-        console.error(err)
+        console.error(err);
       }
-  }
+  };
 
   return (
     <>
       {comments &&
         comments.map((comment) => (
           <>
-            <CommentListItem key={comment.id} comment={comment} appendReply={appendReply} />
-            {reReply[0] && reReply[1] === comment.id ? (
+            <CommentListItem
+              key={comment.id}
+              comment={comment}
+              toggleReply={toggleReply}
+            />
+            {isReply[comment.id] ? (
               <>
-                <input type="text" value={repComment} onChange={commentChange} />
+                <input type="text" ref={replyRef} />
                 <button onClick={commentSubmit}>답글 작성</button>
               </>
             ) : null}
@@ -57,7 +60,7 @@ const CommentList = ({ comments, category, id }) => {
           </>
         ))}
     </>
-  )
-}
+  );
+};
 
-export default CommentList
+export default CommentList;
