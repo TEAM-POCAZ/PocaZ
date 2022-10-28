@@ -1,63 +1,43 @@
-import React, { useState, useEffect } from 'react'
-import { Link, useNavigate, useParams, useLocation } from 'react-router-dom'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation, Pagination, Autoplay, A11y } from 'swiper'
-import 'swiper/css'
-import 'swiper/css/pagination'
-import 'swiper/css/navigation'
-import 'swiper/css/autoplay'
-import Layout from '../utils/Layout'
-import mainSlideBn1 from '../assets/img/main_slide_bn1.jpeg'
-import mainSlideBn2 from '../assets/img/main_slide_bn2.jpeg'
-import mainSlideBn3 from '../assets/img/main_slide_bn3.gif'
-import axios from 'axios'
-import dayjs from 'dayjs'
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay, A11y } from "swiper";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import "swiper/css/autoplay";
+import Layout from "../utils/Layout";
+import mainSlideBn1 from "../assets/img/main_slide_bn1.jpeg";
+import mainSlideBn2 from "../assets/img/main_slide_bn2.jpeg";
+import mainSlideBn3 from "../assets/img/main_slide_bn3.gif";
+import axios from "axios";
+import dayjs from "dayjs";
+import MainPocaItem from "../components/MainPocaItem";
 
 const Main = () => {
-  const [users, setUsers] = useState(null)
-  const [users2, setUsers2] = useState(null)
-  const [photocards, setPhotocards] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
-  const navigate = useNavigate()
-  const { category } = useParams()
-  const postInfo = useLocation()
-
-  // useEffect(() => {
-  //   const fetchUsers = async () => {
-  //     try {
-  //       setUsers(null)
-  //       setError(null)
-  //       // 두가지값을 초기화 해주는 거임
-  //       setLoading(true) //로딩이 시작됐다는 것을 의미
-  //       const response = await axios.get('http://localhost:8000/post/1')
-  //       setUsers(response.data)
-  //     } catch (e) {
-  //       console.log(e.response.status) //http 응답상태 코드
-  //       setError(e)
-  //     }
-  //     setLoading(false)
-  //   }
-  //   fetchUsers()
-  // }, [])
+  const [users, setUsers] = useState(null);
+  const [users2, setUsers2] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const { category } = useParams();
+  const postInfo = useLocation();
 
   useEffect(() => {
     axios
       .all([
-        axios.get('http://localhost:8080/api/post/1'),
-        axios.get('http://localhost:8080/api/post/2'),
-        axios.get('http://localhost:8080/api/market/'),
+        axios.get("http://localhost:8080/api/post/1"),
+        axios.get("http://localhost:8080/api/post/2"),
       ])
       //async 쓰삼***
       .then(
-        axios.spread((response1, response2, response3) => {
-          setUsers(response1.data)
-          setUsers2(response2.data)
-          setPhotocards(response3.data)
-        }),
+        axios.spread((response1, response2) => {
+          setUsers(response1.data);
+          setUsers2(response2.data);
+        })
       )
-      .catch((e) => console.log(e.response.status))
-  }, [])
+      .catch((e) => console.log(e.response.status));
+  }, []);
 
   // if (loading) return <div>로딩중...</div>
   // if (error) return <div>에러가 발생했슈</div>
@@ -70,7 +50,7 @@ const Main = () => {
             <Swiper
               modules={[Navigation, Pagination, A11y, Autoplay]}
               navigation
-              pagination={{ clickable: true, type: 'fraction' }}
+              pagination={{ clickable: true, type: "fraction" }}
               autoplay={{
                 delay: 6000,
                 disableOnInteraction: false,
@@ -78,32 +58,30 @@ const Main = () => {
               className="h-96"
             >
               <SwiperSlide>
-                <img className="w-full h-full object-cover" src={mainSlideBn1} alt={mainSlideBn1} />
+                <img
+                  className="w-full h-full object-cover"
+                  src={mainSlideBn1}
+                  alt={mainSlideBn1}
+                />
               </SwiperSlide>
               <SwiperSlide>
-                <img className="w-full h-full object-cover" src={mainSlideBn2} alt={mainSlideBn2} />
+                <img
+                  className="w-full h-full object-cover"
+                  src={mainSlideBn2}
+                  alt={mainSlideBn2}
+                />
               </SwiperSlide>
               <SwiperSlide>
-                <img className="w-full h-full object-cover" src={mainSlideBn3} alt={mainSlideBn3} />
+                <img
+                  className="w-full h-full object-cover"
+                  src={mainSlideBn3}
+                  alt={mainSlideBn3}
+                />
               </SwiperSlide>
             </Swiper>
           </div>
 
           <div className="px-3.5 mt-7 bg-white">
-            {/* <button
-              onClick={() => {
-                axios
-                  .get('http://localhost:8000/api/market/')
-                  .then((data) => {
-                    console.log(data.data)
-                  })
-                  .catch((e) => {
-                    console.log(e)
-                  })
-              }}
-            >
-              더미데이터 테스트입니다롱
-            </button> */}
             <div className="boardWrap mb-6">
               <h2 className="flex mb-3.5 text-2xl font-extrabold">
                 최근 게시물<i className="ri-arrow-drop-right-line"></i>
@@ -112,7 +90,7 @@ const Main = () => {
                 <ul>
                   {users &&
                     users.map((user) => {
-                      const days = dayjs(user.createAt).format('YYYY-MM-DD')
+                      const days = dayjs(user.createAt).format("YYYY-MM-DD");
                       return (
                         <li
                           key={user.id}
@@ -122,9 +100,11 @@ const Main = () => {
                           <h4 className="mr-3.5 text-sm font-normal whitespace-nowrap text-ellipsis overflow-hidden">
                             {user.title}
                           </h4>
-                          <time className="timeWrap text-sm font-normal">{days}</time>
+                          <time className="timeWrap text-sm font-normal">
+                            {days}
+                          </time>
                         </li>
-                      )
+                      );
                     })}
                 </ul>
               </div>
@@ -136,26 +116,7 @@ const Main = () => {
                   내 콜렉트북 한 자리를 차지할 HOT한 포카 😘
                 </h4>
               </div>
-              <Swiper slidesPerView={2.4} spaceBetween={14} className="">
-                {photocards &&
-                  photocards.map((photocard) => (
-                    <SwiperSlide key={photocard.id}>
-                      <div className="pocaThumb relative h-72 lg:h-96 mm:h-60">
-                        <img src={photocard.pocaImg} className="w-full h-full object-cover" />
-                      </div>
-                      <div className="pocaListWrap mt-1 text-xs">
-                        <p className="groupName font-extrabold">{photocard.groupName}</p>
-                        <p className="memberName text-sm">{photocard.stageName}</p>
-                        <p className="pocaDetail text-base">{photocard.pocaName}</p>
-                        <p className="pocaDesc mb-1 text-gray-500">{photocard.description}</p>
-                        <p className="pocaPrice font-medium text-base">
-                          <span>{photocard.price}</span>
-                          <span className="won">원</span>
-                        </p>
-                      </div>
-                    </SwiperSlide>
-                  ))}
-              </Swiper>
+              <MainPocaItem />
             </div>
             <div className="newPoca mb-6">
               <div className="subject mb-3.5">
@@ -164,31 +125,14 @@ const Main = () => {
                   내 콜렉트북 한 자리를 차지할 HOT한 포카 😘
                 </h4>
               </div>
-              <Swiper slidesPerView={2.4} spaceBetween={14} className="">
-                {photocards &&
-                  photocards.map((photocard) => (
-                    <SwiperSlide key={photocard.id}>
-                      <div className="pocaThumb relative h-72 lg:h-96 mm:h-60">
-                        <img src={photocard.pocaImg} className="w-full h-full object-cover" />
-                      </div>
-                      <div className="pocaListWrap mt-1 text-xs">
-                        <p className="groupName font-extrabold">{photocard.groupName}</p>
-                        <p className="memberName text-sm">{photocard.stageName}</p>
-                        <p className="pocaDetail text-base">{photocard.pocaName}</p>
-                        <p className="pocaDesc mb-1 text-gray-500">{photocard.description}</p>
-                        <p className="pocaPrice font-medium text-base">
-                          <span>{photocard.price}</span>
-                          <span className="won">원</span>
-                        </p>
-                      </div>
-                    </SwiperSlide>
-                  ))}
-              </Swiper>
+              <MainPocaItem />
             </div>
             <div className="boardBoast mb-6">
               <div className="subject mb-3.5">
                 <h3 className="text-2xl font-extrabold">포꾸 자랑</h3>
-                <h4 className="text-gray-500 text-sm">하늘 아래 똑같은 포카는 없다 🤩</h4>
+                <h4 className="text-gray-500 text-sm">
+                  하늘 아래 똑같은 포카는 없다 🤩
+                </h4>
               </div>
               <div className="boastGallery">
                 <ul className="grid grid-cols-3 grid-rows-3">
@@ -199,7 +143,10 @@ const Main = () => {
                         onClick={() => navigate(`/Community/2/${user.id}`)}
                         className="h-36 cursor-pointer"
                       >
-                        <img src={user.filePath} className="w-full h-full object-cover" />
+                        <img
+                          src={user.filePath}
+                          className="w-full h-full object-cover"
+                        />
                       </li>
                     ))}
                 </ul>
@@ -209,7 +156,7 @@ const Main = () => {
         </div>
       </Layout>
     </>
-  )
-}
+  );
+};
 
-export default Main
+export default Main;
