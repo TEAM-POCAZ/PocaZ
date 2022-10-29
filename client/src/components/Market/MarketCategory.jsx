@@ -17,7 +17,9 @@ const MarketCategory = () => {
           {IdolCateList.map((cate) => {
             return (
               <li key={cate.id}>
-                <p className="text-xs">{cate.title}</p>
+                <p className="text-xs cursor-pointer text-slate-600 hover:text-blue-700">
+                  {cate.title}
+                </p>
               </li>
             );
           })}
