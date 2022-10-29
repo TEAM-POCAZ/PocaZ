@@ -30,6 +30,7 @@ const MarketSearchBox = (props) => {
           type="text"
           onChange={onKeywordChange}
           className="w-full h-11 px-2.5 border rounded text-sm"
+          placeholder="멤버명, 종류 ex) 더보이즈 큐"
         />
         <button
           type="button"
