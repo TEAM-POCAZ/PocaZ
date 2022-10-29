@@ -18,10 +18,10 @@ const MarketWrite = () => {
             등록
           </button>
         </div>
-        <div className="m-2.5">
+        <div className="">
           <div className="attachedFileBtn">
             <label htmlFor="file">
-              <div className="uploadBtn flex items-center justify-center cursor-pointer">
+              <div className="uploadBtn flex items-center justify-center py-3.5 cursor-pointer">
                 <i className="ri-camera-fill text-3xl"></i>
               </div>
             </label>
@@ -33,9 +33,9 @@ const MarketWrite = () => {
               className="hidden"
             />
           </div>
-          <div className="groupName">
-            <label>그룹명</label>
-            <select>
+          <div className="groupName flex py-5 px-3.5 border-t border-b">
+            <label className="w-6/12">그룹명</label>
+            <select className="w-6/12">
               <option>더보이즈</option>
               <option>엔시티</option>
               <option>뉴진스</option>
@@ -45,22 +45,30 @@ const MarketWrite = () => {
               <option>블랙핑크</option>
             </select>
           </div>
-          <div className="memeberName">
-            <label>멤버명</label>
-            <select>
+          <div className="memeberName flex py-5 px-3.5 border-b">
+            <label className="w-6/12">멤버명</label>
+            <select className="w-6/12">
               <option>멤버1</option>
               <option>멤버2</option>
               <option>멤버3</option>
               <option>멤버4</option>
             </select>
           </div>
-          <button type="button">포카 리스트</button>
+          <button
+            type="button"
+            className="flex justify-between w-full py-5 px-3.5 border-b text-left"
+          >
+            포카 리스트<i className="ri-arrow-right-s-fill"></i>
+          </button>
           <div className="desc">
-            <h3>한줄 소개</h3>
-            <textarea placeholder="포카 상태 및 한줄 소개를 간단히 입력해 주세요." />
+            <h3 className="py-5 px-3.5">한줄 소개</h3>
+            <textarea
+              placeholder="포카 상태 및 한줄 소개를 간단히 입력해 주세요."
+              className="w-full p-3.5 border"
+            />
           </div>
-          <div className="price">
-            <h3>가격 입력</h3>
+          <div className="price pb-5 px-3.5">
+            <h3 className="pt-2.5 pb-3.5">가격 입력</h3>
             <input type="text" placeholder="ex) 19000" />
             <span className="won">원</span>
           </div>
