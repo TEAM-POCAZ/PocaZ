@@ -161,4 +161,7 @@
     padding: 3px 4px 0 0;
     color: rgb(30 64 175);
   }
+  .pocaListBox {
+    box-shadow: 0 2px 15px rgb(70 70 70 / 8%);
+  }
 }
