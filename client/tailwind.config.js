@@ -25,6 +25,9 @@ module.exports = {
       minWidth: {
         50: "50px",
       },
+      colors: {
+        blue: "#034ac5",
+      },
     },
     screens: {
       "3xl": { max: "2000px" },
