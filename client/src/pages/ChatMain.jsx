@@ -9,8 +9,8 @@ import { Link } from "react-router-dom";
 import { apis } from "../utils/api";
 
 /**
- * RoomData는 접속 초기 api.get으로 가져와서 뿌려줌
- * 추가적인 메세지는 useStore에서 메세지값을 가져와서 새로 넣어준다.
+ * chatList 접속 초기 api.get으로 가져와서 뿌려줌
+ * 추가적인 메세지는 socket.on 으로 받아와 chatList state를 업데이트해준다.
  * @returns chat list 반환
  */
 const ChatMain = ({ socket }) => {
@@ -18,36 +18,6 @@ const ChatMain = ({ socket }) => {
     const [chatList, setChatList] = useState();
     const [updatedRoom, setUpdatedRoom] = useState(null);
     const { userInfo } = useLoginStore(); // 광역 상태관리
-    console.log(
-        "🚀 ~ file: ChatMain.jsx ~ line 22 ~ ChatMain ~ userInfo",
-        userInfo
-    );
-
-    const getChatList = async () => {
-        console.log("userInfo :>> ", userInfo, userInfo.id);
-        const { data } = await apis.getChatList(userInfo.id); //FIXME id를 담아보낸다.
-
-        return data;
-    };
-
-    // const {
-    //     isLoading,
-    //     error,
-    //     data: roomData,
-    // } = useQuery("getChatList", getChatList, {
-    //     onSuccess: (roomData) => {
-    //         console.log("roomData :>> ", roomData);
-    //         if (!chatList) setChatList(roomData);
-    //     },
-
-    //     notifyOnChangeProps: ["data"],
-    //     // refetchInterval: 2000,
-    //     // refetchIntervalInBackground: true,
-    //     // refetchInterval: 1000, // 1초마다 갱신
-    //     staleTime: Infinity,
-    // });
-
-    // if (error) console.log('"axois", error.message :>> ', error.message);
 
     useEffect(() => {
         const list = async () => {
@@ -63,38 +33,18 @@ const ChatMain = ({ socket }) => {
         list();
     }, []);
 
-    // TODO
-    //   // 새메세지 수신 시 메세지 갈아끼우기 참고
-    //   const logout = () => {
-    //     console.log("omg logout! boom");
-    //     setSession({ ...session, loginUser: null });
-    // };
-
-    // const [name, setName] = useState(1) //FIXME  login 정보에서 가져오기(store) // nickName은 1인 유저로 가정한다.
-
-    // const [room, setRoom] = useState('') //TODO 1:1채팅방 room은 어떻게 만들까?
-
-    //TODO 새 메세지 업데이트 수정필요
-    // useEffect(() => {
-    //   if (updatedRoom) {
-    //     const newChatRooms = []
-    //     for (const value of chatList) {
-    //       if (value.chatRoom === updatedRoom.chatRoom) {
-    //         const temp = { ...value }
-
-    //         temp.message = updatedRoom.message
-    //         temp.last_chat_time = updatedRoom.createAt
-    //         console.log('temp :>> ', temp)
-    //       }
-    //       newChatRooms.push(value)
-    //     }
-    //     setChatList(newChatRooms)
-    //   }
-    // }, [updatedRoom])
-
-    // useEffect(() => {
-    //     console.log("chatList :>> ", chatList);
-    // }, [chatList]);
+    useEffect(() => {
+        if (updatedRoom) {
+            const newChatRooms = [];
+            for (const value of chatList) {
+                if (value.chatRoom === updatedRoom.chatRoom) {
+                    value.message = updatedRoom.message;
+                }
+                newChatRooms.push(value);
+            }
+            setChatList(newChatRooms);
+        }
+    }, [updatedRoom]);
 
     useEffect(() => {
         chatList?.forEach((item) => {
@@ -105,7 +55,7 @@ const ChatMain = ({ socket }) => {
             console.log("message 받은 :>> ", message);
             setUpdatedRoom(message);
         });
-    }, [chatList]);
+    }, []);
 
     return (
         <Layout>
@@ -124,8 +74,6 @@ const ChatMain = ({ socket }) => {
                                     return (
                                         <Link
                                             key={item.chatRoom}
-                                            // to={`/chat?room=${item.chatRoom}&name=${userInfo?.nickName}`} //FIXME msg 쿼리스트링 때문에 일단 사용
-                                            // to={`/chat?room=${item.chatRoom}`}
                                             to={`/chat`}
                                             state={{
                                                 room: item.chatRoom,
