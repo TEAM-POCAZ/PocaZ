@@ -1,7 +1,7 @@
 import React from "react";
 import dayjs from "dayjs";
 
-import useStore from "../../store/store";
+import { useLoginStore } from "../../store/store";
 import queryString from "query-string";
 
 /**
@@ -14,7 +14,7 @@ import queryString from "query-string";
  */
 
 const Msg = ({ chat }) => {
-    const { userInfo } = useStore();
+    const { userInfo } = useLoginStore();
     const { createAt, message } = chat;
 
     const MsgReceivedTime = dayjs(createAt).format("HH:mm"); // for timeStamp

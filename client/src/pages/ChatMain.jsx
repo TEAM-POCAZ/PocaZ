@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 
 import Layout from "../utils/Layout";
-import useStore from "../store/store";
+import { useLoginStore } from "../store/store";
 
 import { Link } from "react-router-dom";
 import { apis } from "../utils/api";
@@ -17,7 +17,11 @@ const ChatMain = ({ socket }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [chatList, setChatList] = useState();
     const [updatedRoom, setUpdatedRoom] = useState(null);
-    const { userInfo } = useStore(); // 광역 상태관리
+    const { userInfo } = useLoginStore(); // 광역 상태관리
+    console.log(
+        "🚀 ~ file: ChatMain.jsx ~ line 22 ~ ChatMain ~ userInfo",
+        userInfo
+    );
 
     const getChatList = async () => {
         console.log("userInfo :>> ", userInfo, userInfo.id);
@@ -88,9 +92,9 @@ const ChatMain = ({ socket }) => {
     //   }
     // }, [updatedRoom])
 
-    useEffect(() => {
-        console.log("chatList :>> ", chatList);
-    }, [chatList]);
+    // useEffect(() => {
+    //     console.log("chatList :>> ", chatList);
+    // }, [chatList]);
 
     useEffect(() => {
         chatList?.forEach((item) => {

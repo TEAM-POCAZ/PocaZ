@@ -15,10 +15,6 @@ const InputMsg = ({ handleMessage }) => {
                     className="flex items-center content-center px-5"
                     onClick={(e) => {
                         e.preventDefault();
-                        console.log(
-                            "inputRef.current?.value :>> ",
-                            inputRef.current?.value
-                        );
                         handleMessage(inputRef.current?.value);
 
                         if (inputRef.current?.value) {

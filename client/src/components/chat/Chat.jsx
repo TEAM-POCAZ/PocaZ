@@ -1,9 +1,7 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import queryString from "query-string";
-
-import useStore from "../../store/store";
+import { useLoginStore } from "../../store/store";
 import Layout from "../../utils/Layout";
 import { apis } from "../../utils/api";
 
@@ -27,8 +25,9 @@ import InputMsg from "./InputMsg";
 const Chat = ({ socket }) => {
     const {
         userInfo: { nickname: name, id },
-    } = useStore();
+    } = useLoginStore();
     const [chats, setChats] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -37,27 +36,24 @@ const Chat = ({ socket }) => {
     const { oppNickname, room } = location.state; //TODO 지워야함
 
     useEffect(() => {
-        socket.joinRoom(room); //TODO login 붙으면 조인 빼야됨
+        getChat();
+        // socket.joinRoom(room); //TODO login 붙으면 조인 빼야됨
 
         socket.onSync("test", (message) => {
             setChats((prev) => [...prev, message]);
-            //TODO 이 a 값을 zustand에도 넣는다.
-            // 이 값을 chatlist도 바라보게한다.
         });
 
         // clear up function 이라고 하며 unmount 시 실행됨
         // return () => close() // useEffect 동작 전 실행됨
+        setIsLoading(false);
     }, []);
 
-    const getChat = async () => {
+    const getChat = useCallback(async () => {
         if (room && name) {
             const { data } = await apis.getChat(room);
             setChats(data);
             return data;
         }
-    };
-    const chatss = useMemo(() => {
-        getChat();
     }, []);
 
     // const { isLoading, error, data } = useQuery<IChat[], Error>('getChat', getChat, {
@@ -80,8 +76,6 @@ const Chat = ({ socket }) => {
             // setChats((prev) => [...prev, data])
         }
     };
-
-    const isLoading = false;
     return (
         <Layout>
             {isLoading ? (
