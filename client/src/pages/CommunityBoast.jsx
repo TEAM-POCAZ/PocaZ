@@ -5,22 +5,43 @@ import CommunityTop from "./CommunityTop";
 import axios from "axios";
 import SearchBox from "../components/Square/SearchBox";
 import dayjs from "dayjs";
+import { useInfiniteQuery } from "react-query";
+import { useInView } from "react-intersection-observer";
+
+const NUMBER_OF_POSTS_ON_PAGE = 10;
 
 const CommunityBoast = () => {
-  const [list, setList] = useState(null);
+  const {ref, inView} = useInView();
   const navigate = useNavigate();
+  const {
+    status,
+    data,
+    error,
+    isFetching,
+    isFetchingNextPage,
+    // isFetchingPreviousPage,
+    fetchNextPage,
+    // fetchPreviousPage,
+    hasNextPage,
+    // hasPreviousPage,
+  } = useInfiniteQuery(
+    ['projects'],
+    async ({ pageParam = Number.MAX_SAFE_INTEGER }) => {
+      const res = await axios.get(
+        `http://localhost:8080/api/post/2?sortBy=recent&lastPostId=${pageParam}&SIZE=${NUMBER_OF_POSTS_ON_PAGE}`
+        )
+        return res.data
+      },
+    {
+      getPreviousPageParam: (firstPage) => firstPage.previousId ?? undefined,
+      getNextPageParam: (lastPage) => lastPage.nextId ?? undefined,
+    },
+  )
+
   useEffect(() => {
-    const boastList = async () => {
-      try {
-        setList(null);
-        const response = await axios.get("http://localhost:8080/api/post/2");
-        setList(response.data);
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    boastList();
-  }, []);
+    inView && fetchNextPage()
+  }, [inView])
+
   return (
     <>
       <Layout>
@@ -28,8 +49,16 @@ const CommunityBoast = () => {
         <CommunityTop category={2} />
         <div className="boastListWrap">
           <ul>
-            {list &&
-              list.map((lists) => {
+          {status === 'loading' ? (
+            <p>Loading...</p>
+          ) : status === 'error' ? (
+            <span>Error: {error.message}</span>
+          ) :
+          (
+          <>
+            {data?.pages?.map((page) => (
+              <React.Fragment key={page.nextId}>
+              {page.postList.map((lists) => {
                 const days = dayjs(lists.createAt).format("YYYY-MM-DD");
                 return (
                   <li
@@ -62,6 +91,28 @@ const CommunityBoast = () => {
                   </li>
                 );
               })}
+              </React.Fragment>
+            ))}
+            <div>
+              <button
+                ref={ref}
+                onClick={() => fetchNextPage()}
+                disabled={!hasNextPage || isFetchingNextPage}
+              >
+                {isFetchingNextPage
+                  ? 'Loading more...'
+                  : hasNextPage
+                  ? 'Load Newer'
+                  : '더 이상 게시글이 없습니다'}
+              </button>
+            </div>
+            <div>
+              {isFetching && !isFetchingNextPage
+                ? 'Background Updating...'
+                : null}
+            </div>
+            </>
+          )}
           </ul>
         </div>
       </Layout>
