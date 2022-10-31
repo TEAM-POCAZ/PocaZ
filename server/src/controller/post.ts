@@ -1,20 +1,7 @@
 import express from 'express';
-import {RowDataPacket} from 'mysql2'
 import { tranSQL } from '../utils/tranSQL';
 import { sqlSelectHandler } from '../utils/sqlHandler';
-interface IPosts extends RowDataPacket {
-  id: number,
-  title: string,
-  viewCount: number,
-  content: string,
-  userId: number,
-  nickname: string,
-  profileImage: string,
-  createAt: string,
-  replyCnt: number,
-  LikesCnt: number,
-  filePath: string
-}
+import { IPosts } from 'src/interface/IPosts';
 
 export default {
   getPosts: async (req: express.Request, res: express.Response) => {
@@ -35,8 +22,7 @@ export default {
           } p.id DESC 
           LIMIT ?`,
         [category,
-        //  lastPostId === '0' ? Number.MAX_SAFE_INTEGER : lastPostId,
-         lastPostId,
+         lastPostId || Number.MAX_SAFE_INTEGER,
          typeof SIZE === 'string' ? parseInt(SIZE) : 50]
       );
       
