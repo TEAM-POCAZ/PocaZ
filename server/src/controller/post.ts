@@ -1,24 +1,57 @@
 import express from 'express';
+import {RowDataPacket} from 'mysql2'
 import { tranSQL } from '../utils/tranSQL';
+import { sqlSelectHandler } from '../utils/sqlHandler';
+interface IPosts extends RowDataPacket {
+  id: number,
+  title: string,
+  viewCount: number,
+  content: string,
+  userId: number,
+  nickname: string,
+  profileImage: string,
+  createAt: string,
+  replyCnt: number,
+  LikesCnt: number,
+  filePath: string
+}
 
 export default {
   getPosts: async (req: express.Request, res: express.Response) => {
-    const {
-      params: { category },
-      query: { sortBy },
-    } = req;
-    const postList = await tranSQL.getOne(
-      `${tranSQL.posts.lists}
-       ${tranSQL.posts.listsFrom}
-        WHERE p.category = ?
-        AND p.deleteAt IS NULL
-        ORDER BY ${
-          sortBy === 'popular' ? 'LikesCnt DESC, ' : ''
-        } p.createAt DESC 
-        LIMIT ?`,
-      [category, 1000]
-    );
-    res.send(postList);
+    try{
+      const {
+        params: { category },
+        query: { sortBy, lastPostId, SIZE },
+      } = req;
+      
+      const postList: IPosts[] = await sqlSelectHandler(
+        `${tranSQL.posts.lists}
+         ${tranSQL.posts.listsFrom}
+          WHERE p.category = ?
+          AND p.deleteAt IS NULL
+          AND p.id < ?
+          ORDER BY ${
+            sortBy === 'popular' ? 'LikesCnt DESC, ' : ''
+          } p.id DESC 
+          LIMIT ?`,
+        [category,
+        //  lastPostId === '0' ? Number.MAX_SAFE_INTEGER : lastPostId,
+         lastPostId,
+         typeof SIZE === 'string' ? parseInt(SIZE) : 50]
+      );
+      
+      const nextId = typeof lastPostId === 'string' && typeof SIZE === 'string' && 
+                     parseInt(lastPostId) > 0 && postList.length === parseInt(SIZE)
+      ? postList[postList.length - 1]?.id - 1
+      : null;
+      const previousId = (lastPostId || Number.MAX_SAFE_INTEGER > 0) && typeof SIZE === 'string'
+            ? postList[0].id + parseInt(SIZE) : null;
+      
+      // setTimeout(() => res.json({ postList, nextId, previousId }), 1000)
+      res.send({ postList, nextId, previousId })
+    } catch(err){
+      throw err;
+    }
   },
 
   getPost: async (req: express.Request, res: express.Response) => {

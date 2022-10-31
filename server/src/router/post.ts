@@ -199,7 +199,18 @@ router.get('/search', posts.searchPost);
  *           type: string
  *           enum:
  *             - recent
- *             - popular
+ *             - popular     
+ *       - name: lastPostId
+ *         in: query
+ *         description: 페이지의 마지막 글의 id를 얻습니다. 공백으로 둘 경우 최신 get id of Last post of Page
+ *         schema:
+ *           type: string
+ *       - name: SIZE
+ *         in: query
+ *         description: 현재 페이지에서 추가로 불러올 게시글의 수. get number of Pages want to get
+ *         schema:
+ *           type: string
+ *         example: '30'
  *     description: Update an existing pet by Id
  *     responses:
  *       '200':
