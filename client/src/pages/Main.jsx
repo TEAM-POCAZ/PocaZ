@@ -32,8 +32,8 @@ const Main = () => {
       //async 쓰삼***
       .then(
         axios.spread((response1, response2) => {
-          setUsers(response1.data);
-          setUsers2(response2.data);
+          setUsers(response1.data.postList);
+          setUsers2(response2.data.postList);
         })
       )
       .catch((e) => console.log(e.response.status));
