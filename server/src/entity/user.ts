@@ -1,4 +1,5 @@
 import { RowDataPacket, OkPacket } from 'mysql2';
+import { PoolConnection } from 'mysql2/promise';
 import db from '../db/database';
 
 interface UserCreationDto {
@@ -31,103 +32,68 @@ interface UserDto {
 interface IUser extends RowDataPacket, UserDto {} //select용도
 type ID = RowDataPacket[] | string;
 class User {
-  static async selectAll(): Promise<IUser[]> {
-    const conn = await db.getPool().getConnection();
-    try {
-      const [users] = await conn.query<IUser[]>('SELECT * FROM User');
-      return users;
-    } finally {
-      conn.release();
-    }
+  static async selectAll(conn: PoolConnection): Promise<IUser[]> {
+    const [users] = await conn.query<IUser[]>('SELECT * FROM User');
+    return users;
   }
-  static async selectById(id: number | string) {
-    const conn = await db.getPool().getConnection();
-    try {
-      const [user] = await conn.query<IUser[]>(
-        'SELECT * FROM User where id = ?',
-        [id]
-      );
-      return user[0];
-    } finally {
-      conn.release();
-    }
+  static async selectById(conn: PoolConnection, id: number | string) {
+    const [user] = await conn.query<IUser[]>(
+      'SELECT * FROM User where id = ?',
+      [id]
+    );
+    return user[0];
   }
 
-  static async selectByUsername(username: string) {
-    const conn = await db.getPool().getConnection();
-    try {
-      const [user] = await conn.query<IUser[]>(
-        'SELECT * FROM User where username = ?',
-        [username]
-      );
-      return user[0];
-    } finally {
-      conn.release();
-    }
+  static async selectByUsername(conn: PoolConnection, username: string) {
+    const [user] = await conn.query<IUser[]>(
+      'SELECT * FROM User where username = ?',
+      [username]
+    );
+    return user[0];
   }
-  static async create(user: UserCreationDto) {
-    const conn = await db.getPool().getConnection();
-    try {
-      const [{ insertId }] = await conn.query<OkPacket>(
-        `INSERT INTO User (username, email, nickname, profileImage, artist)
+  static async create(conn: PoolConnection, user: UserCreationDto) {
+    const [{ insertId }] = await conn.query<OkPacket>(
+      `INSERT INTO User (username, email, nickname, profileImage, artist)
         VALUES (?,?,?,?,?)`,
-        [
-          user.username,
-          user.email,
-          user.nickname ?? nicknameGenerator(6),
-          user.profileImage,
-          user.artist,
-        ]
-      );
-      return User.selectById(insertId);
-    } finally {
-      conn.release();
-    }
+      [
+        user.username,
+        user.email,
+        user.nickname ?? nicknameGenerator(6),
+        user.profileImage,
+        user.artist,
+      ]
+    );
+    return User.selectById(conn, insertId);
   }
-  static async update(user: UserUpdateDto) {
-    const conn = await db.getPool().getConnection();
-    try {
-      await conn.query<OkPacket>(
-        `UPDATE User SET email = ?, nickname = ?, profileImage = ?, artist = ?, updateAt=now() WHERE id = ?`,
-        [user.email, user.nickname, user.profileImage, user.artist, user.id]
-      );
-      return User.selectById(user.id);
-    } finally {
-      conn.release();
-    }
+  static async update(conn: PoolConnection, user: UserUpdateDto) {
+    await conn.query<OkPacket>(
+      `UPDATE User SET email = ?, nickname = ?, profileImage = ?, artist = ?, updateAt=now() WHERE id = ?`,
+      [user.email, user.nickname, user.profileImage, user.artist, user.id]
+    );
+    return User.selectById(conn, user.id);
   }
 
-  static async softDelete(id: number | string) {
-    const conn = await db.getPool().getConnection();
-    try {
-      const [{ affectedRows }] = await conn.query<OkPacket>(
-        `UPDATE User
+  static async softDelete(conn: PoolConnection, id: number | string) {
+    const [{ affectedRows }] = await conn.query<OkPacket>(
+      `UPDATE User
         SET
         deleteAt = now()
       WHERE id = ?`,
-        [id]
-      );
-      return { affectedRows };
-    } finally {
-      conn.release();
-    }
+      [id]
+    );
+    return { affectedRows };
   }
   static isSoftDeleted(user: UserDto) {
     return !!user.deleteAt;
   }
 
-  static async hardDelete(id: number | string) {
-    const conn = await db.getPool().getConnection();
-    try {
-      const [{ affectedRows }] = await conn.query<OkPacket>(
-        `DELETE FROM User
+  static async hardDelete(conn: PoolConnection, id: number | string) {
+    const [{ affectedRows }] = await conn.query<OkPacket>(
+      `DELETE FROM User
       WHERE id = ?`,
-        [id]
-      );
-      return { affectedRows };
-    } finally {
-      conn.release();
-    }
+      [id]
+    );
+    return { affectedRows };
   }
 }
 function nicknameGenerator(length: number) {

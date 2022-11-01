@@ -13,6 +13,8 @@ import path from 'path';
 import { cwd } from 'process';
 import axios from 'axios';
 import { config } from '../config';
+import db from '../db/database';
+import { PoolConnection } from 'mysql2/promise';
 
 function passportSetup() {
   const GoogleStrategy = passport_google_oauth20.Strategy;
@@ -59,21 +61,30 @@ function passportSetup() {
         done: any
       ) {
         const username = `twitter#${profile.id}`;
-        let user = await User.selectByUsername(username);
-        if (user) {
-          console.log('twitter login user exists in DB, ', user);
-        } else {
-          const userCreationDto: UserCreationDto = {
-            username,
-            profileImage: profile.profile_image_url,
-          };
-          user = await User.create(userCreationDto);
-          console.log('twitter login user created, id: ', user);
-        }
-        if (User.isSoftDeleted(user)) {
-          done(new Error('탈퇴한 사용자입니다.'));
-        } else {
-          done(null, user);
+        let conn: PoolConnection | null = null;
+        try {
+          conn = await db.getPool().getConnection();
+          let user = await User.selectByUsername(conn, username);
+          if (user) {
+            console.log('twitter login user exists in DB, ', user);
+          } else {
+            const userCreationDto: UserCreationDto = {
+              username,
+              profileImage: profile.profile_image_url,
+            };
+            user = await User.create(conn, userCreationDto);
+            console.log('twitter login user created, id: ', user);
+          }
+          if (User.isSoftDeleted(user)) {
+            done(new Error('탈퇴한 사용자입니다.'));
+          } else {
+            done(null, user);
+          }
+        } catch (err) {
+          console.log(err);
+          done('connection error');
+        } finally {
+          conn?.release();
         }
       }
     )
@@ -83,10 +94,17 @@ function passportSetup() {
     done(null, user.id);
   });
 
-  passport.deserializeUser((id: string, done) => {
-    User.selectById(id).then((user: UserDto) => {
+  passport.deserializeUser(async (id: string, done) => {
+    let conn: PoolConnection | null = null;
+    try {
+      conn = await db.getPool().getConnection();
+      const user = await User.selectById(conn, id);
       done(null, user);
-    });
+    } catch (err) {
+      console.log(err);
+    } finally {
+      conn?.release();
+    }
   });
 
   passport.use(
@@ -98,22 +116,31 @@ function passportSetup() {
       },
       async (accessToken, refreshToken, profile, done) => {
         const username = `google#${profile.id}`;
-        let user = await User.selectByUsername(username);
-        if (user) {
-          console.log('google login user exists in DB, ', user);
-        } else {
-          const userCreationDto: UserCreationDto = {
-            username,
-            email: profile._json.email,
-            profileImage: profile._json.picture,
-          };
-          user = await User.create(userCreationDto);
-          console.log('google login user created, ', user);
-        }
-        if (User.isSoftDeleted(user)) {
-          done(new Error('탈퇴한 사용자입니다.'));
-        } else {
-          done(null, user);
+        let conn: PoolConnection | null = null;
+        try {
+          conn = await db.getPool().getConnection();
+          let user = await User.selectByUsername(conn, username);
+          if (user) {
+            console.log('google login user exists in DB, ', user);
+          } else {
+            const userCreationDto: UserCreationDto = {
+              username,
+              email: profile._json.email,
+              profileImage: profile._json.picture,
+            };
+            user = await User.create(conn, userCreationDto);
+            console.log('google login user created, ', user);
+          }
+          if (User.isSoftDeleted(user)) {
+            done(new Error('탈퇴한 사용자입니다.'));
+          } else {
+            done(null, user);
+          }
+        } catch (err) {
+          console.log(err);
+          done('connection error');
+        } finally {
+          conn?.release();
         }
       }
     )
@@ -137,22 +164,32 @@ function passportSetup() {
         done: any
       ) => {
         const username = `apple#${profile.id}`;
-        let user = await User.selectByUsername(username);
-        if (user) {
-          console.log('apple login user exists in DB, ', user);
-        } else {
-          const userCreationDto: UserCreationDto = {
-            username: username,
-            email: profile.email,
-            profileImage: profile.profile_image_url,
-          };
-          user = await User.create(userCreationDto);
-          console.log('apple login user created, ', user);
-        }
-        if (User.isSoftDeleted(user)) {
-          done(new Error('탈퇴한 사용자입니다.'));
-        } else {
-          done(null, user);
+        let conn: PoolConnection | null = null;
+        try {
+          conn = await db.getPool().getConnection();
+
+          let user = await User.selectByUsername(conn, username);
+          if (user) {
+            console.log('apple login user exists in DB, ', user);
+          } else {
+            const userCreationDto: UserCreationDto = {
+              username: username,
+              email: profile.email,
+              profileImage: profile.profile_image_url,
+            };
+            user = await User.create(conn, userCreationDto);
+            console.log('apple login user created, ', user);
+          }
+          if (User.isSoftDeleted(user)) {
+            done(new Error('탈퇴한 사용자입니다.'));
+          } else {
+            done(null, user);
+          }
+        } catch (err) {
+          console.log(err);
+          done('connection error');
+        } finally {
+          conn?.release();
         }
       }
     )

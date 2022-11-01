@@ -10,32 +10,6 @@ const Login = () => {
 
   const API = import.meta.env.VITE_HOST_URL;
 
-  const logout = () => {
-    fetch(`${API}/api/auth/logout`, { credentials: "include" })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-      });
-    navigate("/");
-  };
-
-  const withdrawal = () => {
-    fetch(`${API}/api/auth/withdrawal`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        ContentType: "application/json",
-      },
-      credentials: "include",
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        console.log(data);
-      });
-  };
-
   const google = () => {
     window.open(`${API}/api/auth/google`, "_self");
   };
@@ -65,18 +39,6 @@ const Login = () => {
                 <img src={Apple} alt="" className="icon"></img>
                 apple
               </div>
-            </div>
-            <div className="right">
-              <button className="submit" onClick={withdrawal}>
-                탈퇴하기
-              </button>
-              <br></br>
-              <button className="submit mt-5" onClick={logout}>
-                로그아웃하기2
-              </button>
-              <br></br>
-              localhost에서는 구글만 테스트가능<br></br>
-              http://localhost:8080/에서는 전부 테스트 가능
             </div>
           </div>
         </div>

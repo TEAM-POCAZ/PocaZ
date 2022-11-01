@@ -39,7 +39,7 @@ authRouter.get(
   passport.authenticate('google'),
   (req, res) => {
     console.log('user in session cookie(google) >>> ', req.user);
-    res.redirect(`${REACT_URL}/LoginSuccessed`);
+    res.redirect(`${REACT_URL}/MyPage`);
   }
 );
 
@@ -53,7 +53,7 @@ authRouter.get(
   passport.authenticate('oauth2'),
   (req, res) => {
     console.log('user in session cookie(twitter) >>> ', req.user);
-    res.redirect(`${REACT_URL}/LoginSuccessed`);
+    res.redirect(`${REACT_URL}/MyPage`);
   }
 );
 
@@ -65,11 +65,11 @@ authRouter.post(
   passport.authenticate('apple'),
   (req, res) => {
     console.log('user in session cookie(apple) >>> ', req.user);
-    res.redirect(`${REACT_URL}/LoginSuccessed`);
+    res.redirect(`${REACT_URL}/MyPage`);
   }
 );
 
-const errorHandler: ErrorRequestHandler = (err, req, res) => {
+const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
   res.status(401);
   res.json({ error: err.message });
 };
