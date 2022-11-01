@@ -2,31 +2,51 @@ import React, { useEffect, useState } from 'react'
 import Layout from '../utils/Layout'
 import { useNavigate, useLocation } from 'react-router-dom'
 import axios from 'axios'
-import CommunityListItem from '../components/Square/CommunityListItem'
+// import CommunityListItem from '../components/Square/CommunityListItem'
+import CommunityListItem from '../components/Square/CommunityListInfItem'
+import { useInView } from 'react-intersection-observer'
+import { useInfiniteQuery } from 'react-query'
 
-const CommunitySearchResult = () => {
-  const [list, setList] = useState(null)
+const NUMBER_OF_POSTS_ON_PAGE = 20;
+
+const CommunitySearchResult = () => {  
+  const {ref, inView} = useInView();
   const navigate = useNavigate()
   const keyInfo = useLocation()
 
-  // console.log(keyInfo)
-  useEffect(() => {
+  const {
+    status,
+    data,
+    error,
+    isFetching,
+    isFetchingNextPage,
+    // isFetchingPreviousPage,
+    fetchNextPage,
+    // fetchPreviousPage,
+    hasNextPage,
+    // hasPreviousPage,
+  } = useInfiniteQuery(
+    ['projects'],
+    async ({ pageParam = Number.MAX_SAFE_INTEGER }) => {
+      console.log(keyInfo)
     if (keyInfo.state) {
       const {
         state: { keyword },
       } = keyInfo
-      axios
-        .get(`http://localhost:8080/api/post/search/?keyword=${keyword.split(' ').join('.')}`)
-        .then((res) => {
-          const { data }= res
-          // console.log(
-          //   `http://localhost:8080/api/post/search/?keyword=${keyword.split(' ').join('.')}`,
-          // )
-          setList(data)
-        })
-        .catch((e) => console.error(e))
-    }
-  }, [])
+      const res = await axios.get(
+        `http://localhost:8080/api/post/search/?keyword=${keyword.split(' ').join('.')}&lastPostId=${pageParam}&SIZE=${NUMBER_OF_POSTS_ON_PAGE}`
+        )
+        return res.data
+      }},
+    {
+      getPreviousPageParam: (firstPage) => firstPage.previousId ?? undefined,
+      getNextPageParam: (lastPage) => lastPage.nextId ?? undefined,
+    },
+  )
+  
+  useEffect(() => {
+    inView && fetchNextPage()
+  }, [inView])
 
   return (
     <>
@@ -40,7 +60,34 @@ const CommunitySearchResult = () => {
             <i className="ri-search-line"></i>
           </button>
         </div>
-        {list && list?.length > 0 ? <CommunityListItem list={list} /> : <div>검색 안되지롱</div>}
+          {status === 'loading' ? (
+            <p>Loading...</p>
+          ) : status === 'error' ? (
+            <span>Error: {error.message}</span>
+          ) :
+          (
+          <>
+            {data?.pages?.length > 0 ? <CommunityListItem list={data} /> : <div>검색 안되지롱</div>}
+            <div>
+              <button
+                ref={ref}
+                onClick={() => fetchNextPage()}
+                disabled={!hasNextPage || isFetchingNextPage}
+              >
+                {isFetchingNextPage
+                  ? 'Loading more...'
+                  : hasNextPage
+                  ? 'Load Newer'
+                  : 'Nothing more to load'}
+              </button>
+            </div>
+            <div>
+              {isFetching && !isFetchingNextPage
+                ? 'Background Updating...'
+                : null}
+            </div>
+          </>
+          )}
       </Layout>
     </>
   )
