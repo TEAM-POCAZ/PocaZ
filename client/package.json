@@ -1,15 +1,17 @@
 {
-  "name": "client",
-  "version": "0.1.0",
+  "name": "test",
   "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "start":"vite --port 3000",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^16.11.56",
-    "@types/react": "^18.0.18",
-    "@types/react-dom": "^18.0.6",
     "axios": "^0.27.2",
     "classnames": "^2.3.2",
     "dayjs": "^1.11.5",
@@ -28,18 +30,6 @@
     "web-vitals": "^2.1.4",
     "zustand": "^4.1.1"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -53,12 +43,21 @@
     ]
   },
   "devDependencies": {
+<<<<<<< HEAD
     "@types/react-scroll-to-bottom": "^4.2.0",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
     "autoprefixer": "^10.4.11",
     "eslint": "^8.2.0",
     "eslint-config-airbnb": "^19.0.4",
+=======
+    "@types/react": "^18.0.17",
+    "@types/react-dom": "^18.0.6",
+    "@vitejs/plugin-react": "^2.1.0",
+    "vite": "^3.1.0",
+    "autoprefixer": "^10.4.8",
+    "eslint": "^8.23.0",
+>>>>>>> d5d64ded9f4972df9f652b94092924b2f8b556b2
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-jsx-a11y": "^6.5.1",

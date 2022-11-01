@@ -13,8 +13,9 @@ class Socket {
     this.io.on('connection', (so) => {
       console.log('Socket connected :)!!');
 
-      so.on('joinRoom', (a: any) => {
+      so.on('joinRoom', (a: any, callback) => {
         so.join(a);
+        console.log('a "가 연결됨" :>>', a);
       });
 
       so.on('message', createChat);
