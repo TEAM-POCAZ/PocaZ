@@ -112,7 +112,7 @@ export default {
   },
   searchPost: async (req: express.Request, res: express.Response) => {
     const {
-      query: { keyword },
+      query: { keyword, lastPostId, SIZE },
     }: { query: any } = req;
     const keywordMap: string = keyword
       .split('.')
@@ -121,14 +121,25 @@ export default {
           `${result} OR p.title LIKE '%${kw}%' OR p.content LIKE '%${kw}%'`,
         ''
       );
-    res.send(
-      await tranSQL.getOne(`
+      const postList: IPosts[] = await sqlSelectHandler(`
       ${tranSQL.posts.lists}
       ${tranSQL.posts.listsFrom}
       WHERE (1 != 1
       ${keywordMap})
       AND p.deleteAt IS NULL
-      ORDER BY p.id DESC`)
-    );
+      AND p.id < ?
+      ORDER BY p.id DESC
+      LIMIT ?`,
+      [lastPostId || Number.MAX_SAFE_INTEGER,
+       typeof SIZE === 'string' ? parseInt(SIZE) : 50])
+
+
+      const nextId = typeof lastPostId === 'string' && typeof SIZE === 'string' && 
+                      parseInt(lastPostId) > 0 && postList.length === parseInt(SIZE)
+                      ? postList[postList.length - 1]?.id - 1
+                      : null;
+      const previousId = (lastPostId || Number.MAX_SAFE_INTEGER > 0) && typeof SIZE === 'string'
+            ? postList[0].id + parseInt(SIZE) : null;
+      res.send({ postList, nextId, previousId })
   },
 };
