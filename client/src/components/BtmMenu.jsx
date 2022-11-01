@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "remixicon/fonts/remixicon.css";
 import classnames from "classnames";
 
@@ -27,10 +27,10 @@ const BtmMenu = () => {
                     );
                     return (
                         <li key={btn.id}>
-                            <Link to={btn.to} replace>
+                            <NavLink to={btn.to} replace>
                                 <i className={classStr}></i>
                                 <p className="text-xs">{btn.title}</p>
-                            </Link>
+                            </NavLink>
                         </li>
                     );
                 })}
