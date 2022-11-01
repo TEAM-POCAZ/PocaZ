@@ -14,7 +14,8 @@ import CommunitySearchResult from "./pages/CommunitySearchResult";
 import ChatMain from "./pages/ChatMain";
 import Chat from "./components/chat/Chat.jsx";
 import Login from "./pages/Login";
-import LoginSuccessed from "./pages/LoginSuccessed";
+import MyPage from "./pages/MyPage";
+import MyPageModify from "./pages/MyPageModify";
 import { ToastContainer } from "react-toastify";
 import MarketList from "./pages/MarketList";
 import MarketWrite from "./pages/MarketWrite";
@@ -54,10 +55,8 @@ function App({ socket }) {
             <Route path="/chat/list" element={<ChatMain socket={socket} />} />
             <Route path="/chat" element={<Chat socket={socket} />} />
             <Route path="/login" element={<Login />} />
-            <Route
-              path="/loginsuccessed"
-              element={<LoginSuccessed></LoginSuccessed>}
-            />
+            <Route path="/MyPage" element={<MyPage />} />
+            <Route path="/MyPageModify" element={<MyPageModify />} />
           </Routes>
         </Router>
       </QueryClientProvider>
