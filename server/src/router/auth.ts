@@ -1,4 +1,5 @@
-import { Router } from 'express';
+import { Request, Router } from 'express';
+import { PoolConnection } from 'mysql2/promise';
 import passportSetup from '../utils/passport-setup';
 import passport from 'passport';
 import { urlencoded } from 'express';
@@ -6,6 +7,8 @@ import type { ErrorRequestHandler } from 'express';
 import { User } from '../entity/user';
 import { checkAuthenticated } from '../middleware/checkAuthenticated';
 import { config } from '../config';
+import db from '../db/database';
+
 const REACT_URL: string = config.host.reactAppHostUrl;
 passportSetup();
 
@@ -21,11 +24,23 @@ authRouter.get('/logout', checkAuthenticated, (req, res) => {
   });
 });
 
-authRouter.post('/withdrawal', checkAuthenticated, async (req, res) => {
-  // await User.softDelete(req.user!.id!);
-  req.logOut(() => {});
-  return res.json({ status: 'success' });
-});
+authRouter.post(
+  '/withdrawal',
+  checkAuthenticated,
+  async (req: Request, res) => {
+    let conn: PoolConnection | null = null;
+    try {
+      conn = await db.getPool().getConnection();
+      await User.softDelete(conn, req.user!.id);
+      req.logOut(() => {});
+      return res.json({ status: 'success' });
+    } catch (err) {
+      console.log(err);
+    } finally {
+      conn?.release();
+    }
+  }
+);
 
 authRouter.get(
   '/google',
