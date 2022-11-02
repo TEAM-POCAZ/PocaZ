@@ -141,7 +141,9 @@ const tranSQL = {
   artist: `
    SELECT id,
           stageName,
-          realName
+          realName,
+          agency,
+          artistGroup
      FROM Artist
     WHERE 1 = 1 `,
   photocard: `
