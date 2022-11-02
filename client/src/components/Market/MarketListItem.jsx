@@ -22,7 +22,7 @@ const MarketListItem = () => {
                   />
                 </div>
                 <div className="pocaListBox mt-2.5 p-3.5 rounded-xl bg-white text-xs box-border">
-                  <p className="groupName font-extrabold text-sm text-blue-600">
+                  <p className="groupName font-extrabold text-sm text-[#034ac5]">
                     {poca.groupName}✨
                   </p>
                   <p className="memberName text-sm">{poca.stageName}</p>

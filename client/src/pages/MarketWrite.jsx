@@ -79,16 +79,27 @@ const MarketWrite = () => {
           >
             포카 리스트<i className="ri-arrow-right-s-fill"></i>
           </button>
-          <div className="desc">
-            <h3 className="py-5 px-3.5">한줄 소개</h3>
+          <div className="subject border-b">
+            <h3 className="py-5 pb-0 px-3.5">포카 이름</h3>
             <textarea
-              placeholder="포카 상태 및 한줄 소개를 간단히 입력해 주세요."
-              className="w-full p-3.5 border"
+              placeholder="포카 이름 입력해 주세요."
+              className="w-full p-3.5 border-0"
             />
           </div>
-          <div className="price pb-5 px-3.5">
-            <h3 className="pt-2.5 pb-3.5">가격 입력</h3>
-            <input type="text" placeholder="ex) 19000" />
+          <div className="desc">
+            <h3 className="py-5 pb-0 px-3.5">한줄 소개</h3>
+            <textarea
+              placeholder="포카 상태 및 한줄 소개를 간단히 입력해 주세요."
+              className="w-full p-3.5 border-0"
+            />
+          </div>
+          <div className="price pb-5 px-3.5 border-t">
+            <h3 className="pt-4 pb-3.5">가격 입력</h3>
+            <input
+              type="text"
+              placeholder="ex) 19000"
+              className="mr-2.5 p-2.5 border"
+            />
             <span className="won">원</span>
           </div>
         </div>

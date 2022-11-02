@@ -42,7 +42,7 @@ const MarketSearchBox = (props) => {
       </div>
       <button
         type="button"
-        className="min-w-[50px] w-[50px] h-[50px] h-12 m-2.5 bg-black rounded-full text-white text-sm"
+        className="min-w-[50px] w-[50px] h-[50px] m-2.5 bg-black rounded-full text-white text-sm"
       >
         <Link
           to="/MarketWrite"
