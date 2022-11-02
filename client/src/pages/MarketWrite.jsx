@@ -4,10 +4,27 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import { useRef } from "react";
 
 const MarketWrite = () => {
   const navigate = useNavigate();
   const [choose, setChoose] = useState({artists: [], groups:[]});
+  const [group, setGroup] = useState(1)
+  // const [artist, setArtist] = useState(null)
+
+  // const groupRef = useRef();
+  const artistRef = useRef();
+
+  const chooseGroup = (e) => setGroup(e.target.value)
+  
+  // const chooseArtist = (e) => setArtist(e.target.value)
+
+
+  const getPhotocard = async() =>{
+    const {data} = await axios.get(`http://localhost:8080/api/artist/poca?artist=${artistRef.current.value}`)
+    console.log(typeof group, artistRef.current.value)
+    console.log(data)
+  }
 
   useEffect(() => {
     Promise
@@ -58,7 +75,7 @@ const MarketWrite = () => {
           </div>
           <div className="groupName flex py-5 px-3.5 border-t border-b">
             <label className="w-6/12">그룹명</label>
-            <select className="w-6/12">
+            <select className="w-6/12" value={group} onChange={chooseGroup}>
               {choose?.groups.length > 0 ?
                   choose?.groups.map(group=><option value={group.id}>{group.koreanName}</option>) :
                  <option>로딩 중...</option> }
@@ -66,16 +83,17 @@ const MarketWrite = () => {
           </div>
           <div className="memeberName flex py-5 px-3.5 border-b">
             <label className="w-6/12">멤버명</label>
-            <select className="w-6/12">
-              <option>멤버1</option>
-              <option>멤버2</option>
-              <option>멤버3</option>
-              <option>멤버4</option>
+            <select className="w-6/12" ref={artistRef}>
+              {choose?.artists.length > 0 ?
+                  choose?.artists.filter(artist=>artist.artistGroup == group).map(
+                    artist=><option value={artist.id}>{artist.stageName}</option>) :
+                 <option>로딩 중...</option> }
             </select>
           </div>
           <button
             type="button"
             className="flex justify-between w-full py-5 px-3.5 border-b text-left"
+            onClick={getPhotocard}
           >
             포카 리스트<i className="ri-arrow-right-s-fill"></i>
           </button>
