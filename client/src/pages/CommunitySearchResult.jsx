@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Layout from '../utils/Layout'
 import { useNavigate, useLocation } from 'react-router-dom'
 import axios from 'axios'
-// import CommunityListItem from '../components/Square/CommunityListItem'
-import CommunityListItem from '../components/Square/CommunityListInfItem'
+import CommunityListItem from '../components/Community/CommunityListItem'
 import { useInView } from 'react-intersection-observer'
 import { useInfiniteQuery } from 'react-query'
 
@@ -28,7 +27,7 @@ const CommunitySearchResult = () => {
   } = useInfiniteQuery(
     ['projects'],
     async ({ pageParam = Number.MAX_SAFE_INTEGER }) => {
-      console.log(keyInfo)
+      // console.log(keyInfo)
     if (keyInfo.state) {
       const {
         state: { keyword },

@@ -3,7 +3,7 @@ import Layout from "../utils/Layout";
 import { useNavigate } from "react-router-dom";
 import CommunityTop from "./CommunityTop";
 import axios from "axios";
-import SearchBox from "../components/Square/SearchBox";
+import SearchBox from "../components/Community/SearchBox";
 import dayjs from "dayjs";
 import { useInfiniteQuery } from "react-query";
 import { useInView } from "react-intersection-observer";

@@ -2,8 +2,8 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import Layout from "../utils/Layout";
 import CommunityTop from "./CommunityTop";
-import SearchBox from "../components/Square/SearchBox";
-import CommunityListItem from "../components/Square/CommunityListInfItem";
+import SearchBox from "../components/Community/SearchBox";
+import CommunityListItem from "../components/Community/CommunityListItem";
 import { useInView } from "react-intersection-observer";
 import { useInfiniteQuery } from "react-query";
 
