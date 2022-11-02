@@ -5,45 +5,53 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import { useRef } from "react";
+import MarketWritePocaList from "../components/Market/MarketWritePocaList";
 
 const MarketWrite = () => {
   const navigate = useNavigate();
-  const [choose, setChoose] = useState({artists: [], groups:[]});
-  const [group, setGroup] = useState(1)
+  const [choose, setChoose] = useState({ artists: [], groups: [] });
+  const [group, setGroup] = useState(1);
+  const [pocas, setPoca] = useState([]);
+  const [modal, setModal] = useState(false);
+  const [pocaMemo, setPocaMemo] = useState({});
   // const [artist, setArtist] = useState(null)
 
   // const groupRef = useRef();
   const artistRef = useRef();
 
-  const chooseGroup = (e) => setGroup(e.target.value)
-  
+  const chooseGroup = (e) => setGroup(e.target.value);
+
   // const chooseArtist = (e) => setArtist(e.target.value)
 
-
-  const getPhotocard = async() =>{
-    const {data} = await axios.get(`http://localhost:8080/api/artist/poca?artist=${artistRef.current.value}`)
-    console.log(typeof group, artistRef.current.value)
-    console.log(data)
-  }
+  const getPhotocard = async () => {
+    const { data } = await axios.get(
+      `http://localhost:8080/api/artist/poca?artist=${artistRef.current.value}`
+    );
+    // console.log(typeof group, artistRef.current.value);
+    // console.log(data);
+    setPoca(data);
+  };
 
   useEffect(() => {
-    Promise
-      .all([
-        axios.get("http://localhost:8080/api/artist"),
-        axios.get("http://localhost:8080/api/artist/group"),
-      ])
+    Promise.all([
+      axios.get("http://localhost:8080/api/artist"),
+      axios.get("http://localhost:8080/api/artist/group"),
+    ])
       //async 쓰삼***
       .then(
         axios.spread((response1, response2) => {
           setChoose({
             artists: response1.data,
-            groups: response2.data
+            groups: response2.data,
           });
         })
       )
       .catch((e) => console.log(e.response.status));
   }, []);
 
+  useEffect(() => {
+    artistRef?.current?.value && getPhotocard();
+  }, [artistRef?.current?.value]);
   return (
     <>
       <Layout>
@@ -76,27 +84,42 @@ const MarketWrite = () => {
           <div className="groupName flex py-5 px-3.5 border-t border-b">
             <label className="w-6/12">그룹명</label>
             <select className="w-6/12" value={group} onChange={chooseGroup}>
-              {choose?.groups.length > 0 ?
-                  choose?.groups.map(group=><option value={group.id}>{group.koreanName}</option>) :
-                 <option>로딩 중...</option> }
+              {choose?.groups.length > 0 ? (
+                choose?.groups.map((group) => (
+                  <option value={group.id}>{group.koreanName}</option>
+                ))
+              ) : (
+                <option>로딩 중...</option>
+              )}
             </select>
           </div>
           <div className="memeberName flex py-5 px-3.5 border-b">
             <label className="w-6/12">멤버명</label>
             <select className="w-6/12" ref={artistRef}>
-              {choose?.artists.length > 0 ?
-                  choose?.artists.filter(artist=>artist.artistGroup == group).map(
-                    artist=><option value={artist.id}>{artist.stageName}</option>) :
-                 <option>로딩 중...</option> }
+              {choose?.artists.length > 0
+                ? choose?.artists
+                    .filter((artist) => artist.artistGroup == group)
+                    .map((artist) => (
+                      <option value={artist.id}>{artist.stageName}</option>
+                    ))
+                : null}
             </select>
           </div>
           <button
             type="button"
             className="flex justify-between w-full py-5 px-3.5 border-b text-left"
-            onClick={getPhotocard}
+            onClick={() => setModal(!modal)}
           >
-            포카 리스트<i className="ri-arrow-right-s-fill"></i>
+            포카 리스트 {pocaMemo.id ? <span>{pocaMemo.name}</span> : null}
+            <i className="ri-arrow-right-s-fill"></i>
           </button>
+          {modal ? (
+            <MarketWritePocaList
+              pocas={pocas}
+              setPocaMemo={setPocaMemo}
+              setModal={setModal}
+            />
+          ) : null}
           <div className="subject border-b">
             <h3 className="py-5 pb-0 px-3.5">포카 이름</h3>
             <textarea
