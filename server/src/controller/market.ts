@@ -30,7 +30,7 @@ export default {
        ORDER BY pcs.id DESC
        LIMIT ?`,
        [lastPostId || Number.MAX_SAFE_INTEGER,
-        typeof SIZE === 'string' ? parseInt(SIZE) : 30]
+        SIZE || '30']
     );
     // res.send(sellList);
     const nextId = typeof lastPostId === 'string' && typeof SIZE === 'string' && 
