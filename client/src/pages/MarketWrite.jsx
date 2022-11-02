@@ -14,14 +14,12 @@ const MarketWrite = () => {
   const [pocas, setPoca] = useState([]);
   const [modal, setModal] = useState(false);
   const [pocaMemo, setPocaMemo] = useState({});
-  // const [artist, setArtist] = useState(null)
-
-  // const groupRef = useRef();
   const artistRef = useRef();
+  const titleRef = useRef();
+  const descriptionRef = useRef();
+  const priceRef = useRef();
 
   const chooseGroup = (e) => setGroup(e.target.value);
-
-  // const chooseArtist = (e) => setArtist(e.target.value)
 
   const getPhotocard = async () => {
     const { data } = await axios.get(
@@ -31,7 +29,15 @@ const MarketWrite = () => {
     // console.log(data);
     setPoca(data);
   };
-
+  const marketSubmit = () =>{
+    console.log({
+      title: titleRef.current.value,
+      description:descriptionRef.current.value,
+      poca: pocaMemo.id,
+      user: 1,
+      price: priceRef.current.value
+    })
+  }
   useEffect(() => {
     Promise.all([
       axios.get("http://localhost:8080/api/artist"),
@@ -62,7 +68,7 @@ const MarketWrite = () => {
           <h2 className="absolute top-0 left-2/4 translate-x-[-50%] text-lg">
             팝니다
           </h2>
-          <button type="button" className="px-2.5 bg-black text-white rounded">
+          <button type="button" className="px-2.5 bg-black text-white rounded" onClick={marketSubmit}>
             등록
           </button>
         </div>
@@ -79,6 +85,14 @@ const MarketWrite = () => {
               id="file"
               accept="image/png, image/jpeg"
               className="hidden"
+            />
+          </div>
+          <div className="subject border-b">
+            <h3 className="py-5 pb-0 px-3.5">제목</h3>
+            <textarea
+              ref={titleRef}
+              placeholder="글 제목을 입력해 주세요."
+              className="w-full p-3.5 border-0"
             />
           </div>
           <div className="groupName flex py-5 px-3.5 border-t border-b">
@@ -120,16 +134,10 @@ const MarketWrite = () => {
               setModal={setModal}
             />
           ) : null}
-          <div className="subject border-b">
-            <h3 className="py-5 pb-0 px-3.5">포카 이름</h3>
-            <textarea
-              placeholder="포카 이름 입력해 주세요."
-              className="w-full p-3.5 border-0"
-            />
-          </div>
           <div className="desc">
             <h3 className="py-5 pb-0 px-3.5">한줄 소개</h3>
             <textarea
+              ref={descriptionRef}
               placeholder="포카 상태 및 한줄 소개를 간단히 입력해 주세요."
               className="w-full p-3.5 border-0"
             />
@@ -138,6 +146,7 @@ const MarketWrite = () => {
             <h3 className="pt-4 pb-3.5">가격 입력</h3>
             <input
               type="text"
+              ref={priceRef}
               placeholder="ex) 19000"
               className="mr-2.5 p-2.5 border"
             />
