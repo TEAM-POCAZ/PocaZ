@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 // const router = express.Router();
 import { tranSQL } from '../utils/tranSQL';
 import { IMarket, IMarket2 } from '../interface/IMarket';
+import { sqlSelectHandler } from '../utils/sqlHandler';
 
 export default {
   getMarket: async (req: Request, res: Response) => {
@@ -16,13 +17,30 @@ export default {
       )
     );
   },
+
   getMarkets: async (req: Request, res: Response) => {
-    const sellList = await tranSQL.getOne(
+    const {
+      query: { lastPostId, SIZE },
+    } = req;
+    
+    const sellList: IMarket2[] = await sqlSelectHandler(
       `${tranSQL.market.main}
        ${tranSQL.market.from}
-       ORDER BY pcs.id`
+       AND pcs.id < ?
+       ORDER BY pcs.id DESC
+       LIMIT ?`,
+       [lastPostId || Number.MAX_SAFE_INTEGER,
+        typeof SIZE === 'string' ? parseInt(SIZE) : 30]
     );
-    res.send(sellList);
+    // res.send(sellList);
+    const nextId = typeof lastPostId === 'string' && typeof SIZE === 'string' && 
+                     parseInt(lastPostId) > 0 && sellList.length === parseInt(SIZE)
+      ? sellList[sellList.length - 1]?.id - 1
+      : null;
+    const previousId = (lastPostId || Number.MAX_SAFE_INTEGER > 0) && typeof SIZE === 'string'
+          ? sellList[0].id + parseInt(SIZE) : null;
+      
+    res.send({ sellList, nextId, previousId })
   },
   writeMarket: async (req: Request, res: Response) => {
     const [{ photocard, user, title, description, price }]: IMarket[] =

@@ -30,6 +30,7 @@ const MarketSearchBox = (props) => {
           type="text"
           onChange={onKeywordChange}
           className="w-full h-11 px-2.5 border rounded text-sm"
+          placeholder="멤버명, 종류 ex) 더보이즈 큐"
         />
         <button
           type="button"
@@ -41,7 +42,7 @@ const MarketSearchBox = (props) => {
       </div>
       <button
         type="button"
-        className="min-w-[50px] w-[50px] h-[50px] h-12 m-2.5 bg-black rounded-full text-white text-sm"
+        className="min-w-[50px] w-[50px] h-[50px] m-2.5 bg-black rounded-full text-white text-sm"
       >
         <Link
           to="/MarketWrite"
