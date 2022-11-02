@@ -4,7 +4,11 @@ import { IPhotocard } from '../interface/IPhotocard';
 
 export default {
   getPhotocards: async (req: Request, res: Response) => {
-    res.send(await tranSQL.getOne(tranSQL.photocard));
+    const {query: {artist}} = req;
+    res.send(await tranSQL.getOne(
+      `${tranSQL.photocard}
+      ${artist ? 'AND pc.artist =' + artist : ''}`
+    ));
   },
   getPhotocard: async (req: Request, res: Response) => {
     const { id } = req.params;
