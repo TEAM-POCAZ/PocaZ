@@ -5,7 +5,7 @@ import { useQuery } from "react-query";
 const MarketListItem = () => {
   const result = useQuery("pocas", () =>
     axios.get("http://localhost:8080/api/market").then((a) => {
-      return a.data;
+      return a.data.sellList;
     })
   );
   return (

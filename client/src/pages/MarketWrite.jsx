@@ -1,9 +1,32 @@
 import React from "react";
 import Layout from "../utils/Layout";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
 
 const MarketWrite = () => {
   const navigate = useNavigate();
+  const [choose, setChoose] = useState({artists: [], groups:[]});
+
+  useEffect(() => {
+    Promise
+      .all([
+        axios.get("http://localhost:8080/api/artist"),
+        axios.get("http://localhost:8080/api/artist/group"),
+      ])
+      //async 쓰삼***
+      .then(
+        axios.spread((response1, response2) => {
+          setChoose({
+            artists: response1.data,
+            groups: response2.data
+          });
+        })
+      )
+      .catch((e) => console.log(e.response.status));
+  }, []);
+
   return (
     <>
       <Layout>
@@ -36,13 +59,9 @@ const MarketWrite = () => {
           <div className="groupName flex py-5 px-3.5 border-t border-b">
             <label className="w-6/12">그룹명</label>
             <select className="w-6/12">
-              <option>더보이즈</option>
-              <option>엔시티</option>
-              <option>뉴진스</option>
-              <option>에스파</option>
-              <option>아이브</option>
-              <option>르세라핌</option>
-              <option>블랙핑크</option>
+              {choose?.groups.length > 0 ?
+                  choose?.groups.map(group=><option value={group.id}>{group.koreanName}</option>) :
+                 <option>로딩 중...</option> }
             </select>
           </div>
           <div className="memeberName flex py-5 px-3.5 border-b">
