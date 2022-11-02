@@ -5,7 +5,7 @@ import "remixicon/fonts/remixicon.css";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ImageList from "../components/Square/ImageList";
+import ImageList from "../components/Community/ImageList";
 
 const CommunityWrite = () => {
   const navigate = useNavigate();
@@ -112,9 +112,10 @@ const CommunityWrite = () => {
             headers: {
               "Content-type": "application/json",
             },
+            credentials: 'include',
             body: JSON.stringify([
               {
-                user: 1,
+                user: 101,
                 category: cate,
                 title: titleRef.current.value,
                 content: contentRef.current.value,

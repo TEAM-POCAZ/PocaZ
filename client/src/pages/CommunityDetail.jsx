@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import Layout from "../utils/Layout";
 import axios from "axios";
-import LikeBtn from "../components/Square/LikeBtn";
-import CommentList from "../components/Square/CommentList";
+import LikeBtn from "../components/Community/LikeBtn";
+import CommentList from "../components/Community/CommentList";
 import dayjs from "dayjs";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -91,7 +91,7 @@ const CommunityDetail = () => {
   const deleteAction = async () => {
     try {
       const del = await axios.delete(
-        `http://localhost:8080/api/post/${category}/${id}/1`
+        `http://localhost:8080/api/post/${category}/${id}/101`
       );
       toast.success("삭제가 완료되었습니다.", {
         autoClose: 500,
