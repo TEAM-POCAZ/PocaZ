@@ -46,12 +46,12 @@ export default {
     const [{ photocard, title, description, price }]: IMarket[] =
       req.body;
     const user = req.user.id
-    await tranSQL.getOne(
+    const insertId = await tranSQL.postOne(
       `INSERT INTO PhotocardSellArticle (photocard, user, title, description, price, viewCount, tradeStatus)
        VALUES (?, 0, 1)`,
       [[photocard, user, title, description, price]]
     );
-    res.send('successfully posted on market!!');
+    res.send([insertId]);
   },
   modifyMarket: async (req: Request, res: Response) => {
     const { id } = req.params;
