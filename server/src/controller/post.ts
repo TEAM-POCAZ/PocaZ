@@ -16,14 +16,14 @@ export default {
          ${tranSQL.posts.listsFrom}
           WHERE p.category = ?
           AND p.deleteAt IS NULL
-          AND p.id < ?
+          AND p.id < ? 
           ORDER BY ${
             sortBy === 'popular' ? 'LikesCnt DESC, ' : ''
           } p.id DESC 
-          LIMIT ?`,
+          LIMIT ? `,
         [category,
-         lastPostId || Number.MAX_SAFE_INTEGER,
-         typeof SIZE === 'string' ? parseInt(SIZE) : 50]
+         lastPostId || Number.MAX_SAFE_INTEGER, 
+         SIZE || '10']
       );
       
       const nextId = typeof lastPostId === 'string' && typeof SIZE === 'string' && 
@@ -133,7 +133,7 @@ export default {
       ORDER BY p.id DESC
       LIMIT ?`,
       [lastPostId || Number.MAX_SAFE_INTEGER,
-       typeof SIZE === 'string' ? parseInt(SIZE) : 50])
+       SIZE || '50'])
 
 
       const nextId = typeof lastPostId === 'string' && typeof SIZE === 'string' && 
