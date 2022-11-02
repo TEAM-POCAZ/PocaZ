@@ -31,7 +31,6 @@ const Chat = ({ socket }) => {
 
     const navigate = useNavigate();
     const location = useLocation();
-    // const { room } = queryString.parse(location.search);
 
     const { oppNickname, room } = location.state; //TODO 지워야함
 
@@ -44,7 +43,7 @@ const Chat = ({ socket }) => {
         });
 
         // clear up function 이라고 하며 unmount 시 실행됨
-        // return () => close() // useEffect 동작 전 실행됨
+        // return 방 join을 leave해야함
         setIsLoading(false);
     }, []);
 
@@ -62,7 +61,6 @@ const Chat = ({ socket }) => {
 
     const handleMessage = async (sendMessage) => {
         if (sendMessage) {
-            console.log("name, sendM :>> ", name, sendMessage, room);
             const newMessage = {
                 user: id,
                 message: sendMessage,
@@ -88,7 +86,7 @@ const Chat = ({ socket }) => {
                             oppNickname={oppNickname}
                             navigate={navigate}
                         />
-                        <Messages chats={chats} />
+                        <Messages chats={chats} oppNickname={oppNickname} />
                         <InputMsg handleMessage={handleMessage} />
                     </div>
                 </div>

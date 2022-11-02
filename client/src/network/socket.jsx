@@ -29,5 +29,6 @@ export default class Socket {
 
     joinRoom(val) {
         this.io.emit("joinRoom", val);
+        console.log("this.io :>> ", this.io);
     }
 }
