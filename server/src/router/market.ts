@@ -1,4 +1,5 @@
 import express from 'express';
+import { checkAuthenticated } from '../middleware/checkAuthenticated';
 const router = express.Router();
 
 import markets from '../controller/market';
@@ -10,7 +11,31 @@ import markets from '../controller/market';
  *   description: 'POCAZ 스토어 관리 API'
  */
 
-router.post('/', markets.writeMarket);
+/**
+ * @swagger
+ * /api/market:
+ *   post:
+ *     tags:
+ *       - market
+ *     summary: market
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             example:
+ *               - photocard: 1
+ *                 user: 1
+ *                 title: 포토카드 팝니다
+ *                 description: 싱싱한 포토카드 싸게 팝니다.
+ *                 price: 10000
+ *     responses:
+ *       '200':
+ *         description: Successful response
+ *         content:
+ *           application/json: {}
+ */
+router.post('/', checkAuthenticated, markets.writeMarket);
 /**
  * @swagger
  * /api/market:

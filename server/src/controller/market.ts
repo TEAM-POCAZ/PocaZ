@@ -42,9 +42,10 @@ export default {
       
     res.send({ sellList, nextId, previousId })
   },
-  writeMarket: async (req: Request, res: Response) => {
-    const [{ photocard, user, title, description, price }]: IMarket[] =
+  writeMarket: async (req: any, res: Response) => {
+    const [{ photocard, title, description, price }]: IMarket[] =
       req.body;
+    const user = req.user.id
     await tranSQL.getOne(
       `INSERT INTO PhotocardSellArticle (photocard, user, title, description, price, viewCount, tradeStatus)
        VALUES (?, 0, 1)`,
