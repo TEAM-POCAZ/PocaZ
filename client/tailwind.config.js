@@ -3,6 +3,9 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Montserrat", "Pretendard", "sans-serif"],
+      },
       width: {
         480: "480px",
         50: "50px",
@@ -25,8 +28,8 @@ module.exports = {
       minWidth: {
         50: "50px",
       },
-      colors: {
-        blue: "#034ac5",
+      letterSpacing: {
+        tracking: "-2px",
       },
     },
     screens: {
@@ -47,5 +50,6 @@ module.exports = {
       // => @media (max-width: 639px) { ... }
     },
   },
-  plugins: [require("@tailwindcss/forms")],
+  // plugins: [require("@tailwindcss/forms")],
+  //성재님 주석 처리 잠만 할게욘
 };

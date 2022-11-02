@@ -18,11 +18,9 @@ const Layout = ({ children }) => {
               </span>
             </p>
           </div>
-          <h2 className="my-6 text-white italic text-7xl font-extrabold">
+          <h2 className="my-6 text-white italic text-7xl font-black tracking-[-2px]">
             POCAZ.
           </h2>
-
-          {/* <h4 className="text-6xl">😍 🥰 😘</h4> */}
           <button
             type="button"
             className="my-5 px-6 py-4 bg-zinc-800 hover:bg-zinc-900 text-white rounded-lg ease-in"

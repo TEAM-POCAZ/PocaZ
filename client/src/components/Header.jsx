@@ -18,7 +18,7 @@ const Header = () => {
   return (
     <header className={scrollPosition < 80 ? "originalHeader" : "changeHeader"}>
       <div className="logo p-3.5">
-        <h1 className="italic text-3xl font-extrabold">
+        <h1 className="italic text-3xl font-black tracking-[-2px]">
           <Link to="/">
             POCAZ<span className="logoDot">.</span>
           </Link>
