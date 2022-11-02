@@ -1,7 +1,7 @@
 import express from 'express';
 import { tranSQL } from '../utils/tranSQL';
 import { sqlSelectHandler } from '../utils/sqlHandler';
-import { IPosts } from 'src/interface/IPosts';
+import { IPosts } from '../interface/IPosts';
 
 export default {
   getPosts: async (req: express.Request, res: express.Response) => {
@@ -55,15 +55,17 @@ export default {
     );
     res.send(postDetail);
   },
-  writePost: async (req: express.Request, res: express.Response) => {
-    const [{ category, user, title, content }]: [
-      { category: number; user: number; title: string; content: string }
+  writePost: async (req: any, res:any) => {
+    const user = req.user.id
+    const [{ category, title, content }]: [
+      { category: number; title: string; content: string }
     ] = req.body;
     const insertId = await tranSQL.postOne(
       `INSERT INTO Post(category, user, title, content)
        VALUES (?)`,
       [[category, user, title, content]]
     );
+    // res.send(['33', user])
     res.send([insertId]);
   },
   modifyPost: async (req: express.Request, res: express.Response) => {
