@@ -11,26 +11,31 @@ import { apis } from "../utils/api";
 /**
  * chatList 접속 초기 api.get으로 가져와서 뿌려줌
  * 추가적인 메세지는 socket.on 으로 받아와 chatList state를 업데이트해준다.
+ * @params socket index에서 생성된 socket 공유
  * @returns chat list 반환
  */
 const ChatMain = ({ socket }) => {
+    const { userInfo } = useLoginStore(); // 광역 상태관리
     const [isLoading, setIsLoading] = useState(true);
     const [chatList, setChatList] = useState();
     const [updatedRoom, setUpdatedRoom] = useState(null);
-    const { userInfo } = useLoginStore(); // 광역 상태관리
 
     useEffect(() => {
         const list = async () => {
             try {
-                const { data } = await apis.getChatList(userInfo.id); //FIXME id를 담아보낸다.
-                console.log("userInfo :>> ", userInfo, userInfo.id);
+                const { data } = await apis.getChatList(userInfo.id);
                 setChatList(data);
                 setIsLoading(false);
             } catch (e) {
                 console.error(e);
             }
         };
+
         list();
+        socket.onSync("alert-new-message", (message) => {
+            console.log("message 받은 :>> ", message);
+            setUpdatedRoom(message);
+        });
     }, []);
 
     useEffect(() => {
@@ -47,15 +52,12 @@ const ChatMain = ({ socket }) => {
     }, [updatedRoom]);
 
     useEffect(() => {
+        console.log("chatList :>> ", chatList);
         chatList?.forEach((item) => {
             socket.joinRoom(String(item.chatRoom));
             console.log("조인조인");
         });
-        socket.onSync("alert-new-message", (message) => {
-            console.log("message 받은 :>> ", message);
-            setUpdatedRoom(message);
-        });
-    }, []);
+    }, [chatList]);
 
     return (
         <Layout>
@@ -65,8 +67,8 @@ const ChatMain = ({ socket }) => {
                 <>
                     <div className="h-screen ">
                         <div></div>
-                        <div className="flex flex-col m-2 border-2">
-                            공지사항 컴포넌트
+                        <div className="flex flex-col p-3 m-2 border-2">
+                            <p className="ml-3 text-lg">채팅.</p>
                         </div>
                         <ul className="p-6 divide-y divide-slate-200">
                             {chatList &&
