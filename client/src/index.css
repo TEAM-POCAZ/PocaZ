@@ -6,7 +6,8 @@
   @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,300;0,400;0,500;0,900;1,100;1,300;1,900&display=swap");
   @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.5/dist/web/static/pretendard.css");
   body {
-    background-image: url(https://about.postype.com/img/hero_jobs.png);
+    background-image: url(/public/hero_jobs.png);
+    /* 백그라운드 이미지 변경 예정 */
     background-attachment: fixed;
   }
 
