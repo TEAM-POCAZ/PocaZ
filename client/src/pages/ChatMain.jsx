@@ -7,6 +7,7 @@ import { useLoginStore } from "../store/store";
 
 import { Link } from "react-router-dom";
 import { apis } from "../utils/api";
+import dayjs from "dayjs";
 
 /**
  * chatList 접속 초기 api.get으로 가져와서 뿌려줌
@@ -15,119 +16,121 @@ import { apis } from "../utils/api";
  * @returns chat list 반환
  */
 const ChatMain = ({ socket }) => {
-    const { userInfo } = useLoginStore(); // 광역 상태관리
-    const [isLoading, setIsLoading] = useState(true);
-    const [chatList, setChatList] = useState();
-    const [updatedRoom, setUpdatedRoom] = useState(null);
+  const { userInfo } = useLoginStore(); // 광역 상태관리
+  const [isLoading, setIsLoading] = useState(true);
+  const [chatList, setChatList] = useState();
+  const [updatedRoom, setUpdatedRoom] = useState(null);
 
-    useEffect(() => {
-        const list = async () => {
-            try {
-                const { data } = await apis.getChatList(userInfo.id);
-                setChatList(data);
-                setIsLoading(false);
-            } catch (e) {
-                console.error(e);
-            }
-        };
+  useEffect(() => {
+    const list = async () => {
+      try {
+        const { data } = await apis.getChatList(userInfo.id);
+        setChatList(data);
+        setIsLoading(false);
+      } catch (e) {
+        console.error(e);
+      }
+    };
 
-        list();
-        socket.onSync("alert-new-message", (message) => {
-            console.log("message 받은 :>> ", message);
-            setUpdatedRoom(message);
-        });
-    }, []);
+    list();
+    socket.onSync("alert-new-message", (message) => {
+      console.log("message 받은 :>> ", message);
+      setUpdatedRoom(message);
+    });
+  }, []);
 
-    useEffect(() => {
-        if (updatedRoom) {
-            const newChatRooms = [];
-            for (const value of chatList) {
-                if (value.chatRoom === updatedRoom.chatRoom) {
-                    value.message = updatedRoom.message;
-                }
-                newChatRooms.push(value);
-            }
-            setChatList(newChatRooms);
+  useEffect(() => {
+    if (updatedRoom) {
+      const newChatRooms = [];
+      for (const value of chatList) {
+        if (value.chatRoom === updatedRoom.chatRoom) {
+          value.message = updatedRoom.message;
         }
-    }, [updatedRoom]);
+        newChatRooms.push(value);
+      }
+      setChatList(newChatRooms);
+    }
+  }, [updatedRoom]);
 
-    useEffect(() => {
-        console.log("chatList :>> ", chatList);
-        chatList?.forEach((item) => {
-            socket.joinRoom(String(item.chatRoom));
-            console.log("조인조인");
-        });
-    }, [chatList]);
+  useEffect(() => {
+    chatList?.forEach((item) => {
+      socket.joinRoom(String(item.chatRoom));
+      console.log("조인조인");
+      console.log(chatList);
+    });
+    socket.onSync("alert-new-message", (message) => {
+      console.log("message 받은 :>> ", message);
+      setUpdatedRoom(message);
+    });
+  }, [chatList]);
 
-    return (
-        <Layout>
-            {isLoading ? (
-                <>loading 중</>
-            ) : (
-                <>
-                    <div className="h-screen ">
-                        <div></div>
-                        <div className="flex flex-col p-3 m-2 border-2">
-                            <p className="ml-3 text-lg">채팅.</p>
+  return (
+    <Layout>
+      {isLoading ? (
+        <>loading 중</>
+      ) : (
+        <>
+          <div className="h-screen ">
+            <div></div>
+            <div className="flex flex-col m-2 border-2">공지사항 컴포넌트</div>
+            <ul className="p-6 divide-y divide-slate-200">
+              {chatList &&
+                chatList?.map((item) => {
+                  return (
+                    <Link
+                      key={item.chatRoom}
+                      to={`/chat`}
+                      state={{
+                        room: item.chatRoom,
+                        oppNickname: item.nickname,
+                      }}
+                      className="flex py-4 border-2x"
+                    >
+                      <li className="flex w-full ">
+                        <div className="m-3">
+                          <img
+                            className="w-10 h-10 rounded-full"
+                            src={item.profileImage}
+                            alt="profile"
+                          />
                         </div>
-                        <ul className="p-6 divide-y divide-slate-200">
-                            {chatList &&
-                                chatList?.map((item) => {
-                                    return (
-                                        <Link
-                                            key={item.chatRoom}
-                                            to={`/chat`}
-                                            state={{
-                                                room: item.chatRoom,
-                                                oppNickname: item.nickname,
-                                            }}
-                                            className="flex py-4 border-2x"
-                                        >
-                                            <li className="flex w-full ">
-                                                <div className="m-3">
-                                                    <img
-                                                        className="w-10 h-10 rounded-full"
-                                                        src={item.profileImage}
-                                                        alt="profile"
-                                                    />
-                                                </div>
-                                                <div className="w-full m-auto ml-3 overflow-hidden">
-                                                    <p className="text-base font-medium text-slate-900">
-                                                        {item.nickname}
-                                                    </p>
-                                                    <p className="text-sm truncate text-slate-500">
-                                                        {item.message}{" "}
-                                                    </p>
-                                                </div>
-                                                <div className="m-auto">
-                                                    <p className="text-sm truncate text-slate-400">
-                                                        메세지도착시간
-                                                    </p>
+                        <div className="w-full m-auto ml-3 overflow-hidden">
+                          <p className="text-base font-medium text-slate-900">
+                            {item.nickname}
+                          </p>
+                          <p className="text-sm truncate text-slate-500">
+                            {item.message}{" "}
+                          </p>
+                        </div>
+                        <div className="m-auto">
+                          <p className="text-sm truncate text-slate-400">
+                            {dayjs(item.createAt).format("HH:mm")}
+                          </p>
 
-                                                    <div
-                                                        className={
-                                                            "flex items-center justify-end w-full pr-1 my-1 margin-auto"
-                                                        }
-                                                    >
-                                                        <p
-                                                            className={
-                                                                "w-4 h-4 text-xs text-center text-white rounded-full"
-                                                            }
-                                                        >
-                                                            N
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </Link>
-                                    );
-                                })}
-                        </ul>
-                    </div>
-                </>
-            )}
-        </Layout>
-    );
+                          <div
+                            className={
+                              "flex items-center justify-end w-full pr-1 my-1 margin-auto"
+                            }
+                          >
+                            <p
+                              className={
+                                "w-4 h-4 text-xs text-center text-white rounded-full"
+                              }
+                            >
+                              N
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                    </Link>
+                  );
+                })}
+            </ul>
+          </div>
+        </>
+      )}
+    </Layout>
+  );
 };
 
 export default ChatMain;
