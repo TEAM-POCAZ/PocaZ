@@ -17,7 +17,7 @@ import chatRouter from './router/chat';
 import marketRouter from './router/market';
 import fileRouter from './router/file';
 import artistRouter from './router/artist';
-import authRouter from './router/authRouter';
+import authRouter from './router/auth';
 import userRouter from './router/user';
 
 const API = '/api';

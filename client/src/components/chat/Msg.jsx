@@ -2,18 +2,17 @@ import React from "react";
 import dayjs from "dayjs";
 
 import { useLoginStore } from "../../store/store";
-import queryString from "query-string";
 
 /**
  * sender : 메세지를 보낸 사람
  * userInfo state의 NickName은 로그인 정보 기반
  * sender오 userInfo.nickname을 비교하여 로그인사용자의 메세지인지를 확인한다.
  * @param {object} chat post 받아온 obj를 담고 있고 채팅창에 보여줄 value
- * @param {string} name 접속한 사용자의 이름을 가져옴. 위의 user랑 비교할 값 // 광역에서 가져온다.
+ * @param {string} oppNickname chatList에서 받아온 상대방 닉네임을 받아온다.
  * @returns 1:1 사용자 채팅창
  */
 
-const Msg = ({ chat }) => {
+const Msg = ({ chat, oppNickname }) => {
     const { userInfo } = useLoginStore();
     const { createAt, message } = chat;
 
@@ -25,10 +24,12 @@ const Msg = ({ chat }) => {
         // return chat.user === userInfo.nickName ? (
         <div className="flex justify-end py-3 mt-1 messageContainer">
             <div>
-                <p className="flex items-center tracking-tight text-gray-400 sentText">
+                {/* <p className="flex items-center tracking-tight text-gray-400 sentText">
                     {chat.user}
+                </p> */}
+                <p className="flex items-center pl-2 text-sm tracking-tight text-gray-400 sentText">
+                    {MsgReceivedTime}
                 </p>
-                <p>{MsgReceivedTime}</p>
             </div>
             <div className="inline-block px-2 py-5 text-white bg-blue-800 messageBox rounded-3xl max-w-fit">
                 <p className="float-left w-full text-lg tracking-normal messageText colorWhite letter ">
@@ -43,10 +44,14 @@ const Msg = ({ chat }) => {
                     <span className="align-middle ">{message}</span>
                 </p>
             </div>
-            <p className="flex items-center pl-2 tracking-tight text-gray-400 sentText ">
-                {chat.user}
-            </p>
-            <p>{MsgReceivedTime}</p>
+            <div>
+                <p className="flex items-center pl-2 text-sm tracking-tight text-gray-700 sentText ">
+                    {oppNickname}
+                </p>
+                <p className="flex items-center pl-2 text-sm tracking-tight text-gray-400 sentText">
+                    {MsgReceivedTime}
+                </p>
+            </div>
         </div>
     );
 };
