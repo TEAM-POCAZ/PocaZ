@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../utils/Layout";
 import Input from "../components/MyPage/Input";
+import Artist from "../components/MyPage/Artist";
 import { useLoginStore } from "../store/store";
 import { useQuery } from "react-query";
 import axios from "axios";
@@ -9,6 +10,7 @@ const API = import.meta.env.VITE_HOST_URL;
 
 const MyPage = () => {
   const { userInfo, setUserInfo } = useLoginStore();
+  const [axiosError, setAxiosError] = useState(null);
   const [id, setId] = useState(userInfo.id);
   const [username, setUsername] = useState(userInfo.username);
   const [email, setEmail] = useState(userInfo.email);
@@ -33,10 +35,9 @@ const MyPage = () => {
       },
       onError: (err) => {
         if (axios.isAxiosError(err)) {
-          console.log("axios: ", err);
           navigate("/login");
         } else {
-          console.log("unexpected error: ", err);
+          console.log("unexpected error: ", err.response.data.error);
         }
       },
     }
@@ -53,20 +54,20 @@ const MyPage = () => {
         profileImage,
         artist: artistId,
       };
-      await axios.put(`${API}/api/user`, data, {
-        retry: false,
-        onSuccess: (res) => {
-          setUserInfo(res.data);
-        },
-        onError: (err) => {
-          if (axios.isAxiosError(err)) {
-            console.log("axios: ", err);
-          } else {
-            console.log("unexpected error: ", err);
-          }
-        },
-      });
-      setDisabled(true);
+      try {
+        const res = await axios.put(`${API}/api/user`, data, {
+          retry: false,
+          withCredentials: true,
+        });
+        setUserInfo(res.data);
+        setDisabled(true);
+      } catch (err) {
+        if (axios.isAxiosError(err)) {
+          setAxiosError(err.response.data.error);
+        } else {
+          console.log("unexpected error: ", err.response.data.error);
+        }
+      }
     }
   };
 
@@ -82,7 +83,7 @@ const MyPage = () => {
         },
         onError: (err) => {
           if (axios.isAxiosError(err)) {
-            console.log("axios: ", err);
+            setAxiosError(err.response.data.error);
             navigate("/login");
           } else {
             console.log("unexpected error: ", err);
@@ -108,13 +109,12 @@ const MyPage = () => {
       {
         retry: false,
         onSuccess: (res) => {
-          console.log(res.data);
           setUserInfo({});
           navigate("/");
         },
         onError: (err) => {
           if (axios.isAxiosError(err)) {
-            console.log("axios: ", err);
+            setAxiosError(err.response.data.error);
             navigate("/login");
           } else {
             console.log("unexpected error: ", err);
@@ -134,6 +134,8 @@ const MyPage = () => {
   return (
     <>
       <Layout>
+        <div>{axiosError}</div>
+        <img src={profileImage}></img>
         <form onSubmit={handleSubmit}>
           <Input
             property="id"
@@ -141,7 +143,7 @@ const MyPage = () => {
             placeholder="database primary key"
             value={id}
             setValue={setId}
-            disabled={disabled}
+            disabled={true}
           />
           <Input
             property="username"
@@ -149,7 +151,7 @@ const MyPage = () => {
             placeholder="username by OAuth"
             value={username}
             setValue={setUsername}
-            disabled={disabled}
+            disabled={true}
           />
           <Input
             property="email"
@@ -181,20 +183,21 @@ const MyPage = () => {
             setValue={setArtistId}
             disabled={disabled}
           />
+          <Artist artistId={artistId}></Artist>
           <Input
             property="deleteAt"
             optionalText="개발용"
             placeholder="삭제되지 않음"
             value={deleteAt ?? ""}
             setValue={setDeleteAt}
-            disabled={disabled}
+            disabled={true}
           />
           <Input
             property="createAt"
             optionalText="개발용"
             value={createAt}
             setValue={setCreateAt}
-            disabled={disabled}
+            disabled={true}
           />
           <Input
             property="updateAt"
@@ -202,7 +205,7 @@ const MyPage = () => {
             placeholder="업데이트되지 않음"
             value={updateAt ?? ""}
             setValue={setUpdateAt}
-            disabled={disabled}
+            disabled={true}
           />
           <input
             type="submit"

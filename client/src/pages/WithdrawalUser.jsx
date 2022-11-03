@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../utils/Layout";
 import Input from "../components/MyPage/Input";
+import Artist from "../components/MyPage/Artist";
 import { useNavigate } from "react-router-dom";
 
 import { useCookies } from "react-cookie";
@@ -17,6 +18,7 @@ const WithdrawalUser = () => {
   const [email, setEmail] = useState(userInfo.email);
   const [nickname, setNickname] = useState(userInfo.nickname);
   const [profileImage, setProfileImage] = useState(userInfo.profileImage);
+  const [artistId, setArtistId] = useState(userInfo.artist);
   const [deleteAt, setDeleteAt] = useState(userInfo.deleteAt);
   const [createAt, setCreateAt] = useState(userInfo.createAt);
   const [updateAt, setUpdateAt] = useState(userInfo.updateAt);
@@ -87,6 +89,7 @@ const WithdrawalUser = () => {
           setValue={setProfileImage}
           disabled={true}
         />
+        <Artist artistId={artistId}></Artist>
         <Input
           property="deleteAt"
           optionalText="개발용"

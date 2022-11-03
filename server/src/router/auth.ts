@@ -36,8 +36,6 @@ authRouter.post(
       await User.softDelete(conn, req.user!.id);
       req.logOut(() => {});
       return res.json({ status: 'success' });
-    } catch (err) {
-      console.log(err);
     } finally {
       conn?.release();
     }

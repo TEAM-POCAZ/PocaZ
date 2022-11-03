@@ -114,9 +114,7 @@ router.get('/', artists.getArtists);
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Artist'
+ *               $ref: '#/components/schemas/Artist'
  */
 
 router.get('/:id', artists.getArtist);
