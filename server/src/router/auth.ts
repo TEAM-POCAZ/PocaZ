@@ -8,6 +8,8 @@ import { User } from '../entity/user';
 import { checkAuthenticated } from '../middleware/checkAuthenticated';
 import { config } from '../config';
 import db from '../db/database';
+import { WithdrawalError } from '../error/WithdrawalError';
+import { DbConnectionError } from '../error/DbConnectionError';
 
 const REACT_URL: string = config.host.reactAppHostUrl;
 passportSetup();
@@ -84,7 +86,30 @@ authRouter.post(
   }
 );
 
+function jsonFriendlyErrorReplacer(key: any, value: any) {
+  if (value instanceof Error) {
+    return {
+      // Pull all enumerable properties, supporting properties on custom Errors
+      ...value,
+      // Explicitly pull Error's non-enumerable properties
+      name: value.name,
+      message: value.message,
+      stack: value.stack,
+    };
+  }
+
+  return value;
+}
+
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+  if (err instanceof WithdrawalError) {
+    res.cookie('withdrawalUser', err.message);
+    return res.redirect(`${REACT_URL}/withdrawalUser`);
+  }
+  if (err instanceof DbConnectionError) {
+    res.cookie('error', JSON.stringify(err, jsonFriendlyErrorReplacer));
+    return res.redirect(`${REACT_URL}/developmentError`);
+  }
   res.status(401);
   res.json({ error: err.message });
 };

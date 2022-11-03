@@ -1,6 +1,10 @@
 import { Router } from 'express';
+import { DbConnectionError } from '../error/DbConnectionError';
+import type { ErrorRequestHandler } from 'express';
 import { PoolConnection } from 'mysql2/promise';
 import db from '../db/database';
+import { config } from '../config';
+const REACT_URL: string = config.host.reactAppHostUrl;
 
 import { User, UserCreationDto, UserUpdateDto } from '../entity/user';
 
@@ -62,7 +66,9 @@ userRouter.put('/', async (req, res) => {
   const user: UserUpdateDto = req.body;
   try {
     conn = await db.getPool().getConnection();
-    return res.json(await User.update(conn, user));
+    const result = await User.update(conn, user);
+    console.log(result);
+    res.json(result);
   } catch (err) {
     console.log(err);
   } finally {
@@ -82,5 +88,43 @@ userRouter.delete('/id/:id', async (req, res) => {
     conn?.release();
   }
 });
+
+userRouter.post('/softDeleteRollback/:id', async (req, res) => {
+  let conn: PoolConnection | null = null;
+  const { id } = req.params;
+  try {
+    conn = await db.getPool().getConnection();
+    return res.json(await User.softDeleteRollback(conn, id));
+  } catch (err) {
+    console.log(err);
+  } finally {
+    conn?.release();
+  }
+});
+
+function jsonFriendlyErrorReplacer(key: any, value: any) {
+  if (value instanceof Error) {
+    return {
+      // Pull all enumerable properties, supporting properties on custom Errors
+      ...value,
+      // Explicitly pull Error's non-enumerable properties
+      name: value.name,
+      message: value.message,
+      stack: value.stack,
+    };
+  }
+
+  return value;
+}
+const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+  if (err instanceof DbConnectionError) {
+    res.cookie('error', JSON.stringify(err, jsonFriendlyErrorReplacer));
+    return res.redirect(`${REACT_URL}/developmentError`);
+  }
+  res.status(401);
+  res.json({ error: err.message });
+};
+
+userRouter.use(errorHandler);
 
 export default userRouter;

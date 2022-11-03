@@ -15,11 +15,13 @@ import ChatMain from "./pages/ChatMain";
 import Chat from "./components/chat/Chat.jsx";
 import Login from "./pages/Login";
 import MyPage from "./pages/MyPage";
-import MyPageModify from "./pages/MyPageModify";
 import { ToastContainer } from "react-toastify";
 import MarketList from "./pages/MarketList";
 import MarketWrite from "./pages/MarketWrite";
 import MarketDetail from "./pages/MarketDetail";
+import WithdrawalUser from "./pages/WithdrawalUser";
+import DevelopmentError from "./pages/DevelopmentError";
+import NotFound from "./pages/NotFound";
 
 function App({ socket }) {
   const client = new QueryClient({
@@ -56,7 +58,9 @@ function App({ socket }) {
             <Route path="/chat" element={<Chat socket={socket} />} />
             <Route path="/login" element={<Login />} />
             <Route path="/MyPage" element={<MyPage />} />
-            <Route path="/MyPageModify" element={<MyPageModify />} />
+            <Route path="/WithdrawalUser" element={<WithdrawalUser />} />
+            <Route path="/developmentError" element={<DevelopmentError />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
       </QueryClientProvider>

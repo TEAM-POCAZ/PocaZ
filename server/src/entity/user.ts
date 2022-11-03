@@ -70,7 +70,7 @@ class User {
       `UPDATE User SET email = ?, nickname = ?, profileImage = ?, artist = ?, updateAt=now() WHERE id = ?`,
       [user.email, user.nickname, user.profileImage, user.artist, user.id]
     );
-    return User.selectById(conn, user.id);
+    return await User.selectById(conn, user.id);
   }
 
   static async softDelete(conn: PoolConnection, id: number | string) {
@@ -78,6 +78,17 @@ class User {
       `UPDATE User
         SET
         deleteAt = now()
+      WHERE id = ?`,
+      [id]
+    );
+    return { affectedRows };
+  }
+
+  static async softDeleteRollback(conn: PoolConnection, id: number | string) {
+    const [{ affectedRows }] = await conn.query<OkPacket>(
+      `UPDATE User
+        SET
+        deleteAt = null
       WHERE id = ?`,
       [id]
     );
