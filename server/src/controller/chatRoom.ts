@@ -26,7 +26,7 @@ export const getChatRoom = async (
           ON cr.chatRoom = cr2.chatRoom 
         INNER JOIN User u 
           ON cr2.user = u.id 
-      INNER JOIN (SELECT chatRoom, message FROM Chat c WHERE id  = (SELECT max(id) FROM Chat WHERE chatRoom = c.chatRoom)) cr3 
+      LEFT JOIN (SELECT chatRoom, message FROM Chat c WHERE id  = (SELECT max(id) FROM Chat WHERE chatRoom = c.chatRoom)) cr3 
         ON cr2.chatRoom = cr3.chatRoom WHERE cr.user = ? ORDER BY chatRoom`,
     [user, user]
   );

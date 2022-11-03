@@ -29,6 +29,13 @@ export default class Socket {
 
     joinRoom(val) {
         this.io.emit("joinRoom", val);
-        console.log("this.io :>> ", this.io);
+    }
+
+    /**
+     *
+     * @param {object} value sellerId와 userId를 보냄
+     */
+    createRoom(Ids) {
+        this.io.emit("createRoom", Ids);
     }
 }
