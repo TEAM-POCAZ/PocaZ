@@ -5,7 +5,7 @@ import { useQuery } from "react-query";
 const MarketListItem = () => {
   const result = useQuery("pocas", () =>
     axios.get("http://localhost:8080/api/market").then((a) => {
-      return a.data;
+      return a.data.sellList;
     })
   );
   return (
@@ -21,14 +21,18 @@ const MarketListItem = () => {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="pocaListWrap mt-1 text-xs">
-                  <p className="groupName font-extrabold">{poca.groupName}</p>
+                <div className="pocaListBox mt-2.5 p-3.5 rounded-xl bg-white text-xs box-border">
+                  <p className="groupName font-extrabold text-sm text-[#034ac5]">
+                    {poca.groupName}✨
+                  </p>
                   <p className="memberName text-sm">{poca.stageName}</p>
-                  <p className="pocaDetail text-base">{poca.pocaName}</p>
+                  <p className="pocaDetail mt-2.5 font-medium text-base">
+                    {poca.pocaName}
+                  </p>
                   <p className="pocaDesc mb-1 text-gray-500">
                     {poca.description}
                   </p>
-                  <p className="pocaPrice font-medium text-base">
+                  <p className="pocaPrice mt-2.5 font-semibold text-base">
                     <span>{poca.price}</span>
                     <span className="won">원</span>
                   </p>

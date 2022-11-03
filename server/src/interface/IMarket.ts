@@ -1,4 +1,6 @@
-export interface IMarket {
+import { RowDataPacket } from "mysql2";
+
+export interface IMarket  extends RowDataPacket{
   photocard: number;
   user: number;
   title: string;

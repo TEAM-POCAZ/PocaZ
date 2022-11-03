@@ -5,6 +5,7 @@ import replyRouter from './reply';
 import likesRouter from './likes';
 import postImgRouter from './postImage';
 import posts from '../controller/post';
+import { checkAuthenticated } from '../middleware/checkAuthenticated';
 
 const router = express.Router();
 
@@ -98,7 +99,7 @@ router.use('/likes', likesRouter);
  *         description: Invalid input
  */
 
-router.post('/', posts.writePost);
+router.post('/', checkAuthenticated, posts.writePost);
 
 /**
  * @swagger
@@ -156,7 +157,18 @@ router.get('/:category/:post', posts.getPost);
  *         required: true
  *         description: 게시글 검색 키워드
  *         schema:
+ *           type: string     
+ *       - name: lastPostId
+ *         in: query
+ *         description: 페이지의 마지막 글의 id를 얻습니다. 공백으로 둘 경우 최신 get id of Last post of Page
+ *         schema:
  *           type: string
+ *       - name: SIZE
+ *         in: query
+ *         description: 현재 페이지에서 추가로 불러올 게시글의 수. get number of Pages want to get
+ *         schema:
+ *           type: string
+ *         example: '30'
  *     description: none
  *     responses:
  *       '200':
@@ -199,7 +211,18 @@ router.get('/search', posts.searchPost);
  *           type: string
  *           enum:
  *             - recent
- *             - popular
+ *             - popular     
+ *       - name: lastPostId
+ *         in: query
+ *         description: 페이지의 마지막 글의 id를 얻습니다. 공백으로 둘 경우 최신 get id of Last post of Page
+ *         schema:
+ *           type: string
+ *       - name: SIZE
+ *         in: query
+ *         description: 현재 페이지에서 추가로 불러올 게시글의 수. get number of Pages want to get
+ *         schema:
+ *           type: string
+ *         example: '30'
  *     description: Update an existing pet by Id
  *     responses:
  *       '200':

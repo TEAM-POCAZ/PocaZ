@@ -14,7 +14,7 @@ const MainPocaItem = () => {
       try {
         setPoca(null);
         const response = await axios.get("http://localhost:8080/api/market/");
-        setPoca(response.data);
+        setPoca(response.data.sellList);
       } catch (e) {
         console.error(e);
       }
