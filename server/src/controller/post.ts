@@ -5,37 +5,38 @@ import { IPosts } from '../interface/IPosts';
 
 export default {
   getPosts: async (req: express.Request, res: express.Response) => {
-    try{
+    try {
       const {
         params: { category },
         query: { sortBy, lastPostId, SIZE },
       } = req;
-      
+
       const postList: IPosts[] = await sqlSelectHandler(
         `${tranSQL.posts.lists}
          ${tranSQL.posts.listsFrom}
           WHERE p.category = ?
           AND p.deleteAt IS NULL
           AND p.id < ? 
-          ORDER BY ${
-            sortBy === 'popular' ? 'LikesCnt DESC, ' : ''
-          } p.id DESC 
+          ORDER BY ${sortBy === 'popular' ? 'LikesCnt DESC, ' : ''} p.id DESC 
           LIMIT ? `,
-        [category,
-         lastPostId || Number.MAX_SAFE_INTEGER, 
-         SIZE || '10']
+        [category, lastPostId || Number.MAX_SAFE_INTEGER, SIZE || '10']
       );
-      
-      const nextId = typeof lastPostId === 'string' && typeof SIZE === 'string' && 
-                     parseInt(lastPostId) > 0 && postList.length === parseInt(SIZE)
-      ? postList[postList.length - 1]?.id - 1
-      : null;
-      const previousId = (lastPostId || Number.MAX_SAFE_INTEGER > 0) && typeof SIZE === 'string'
-            ? postList[0].id + parseInt(SIZE) : null;
-      
+
+      const nextId =
+        typeof lastPostId === 'string' &&
+        typeof SIZE === 'string' &&
+        parseInt(lastPostId) > 0 &&
+        postList.length === parseInt(SIZE)
+          ? postList[postList.length - 1]?.id - 1
+          : null;
+      const previousId =
+        (lastPostId || Number.MAX_SAFE_INTEGER > 0) && typeof SIZE === 'string'
+          ? postList[0]?.id + parseInt(SIZE)
+          : null;
+
       // setTimeout(() => res.json({ postList, nextId, previousId }), 1000)
-      res.send({ postList, nextId, previousId })
-    } catch(err){
+      res.send({ postList, nextId, previousId });
+    } catch (err) {
       throw err;
     }
   },
@@ -55,8 +56,8 @@ export default {
     );
     res.send(postDetail);
   },
-  writePost: async (req: any, res:any) => {
-    const user = req.user.id
+  writePost: async (req: any, res: any) => {
+    const user = req.user.id;
     const [{ category, title, content }]: [
       { category: number; title: string; content: string }
     ] = req.body;
@@ -123,7 +124,8 @@ export default {
           `${result} OR p.title LIKE '%${kw}%' OR p.content LIKE '%${kw}%'`,
         ''
       );
-      const postList: IPosts[] = await sqlSelectHandler(`
+    const postList: IPosts[] = await sqlSelectHandler(
+      `
       ${tranSQL.posts.lists}
       ${tranSQL.posts.listsFrom}
       WHERE (1 != 1
@@ -132,16 +134,20 @@ export default {
       AND p.id < ?
       ORDER BY p.id DESC
       LIMIT ?`,
-      [lastPostId || Number.MAX_SAFE_INTEGER,
-       SIZE || '50'])
+      [lastPostId || Number.MAX_SAFE_INTEGER, SIZE || '50']
+    );
 
-
-      const nextId = typeof lastPostId === 'string' && typeof SIZE === 'string' && 
-                      parseInt(lastPostId) > 0 && postList.length === parseInt(SIZE)
-                      ? postList[postList.length - 1]?.id - 1
-                      : null;
-      const previousId = (lastPostId || Number.MAX_SAFE_INTEGER > 0) && typeof SIZE === 'string'
-            ? postList[0].id + parseInt(SIZE) : null;
-      res.send({ postList, nextId, previousId })
+    const nextId =
+      typeof lastPostId === 'string' &&
+      typeof SIZE === 'string' &&
+      parseInt(lastPostId) > 0 &&
+      postList.length === parseInt(SIZE)
+        ? postList[postList.length - 1]?.id - 1
+        : null;
+    const previousId =
+      (lastPostId || Number.MAX_SAFE_INTEGER > 0) && typeof SIZE === 'string'
+        ? postList[0].id + parseInt(SIZE)
+        : null;
+    res.send({ postList, nextId, previousId });
   },
 };
