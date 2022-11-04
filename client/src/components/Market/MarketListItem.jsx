@@ -17,7 +17,7 @@ const MarketListItem = ({ list }) => {
                     className="flex-[0_1_48%] mb-3.5"
                     key={post.id}
                     onClick={() => {
-                      navigate(`/Market/${poca.id}`);
+                      navigate(`/Market/${post.id}`);
                     }}
                   >
                     <div className="pocaThumb relative h-72 lg:h-96 mm:h-60 rounded-xl overflow-hidden">
