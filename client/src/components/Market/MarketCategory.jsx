@@ -1,13 +1,13 @@
 import React from "react";
 
 const IdolCateList = [
-  { id: 0, title: "더보이즈" },
-  { id: 1, title: "엔시티" },
-  { id: 2, title: "뉴진스" },
-  { id: 3, title: "에스파" },
-  { id: 4, title: "아이브" },
-  { id: 5, title: "르세라핌" },
-  { id: 6, title: "블랙핑크" },
+  { id: 0, title: "전체" },
+  { id: 1, title: "더보이즈" },
+  { id: 2, title: "엔시티" },
+  { id: 3, title: "뉴진스" },
+  { id: 4, title: "에스파" },
+  { id: 5, title: "아이브" },
+  { id: 6, title: "르세라핌" },
 ];
 const MarketCategory = () => {
   return (
