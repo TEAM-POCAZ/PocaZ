@@ -26,7 +26,7 @@ const Chat = ({ socket }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const { oppNickname, room } = location.state; //TODO 지워야함
+    const { oppNickname, room } = location.state; //FIXME 장터에서 입장했을 때...
 
     useEffect(() => {
         getChat();

@@ -25,9 +25,9 @@ export default class Socket {
         this.io.emit(e, newMsg);
     }
 
-    joinRoom(roomId) {
+    joinRoom(roomId, cb) {
         const socketId = this.io.id;
-        this.io.emit("joinRoom", { roomId, socketId });
+        this.io.emit("joinRoom", { roomId, socketId }, cb);
     }
 
     /**

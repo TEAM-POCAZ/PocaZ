@@ -55,8 +55,11 @@ const ChatMain = ({ socket }) => {
 
     useEffect(() => {
         chatList?.forEach((item) => {
-            socket.joinRoom(String(item.chatRoom));
-            console.log("조인조인");
+            socket.joinRoom(String(item.chatRoom), (res) => {
+                if (res) {
+                    console.log("join ===>", res);
+                }
+            });
             // console.log(chatList);
         });
     }, [chatList]);
