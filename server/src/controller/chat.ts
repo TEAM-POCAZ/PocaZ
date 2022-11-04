@@ -42,9 +42,9 @@ export const createChat = async (data: any) => {
 
   // res.status(200).json(row[0]);
 
+  console.log('object :>> ', row[0]);
   getSocketIO().to(row[0].chatRoom.toString()).emit('new-message', row[0]);
   getSocketIO()
     .to(row[0].chatRoom.toString())
     .emit('alert-new-message', row[0]);
-    console.log(row[0]);
 };

@@ -10,13 +10,25 @@ class Socket {
       },
     });
 
-    this.io.on('connection', (so) => {
+    this.io.on('connection', (so: any) => {
       console.log('Socket connected :)!!');
 
-      so.on('joinRoom', (roomId: any, callback) => {
-        so.join(roomId);
-        // this.io.to(roomId).emit('new-message', "기존 담겨있던 메세지");
-        // console.log("room이 연결됨" :>>', roomId);
+      so.on('joinRoom', (obj: any, callback: any) => {
+        const { roomId, socketId } = obj;
+
+        console.log();
+        if (this.io.sockets.adapter.rooms.get(roomId)) {
+          console.log(
+            socketId +
+              'tried to join ' +
+              roomId +
+              'but the room does not exist.'
+          );
+        } else {
+          so.join(roomId);
+          console.log('room이 연결됨 :>>', roomId);
+          // Socket.join is not executed, hence the room not created.
+        }
       });
 
       so.on('message', createChat);
