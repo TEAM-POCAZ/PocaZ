@@ -141,11 +141,14 @@ const tranSQL = {
   artist: `
    SELECT id,
           stageName,
-          realName
+          realName,
+          agency,
+          artistGroup
      FROM Artist
     WHERE 1 = 1 `,
   photocard: `
   SELECT pc.id        AS id,            -- photocard id
+         pc.artist    AS artist,        -- artist of photocard
          a.stageName  AS stageName,     -- artist stage name
          pc.path      AS img,           -- photocard img src
          pc.name      AS name,          -- photocard name

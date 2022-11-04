@@ -1,9 +1,24 @@
 import React from "react";
 import Layout from "../utils/Layout";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useState } from "react";
+import axios from "axios";
 
 const MarketDetail = () => {
   const navigate = useNavigate();
+  const [content, setContent] = useState([]);
+  const { id } = useParams();
+
+  useEffect(() => {
+    (async () => {
+      const {
+        data: [result],
+      } = await axios.get(`http://localhost:8080/api/market/${id}`);
+      setContent(result);
+    })();
+  }, []);
+
   return (
     <>
       <Layout>
@@ -18,28 +33,31 @@ const MarketDetail = () => {
             <i className="ri-chat-3-fill text-2xl"></i>
           </button>
         </div>
-        <div className="m-2.5">
-          <div className="pocaDetailImg h-80 mb-2.5 pb-80 rounded-xl bg-slate-200">
-            포카 이미지 들어올 곳
+        {content && (
+          <div className="m-2.5">
+            {/* <div className="pocaDetailImg h-80 mb-2.5 pb-80 rounded-xl bg-slate-200"> */}
+            <img
+              className="relative w-full h-full object-cover mb-2.5 rounded-xl"
+              src={content.pocaImg}
+              alt={content.pocaName}
+            />
+            {/* </div> */}
+            <div className="pocaDesc pt-2">
+              <h4 className="flex mb-1 text-sm">
+                <span className="pr-2">{content.groupName}</span>
+                <span className="text-slate-400">{content.stageName}</span>
+              </h4>
+              <h4 className="pb-2 font-semibold">{content.title}</h4>
+              <p className="text-gray-400 text-sm break-all">
+                {content.sellDesc}
+              </p>
+              <p className="my-2.5 text-2xl font-bold">
+                {content.price}
+                <b className="font-normal">원</b>
+              </p>
+            </div>
           </div>
-          <div className="pocaDesc pt-2">
-            <h4 className="flex mb-1 text-sm">
-              <span className="pr-2">그룹명</span>
-              <span className="text-slate-400">멤버명</span>
-            </h4>
-            <h4 className="pb-2 font-semibold">
-              사용자가 입력한 제목이 노출됩니다
-            </h4>
-            <p className="text-gray-400 text-sm">
-              한줄 소개가 노출됩니다 한줄 소개가 노출됩니다 한줄 소개가
-              노출됩니다 한줄 소개가 노출됩니다 한줄 소개가 노출됩니다
-            </p>
-            <p className="my-2.5 text-2xl font-bold">
-              50000
-              <b className="font-normal">원</b>
-            </p>
-          </div>
-        </div>
+        )}
       </Layout>
     </>
   );
