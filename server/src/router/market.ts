@@ -57,7 +57,12 @@ router.post('/', checkAuthenticated, markets.writeMarket);
  *         schema:
  *           type: string
  *         example: '30'
- * 
+ *       - name: group
+ *         in: query
+ *         description: 그룹의 키값
+ *         schema:
+ *           type: string
+ *         example: '3'
  *     responses:
  *       "200":
  *         description: "successful operation"
