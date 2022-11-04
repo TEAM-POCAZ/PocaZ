@@ -16,18 +16,13 @@ class Socket {
       so.on('joinRoom', (obj: any, callback: any) => {
         const { roomId, socketId } = obj;
 
-        if (!obj) callback({ error: 'join에서 에러가 발생했어요.' });
+        if (!obj) callback('join에서 에러가 발생했어요.');
 
         if (this.io.sockets.adapter.rooms.get(roomId)) {
-          console.log(
-            socketId +
-              'tried to join ' +
-              roomId +
-              'but the room does not exist.'
-          );
+          console.log(socketId + 'tried to join ' + roomId + 'already join');
         } else {
           so.join(roomId);
-          callback(roomId, '에 입장하였습니다.');
+          callback(roomId);
           console.log('room이 연결됨 :>>', roomId);
           // Socket.join is not executed, hence the room not created.
         }

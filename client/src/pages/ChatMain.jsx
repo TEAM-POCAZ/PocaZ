@@ -20,6 +20,7 @@ const ChatMain = ({ socket }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [chatList, setChatList] = useState();
     const [updatedRoom, setUpdatedRoom] = useState(null);
+    const [isNew, setIsNew] = useState(false);
 
     useEffect(() => {
         const list = async () => {
@@ -46,6 +47,11 @@ const ChatMain = ({ socket }) => {
                 if (value.chatRoom === updatedRoom.chatRoom) {
                     value.message = updatedRoom.message;
                     value.createAt = updatedRoom.createAt;
+
+                    const newCondition =
+                        userInfo.id !== updatedRoom.user &&
+                        value.msgId < updatedRoom.id;
+                    if (newCondition) value.newSign = true;
                 }
                 newChatRooms.push(value);
             }
@@ -60,7 +66,7 @@ const ChatMain = ({ socket }) => {
                     console.log("join ===>", res);
                 }
             });
-            // console.log(chatList);
+            console.log(chatList);
         });
     }, [chatList]);
 
@@ -82,6 +88,7 @@ const ChatMain = ({ socket }) => {
                         <ul className="p-6 divide-y divide-slate-200">
                             {chatList &&
                                 chatList?.map((item) => {
+                                    // console.log(item.newSign);
                                     return (
                                         <Link
                                             key={item.chatRoom}
@@ -122,7 +129,10 @@ const ChatMain = ({ socket }) => {
                                                     >
                                                         <p
                                                             className={
-                                                                "w-4 h-4 text-xs text-center text-white rounded-full"
+                                                                "w-4 h-4 text-xs text-center text-white rounded-full" +
+                                                                (item.newSign
+                                                                    ? " bg-blue-500"
+                                                                    : " bg-white")
                                                             }
                                                         >
                                                             N
