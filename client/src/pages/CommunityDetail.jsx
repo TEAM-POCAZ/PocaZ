@@ -186,7 +186,7 @@ const CommunityDetail = () => {
                       </div>
                       <p className="break-all">{DetailContent.text}</p>
                     </div>
-                    <LikeBtn like={like} onClick={onToggleLike} />
+                    <LikeBtn like={like} onClick={onToggleLike} cnt={DetailContent.likesCnt} />
                   </div>
                 );
               })()}

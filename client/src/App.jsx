@@ -38,9 +38,13 @@ function App({ socket }) {
                 <Router>
                     <Routes>
                         <Route path="/" element={<Main />} />
-                        <Route path="MarketList" element={<MarketList />} />
+                        {/* <Route path="MarketList" element={<MarketList />} /> */}
+                        <Route path="Market">
+                            <Route index element={<MarketList />} />
+                            <Route path=":id" element={<MarketDetail />} />
+                        </Route>
                         <Route path="MarketWrite" element={<MarketWrite />} />
-                        <Route path="/market/:_id" element={<MarketDetail />} />
+                        {/* <Route path="MarketDetail" element={<MarketDetail />} /> */}
                         <Route
                             path="CommunityList"
                             element={<CommunityList />}

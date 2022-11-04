@@ -20,13 +20,14 @@ export default {
 
   getMarkets: async (req: Request, res: Response) => {
     const {
-      query: { lastPostId, SIZE },
+      query: { lastPostId, SIZE, group },
     } = req;
-    
+    console.log()
     const sellList: IMarket2[] = await sqlSelectHandler(
       `${tranSQL.market.main}
        ${tranSQL.market.from}
        AND pcs.id < ?
+       ${group ? `AND ag.id = ${group} ` : ''}
        ORDER BY pcs.id DESC
        LIMIT ?`,
        [lastPostId || Number.MAX_SAFE_INTEGER,
@@ -38,19 +39,20 @@ export default {
       ? sellList[sellList.length - 1]?.id - 1
       : null;
     const previousId = (lastPostId || Number.MAX_SAFE_INTEGER > 0) && typeof SIZE === 'string'
-          ? sellList[0].id + parseInt(SIZE) : null;
+          ? sellList[0]?.id + parseInt(SIZE) : null;
       
     res.send({ sellList, nextId, previousId })
   },
-  writeMarket: async (req: Request, res: Response) => {
-    const [{ photocard, user, title, description, price }]: IMarket[] =
+  writeMarket: async (req: any, res: Response) => {
+    const [{ photocard, title, description, price }]: IMarket[] =
       req.body;
-    await tranSQL.getOne(
+    const user = req.user.id
+    const insertId = await tranSQL.postOne(
       `INSERT INTO PhotocardSellArticle (photocard, user, title, description, price, viewCount, tradeStatus)
        VALUES (?, 0, 1)`,
       [[photocard, user, title, description, price]]
     );
-    res.send('successfully posted on market!!');
+    res.send([insertId]);
   },
   modifyMarket: async (req: Request, res: Response) => {
     const { id } = req.params;
