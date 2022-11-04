@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useRef } from "react";
 import MarketWritePocaList from "../components/Market/MarketWritePocaList";
+import { toast } from "react-toastify";
 
 const MarketWrite = () => {
   const navigate = useNavigate();
@@ -29,14 +30,32 @@ const MarketWrite = () => {
     // console.log(data);
     setPoca(data);
   };
-  const marketSubmit = () =>{
-    console.log({
-      title: titleRef.current.value,
-      description:descriptionRef.current.value,
-      poca: pocaMemo.id,
-      user: 1,
-      price: priceRef.current.value
-    })
+  const marketSubmit = async() =>{
+    // console.log(pocaMemo.id)
+    const [marketId] = await (
+      await fetch("http://localhost:8080/api/market", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        credentials: 'include',
+        body: JSON.stringify([
+          {
+            photocard: pocaMemo.id,
+            user: 1,
+            title: titleRef.current.value,
+            description:descriptionRef.current.value,
+            price: priceRef.current.value,
+          },
+        ]),
+      })
+    ).json();
+    toast.success("게시물이 작성되었습니다.", {
+      autoClose: 500,
+      position: toast.POSITION.BOTTOM_CENTER,
+    });
+    console.log(marketId)
+    navigate(`/MarketList`);
   }
   useEffect(() => {
     Promise.all([

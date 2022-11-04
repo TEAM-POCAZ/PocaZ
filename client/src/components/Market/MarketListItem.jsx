@@ -1,14 +1,10 @@
 import React from "react";
 import axios from "axios";
 import { useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
 
 const MarketListItem = ({ list }) => {
-  // const result = useQuery("pocas", () =>
-  //   axios.get("http://localhost:8080/api/market").then((a) => {
-  //     return a.data.sellList;
-  //   })
-  // );
-
+  const navigate = useNavigate();
   return (
     <>
       <div className="mx-3.5">
@@ -17,7 +13,13 @@ const MarketListItem = ({ list }) => {
             <React.Fragment key={page.nextId}>
               {page.sellList.map((post) => {
                 return (
-                  <li className="flex-[0_1_48%] mb-3.5" key={post.id}>
+                  <li
+                    className="flex-[0_1_48%] mb-3.5"
+                    key={post.id}
+                    onClick={() => {
+                      navigate(`/Market/${poca.id}`);
+                    }}
+                  >
                     <div className="pocaThumb relative h-72 lg:h-96 mm:h-60 rounded-xl overflow-hidden">
                       <img
                         src={post.pocaImg}
