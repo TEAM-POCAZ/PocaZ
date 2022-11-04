@@ -20,13 +20,14 @@ export default {
 
   getMarkets: async (req: Request, res: Response) => {
     const {
-      query: { lastPostId, SIZE },
+      query: { lastPostId, SIZE, group },
     } = req;
-    
+    console.log()
     const sellList: IMarket2[] = await sqlSelectHandler(
       `${tranSQL.market.main}
        ${tranSQL.market.from}
        AND pcs.id < ?
+       ${group ? `AND ag.id = ${group} ` : ''}
        ORDER BY pcs.id DESC
        LIMIT ?`,
        [lastPostId || Number.MAX_SAFE_INTEGER,
@@ -38,7 +39,7 @@ export default {
       ? sellList[sellList.length - 1]?.id - 1
       : null;
     const previousId = (lastPostId || Number.MAX_SAFE_INTEGER > 0) && typeof SIZE === 'string'
-          ? sellList[0].id + parseInt(SIZE) : null;
+          ? sellList[0]?.id + parseInt(SIZE) : null;
       
     res.send({ sellList, nextId, previousId })
   },
