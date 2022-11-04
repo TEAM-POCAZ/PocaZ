@@ -11,6 +11,7 @@ const NUMBER_OF_POSTS_ON_PAGE = 10;
 
 const MarketList = () => {
   const { ref, inView } = useInView();
+  const [group, setGroup] = useState(0)
 
   const {
     status,
@@ -21,10 +22,10 @@ const MarketList = () => {
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery(
-    ["projects"],
+    ["projects", group],
     async ({ pageParam = Number.MAX_SAFE_INTEGER }) => {
       const res = await axios.get(
-        `http://localhost:8080/api/market?lastPostId=${pageParam}&SIZE=${NUMBER_OF_POSTS_ON_PAGE}`
+        `http://localhost:8080/api/market?lastPostId=${pageParam}&SIZE=${NUMBER_OF_POSTS_ON_PAGE}${group ? '&group='+group : ''}`
       );
       return res.data;
     },
@@ -41,7 +42,7 @@ const MarketList = () => {
     <>
       <Layout>
         <MarketSearchBox />
-        <MarketCategory />
+        <MarketCategory setGroup={setGroup} />
 
         {status === "loading" ? (
           <p>Loading...</p>
