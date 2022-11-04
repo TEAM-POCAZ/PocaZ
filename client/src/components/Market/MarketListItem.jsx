@@ -1,8 +1,10 @@
 import React from "react";
 import axios from "axios";
 import { useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
 
 const MarketListItem = () => {
+  const navigate = useNavigate();
   const result = useQuery("pocas", () =>
     axios.get("http://localhost:8080/api/market").then((a) => {
       return a.data.sellList;
@@ -14,9 +16,11 @@ const MarketListItem = () => {
         <ul className="flex flex-row flex-wrap justify-between">
           {result.data &&
             result.data.map((poca) => (
-              <li className="flex-[0_1_48%] mb-3.5" key={poca.id}>
+              <li className="flex-[0_1_48%] mb-3.5" key={poca.id}
+              
+              onClick={() => navigate(`/Market/${poca.id}`)}>
                 <div className="pocaThumb relative h-72 lg:h-96 mm:h-60 rounded-xl overflow-hidden">
-                  <img
+                  <img 
                     src={poca.pocaImg}
                     className="w-full h-full object-cover"
                   />
@@ -29,7 +33,7 @@ const MarketListItem = () => {
                   <p className="pocaDetail mt-2.5 font-medium text-base">
                     {poca.pocaName}
                   </p>
-                  <p className="pocaDesc mb-1 text-gray-500">
+                  <p className="pocaDesc mb-1 text-gray-500 overflow-hidden">
                     {poca.description}
                   </p>
                   <p className="pocaPrice mt-2.5 font-semibold text-base">

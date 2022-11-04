@@ -4,8 +4,8 @@ import "remixicon/fonts/remixicon.css";
 import classnames from "classnames";
 
 const btnList = [
-  { id: 0, title: "Home", icon: "ri-home-3-line", to: "/" },
-  { id: 1, title: "STORE", icon: "ri-store-line", to: "/MarketList" },
+  { id: 0, title: "HOME", icon: "ri-home-3-line", to: "/" },
+  { id: 1, title: "MARKET", icon: "ri-store-line", to: "/Market" },
   { id: 2, title: "CHAT", icon: "ri-chat-heart-line", to: "/chat/list" },
   {
     id: 3,
