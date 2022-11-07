@@ -41,7 +41,10 @@ function App({ socket }) {
                         {/* <Route path="MarketList" element={<MarketList />} /> */}
                         <Route path="Market">
                             <Route index element={<MarketList />} />
-                            <Route path=":id" element={<MarketDetail />} />
+                            <Route
+                                path=":id"
+                                element={<MarketDetail socket={socket} />}
+                            />
                         </Route>
                         <Route path="MarketWrite" element={<MarketWrite />} />
                         {/* <Route path="MarketDetail" element={<MarketDetail />} /> */}
