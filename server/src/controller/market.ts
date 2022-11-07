@@ -22,10 +22,11 @@ export default {
     const {
       query: { lastPostId, SIZE, group },
     } = req;
-    console.log()
+    // console.log( typeof group)
     const sellList: IMarket2[] = await sqlSelectHandler(
       `${tranSQL.market.main}
        ${tranSQL.market.from}
+       AND pcs.deleteAt IS NULL
        AND pcs.id < ?
        ${group ? `AND ag.id = ${group} ` : ''}
        ORDER BY pcs.id DESC
@@ -57,7 +58,7 @@ export default {
   modifyMarket: async (req: Request, res: Response) => {
     const { id } = req.params;
     const [
-      { photocard, user, title, description, price, tradeStatus },
+      { photocard, user, title, description, price},
     ]: IMarket2[] = req.body;
     await tranSQL.getOne(
       `UPDATE PhotocardSellArticle
@@ -65,24 +66,22 @@ export default {
               title = ?,
               description = ?,
               price = ?,
-              tradeStatus = ?,
               refreshedDate = now()
         WHERE 1 = 1
         ${tranSQL.where('id')}
         ${tranSQL.where('user')}`,
-      [photocard, title, description, price, tradeStatus, id, user]
+      [photocard, title, description, price, id, user]
     );
     res.send('successfully fixed on market!!');
   },
   deleteMarket: async (req: Request, res: Response) => {
     const { id } = req.params;
-    await tranSQL.getOne(
-      `DELETE FROM PhotocardSellArticle
-        WHERE 1 = 1
-        ${tranSQL.where('id')}`,
+    await tranSQL.putOne(
+      `UPDATE PhotocardSellArticle
+          SET deleteAt = now()
+        WHERE id = ?`,
       [id]
     );
-
     res.send('successfully erased from market!!');
   },
 };

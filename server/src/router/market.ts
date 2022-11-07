@@ -82,7 +82,7 @@ router.get('/', markets.getMarkets);
  *     parameters:
  *       - name: id
  *         in: path
- *         description: category of post
+ *         description: id of market
  *         required: true
  *         schema:
  *           type: integer
@@ -95,6 +95,56 @@ router.get('/', markets.getMarkets);
 
 router.get('/:id', markets.getMarket);
 
+/**
+ * @swagger
+ * /api/market/{id}:
+ *   put:
+ *     tags:
+ *       - market
+ *     summary: modify market post
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: id of market
+ *         required: true
+ *         schema:
+ *           type: integer
+ *           format: int64
+ *         example: 1
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             example:
+ *               - photocard: 1
+ *                 title: 포토카드 팝니다
+ *                 description: 싱싱한 포토카드 싸게 팝니다.
+ *                 price: 20000
+ *     responses:
+ *       '200':
+ *         description: Successful response
+ *         content:
+ *           application/json: {}
+ *   delete:
+ *     tags:
+ *       - market
+ *     summary: delete market post
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: id of market
+ *         required: true
+ *         schema:
+ *           type: integer
+ *           format: int64
+ *         example: 1
+ *     responses:
+ *       '200':
+ *         description: Successful response
+ *         content:
+ *           application/json: {}
+ */
 router.put('/:id', markets.modifyMarket);
 
 router.delete('/:id', markets.deleteMarket);
