@@ -4,28 +4,36 @@ import { Navigation, Pagination, Autoplay, A11y } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import "swiper/css/autoplay";
 import axios from "axios";
+import { useQuery } from "react-query";
 
 const MainPocaItem = () => {
-  const [poca, setPoca] = useState(null);
-  useEffect(() => {
-    const pocaList = async () => {
-      try {
-        setPoca(null);
-        const response = await axios.get("http://localhost:8080/api/market/");
-        setPoca(response.data.sellList);
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    pocaList();
-  }, []);
+  // const [poca, setPoca] = useState(null);
+  // useEffect(() => {
+  //   const pocaList = async () => {
+  //     try {
+  //       setPoca(null);
+  //       const response = await axios.get("http://localhost:8080/api/market/");
+  //       setPoca(response.data.sellList);
+  //     } catch (e) {
+  //       console.error(e);
+  //     }
+  //   };
+  //   pocaList();
+  // }, []);
+
+  const result = useQuery("poca", () =>
+    axios.get("http://localhost:8080/api/market/").then((a) => {
+      // console.log(a);
+      return a.data.sellList;
+    })
+  );
+
   return (
     <>
       <Swiper slidesPerView={2.4} spaceBetween={14} className="">
-        {poca &&
-          poca.map((pocas) => (
+        {result.data &&
+          result.data.map((pocas) => (
             <SwiperSlide key={pocas.id}>
               <div className="pocaThumb relative h-72 lg:h-96 mm:h-60 rounded-xl overflow-hidden">
                 <img
