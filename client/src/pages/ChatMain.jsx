@@ -65,8 +65,8 @@ const ChatMain = ({ socket }) => {
                     console.log("join ===>", res);
                 }
             });
-            console.log(chatList);
         });
+        console.log("chatList :>> ", chatList);
     }, [chatList]);
 
     // const soId = socket.io.id;

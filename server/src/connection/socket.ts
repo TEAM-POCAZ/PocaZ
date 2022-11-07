@@ -14,16 +14,22 @@ class Socket {
       console.log('Socket connected :)!!');
 
       so.on('joinRoom', (obj: any, callback: any) => {
-        const { roomId, socketId } = obj;
-
         if (!obj) callback('join에서 에러가 발생했어요.');
+        const { roomId, socketId } = obj;
+        const isRoom = this.io.sockets.adapter.rooms.get(roomId)?.size ?? 1;
 
-        if (this.io.sockets.adapter.rooms.get(roomId)) {
-          console.log(socketId + 'tried to join ' + roomId + 'already join');
-        } else {
+        // console.log(this.io.sockets.adapter.rooms);
+        // console.log('위에서 찍히나요', isRoom);
+
+        if (isRoom && isRoom < 2) {
           so.join(roomId);
           callback(roomId);
           console.log('room이 연결됨 :>>', roomId);
+        } else {
+          console.log(
+            socketId + 'tried to join roomNumber : ' + roomId + ' already join'
+          );
+
           // Socket.join is not executed, hence the room not created.
         }
       });

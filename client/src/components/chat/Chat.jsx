@@ -30,7 +30,11 @@ const Chat = ({ socket }) => {
 
     useEffect(() => {
         getChat();
-        // socket.joinRoom(room); // from 장터에서 새로운 채팅방이 생겼을 때 join
+        socket.joinRoom(String(room), (res) => {
+            if (res) {
+                console.log("join ===>", res);
+            }
+        }); // from 장터에서 새로운 채팅방이 생겼을 때 join
 
         socket.onSync("new-message", (message) => {
             setChats((prev) => [...prev, message]);
@@ -62,10 +66,6 @@ const Chat = ({ socket }) => {
             };
 
             socket.emitSync("message", newMessage);
-            // socket.emitSync('sendMessage', newMessage)
-            // await apis.postChat(newMessage) // post로 보낼 때
-            // const { data } = await apis.postChat(newMessage)
-            // setChats((prev) => [...prev, data])
         }
     };
     return (

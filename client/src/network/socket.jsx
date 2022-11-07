@@ -25,16 +25,16 @@ export default class Socket {
         this.io.emit(e, newMsg);
     }
 
-    joinRoom(roomId, cb) {
+    joinRoom(roomId, cb = null) {
         const socketId = this.io.id;
         this.io.emit("joinRoom", { roomId, socketId }, cb);
     }
 
     /**
      *
-     * @param {object} value sellerId와 userId를 보냄
+     * @param {object} chatInfo sellerId와 userId를 보냄
      */
-    createRoom(Ids) {
-        this.io.emit("createRoom", Ids);
+    createRoom(chatInfo, cb) {
+        this.io.emit("createRoom", chatInfo, cb);
     }
 }
