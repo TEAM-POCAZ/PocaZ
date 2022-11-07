@@ -18,14 +18,25 @@ export default {
     );
   },
 
+
   getMarkets: async (req: Request, res: Response) => {
     const {
-      query: { lastPostId, SIZE, group },
+      query: { keyword, lastPostId, SIZE, group },
     } = req;
+
+    const keywordMap: string = typeof keyword === 'string' ?
+      keyword.split('.')
+      .reduce(
+        (result: string, kw: string) =>
+          `${result} OR pcs.title LIKE '%${kw}%' OR pcs.description LIKE '%${kw}%'`,
+        ''
+      ) : '';
     // console.log( typeof group)
     const sellList: IMarket2[] = await sqlSelectHandler(
       `${tranSQL.market.main}
        ${tranSQL.market.from}
+       ${keyword ? `AND (1 != 1
+       ${keywordMap})` : ''}
        AND pcs.deleteAt IS NULL
        AND pcs.id < ?
        ${group ? `AND ag.id = ${group} ` : ''}
