@@ -25,13 +25,13 @@ const MarketDetail = ({ socket }) => {
     const [tradeStat, setTradeStat] = useState();
     const { id } = useParams(); // 포카판매글 id
 
-    console.log(typeof userInfo.id);
     const onClickLinkChat = () => {
-        socket.createRoom(null, (res) => {
-            if (res) {
-                console.log("market detail chat res ===>", res);
-            }
-        });
+        // socket.createRoom(null, (res) => {
+        //     if (res) {
+        //         console.log("market detail chat res ===>", res);
+        //     }
+        // });
+        navigate("/chat", { state: { oppNickname: content.nickname } });
     };
 
     //TODO API post 보내야함
@@ -61,7 +61,7 @@ const MarketDetail = ({ socket }) => {
                         팝니다
                     </h2>
 
-                    <button>
+                    <button onClick={onClickLinkChat}>
                         <i className="ri-chat-3-fill text-2xl" />
                     </button>
                 </div>
@@ -94,7 +94,7 @@ const MarketDetail = ({ socket }) => {
                             <h3 className="pb-2 font-semibold text-2xl">
                                 {content.title}
                             </h3>
-                            <p className="text-gray-400 text-sm break-all">
+                            <p className="text-gray-400 text-sm break-all pb-3">
                                 {content.sellDesc}
                             </p>
                         </div>

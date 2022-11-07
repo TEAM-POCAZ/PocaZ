@@ -7,6 +7,8 @@ import { useLoginStore } from "../store/store";
 
 import { Link } from "react-router-dom";
 import { apis } from "../utils/api";
+import { source } from "../utils/api";
+
 import dayjs from "dayjs";
 
 /**
@@ -31,6 +33,7 @@ const ChatMain = ({ socket }) => {
             } catch (e) {
                 console.error(e);
             }
+            return () => source.cancel();
         };
 
         list();

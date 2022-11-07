@@ -8,10 +8,11 @@ const api = axios.create({
         accept: "application/json,",
     },
 });
-
+export const source = axios.CancelToken.source();
 export const apis = {
     // get
-    getChatList: (id) => api.get(`/chatroom/${id}`), // ChatMain.tsx
+    getChatList: (id) =>
+        api.get(`/chatroom/${id}`, { cancelToken: source.token }), // ChatMain.tsx
     getChat: (roomNumber) => api.get(`/chat/${roomNumber}`), // Chat.tsx
     getMarketDetail: (id) => api.get(`/market/${id}`), // MarketDetail.tsx
 

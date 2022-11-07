@@ -18,10 +18,18 @@ class Socket {
         const { roomId, socketId } = obj;
         const isRoom = this.io.sockets.adapter.rooms.get(roomId)?.size ?? 1;
 
+        console.log(
+          '확인>>>>>>>>>>',
+          this.io.sockets.adapter.rooms.get(roomId)?.has(socketId)
+        );
         // console.log(this.io.sockets.adapter.rooms);
         // console.log('위에서 찍히나요', isRoom);
 
-        if (isRoom && isRoom < 2) {
+        if (
+          isRoom &&
+          isRoom < 2 &&
+          !this.io.sockets.adapter.rooms.get(roomId)?.has(socketId)
+        ) {
           so.join(roomId);
           callback(roomId);
           console.log('room이 연결됨 :>>', roomId);
