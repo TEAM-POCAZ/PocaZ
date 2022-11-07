@@ -11,12 +11,10 @@ export default class Socket {
 
     onSync(e, cb) {
         if (!this.io.connected) {
-            console.log("this.io :>> ", this.io);
             this.io.connect();
         }
 
         this.io.on(e, (message) => {
-            // console.log(message);
             cb(message);
         });
 
@@ -27,8 +25,16 @@ export default class Socket {
         this.io.emit(e, newMsg);
     }
 
-    joinRoom(val) {
-        this.io.emit("joinRoom", val);
-        console.log("this.io :>> ", this.io);
+    joinRoom(roomId, cb) {
+        const socketId = this.io.id;
+        this.io.emit("joinRoom", { roomId, socketId }, cb);
+    }
+
+    /**
+     *
+     * @param {object} value sellerId와 userId를 보냄
+     */
+    createRoom(Ids) {
+        this.io.emit("createRoom", Ids);
     }
 }

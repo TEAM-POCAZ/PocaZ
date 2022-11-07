@@ -12,12 +12,6 @@ import InputMsg from "./InputMsg";
 //type
 
 /**
- * front-back api 통신 흐름
- * front -> back : api post // 메세지를 send 할 때
- * front <- back : socketIO.on
- *
- * back  -> front : socketIO.emit
- * back <- front : api get
  *
  * @returns 개인이 가진 채팅 목록
  */
@@ -32,13 +26,13 @@ const Chat = ({ socket }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const { oppNickname, room } = location.state; //TODO 지워야함
+    const { oppNickname, room } = location.state; //FIXME 장터에서 입장했을 때...
 
     useEffect(() => {
         getChat();
-        // socket.joinRoom(room); //TODO login 붙으면 조인 빼야됨
+        // socket.joinRoom(room); // from 장터에서 새로운 채팅방이 생겼을 때 join
 
-        socket.onSync("test", (message) => {
+        socket.onSync("new-message", (message) => {
             setChats((prev) => [...prev, message]);
         });
 

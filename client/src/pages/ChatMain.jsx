@@ -7,6 +7,7 @@ import { useLoginStore } from "../store/store";
 
 import { Link } from "react-router-dom";
 import { apis } from "../utils/api";
+import dayjs from "dayjs";
 
 /**
  * chatList 접속 초기 api.get으로 가져와서 뿌려줌
@@ -19,6 +20,7 @@ const ChatMain = ({ socket }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [chatList, setChatList] = useState();
     const [updatedRoom, setUpdatedRoom] = useState(null);
+    const [isNew, setIsNew] = useState(false);
 
     useEffect(() => {
         const list = async () => {
@@ -44,6 +46,12 @@ const ChatMain = ({ socket }) => {
             for (const value of chatList) {
                 if (value.chatRoom === updatedRoom.chatRoom) {
                     value.message = updatedRoom.message;
+                    value.createAt = updatedRoom.createAt;
+
+                    const newCondition =
+                        userInfo.id !== updatedRoom.user &&
+                        value.msgId < updatedRoom.id;
+                    if (newCondition) value.newSign = true;
                 }
                 newChatRooms.push(value);
             }
@@ -52,12 +60,19 @@ const ChatMain = ({ socket }) => {
     }, [updatedRoom]);
 
     useEffect(() => {
-        console.log("chatList :>> ", chatList);
         chatList?.forEach((item) => {
-            socket.joinRoom(String(item.chatRoom));
-            console.log("조인조인");
+            socket.joinRoom(String(item.chatRoom), (res) => {
+                if (res) {
+                    console.log("join ===>", res);
+                }
+            });
+            console.log(chatList);
         });
     }, [chatList]);
+
+    // const soId = socket.io.id;
+    // var rooms = Object.keys(socket.io.sockets.adapter.sids[soId]);
+    // console.log("🚀 ~ file: ChatMain.jsx ~ line 68 ~ ChatMain ~ rooms", rooms);
 
     return (
         <Layout>
@@ -67,12 +82,13 @@ const ChatMain = ({ socket }) => {
                 <>
                     <div className="h-screen ">
                         <div></div>
-                        <div className="flex flex-col p-3 m-2 border-2">
-                            <p className="ml-3 text-lg">채팅.</p>
+                        <div className="flex flex-col m-2 border-2">
+                            공지사항 컴포넌트
                         </div>
                         <ul className="p-6 divide-y divide-slate-200">
                             {chatList &&
                                 chatList?.map((item) => {
+                                    // console.log(item.newSign);
                                     return (
                                         <Link
                                             key={item.chatRoom}
@@ -101,7 +117,9 @@ const ChatMain = ({ socket }) => {
                                                 </div>
                                                 <div className="m-auto">
                                                     <p className="text-sm truncate text-slate-400">
-                                                        메세지도착시간
+                                                        {dayjs(
+                                                            item.createAt
+                                                        ).format("HH:mm")}
                                                     </p>
 
                                                     <div
@@ -111,7 +129,10 @@ const ChatMain = ({ socket }) => {
                                                     >
                                                         <p
                                                             className={
-                                                                "w-4 h-4 text-xs text-center text-white rounded-full"
+                                                                "w-4 h-4 text-xs text-center text-white rounded-full" +
+                                                                (item.newSign
+                                                                    ? " bg-blue-500"
+                                                                    : " bg-white")
                                                             }
                                                         >
                                                             N
