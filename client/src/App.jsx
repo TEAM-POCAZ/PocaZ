@@ -19,7 +19,7 @@ import MyPageModify from "./pages/MyPageModify";
 import { ToastContainer } from "react-toastify";
 import MarketList from "./pages/MarketList";
 import MarketWrite from "./pages/MarketWrite";
-import MarketDetail from "./pages/Market/Detail";
+import MarketDetail from "./pages/Market/MarketDetail";
 
 function App({ socket }) {
     const client = new QueryClient({

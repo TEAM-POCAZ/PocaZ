@@ -35,7 +35,6 @@ const ChatMain = ({ socket }) => {
 
         list();
         socket.onSync("alert-new-message", (message) => {
-            console.log("message 받은 :>> ", message);
             setUpdatedRoom(message);
         });
     }, []);
