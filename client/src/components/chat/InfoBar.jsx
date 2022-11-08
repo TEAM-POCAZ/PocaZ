@@ -1,7 +1,7 @@
 import React from "react";
 import "remixicon/fonts/remixicon.css";
 
-const InfoBar = ({ oppNickname, navigate }) => {
+const InfoBar = ({ sellerNickname, navigate }) => {
     return (
         <div className="flex flex-col justify-between w-full h-24 bg-white text rounded-t-md">
             <div className="flex flex-row h-24">
@@ -10,7 +10,7 @@ const InfoBar = ({ oppNickname, navigate }) => {
                     className="items-center m-auto mx-2 text-2xl leading-none text-center ri-arrow-left-line"
                 ></i>
                 <div className="flex items-center ml-1 text-lg font-medium text-slate-900 py-2">
-                    {oppNickname}
+                    {sellerNickname}
                 </div>
             </div>
 

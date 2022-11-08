@@ -82,10 +82,10 @@ const ChatMain = ({ socket }) => {
                 <>loading 중</>
             ) : (
                 <>
-                    <div className="h-screen ">
+                    <div className="h-[70vh]">
                         <div></div>
-                        <div className="flex flex-col m-2 border-2">
-                            공지사항 컴포넌트
+                        <div className="flex flex-col m-2 ml-4 border-b-2 border-blue-400 text-base w-40 font-medium decoration-inherit cursor-default">
+                            Chat
                         </div>
                         <ul className="p-6 divide-y divide-slate-200">
                             {chatList &&
@@ -102,7 +102,8 @@ const ChatMain = ({ socket }) => {
                                             to={`/chat`}
                                             state={{
                                                 room: item.chatRoom,
-                                                oppNickname: item.nickname,
+                                                sellerNickname: item.nickname,
+                                                marketItemId: 100, //FIXME 실제 chatlist api 에서 바뀐 데이터!
                                             }}
                                             className="flex py-4 border-2x"
                                         >

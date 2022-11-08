@@ -9,16 +9,14 @@ import InfoBar from "./InfoBar";
 import Messages from "./Messages";
 import InputMsg from "./InputMsg";
 
-//type
-
 /**
- *
- * @returns 개인이 가진 채팅 목록
+ * chatList / MarketDetail 에서 가져온 marketItemId를 활용하여 api get 송출
+ * @returns join 으로 연결된 1:1 채팅방
  */
 
 const Chat = ({ socket }) => {
     const {
-        userInfo: { nickname: name, id },
+        userInfo: { nickname: userName, id },
     } = useLoginStore();
     const [chats, setChats] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -26,7 +24,11 @@ const Chat = ({ socket }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const { oppNickname, room } = location.state; //FIXME 장터에서 입장했을 때...
+    const { sellerNickname, room, marketItemId } = location.state; //FIXME 장터에서 입장했을 때...
+    console.log(
+        "🚀 ~ file: Chat.jsx ~ line 30 ~ Chat ~ marketItemId",
+        marketItemId
+    );
 
     useEffect(() => {
         getChat();
@@ -46,16 +48,12 @@ const Chat = ({ socket }) => {
     }, []);
 
     const getChat = useCallback(async () => {
-        if (room && name) {
+        if (room && userName) {
             const { data } = await apis.getChat(room);
             setChats(data);
             return data;
         }
     }, []);
-
-    // const { isLoading, error, data } = useQuery<IChat[], Error>('getChat', getChat, {
-    //   // refetchOnWindowFocus: false,
-    // })
 
     const handleMessage = async (sendMessage) => {
         if (sendMessage) {
@@ -73,14 +71,16 @@ const Chat = ({ socket }) => {
             {isLoading ? (
                 <>로딩중입니다</>
             ) : (
-                <div className="flex items-center justify-center bg-gray-800 outerContainer h-[100vh]">
-                    <div className="flex flex-col justify-between w-full bg-white rounded-lg h-2/3">
-                        {/* <InfoBar navigate={navigate} /> */}
+                <div className="flex items-center justify-center bg-gray-800 outerContainer h-[70vh]">
+                    <div className="flex flex-col justify-between w-full bg-white rounded-lg h-4/5">
                         <InfoBar
-                            oppNickname={oppNickname}
+                            sellerNickname={sellerNickname}
                             navigate={navigate}
                         />
-                        <Messages chats={chats} oppNickname={oppNickname} />
+                        <Messages
+                            chats={chats}
+                            sellerNickname={sellerNickname}
+                        />
                         <InputMsg handleMessage={handleMessage} />
                     </div>
                 </div>
