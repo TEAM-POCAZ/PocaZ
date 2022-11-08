@@ -33,10 +33,9 @@ const Artist = ({ artistId }) => {
   return (
     <>
       <div>{axiosError}</div>
-      <div>아티스트 객체</div>
-      <div>artistId:{data?.data?.id}</div>
-      <div>stageName:{data?.data?.stageName}</div>
-      <div>realName:{data?.data?.realName}</div>
+      <div>선택된 아티스트</div>
+      <div>예명: {data?.data?.stageName}</div>
+      <div>실명: {data?.data?.realName}</div>
     </>
   );
 };

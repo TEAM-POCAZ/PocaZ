@@ -15,6 +15,7 @@ import ChatMain from "./pages/ChatMain";
 import Chat from "./components/chat/Chat.jsx";
 import Login from "./pages/Login";
 import MyPage from "./pages/MyPage";
+import MyIdol from "./pages/MyIdol";
 import { ToastContainer } from "react-toastify";
 import MarketList from "./pages/MarketList";
 import MarketWrite from "./pages/MarketWrite";
@@ -59,6 +60,7 @@ function App({ socket }) {
             <Route path="/login" element={<Login />} />
             <Route path="/MyPage" element={<MyPage />} />
             <Route path="/WithdrawalUser" element={<WithdrawalUser />} />
+            <Route path="/MyIdol" element={<MyIdol />} />
             <Route path="/developmentError" element={<DevelopmentError />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

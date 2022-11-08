@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Layout from "../utils/Layout";
 import Input from "../components/MyPage/Input";
 import Artist from "../components/MyPage/Artist";
@@ -135,7 +135,9 @@ const MyPage = () => {
     <>
       <Layout>
         <div>{axiosError}</div>
-        <img src={profileImage}></img>
+        <div className="flex flex-col justify-center">
+          <img className="mx-auto" src={profileImage}></img>
+        </div>
         <form onSubmit={handleSubmit}>
           <Input
             property="id"
@@ -214,6 +216,7 @@ const MyPage = () => {
           />
         </form>
         <div className="right">
+          <Link to={"/MyIdol"}>최애 아이돌 변경하기</Link>
           <br></br>
           <button className="submit mt-5" onClick={logout}>
             로그아웃하기
