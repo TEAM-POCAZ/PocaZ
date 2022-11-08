@@ -39,43 +39,7 @@ const MyPage = () => {
         } else {
           console.log("unexpected error: ", err.response.data.error);
         }
-    );
-    const modify = () => {
-        navigate("/MyPageModify");
-    };
-
-    const logout = () => {
-        fetch(`${API}/api/auth/logout`, { credentials: "include" })
-            .then((res) => res.json())
-            .then((data) => {
-                setUserInfo({});
-            });
-        navigate("/");
-    };
-
-    const withdrawal = () => {
-        fetch(`${API}/api/auth/withdrawal`, {
-            method: "POST",
-            headers: {
-                Accept: "application/json, text/plain, */*",
-                ContentType: "application/json",
-            },
-            credentials: "include",
-        })
-            .then((res) => {
-                return res.json();
-            })
-            .then((data) => {
-                setUserInfo({});
-                console.log(data);
-            });
-    };
-
-    if (isLoading) {
-        return <h2>Loading...</h2>;
-    }
-    if (isError) {
-        return <h2>{error.message}</h2>;
+      },
     }
   );
   const handleSubmit = async (e) => {
