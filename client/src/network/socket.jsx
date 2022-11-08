@@ -32,7 +32,7 @@ export default class Socket {
 
     /**
      *
-     * @param {object} chatInfo sellerId와 userId를 보냄
+     * @param {object} chatInfo sellerId와 userId, detailId
      */
     createRoom(chatInfo, cb) {
         this.io.emit("createRoom", chatInfo, cb);

@@ -3,7 +3,6 @@ import Layout from "../../utils/Layout";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
-import axios from "axios";
 import { useLoginStore } from "../../store/store";
 
 import { apis } from "../../utils/api";
@@ -23,15 +22,25 @@ const MarketDetail = ({ socket }) => {
     const navigate = useNavigate();
     const [content, setContent] = useState([]);
     const [tradeStat, setTradeStat] = useState();
-    const { id } = useParams(); // 포카판매글 id
+    const { id: _id } = useParams(); // 포카판매글 id
 
     const onClickLinkChat = () => {
-        // socket.createRoom(null, (res) => {
-        //     if (res) {
-        //         console.log("market detail chat res ===>", res);
-        //     }
-        // });
-        navigate("/chat", { state: { oppNickname: content.nickname } });
+        // sellerId, userInfo.id, _id
+        socket.createRoom(
+            {
+                sellerId: null,
+                loginUserId: userInfo.Info.id,
+                marketItemId: _id,
+            },
+            (res) => {
+                if (res) {
+                    console.log("market detail chat res ===>", res);
+                }
+            }
+        );
+        navigate("/chat", {
+            state: { sellerNickname: content.nickname, marketItemId: _id },
+        });
     };
 
     //TODO API post 보내야함
@@ -43,7 +52,7 @@ const MarketDetail = ({ socket }) => {
         (async () => {
             const {
                 data: [result],
-            } = await apis.getMarketDetail(id);
+            } = await apis.getMarketDetail(_id);
             setContent(result);
             setTradeStat(result.tradeStatus);
         })();
@@ -113,7 +122,14 @@ const MarketDetail = ({ socket }) => {
                                         <option value={1}>판매중</option>
                                         <option value={2}>판매완료</option>
                                     </select>
-                                    <button className="bg-gray-500 text-white p-1 rounded-md text-xl my-2.5 mr-1 ml-2">
+                                    <button
+                                        className="bg-gray-500 text-white p-1 rounded-md text-xl my-2.5 mr-1 ml-2"
+                                        onClick={() =>
+                                            navigate("/MarketWrite", {
+                                                state: { MarketId: _id },
+                                            })
+                                        }
+                                    >
                                         수정
                                     </button>
                                     <button className="bg-gray-500 text-white p-1 rounded-md text-xl my-2.5">
