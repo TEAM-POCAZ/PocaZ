@@ -15,6 +15,8 @@ import axios from 'axios';
 import { config } from '../config';
 import db from '../db/database';
 import { PoolConnection } from 'mysql2/promise';
+import { WithdrawalError } from '../error/WithdrawalError';
+import { DbConnectionError } from '../error/DbConnectionError';
 
 function passportSetup() {
   const GoogleStrategy = passport_google_oauth20.Strategy;
@@ -76,13 +78,13 @@ function passportSetup() {
             console.log('twitter login user created, id: ', user);
           }
           if (User.isSoftDeleted(user)) {
-            done(new Error('탈퇴한 사용자입니다.'));
+            done(new WithdrawalError(JSON.stringify(user)));
           } else {
             done(null, user);
           }
         } catch (err) {
           console.log(err);
-          done('connection error');
+          done(new DbConnectionError('twitter DbConnectionError'));
         } finally {
           conn?.release();
         }
@@ -132,13 +134,13 @@ function passportSetup() {
             console.log('google login user created, ', user);
           }
           if (User.isSoftDeleted(user)) {
-            done(new Error('탈퇴한 사용자입니다.'));
+            done(new WithdrawalError(JSON.stringify(user)));
           } else {
             done(null, user);
           }
         } catch (err) {
           console.log(err);
-          done('connection error');
+          done(new DbConnectionError('google DbConnectionError'));
         } finally {
           conn?.release();
         }
@@ -181,13 +183,13 @@ function passportSetup() {
             console.log('apple login user created, ', user);
           }
           if (User.isSoftDeleted(user)) {
-            done(new Error('탈퇴한 사용자입니다.'));
+            done(new WithdrawalError(JSON.stringify(user)));
           } else {
             done(null, user);
           }
         } catch (err) {
           console.log(err);
-          done('connection error');
+          done(new DbConnectionError('apple DbConnectionError'));
         } finally {
           conn?.release();
         }

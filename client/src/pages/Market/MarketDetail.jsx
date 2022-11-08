@@ -29,7 +29,7 @@ const MarketDetail = ({ socket }) => {
         socket.createRoom(
             {
                 sellerId: null,
-                loginUserId: userInfo.Info.id,
+                loginUserId: userInfo.id,
                 marketItemId: _id,
             },
             (res) => {

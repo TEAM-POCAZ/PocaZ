@@ -1,4 +1,5 @@
-import { Router } from 'express';
+import { Request, Router } from 'express';
+import { PoolConnection } from 'mysql2/promise';
 import passportSetup from '../utils/passport-setup';
 import passport from 'passport';
 import { urlencoded } from 'express';
@@ -6,6 +7,10 @@ import type { ErrorRequestHandler } from 'express';
 import { User } from '../entity/user';
 import { checkAuthenticated } from '../middleware/checkAuthenticated';
 import { config } from '../config';
+import db from '../db/database';
+import { WithdrawalError } from '../error/WithdrawalError';
+import { DbConnectionError } from '../error/DbConnectionError';
+
 const REACT_URL: string = config.host.reactAppHostUrl;
 passportSetup();
 
@@ -21,11 +26,21 @@ authRouter.get('/logout', checkAuthenticated, (req, res) => {
   });
 });
 
-authRouter.post('/withdrawal', checkAuthenticated, async (req, res) => {
-  // await User.softDelete(req.user!.id!);
-  req.logOut(() => {});
-  return res.json({ status: 'success' });
-});
+authRouter.post(
+  '/withdrawal',
+  checkAuthenticated,
+  async (req: Request, res) => {
+    let conn: PoolConnection | null = null;
+    try {
+      conn = await db.getPool().getConnection();
+      await User.softDelete(conn, req.user!.id);
+      req.logOut(() => {});
+      return res.json({ status: 'success' });
+    } finally {
+      conn?.release();
+    }
+  }
+);
 
 authRouter.get(
   '/google',
@@ -69,7 +84,30 @@ authRouter.post(
   }
 );
 
+function jsonFriendlyErrorReplacer(key: any, value: any) {
+  if (value instanceof Error) {
+    return {
+      // Pull all enumerable properties, supporting properties on custom Errors
+      ...value,
+      // Explicitly pull Error's non-enumerable properties
+      name: value.name,
+      message: value.message,
+      stack: value.stack,
+    };
+  }
+
+  return value;
+}
+
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+  if (err instanceof WithdrawalError) {
+    res.cookie('withdrawalUser', err.message);
+    return res.redirect(`${REACT_URL}/withdrawalUser`);
+  }
+  if (err instanceof DbConnectionError) {
+    res.cookie('error', JSON.stringify(err, jsonFriendlyErrorReplacer));
+    return res.redirect(`${REACT_URL}/developmentError`);
+  }
   res.status(401);
   res.json({ error: err.message });
 };
