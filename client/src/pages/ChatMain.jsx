@@ -7,8 +7,11 @@ import { useLoginStore } from "../store/store";
 
 import { Link } from "react-router-dom";
 import { apis } from "../utils/api";
+import { source } from "../utils/api";
+
 import dayjs from "dayjs";
 
+const now = dayjs();
 /**
  * chatList 접속 초기 api.get으로 가져와서 뿌려줌
  * 추가적인 메세지는 socket.on 으로 받아와 chatList state를 업데이트해준다.
@@ -31,14 +34,25 @@ const ChatMain = ({ socket }) => {
             } catch (e) {
                 console.error(e);
             }
+            return () => source.cancel();
         };
 
         list();
         socket.onSync("alert-new-message", (message) => {
-            console.log("message 받은 :>> ", message);
             setUpdatedRoom(message);
         });
     }, []);
+
+    useEffect(() => {
+        chatList?.forEach((item) => {
+            socket.joinRoom(String(item.chatRoom), (res) => {
+                if (res) {
+                    console.log("join ===>", res);
+                }
+            });
+        });
+        console.log("chatList :>> ", chatList);
+    }, [chatList]);
 
     useEffect(() => {
         if (updatedRoom) {
@@ -58,18 +72,6 @@ const ChatMain = ({ socket }) => {
             setChatList(newChatRooms);
         }
     }, [updatedRoom]);
-
-    useEffect(() => {
-        chatList?.forEach((item) => {
-            socket.joinRoom(String(item.chatRoom), (res) => {
-                if (res) {
-                    console.log("join ===>", res);
-                }
-            });
-            console.log(chatList);
-        });
-    }, [chatList]);
-
     // const soId = socket.io.id;
     // var rooms = Object.keys(socket.io.sockets.adapter.sids[soId]);
     // console.log("🚀 ~ file: ChatMain.jsx ~ line 68 ~ ChatMain ~ rooms", rooms);
@@ -80,22 +82,28 @@ const ChatMain = ({ socket }) => {
                 <>loading 중</>
             ) : (
                 <>
-                    <div className="h-screen ">
+                    <div className="h-[70vh]">
                         <div></div>
-                        <div className="flex flex-col m-2 border-2">
-                            공지사항 컴포넌트
+                        <div className="flex flex-col m-2 ml-4 border-b-2 border-blue-400 text-base w-40 font-medium decoration-inherit cursor-default">
+                            Chat
                         </div>
                         <ul className="p-6 divide-y divide-slate-200">
                             {chatList &&
                                 chatList?.map((item) => {
                                     // console.log(item.newSign);
+
+                                    const todayMsg = dayjs(
+                                        item.createAt
+                                    ).isSame(now, "day");
+
                                     return (
                                         <Link
                                             key={item.chatRoom}
                                             to={`/chat`}
                                             state={{
                                                 room: item.chatRoom,
-                                                oppNickname: item.nickname,
+                                                sellerNickname: item.nickname,
+                                                marketItemId: 100, //FIXME 실제 chatlist api 에서 바뀐 데이터!
                                             }}
                                             className="flex py-4 border-2x"
                                         >
@@ -117,9 +125,13 @@ const ChatMain = ({ socket }) => {
                                                 </div>
                                                 <div className="m-auto">
                                                     <p className="text-sm truncate text-slate-400">
-                                                        {dayjs(
-                                                            item.createAt
-                                                        ).format("HH:mm")}
+                                                        {todayMsg
+                                                            ? dayjs(
+                                                                  item.createAt
+                                                              ).format("HH:mm")
+                                                            : dayjs(
+                                                                  item.createAt
+                                                              ).format("MM-DD")}
                                                     </p>
 
                                                     <div
