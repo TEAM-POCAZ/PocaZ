@@ -1,20 +1,20 @@
 import { Request, Response, NextFunction } from 'express';
 import { tranSQL } from '../utils/tranSQL';
+import { RowDataPacket, OkPacket } from 'mysql2';
 import { IArtist } from '../interface/IArtist';
-
+import { sqlSelectHandler } from '../utils/sqlHandler';
 export default {
   getArtists: async (req: Request, res: Response) => {
     res.send(await tranSQL.getOne(tranSQL.artist));
   },
   getArtist: async (req: Request, res: Response) => {
     const { id } = req.params;
-    res.send(
-      await tranSQL.getOne(
-        `${tranSQL.artist}
-         ${tranSQL.where('id')}`,
-        [id]
-      )
+    const artists = await sqlSelectHandler(
+      `${tranSQL.artist}
+       ${tranSQL.where('id')}`,
+      [id]
     );
+    res.send(artists[0]);
   },
   writeArtist: async (req: Request, res: Response) => {
     const artists: IArtist[] = req.body;
