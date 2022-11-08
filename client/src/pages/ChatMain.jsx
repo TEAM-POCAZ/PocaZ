@@ -11,6 +11,7 @@ import { source } from "../utils/api";
 
 import dayjs from "dayjs";
 
+const now = dayjs();
 /**
  * chatList 접속 초기 api.get으로 가져와서 뿌려줌
  * 추가적인 메세지는 socket.on 으로 받아와 chatList state를 업데이트해준다.
@@ -43,6 +44,17 @@ const ChatMain = ({ socket }) => {
     }, []);
 
     useEffect(() => {
+        chatList?.forEach((item) => {
+            socket.joinRoom(String(item.chatRoom), (res) => {
+                if (res) {
+                    console.log("join ===>", res);
+                }
+            });
+        });
+        console.log("chatList :>> ", chatList);
+    }, [chatList]);
+
+    useEffect(() => {
         if (updatedRoom) {
             const newChatRooms = [];
             for (const value of chatList) {
@@ -60,18 +72,6 @@ const ChatMain = ({ socket }) => {
             setChatList(newChatRooms);
         }
     }, [updatedRoom]);
-
-    useEffect(() => {
-        chatList?.forEach((item) => {
-            socket.joinRoom(String(item.chatRoom), (res) => {
-                if (res) {
-                    console.log("join ===>", res);
-                }
-            });
-        });
-        console.log("chatList :>> ", chatList);
-    }, [chatList]);
-
     // const soId = socket.io.id;
     // var rooms = Object.keys(socket.io.sockets.adapter.sids[soId]);
     // console.log("🚀 ~ file: ChatMain.jsx ~ line 68 ~ ChatMain ~ rooms", rooms);
@@ -91,6 +91,11 @@ const ChatMain = ({ socket }) => {
                             {chatList &&
                                 chatList?.map((item) => {
                                     // console.log(item.newSign);
+
+                                    const todayMsg = dayjs(
+                                        item.createAt
+                                    ).isSame(now, "day");
+
                                     return (
                                         <Link
                                             key={item.chatRoom}
@@ -119,9 +124,13 @@ const ChatMain = ({ socket }) => {
                                                 </div>
                                                 <div className="m-auto">
                                                     <p className="text-sm truncate text-slate-400">
-                                                        {dayjs(
-                                                            item.createAt
-                                                        ).format("HH:mm")}
+                                                        {todayMsg
+                                                            ? dayjs(
+                                                                  item.createAt
+                                                              ).format("HH:mm")
+                                                            : dayjs(
+                                                                  item.createAt
+                                                              ).format("MM-DD")}
                                                     </p>
 
                                                     <div
