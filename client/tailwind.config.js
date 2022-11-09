@@ -52,4 +52,5 @@ module.exports = {
     },
     // plugins: [require("@tailwindcss/forms")],
     //성재님 주석 처리 잠만 할게욘
+    plugins: [require("tailwind-scrollbar-hide")],
 };

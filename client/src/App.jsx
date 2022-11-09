@@ -19,55 +19,78 @@ import MyIdol from "./pages/MyIdol";
 import { ToastContainer } from "react-toastify";
 import MarketList from "./pages/MarketList";
 import MarketWrite from "./pages/MarketWrite";
-import MarketDetail from "./pages/MarketDetail";
+import MarketDetail from "./pages/Market/MarketDetail";
 import WithdrawalUser from "./pages/WithdrawalUser";
 import DevelopmentError from "./pages/DevelopmentError";
 import NotFound from "./pages/NotFound";
 
 function App({ socket }) {
-  const client = new QueryClient({
-    defaultOptions: {
-      queries: {
-        notifyOnChangeProps: "tracked",
-      },
-    },
-  });
-  return (
-    <>
-      <QueryClientProvider client={client}>
-        {/* devtools */}
-        <ReactQueryDevtools initialIsOpen={true} />
-        <ToastContainer />
-        <Router>
-          <Routes>
-            <Route path="/" element={<Main />} />
-            <Route path="MarketList" element={<MarketList />} />
-            <Route path="MarketWrite" element={<MarketWrite />} />
-            <Route path="MarketDetail" element={<MarketDetail />} />
-            <Route path="CommunityList" element={<CommunityList />} />
-            <Route
-              path="Community/:category/:id"
-              element={<CommunityDetail />}
-            />
-            <Route path="Community/" element={<CommunityWrite />} />
-            <Route path="CommunityBoast" element={<CommunityBoast />} />
-            <Route
-              path="CommunitySearchResult"
-              element={<CommunitySearchResult />}
-            />
-            <Route path="/chat/list" element={<ChatMain socket={socket} />} />
-            <Route path="/chat" element={<Chat socket={socket} />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/MyPage" element={<MyPage />} />
-            <Route path="/WithdrawalUser" element={<WithdrawalUser />} />
-            <Route path="/MyIdol" element={<MyIdol />} />
-            <Route path="/developmentError" element={<DevelopmentError />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Router>
-      </QueryClientProvider>
-    </>
-  );
+    const client = new QueryClient({
+        defaultOptions: {
+            queries: {
+                notifyOnChangeProps: "tracked",
+            },
+        },
+    });
+    return (
+        <>
+            <QueryClientProvider client={client}>
+                {/* devtools */}
+                <ReactQueryDevtools initialIsOpen={true} />
+                <ToastContainer />
+                <Router>
+                    <Routes>
+                        <Route path="/" element={<Main />} />
+                        <Route path="Market">
+                            <Route index element={<MarketList />} />
+                            <Route
+                                path=":id"
+                                element={<MarketDetail socket={socket} />}
+                            />
+                        </Route>
+                        <Route path="MarketWrite" element={<MarketWrite />} />
+                        <Route
+                            path="CommunityList"
+                            element={<CommunityList />}
+                        />
+                        <Route
+                            path="Community/:category/:id"
+                            element={<CommunityDetail />}
+                        />
+                        <Route path="Community/" element={<CommunityWrite />} />
+                        <Route
+                            path="CommunityBoast"
+                            element={<CommunityBoast />}
+                        />
+                        <Route
+                            path="CommunitySearchResult"
+                            element={<CommunitySearchResult />}
+                        />
+                        <Route
+                            path="/chat/list"
+                            element={<ChatMain socket={socket} />}
+                        />
+                        <Route
+                            path="/chat"
+                            element={<Chat socket={socket} />}
+                        />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/MyPage" element={<MyPage />} />
+                        <Route
+                            path="/WithdrawalUser"
+                            element={<WithdrawalUser />}
+                        />
+                        <Route path="/MyIdol" element={<MyIdol />} />
+                        <Route
+                            path="/developmentError"
+                            element={<DevelopmentError />}
+                        />
+                        <Route path="*" element={<NotFound />} />
+                    </Routes>
+                </Router>
+            </QueryClientProvider>
+        </>
+    );
 }
 
 export default App;

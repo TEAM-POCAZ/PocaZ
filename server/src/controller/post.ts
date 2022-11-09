@@ -128,8 +128,13 @@ export default {
       `
       ${tranSQL.posts.lists}
       ${tranSQL.posts.listsFrom}
-      WHERE (1 != 1
-      ${keywordMap})
+      WHERE 1 = 1
+      ${
+        keyword
+          ? `AND (1 != 1
+      ${keywordMap})`
+          : ''
+      }
       AND p.deleteAt IS NULL
       AND p.id < ?
       ORDER BY p.id DESC
@@ -146,7 +151,7 @@ export default {
         : null;
     const previousId =
       (lastPostId || Number.MAX_SAFE_INTEGER > 0) && typeof SIZE === 'string'
-        ? postList[0].id + parseInt(SIZE)
+        ? postList[0]?.id + parseInt(SIZE)
         : null;
     res.send({ postList, nextId, previousId });
   },

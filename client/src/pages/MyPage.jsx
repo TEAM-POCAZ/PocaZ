@@ -7,6 +7,7 @@ import { useLoginStore } from "../store/store";
 import { useQuery } from "react-query";
 import axios from "axios";
 const API = import.meta.env.VITE_HOST_URL;
+import Footer from "../components/Footer";
 
 const MyPage = () => {
   const { userInfo, setUserInfo } = useLoginStore();
@@ -226,6 +227,7 @@ const MyPage = () => {
             탈퇴하기
           </button>
         </div>
+        <Footer />
       </Layout>
     </>
   );

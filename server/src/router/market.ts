@@ -42,10 +42,15 @@ router.post('/', checkAuthenticated, markets.writeMarket);
  *   get:
  *     tags:
  *     - market
- *     summary: "장터 전체 조회"
+ *     summary: "장터 전체 조회 with 검색"
  *     description: ""
  *     operationId: "getMarkets"
  *     parameters:
+ *       - name: keyword
+ *         in: query
+ *         description: 장터 게시글 검색 키워드
+ *         schema:
+ *           type: string
  *       - name: lastPostId
  *         in: query
  *         description: 페이지의 마지막 글의 id를 얻습니다. 공백으로 둘 경우 최신 get id of Last post of Page
@@ -82,7 +87,7 @@ router.get('/', markets.getMarkets);
  *     parameters:
  *       - name: id
  *         in: path
- *         description: category of post
+ *         description: id of market
  *         required: true
  *         schema:
  *           type: integer
@@ -95,6 +100,56 @@ router.get('/', markets.getMarkets);
 
 router.get('/:id', markets.getMarket);
 
+/**
+ * @swagger
+ * /api/market/{id}:
+ *   put:
+ *     tags:
+ *       - market
+ *     summary: modify market post
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: id of market
+ *         required: true
+ *         schema:
+ *           type: integer
+ *           format: int64
+ *         example: 1
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             example:
+ *               - photocard: 1
+ *                 title: 포토카드 팝니다
+ *                 description: 싱싱한 포토카드 싸게 팝니다.
+ *                 price: 20000
+ *     responses:
+ *       '200':
+ *         description: Successful response
+ *         content:
+ *           application/json: {}
+ *   delete:
+ *     tags:
+ *       - market
+ *     summary: delete market post
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: id of market
+ *         required: true
+ *         schema:
+ *           type: integer
+ *           format: int64
+ *         example: 1
+ *     responses:
+ *       '200':
+ *         description: Successful response
+ *         content:
+ *           application/json: {}
+ */
 router.put('/:id', markets.modifyMarket);
 
 router.delete('/:id', markets.deleteMarket);
