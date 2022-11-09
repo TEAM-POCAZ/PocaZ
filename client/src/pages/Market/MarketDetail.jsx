@@ -7,6 +7,7 @@ import { useLoginStore } from '../../store/store';
 
 import { apis } from '../../utils/api';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 /**
  * for chat
@@ -56,6 +57,23 @@ const MarketDetail = ({ socket }) => {
       navigate('/MarketWrite', {
         state: { MarketId: _id },
       });
+    }
+  };
+
+  const onDelete = async (sellerId) => {
+    if (userInfo.id != sellerId) {
+      toast.error('해당 글 작성자만 삭제할 수 있습니다');
+      return;
+    }
+    try {
+      await axios.delete(`http://localhost:8080/api/market/${_id}`);
+      toast.success('삭제가 완료되었습니다.', {
+        autoClose: 500,
+        position: toast.POSITION.BOTTOM_CENTER,
+      });
+      navigate('/Market');
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -126,7 +144,10 @@ const MarketDetail = ({ socket }) => {
                   >
                     수정
                   </button>
-                  <button className='bg-gray-500 text-white p-1 rounded-md text-xl my-2.5'>
+                  <button
+                    className='bg-gray-500 text-white p-1 rounded-md text-xl my-2.5'
+                    onClick={() => onDelete(content.sellerId)}
+                  >
                     삭제
                   </button>
                 </div>
