@@ -6,6 +6,9 @@ module.exports = {
             fontFamily: {
                 sans: ["Montserrat", "Pretendard", "sans-serif"],
             },
+            colors: {
+                main: "#034ac5",
+            },
             width: {
                 480: "480px",
                 50: "50px",
