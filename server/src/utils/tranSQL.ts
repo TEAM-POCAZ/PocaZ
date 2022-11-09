@@ -173,6 +173,7 @@ const tranSQL = {
              pc.name		    AS pocaName,	  -- photocard Name
              pc.description	AS description, -- photocard description
              pcs.price      AS price,		    -- photocard sell Price
+             pcs.createAt   AS createAt,    -- sell post create date
              pcs.tradeStatus  AS tradeStatus  -- sell status
              `,
     detail: `
