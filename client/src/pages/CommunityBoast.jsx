@@ -7,6 +7,7 @@ import SearchBox from "../components/Community/SearchBox";
 import dayjs from "dayjs";
 import { useInfiniteQuery } from "react-query";
 import { useInView } from "react-intersection-observer";
+import Masonry from "react-masonry-css";
 
 const NUMBER_OF_POSTS_ON_PAGE = 10;
 
@@ -47,28 +48,35 @@ const CommunityBoast = () => {
       <Layout>
         <SearchBox />
         <CommunityTop category={2} />
-        <div className="boastListWrap">
-          <ul>
-            {status === "loading" ? (
-              <p>Loading...</p>
-            ) : status === "error" ? (
-              <span>Error: {error.message}</span>
-            ) : (
-              <>
+        <div className="boastListWrap m-2.5 cursor-pointer">
+          {status === "loading" ? (
+            <p>Loading...</p>
+          ) : status === "error" ? (
+            <span>Error: {error.message}</span>
+          ) : (
+            <>
+              <Masonry
+                breakpointCols={2}
+                className="my-masonry-grid"
+                columnClassName="my-masonry-grid_column"
+              >
                 {data?.pages?.map((page) => (
                   <React.Fragment key={page.nextId}>
                     {page.postList.map((lists) => {
                       const days = dayjs(lists.createAt).format("YYYY-MM-DD");
                       return (
-                        <li
+                        <div
                           key={lists.id}
                           onClick={() => navigate(`/Community/2/${lists.id}`)}
                           className="cursor-pointer"
                         >
-                          <div className="boastThumb">
-                            <img src={lists.filePath} />
+                          <div className="boastThumb rounded-lg overflow-hidden">
+                            <img
+                              src={"http://localhost:8080/" + lists.filePath}
+                              crossOrigin="anonymous"
+                            />
                           </div>
-                          <div className="boardSubject">
+                          <div className="boardSubject mt-1">
                             <p>{lists.title}</p>
                             <div>
                               <div className="writeWrap">
@@ -89,7 +97,7 @@ const CommunityBoast = () => {
                               </span>
                             </div>
                           </div>
-                        </li>
+                        </div>
                       );
                     })}
                   </React.Fragment>
@@ -112,9 +120,9 @@ const CommunityBoast = () => {
                     ? "Background Updating..."
                     : null}
                 </div>
-              </>
-            )}
-          </ul>
+              </Masonry>
+            </>
+          )}
         </div>
       </Layout>
     </>

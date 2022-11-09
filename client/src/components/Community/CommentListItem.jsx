@@ -39,7 +39,7 @@ const CommentListItem = ({ comment, toggleReply }) => {
 
   return (
     <>
-      <div className="mb-2.5 pb-2.5 border-b">
+      <div className="mb-2.5 p-2.5 border-b">
         <div className="writeWrap flex items-center">
           <div className="commentThumb w-10 h-10 rounded-full bg-black mr-2.5"></div>
           <span className="writeName">{comment.nickname}</span>
@@ -47,11 +47,25 @@ const CommentListItem = ({ comment, toggleReply }) => {
         <div className="commentBox py-2.5">
           <p>{comment.content}</p>
         </div>
-        {comment.pid ? null : (
-          <div onClick={() => toggleReply(comment.id)}>답글달기~~~</div>
-        )}
-        <button onClick={() => modifyToggle(comment.content)}>수정</button>
-        <button onClick={clickDelete}>삭제</button>
+        <div className="flex cursor-pointer">
+          {comment.pid ? null : (
+            <div
+              className="mr-2.5 text-slate-500 text-sm"
+              onClick={() => toggleReply(comment.id)}
+            >
+              답글달기
+            </div>
+          )}
+          <button
+            className="mr-2.5 text-sm"
+            onClick={() => modifyToggle(comment.content)}
+          >
+            수정
+          </button>
+          <button className=" text-sm" onClick={clickDelete}>
+            삭제
+          </button>
+        </div>
       </div>
       {
         <div hidden={hidden}>

@@ -50,11 +50,24 @@ const CommentList = ({ comments }) => {
             />
             {isReply[comment.id] ? (
               <>
-                <input type="text" ref={replyRef} />
-                <button onClick={commentSubmit}>답글 작성</button>
+                <div className="flex py-4">
+                  <input
+                    className="border w-full p-2.5"
+                    type="text"
+                    ref={replyRef}
+                  />
+                  <button
+                    className="min-w-[40px] ml-2.5 text-xs bg-slate-500 text-white"
+                    onClick={commentSubmit}
+                  >
+                    답글
+                    <br />
+                    작성
+                  </button>
+                </div>
               </>
             ) : null}
-            <div className="preply bg-blue-300">
+            <div className="preply">
               <ReplyList comment={comment} />
             </div>
           </>
