@@ -13,6 +13,7 @@ import mainSlideBn3 from "../assets/img/main_slide_bn3.gif";
 import axios from "axios";
 import dayjs from "dayjs";
 import MainPocaItem from "../components/MainPocaItem";
+import Footer from "../components/Footer";
 
 const Main = () => {
   const [users, setUsers] = useState(null);
@@ -154,6 +155,7 @@ const Main = () => {
             </div>
           </div>
         </div>
+        <Footer />
       </Layout>
     </>
   );
