@@ -167,8 +167,9 @@ const tranSQL = {
       SELECT pcs.id         AS id,          -- sell post id
              a.stageName    AS stageName,	  -- current stage Name
              ag.englishName AS groupName,	  -- current group Name
-             u.nickname     AS nickname,    -- user nickname
-             u.profileImage AS profileImage,-- user profile image
+             u.id           AS sellerId,    -- seller id
+             u.nickname     AS nickname,    -- seller nickname
+             u.profileImage AS profileImage,-- seller profile image
              pc.path        AS pocaImg,     -- poca image
              pc.name		    AS pocaName,	  -- photocard Name
              pc.description	AS description, -- photocard description
