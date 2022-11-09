@@ -145,8 +145,9 @@ const Main = () => {
                         className="h-36 cursor-pointer"
                       >
                         <img
-                          src={user.filePath}
+                          src={"http://localhost:8080/" + user.filePath}
                           className="w-full h-full object-cover"
+                          crossOrigin="anonymous"
                         />
                       </li>
                     ))}
