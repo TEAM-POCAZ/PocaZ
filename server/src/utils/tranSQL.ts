@@ -167,7 +167,6 @@ const tranSQL = {
       SELECT pcs.id         AS id,          -- sell post id
              a.stageName    AS stageName,	  -- current stage Name
              ag.englishName AS groupName,	  -- current group Name
-             u.id           AS sellerId,    -- seller id
              u.nickname     AS nickname,    -- seller nickname
              u.profileImage AS profileImage,-- seller profile image
              pc.path        AS pocaImg,     -- poca image
@@ -177,7 +176,10 @@ const tranSQL = {
              pcs.tradeStatus  AS tradeStatus  -- sell status
              `,
     detail: `
-            ,pcs.title       AS title,       -- photocard sell title
+           ,pcs.title       AS title,       -- photocard sell title
+            a.id           AS artistId,    -- artist pk
+            ag.id          AS groupId,     -- group pk
+            u.id           AS sellerId,    -- seller id
              pcs.description AS sellDesc     -- photocard sell description`,
     from: `
      FROM PhotocardSellArticle pcs
