@@ -8,6 +8,7 @@ import { apis } from "../../utils/api";
 import InfoBar from "./InfoBar";
 import Messages from "./Messages";
 import InputMsg from "./InputMsg";
+import { IsLoading } from "../../utils/IsLoading";
 
 /**
  * chatList / MarketDetail 에서 가져온 marketItemId를 활용하여 api get 송출
@@ -69,9 +70,9 @@ const Chat = ({ socket }) => {
     return (
         <Layout>
             {isLoading ? (
-                <>로딩중입니다</>
+                <IsLoading />
             ) : (
-                <div className="flex items-center justify-center bg-gray-800 outerContainer h-[70vh]">
+                <div className="flex items-center justify-center bg-gray-800 outerContainer h-[75vh]">
                     <div className="flex flex-col justify-between w-full bg-white rounded-lg h-4/5">
                         <InfoBar
                             sellerNickname={sellerNickname}

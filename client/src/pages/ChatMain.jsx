@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 import { useQuery } from "react-query";
 
@@ -10,6 +10,7 @@ import { apis } from "../utils/api";
 import { source } from "../utils/api";
 
 import dayjs from "dayjs";
+import { IsLoading } from "../utils/IsLoading";
 
 const now = dayjs();
 /**
@@ -23,7 +24,6 @@ const ChatMain = ({ socket }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [chatList, setChatList] = useState();
     const [updatedRoom, setUpdatedRoom] = useState(null);
-    const [isNew, setIsNew] = useState(false);
 
     useEffect(() => {
         const list = async () => {
@@ -79,10 +79,10 @@ const ChatMain = ({ socket }) => {
     return (
         <Layout>
             {isLoading ? (
-                <>loading 중</>
+                <IsLoading />
             ) : (
                 <>
-                    <div className="h-[70vh]">
+                    <div className="h-[75vh]">
                         <div></div>
                         <div className="flex flex-col m-2 ml-4 border-b-2 border-blue-400 text-base w-40 font-medium decoration-inherit cursor-default">
                             Chat
