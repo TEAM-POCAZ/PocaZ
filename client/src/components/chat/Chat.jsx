@@ -21,7 +21,7 @@ const Chat = ({ socket }) => {
   } = useLoginStore();
   const [chats, setChats] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [sellInfo, setSellInfo] = useState();
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -64,38 +64,23 @@ const Chat = ({ socket }) => {
         chatRoom: room,
       };
 
-    const handleMessage = async (sendMessage) => {
-        if (sendMessage) {
-            const newMessage = {
-                user: id,
-                message: sendMessage,
-                chatRoom: room,
-            };
-
-            socket.emitSync("message", newMessage);
-        }
-    };
-    return (
-        <Layout>
-            {isLoading ? (
-                <IsLoading />
-            ) : (
-                <div className="flex items-center justify-center bg-gray-800 outerContainer h-[75vh]">
-                    <div className="flex flex-col justify-between w-full bg-white rounded-lg h-4/5">
-                        <InfoBar
-                            sellerNickname={sellerNickname}
-                            navigate={navigate}
-                        />
-                        <Messages
-                            chats={chats}
-                            sellerNickname={sellerNickname}
-                        />
-                        <InputMsg handleMessage={handleMessage} />
-                    </div>
-                </div>
-            )}
-        </Layout>
-    );
+      socket.emitSync("message", newMessage);
+    }
+  };
+  return (
+    <Layout>
+      {isLoading ? (
+        <IsLoading />
+      ) : (
+        <div className="flex items-center justify-center bg-gray-800 outerContainer h-[75vh]">
+          <div className="flex flex-col justify-between w-full bg-white rounded-lg h-4/5">
+            <InfoBar sellerNickname={sellerNickname} navigate={navigate} />
+            <Messages chats={chats} sellerNickname={sellerNickname} />
+            <InputMsg handleMessage={handleMessage} />
+          </div>
+        </div>
+      )}
+    </Layout>
+  );
 };
-
 export default Chat;
