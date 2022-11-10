@@ -34,6 +34,7 @@ export const getChatRoom = async (
     [user, user]
   );
   res.status(200).json(rows);
+  console.log(rows[0]);
 };
 
 export const createChatRoom = async (
