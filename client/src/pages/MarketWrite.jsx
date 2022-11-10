@@ -16,19 +16,21 @@ const MarketWrite = () => {
   const marketInfo = useLocation();
   const [choose, setChoose] = useState({ artists: [], groups: [] });
   const [group, setGroup] = useState(1);
-  const [pocas, setPoca] = useState([]);
+  const [pocas, setPoca] = useState([]); // 멤버 선택 시 불러온 포카 저장
   const [modal, setModal] = useState(false);
   const [pocaMemo, setPocaMemo] = useState({});
-  const artistRef = useRef();
+  // const artistRef = useRef();
+  const [artist, setArtist] = useState(1);
   const titleRef = useRef();
   const descriptionRef = useRef();
   const priceRef = useRef();
 
   const chooseGroup = (e) => setGroup(e.target.value);
+  const chooseArtist = (e) => setArtist(e.target.value);
 
   const getPhotocard = async () => {
     const { data } = await axios.get(
-      `http://localhost:8080/api/artist/poca?artist=${artistRef.current.value}`
+      `http://localhost:8080/api/artist/poca?artist=${artist}`
     );
     setPoca(data);
   };
@@ -84,15 +86,17 @@ const MarketWrite = () => {
         titleRef.current.value = result.title;
         descriptionRef.current.value = result.sellDesc;
         priceRef.current.value = result.price;
-        artistRef.current.value = result.artistId;
-        console.log(result);
+        setArtist(result.artistId);
+        setPocaMemo({ id: result.pocaId, name: result.pocaName });
       })();
     }
   }, []);
 
   useEffect(() => {
-    artistRef?.current?.value && getPhotocard();
-  }, [artistRef?.current?.value]);
+    getPhotocard();
+  }, [artist]);
+  //   artistRef?.current?.value && getPhotocard();
+  // }, [artistRef?.current?.value]);
   return (
     <>
       <Layout>
@@ -134,13 +138,16 @@ const MarketWrite = () => {
               className='w-full p-3.5 border-0'
             />
           </div>
-          <div className='groupName flex py-5 px-3.5 border-t border-b'>
+          <div
+            className={`groupName flex py-5 px-3.5 border-t border-b
+                        ${marketInfo?.state?.MarketId ? 'text-gray-300' : ''}`}
+          >
             <label className='w-6/12'>그룹명</label>
             <select
               className='w-6/12'
               value={group}
               onChange={chooseGroup}
-              disabled={userInfo?.state?.MarketId ? true : false}
+              disabled={marketInfo?.state?.MarketId ? true : false}
             >
               {choose?.groups.length > 0 ? (
                 choose?.groups.map((group) => (
@@ -151,9 +158,17 @@ const MarketWrite = () => {
               )}
             </select>
           </div>
-          <div className='memeberName flex py-5 px-3.5 border-b'>
+          <div
+            className={`memeberName flex py-5 px-3.5 border-b
+                        ${marketInfo?.state?.MarketId ? 'text-gray-300' : ''}`}
+          >
             <label className='w-6/12'>멤버명</label>
-            <select className='w-6/12' ref={artistRef}>
+            <select
+              className='w-6/12'
+              value={artist}
+              onChange={chooseArtist}
+              disabled={marketInfo?.state?.MarketId ? true : false}
+            >
               {choose?.artists.length > 0
                 ? choose?.artists
                     .filter((artist) => artist.artistGroup == group)
@@ -165,8 +180,10 @@ const MarketWrite = () => {
           </div>
           <button
             type='button'
-            className='flex justify-between w-full py-5 px-3.5 border-b text-left'
+            className={`flex justify-between w-full py-5 px-3.5 border-b text-left
+                        ${marketInfo?.state?.MarketId ? 'text-gray-300' : ''}`}
             onClick={() => setModal(!modal)}
+            disabled={marketInfo?.state?.MarketId ? true : false}
           >
             포카 리스트 {pocaMemo.id ? <span>{pocaMemo.name}</span> : null}
             <i className='ri-arrow-right-s-fill'></i>
