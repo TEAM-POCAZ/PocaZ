@@ -82,7 +82,7 @@ const ChatMain = ({ socket }) => {
                 <IsLoading />
             ) : (
                 <>
-                    <div className="h-[75vh]">
+                    <div className="h-[86vh]">
                         <div></div>
                         <div className="flex flex-col m-2 ml-4 border-b-2 border-blue-400 text-base w-40 font-medium decoration-inherit cursor-default">
                             Chat

@@ -91,7 +91,7 @@ const Chat = ({ socket }) => {
             {isLoading ? (
                 <IsLoading />
             ) : (
-                <div className="flex items-center justify-center bg-gray-800 outerContainer h-[75vh]">
+                <div className="flex items-center justify-center bg-gray-800 outerContainer h-[86vh]">
                     <div className="flex flex-col justify-between w-full bg-white rounded-lg h-4/5">
                         <InfoBar
                             sellerNickname={sellerNickname}
