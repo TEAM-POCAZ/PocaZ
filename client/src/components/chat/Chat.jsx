@@ -17,20 +17,29 @@ import axios from "axios";
  */
 
 const Chat = ({ socket }) => {
-    const {
-        userInfo: { nickname: userName, id },
-    } = useLoginStore();
-    const [chats, setChats] = useState([]);
-    const [sellItem, setSellItem] = useState();
-    const [isLoading, setIsLoading] = useState(true);
+  const {
+    userInfo: { nickname: userName, id },
+  } = useLoginStore();
+  const [chats, setChats] = useState([]);
+  const [sellItem, setSellItem] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
-    const navigate = useNavigate();
-    const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    const { sellerNickname, room, marketItemId } = location.state; //FIXME 장터에서 입장했을 때...
-    console.log(
-        "🚀 ~ file: Chat.jsx ~ line 30 ~ Chat ~ marketItemId",
-        marketItemId
+  const { sellerNickname, room, marketItemId } = location.state; //FIXME 장터에서 입장했을 때...
+  console.log(
+    "🚀 ~ file: Chat.jsx ~ line 30 ~ Chat ~ marketItemId",
+    marketItemId
+  );
+
+  useEffect(() => {
+    // getChat();
+    axios.all([getChat, getItemInfo]).then(
+      axios.spread((res1, res2) => {
+        setChats(res1);
+        setSellItem(res2);
+      })
     );
 
     useEffect(() => {
@@ -48,14 +57,14 @@ const Chat = ({ socket }) => {
             }
         }); // from 장터에서 새로운 채팅방이 생겼을 때 join
 
-        socket.onSync("new-message", (message) => {
-            setChats((prev) => [...prev, message]);
-        });
+    socket.onSync("new-message", (message) => {
+      setChats((prev) => [...prev, message]);
+    });
 
-        // clear up function 이라고 하며 unmount 시 실행됨
-        // return 방 join을 leave해야함
-        setIsLoading(false);
-    }, []);
+    // clear up function 이라고 하며 unmount 시 실행됨
+    // return 방 join을 leave해야함
+    setIsLoading(false);
+  }, []);
 
     const getChat = async () => {
         if (room && userName) {
@@ -72,37 +81,32 @@ const Chat = ({ socket }) => {
         }
     };
 
-    const handleMessage = async (sendMessage) => {
-        if (sendMessage) {
-            const newMessage = {
-                user: id,
-                message: sendMessage,
-                chatRoom: room,
-            };
 
-            socket.emitSync("message", newMessage);
-        }
-    };
-    return (
-        <Layout>
-            {isLoading ? (
-                <IsLoading />
-            ) : (
-                <div className="flex items-center justify-center bg-gray-800 outerContainer h-[75vh]">
-                    <div className="flex flex-col justify-between w-full bg-white rounded-lg h-4/5">
-                        <InfoBar
-                            sellerNickname={sellerNickname}
-                            navigate={navigate}
-                        />
-                        <Messages
-                            chats={chats}
-                            sellerNickname={sellerNickname}
-                        />
-                        <InputMsg handleMessage={handleMessage} />
-                    </div>
-                </div>
-            )}
-        </Layout>
-    );
+  const handleMessage = async (sendMessage) => {
+    if (sendMessage) {
+      const newMessage = {
+        user: id,
+        message: sendMessage,
+        chatRoom: room,
+      };
+
+      socket.emitSync("message", newMessage);
+    }
+  };
+  return (
+    <Layout>
+      {isLoading ? (
+        <IsLoading />
+      ) : (
+        <div className="flex items-center justify-center bg-gray-800 outerContainer h-[75vh]">
+          <div className="flex flex-col justify-between w-full bg-white rounded-lg h-4/5">
+            <InfoBar sellerNickname={sellerNickname} navigate={navigate} />
+            <Messages chats={chats} sellerNickname={sellerNickname} />
+            <InputMsg handleMessage={handleMessage} />
+          </div>
+        </div>
+      )}
+    </Layout>
+  );
 };
 export default Chat;

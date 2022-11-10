@@ -27,6 +27,7 @@ const MarketDetail = ({ socket }) => {
 
     const onClickLinkChat = () => {
         // sellerId, userInfo.id, _id
+        console.log(_id);
         socket.createRoom(
             {
                 sellerId: content.sellerId,
