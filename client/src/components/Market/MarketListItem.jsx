@@ -4,6 +4,10 @@ import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 
 const MarketListItem = ({ list }) => {
+    console.log(
+        "🚀 ~ file: MarketListItem.jsx ~ line 7 ~ MarketListItem ~ list",
+        list
+    );
     const navigate = useNavigate();
     return (
         <>

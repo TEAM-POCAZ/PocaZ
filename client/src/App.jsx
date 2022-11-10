@@ -23,6 +23,7 @@ import MarketDetail from "./pages/Market/MarketDetail";
 import WithdrawalUser from "./pages/WithdrawalUser";
 import DevelopmentError from "./pages/DevelopmentError";
 import NotFound from "./pages/NotFound";
+import MarketSearchResult from "./pages/MarketListSearchResult";
 
 function App({ socket }) {
     const client = new QueryClient({
@@ -46,6 +47,10 @@ function App({ socket }) {
                             <Route
                                 path=":id"
                                 element={<MarketDetail socket={socket} />}
+                            />
+                            <Route
+                                path="search"
+                                element={<MarketSearchResult />}
                             />
                         </Route>
                         <Route path="MarketWrite" element={<MarketWrite />} />
