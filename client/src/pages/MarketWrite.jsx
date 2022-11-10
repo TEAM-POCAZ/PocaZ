@@ -1,14 +1,14 @@
-import React from 'react';
-import Layout from '../utils/Layout';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import axios from 'axios';
-import { useRef } from 'react';
-import MarketWritePocaList from '../components/Market/MarketWritePocaList';
-import { toast } from 'react-toastify';
-import { useLoginStore } from '../store/store';
-import { apis } from '../utils/api';
+import React from "react";
+import Layout from "../utils/Layout";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
+import { useRef } from "react";
+import MarketWritePocaList from "../components/Market/MarketWritePocaList";
+import { toast } from "react-toastify";
+import { useLoginStore } from "../store/store";
+import { apis } from "../utils/api";
 
 const MarketWrite = () => {
   const navigate = useNavigate();
@@ -37,12 +37,12 @@ const MarketWrite = () => {
   const marketSubmit = async () => {
     // console.log(pocaMemo.id)
     const [marketId] = await (
-      await fetch('http://localhost:8080/api/market', {
-        method: 'POST',
+      await fetch("http://localhost:8080/api/market", {
+        method: "POST",
         headers: {
-          'Content-type': 'application/json',
+          "Content-type": "application/json",
         },
-        credentials: 'include',
+        credentials: "include",
         body: JSON.stringify([
           {
             photocard: pocaMemo.id,
@@ -54,7 +54,7 @@ const MarketWrite = () => {
         ]),
       })
     ).json();
-    toast.success('게시물이 작성되었습니다.', {
+    toast.success("게시물이 작성되었습니다.", {
       autoClose: 500,
       position: toast.POSITION.BOTTOM_CENTER,
     });
@@ -63,8 +63,8 @@ const MarketWrite = () => {
   };
   useEffect(() => {
     Promise.all([
-      axios.get('http://localhost:8080/api/artist'),
-      axios.get('http://localhost:8080/api/artist/group'),
+      axios.get("http://localhost:8080/api/artist"),
+      axios.get("http://localhost:8080/api/artist/group"),
     ])
       //async 쓰삼***
       .then(
@@ -100,51 +100,51 @@ const MarketWrite = () => {
   return (
     <>
       <Layout>
-        <div className='marketWriteTop relative flex justify-between px-2.5 pb-2.5 border-b'>
-          <button type='button' onClick={() => navigate(-1)}>
-            <i className='ri-arrow-left-line'></i>
+        <div className="marketWriteTop relative flex justify-between px-2.5 pb-2.5 border-b">
+          <button type="button" onClick={() => navigate(-1)}>
+            <i className="ri-arrow-left-line"></i>
           </button>
-          <h2 className='absolute top-0 left-2/4 translate-x-[-50%] text-lg'>
+          <h2 className="absolute top-0 left-2/4 translate-x-[-50%] text-lg">
             팝니다
           </h2>
           <button
-            type='button'
-            className='px-2.5 bg-black text-white rounded'
+            type="button"
+            className="px-2.5 bg-black text-white rounded"
             onClick={marketSubmit}
           >
             등록
           </button>
         </div>
-        <div className=''>
-          <div className='attachedFileBtn'>
-            <label htmlFor='file'>
-              <div className='uploadBtn flex items-center justify-center py-3.5 cursor-pointer'>
-                <i className='ri-camera-fill text-3xl'></i>
+        <div className="">
+          <div className="attachedFileBtn">
+            <label htmlFor="file">
+              <div className="uploadBtn flex items-center justify-center py-3.5 cursor-pointer">
+                <i className="ri-camera-fill text-3xl"></i>
               </div>
             </label>
             <input
-              type='file'
-              name='avatar'
-              id='file'
-              accept='image/png, image/jpeg'
-              className='hidden'
+              type="file"
+              name="avatar"
+              id="file"
+              accept="image/png, image/jpeg"
+              className="hidden"
             />
           </div>
-          <div className='subject border-b'>
-            <h3 className='py-5 pb-0 px-3.5'>제목</h3>
+          <div className="subject border-t">
+            <h3 className="py-5 pb-0 px-3.5">제목</h3>
             <textarea
               ref={titleRef}
-              placeholder='글 제목을 입력해 주세요.'
-              className='w-full p-3.5 border-0'
+              placeholder="글 제목을 입력해 주세요."
+              className="w-full p-3.5 border-0"
             />
           </div>
           <div
             className={`groupName flex py-5 px-3.5 border-t border-b
-                        ${marketInfo?.state?.MarketId ? 'text-gray-300' : ''}`}
+                        ${marketInfo?.state?.MarketId ? "text-gray-300" : ""}`}
           >
-            <label className='w-6/12'>그룹명</label>
+            <label className="w-6/12">그룹명</label>
             <select
-              className='w-6/12'
+              className="w-6/12"
               value={group}
               onChange={chooseGroup}
               disabled={marketInfo?.state?.MarketId ? true : false}
@@ -160,11 +160,11 @@ const MarketWrite = () => {
           </div>
           <div
             className={`memeberName flex py-5 px-3.5 border-b
-                        ${marketInfo?.state?.MarketId ? 'text-gray-300' : ''}`}
+                        ${marketInfo?.state?.MarketId ? "text-gray-300" : ""}`}
           >
-            <label className='w-6/12'>멤버명</label>
+            <label className="w-6/12">멤버명</label>
             <select
-              className='w-6/12'
+              className="w-6/12"
               value={artist}
               onChange={chooseArtist}
               disabled={marketInfo?.state?.MarketId ? true : false}
@@ -179,14 +179,19 @@ const MarketWrite = () => {
             </select>
           </div>
           <button
-            type='button'
+            type="button"
             className={`flex justify-between w-full py-5 px-3.5 border-b text-left
-                        ${marketInfo?.state?.MarketId ? 'text-gray-300' : ''}`}
+                        ${marketInfo?.state?.MarketId ? "text-gray-300" : ""}`}
             onClick={() => setModal(!modal)}
             disabled={marketInfo?.state?.MarketId ? true : false}
           >
-            포카 리스트 {pocaMemo.id ? <span>{pocaMemo.name}</span> : null}
-            <i className='ri-arrow-right-s-fill'></i>
+            <p className="w-6/12">포카 리스트</p>
+            {pocaMemo.id ? (
+              <span className="relative w-6/12">
+                {pocaMemo.name}
+                <i className="ri-arrow-right-s-fill absolute right-0"></i>
+              </span>
+            ) : null}
           </button>
           {modal ? (
             <MarketWritePocaList
@@ -195,23 +200,23 @@ const MarketWrite = () => {
               setModal={setModal}
             />
           ) : null}
-          <div className='desc'>
-            <h3 className='py-5 pb-0 px-3.5'>한줄 소개</h3>
+          <div className="desc">
+            <h3 className="py-5 pb-0 px-3.5">한줄 소개</h3>
             <textarea
               ref={descriptionRef}
-              placeholder='포카 상태 및 한줄 소개를 간단히 입력해 주세요.'
-              className='w-full p-3.5 border-0'
+              placeholder="포카 상태 및 한줄 소개를 간단히 입력해 주세요."
+              className="w-full p-3.5 border-0"
             />
           </div>
-          <div className='price pb-5 px-3.5 border-t'>
-            <h3 className='pt-4 pb-3.5'>가격 입력</h3>
+          <div className="price pb-9 px-3.5 border-t">
+            <h3 className="pt-4 pb-3.5">가격 입력</h3>
             <input
-              type='text'
+              type="text"
               ref={priceRef}
-              placeholder='ex) 19000'
-              className='mr-2.5 p-2.5 border'
+              placeholder="ex) 19000"
+              className="mr-2.5 p-2.5 border"
             />
-            <span className='won'>원</span>
+            <span className="won">원</span>
           </div>
         </div>
       </Layout>
