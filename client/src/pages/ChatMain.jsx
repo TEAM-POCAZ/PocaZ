@@ -110,7 +110,7 @@ const ChatMain = ({ socket }) => {
                                             <li className="flex w-full ">
                                                 <div className="m-3">
                                                     <img
-                                                        className="w-10 h-10 rounded-full"
+                                                        className="m-1.5 h-10 rounded-full"
                                                         src={item.profileImage}
                                                         alt="profile"
                                                     />

@@ -34,13 +34,13 @@ const Chat = ({ socket }) => {
     );
 
     useEffect(() => {
-        // getChat();
-        axios.all([getChat, getItemInfo]).then(
-            axios.spread((res1, res2) => {
-                setChats(res1);
-                setSellItem(res2);
-            })
-        );
+        getChat();
+        // axios.all([getChat, getItemInfo]).then(
+        //     axios.spread((res1, res2) => {
+        //         setChats(res1);
+        //         setSellItem(res2);
+        //     })
+        // );
 
         socket.joinRoom(String(room), (res) => {
             if (res) {
@@ -60,7 +60,7 @@ const Chat = ({ socket }) => {
     const getChat = async () => {
         if (room && userName) {
             const { data } = await apis.getChat(room);
-            // setChats(data);
+            setChats(data);
             return data;
         }
     };
