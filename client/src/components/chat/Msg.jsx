@@ -8,16 +8,14 @@ import { useLoginStore } from "../../store/store";
  * userInfo state의 NickName은 로그인 정보 기반
  * sender오 userInfo.nickname을 비교하여 로그인사용자의 메세지인지를 확인한다.
  * @param {object} chat post 받아온 obj를 담고 있고 채팅창에 보여줄 value
- * @param {string} oppNickname chatList에서 받아온 상대방 닉네임을 받아온다.
+ * @param {string} sellerNickname chatList/ marketDetail에서 받아온 상대방 닉네임을 받아온다.
  * @returns 1:1 사용자 채팅창
  */
 
-const Msg = ({ chat, oppNickname }) => {
+const Msg = ({ chat, sellerNickname }) => {
     const { userInfo } = useLoginStore();
     const { createAt, message } = chat;
 
-
-    
     const MsgReceivedTime = dayjs(createAt).format("HH:mm"); // for timeStamp
 
     return chat.user === userInfo.id ? (
@@ -46,7 +44,7 @@ const Msg = ({ chat, oppNickname }) => {
             </div>
             <div>
                 <p className="flex items-center pl-2 text-sm tracking-tight text-gray-700 sentText ">
-                    {oppNickname}
+                    {sellerNickname}
                 </p>
                 <p className="flex items-center pl-2 text-sm tracking-tight text-gray-400 sentText">
                     {MsgReceivedTime}

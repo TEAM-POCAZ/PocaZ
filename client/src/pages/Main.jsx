@@ -13,6 +13,7 @@ import mainSlideBn3 from "../assets/img/main_slide_bn3.gif";
 import axios from "axios";
 import dayjs from "dayjs";
 import MainPocaItem from "../components/MainPocaItem";
+import Footer from "../components/Footer";
 
 const Main = () => {
   const [users, setUsers] = useState(null);
@@ -144,8 +145,9 @@ const Main = () => {
                         className="h-36 cursor-pointer"
                       >
                         <img
-                          src={user.filePath}
+                          src={"http://localhost:8080/" + user.filePath}
                           className="w-full h-full object-cover"
+                          crossOrigin="anonymous"
                         />
                       </li>
                     ))}
@@ -154,6 +156,7 @@ const Main = () => {
             </div>
           </div>
         </div>
+        <Footer />
       </Layout>
     </>
   );

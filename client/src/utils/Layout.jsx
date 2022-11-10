@@ -33,7 +33,6 @@ const Layout = ({ children }) => {
         <div className="mobileWrap lg:static lg:w-full tt:block mm:static mm:block mm:w-full absolute top-0 right-0 w-[480px] mr-40 bg-white">
           <Header />
           {children}
-          <Footer />
           <ScrollTopBtn />
           <BtmMenu />
         </div>
