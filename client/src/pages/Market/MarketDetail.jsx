@@ -63,7 +63,7 @@ const MarketDetail = ({ socket }) => {
     return (
         <>
             <Layout>
-                <div className=" h-[75vh]">
+                <div className="">
                     <div className="marketDetailTop relative flex items-center justify-between px-2.5 pb-2.5 border-b">
                         <button type="button" onClick={() => navigate(-1)}>
                             <i className="ri-arrow-left-line"></i>
