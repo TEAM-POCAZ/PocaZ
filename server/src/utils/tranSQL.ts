@@ -181,6 +181,7 @@ const tranSQL = {
             a.id           AS artistId,    -- artist pk
             ag.id          AS groupId,     -- group pk
             u.id           AS sellerId,    -- seller id
+            pc.id           AS pocaId,     -- poca id
              pcs.description AS sellDesc     -- photocard sell description`,
     from: `
      FROM PhotocardSellArticle pcs
