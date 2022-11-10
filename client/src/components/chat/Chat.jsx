@@ -9,6 +9,7 @@ import InfoBar from "./InfoBar";
 import Messages from "./Messages";
 import InputMsg from "./InputMsg";
 import { IsLoading } from "../../utils/IsLoading";
+import axios from "axios";
 
 /**
  * chatList / MarketDetail 에서 가져온 marketItemId를 활용하여 api get 송출
@@ -20,6 +21,7 @@ const Chat = ({ socket }) => {
     userInfo: { nickname: userName, id },
   } = useLoginStore();
   const [chats, setChats] = useState([]);
+  const [sellItem, setSellItem] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
@@ -32,7 +34,14 @@ const Chat = ({ socket }) => {
   );
 
   useEffect(() => {
-    getChat();
+    // getChat();
+    axios.all([getChat, getItemInfo]).then(
+      axios.spread((res1, res2) => {
+        setChats(res1);
+        setSellItem(res2);
+      })
+    );
+
     socket.joinRoom(String(room), (res) => {
       if (res) {
         console.log("join ===>", res);
@@ -48,13 +57,20 @@ const Chat = ({ socket }) => {
     setIsLoading(false);
   }, []);
 
-  const getChat = useCallback(async () => {
+  const getChat = async () => {
     if (room && userName) {
       const { data } = await apis.getChat(room);
-      setChats(data);
+      // setChats(data);
       return data;
     }
-  }, []);
+  };
+
+  const getItemInfo = async () => {
+    if (marketItemId) {
+      const { data } = await apis.getSellItem(marketItemId);
+      return data;
+    }
+  };
 
   const handleMessage = async (sendMessage) => {
     if (sendMessage) {

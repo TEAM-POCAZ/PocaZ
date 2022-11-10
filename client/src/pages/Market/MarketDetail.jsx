@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useLoginStore } from "../../store/store";
+
 import { apis } from "../../utils/api";
 
 /**
@@ -26,6 +27,7 @@ const MarketDetail = ({ socket }) => {
 
   const onClickLinkChat = () => {
     // sellerId, userInfo.id, _id
+    console.log(_id);
     socket.createRoom(
       {
         sellerId: content.sellerId,
@@ -55,8 +57,6 @@ const MarketDetail = ({ socket }) => {
       } = await apis.getMarketDetail(_id);
       setContent(result);
       setTradeStat(result.tradeStatus);
-      console.log(result);
-      return result;
     })();
   }, []);
 
@@ -64,7 +64,7 @@ const MarketDetail = ({ socket }) => {
   return (
     <>
       <Layout>
-        <div className=" h-[75vh]">
+        <div className="">
           <div className="marketDetailTop relative flex items-center justify-between px-2.5 pb-2.5 border-b">
             <button type="button" onClick={() => navigate(-1)}>
               <i className="ri-arrow-left-line"></i>

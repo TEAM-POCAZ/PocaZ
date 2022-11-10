@@ -1,11 +1,11 @@
 import express from 'express';
 
-import { createChat, getChat, getSellInfo } from '../controller/chat';
+import { createChat, getChat, getSellItem } from '../controller/chat';
 
 const router = express.Router();
 
 router.get('/:chatRoom', getChat);
-router.get('/:chat/?marketdetail=',getSellInfo);
+router.get('/:marketItemId',getSellItem);
 router.post('/', createChat);
 
 export default router;
