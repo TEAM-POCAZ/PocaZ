@@ -12,15 +12,7 @@ import Footer from "../components/Footer";
 const MyPage = () => {
   const { userInfo, setUserInfo } = useLoginStore();
   const [axiosError, setAxiosError] = useState(null);
-  const [id, setId] = useState(userInfo.id);
-  const [username, setUsername] = useState(userInfo.username);
-  const [email, setEmail] = useState(userInfo.email);
-  const [nickname, setNickname] = useState(userInfo.nickname);
-  const [profileImage, setProfileImage] = useState(userInfo.profileImage);
-  const [artistId, setArtistId] = useState(userInfo.artist);
-  const [deleteAt, setDeleteAt] = useState(userInfo.deleteAt);
-  const [createAt, setCreateAt] = useState(userInfo.createAt);
-  const [updateAt, setUpdateAt] = useState(userInfo.updateAt);
+
   const [disabled, setDisabled] = useState(true);
   const navigate = useNavigate();
   const { isLoading, data, isError, error } = useQuery(
@@ -30,7 +22,6 @@ const MyPage = () => {
     },
     {
       retry: false,
-      enabled: !!userInfo,
       onSuccess: (res) => {
         setUserInfo(res.data);
       },
@@ -49,11 +40,11 @@ const MyPage = () => {
       setDisabled(false);
     } else {
       const data = {
-        id,
-        email,
-        nickname,
-        profileImage,
-        artist: artistId,
+        id: userInfo.id,
+        email: userInfo.email,
+        nickname: userInfo.nickname,
+        profileImage: userInfo.profileImage,
+        artist: userInfo.artist,
       };
       try {
         const res = await axios.put(`${API}/api/user`, data, {
@@ -137,77 +128,95 @@ const MyPage = () => {
       <Layout>
         <div>{axiosError}</div>
         <div className="flex flex-col justify-center">
-          <img className="mx-auto" src={profileImage}></img>
+          <img className="mx-auto" src={userInfo.profileImage}></img>
         </div>
         <form onSubmit={handleSubmit}>
           <Input
             property="id"
             optionalText="개발용"
             placeholder="database primary key"
-            value={id}
-            setValue={setId}
+            value={userInfo.id}
+            setValue={(id) => {
+              setUserInfo({ ...userInfo, id });
+            }}
             disabled={true}
           />
           <Input
             property="username"
             optionalText="개발용"
             placeholder="username by OAuth"
-            value={username}
-            setValue={setUsername}
+            value={userInfo.username}
+            setValue={(username) => {
+              setUserInfo({ ...userInfo, username });
+            }}
             disabled={true}
           />
           <Input
             property="email"
             optionalText="이메일을 수정한다면 인증 절차 필요"
             placeholder="example@example.com"
-            value={email}
-            setValue={setEmail}
+            value={userInfo.email}
+            setValue={(email) => {
+              setUserInfo({ ...userInfo, email });
+            }}
             disabled={disabled}
           />
           <Input
             property="nickname"
             placeholder="예쁜 닉네임"
-            value={nickname}
-            setValue={setNickname}
+            value={userInfo.nickname}
+            setValue={(nickname) => {
+              setUserInfo({ ...userInfo, nickname });
+            }}
             disabled={disabled}
           />
           <Input
             property="profileImage"
             optionalText="경로에서 사진 뿌리기로 변경 필요"
             placeholder="프로필 이미지 경로"
-            value={profileImage}
-            setValue={setProfileImage}
+            value={userInfo.profileImage}
+            setValue={(profileImage) => {
+              setUserInfo({ ...userInfo, profileImage });
+            }}
             disabled={disabled}
           />
           <Input
             property="artist"
             placeholder="최애 아이돌id"
-            value={artistId ?? ""}
-            setValue={setArtistId}
+            value={userInfo.artist ?? ""}
+            setValue={(artistId) => {
+              setUserInfo({ ...userInfo, artist: artistId });
+            }}
             disabled={disabled}
           />
-          <Artist artistId={artistId}></Artist>
+          <Artist artistId={userInfo.artist}></Artist>
           <Input
             property="deleteAt"
             optionalText="개발용"
             placeholder="삭제되지 않음"
-            value={deleteAt ?? ""}
-            setValue={setDeleteAt}
+            value={userInfo.deleteAt ?? ""}
+            setValue={(deleteAt) => {
+              setUserInfo({ ...userInfo, deleteAt });
+            }}
             disabled={true}
           />
           <Input
             property="createAt"
             optionalText="개발용"
-            value={createAt}
-            setValue={setCreateAt}
+            value={userInfo.createAt}
+            setValue={(createAt) => {
+              setUserInfo({ ...userInfo, createAt });
+            }}
             disabled={true}
           />
           <Input
             property="updateAt"
             optionalText="개발용"
             placeholder="업데이트되지 않음"
-            value={updateAt ?? ""}
-            setValue={setUpdateAt}
+            value={userInfo.updateAt}
+            setValue={(updateAt) => {
+              setUserInfo({ ...userInfo, updateAt });
+            }}
             disabled={true}
           />
           <input
