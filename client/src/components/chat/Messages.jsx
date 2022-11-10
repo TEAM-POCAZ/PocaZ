@@ -14,7 +14,7 @@ const Messages = ({ chats, sellerNickname }) => {
 
     return (
         <div className="flex-auto px-4 overflow-auto scrollbar-hide h-full bg-gray-100">
-            {chats.map((chat) => {
+            {chats?.map((chat) => {
                 return (
                     <React.Fragment key={chat.id}>
                         <div>

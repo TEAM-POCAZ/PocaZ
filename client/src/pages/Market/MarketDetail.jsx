@@ -27,6 +27,7 @@ const MarketDetail = ({ socket }) => {
 
     const onClickLinkChat = () => {
         // sellerId, userInfo.id, _id
+        console.log(_id);
         socket.createRoom(
             {
                 sellerId: content.sellerId,
@@ -68,7 +69,7 @@ const MarketDetail = ({ socket }) => {
                         <button type="button" onClick={() => navigate(-1)}>
                             <i className="ri-arrow-left-line"></i>
                         </button>
-                        <h2 className="absolute top-0 left-2/4 translate-x-[-50%] text-lg">
+                        <div className="absolute top-0 left-2/4 translate-x-[-50%] text-lg">
                             <h4 className="flex mb-1 text-sm">
                                 <span className="pr-2">
                                     {content.groupName}
@@ -77,7 +78,7 @@ const MarketDetail = ({ socket }) => {
                                     {content.stageName}
                                 </span>
                             </h4>
-                        </h2>
+                        </div>
                         <button onClick={onClickLinkChat}>
                             <i className="ri-chat-3-fill text-2xl" />
                         </button>

@@ -13,9 +13,10 @@ export const apis = {
     // get
     getChatList: (roomid) =>
         api.get(`/chatroom/${roomid}`, { cancelToken: source.token }), // ChatMain.tsx
-    getSellItem: (marketItemId) => api.get(`/${marketItemId}`),
 
     getChat: (roomNumber) => api.get(`/chat/${roomNumber}`), // Chat.tsx
+    getSellItem: (marketItemId) => api.get(`/chat/item/${marketItemId}`),
+
     getMarketDetail: (id) => api.get(`/market/${id}`), // MarketDetail.tsx
 
     // post
