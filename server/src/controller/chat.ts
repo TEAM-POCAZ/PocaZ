@@ -15,27 +15,31 @@ interface IChats extends RowDataPacket {
 interface ISellItem extends RowDataPacket {
   marketItemId: number;
 }
-// interface ICheckChatRoom extends RowDataPacket{
-//   sellerId : number;
-//   loginUserId : number;
-//   marketItemId : number;
-// }
+interface ICheckChatRoom extends RowDataPacket{
+  sellerId : number;
+  loginUserId : number;
+  marketItemId : number;
+}
 
-// export const getCheckChatRoom = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-  
- 
-//   const { marketItemId, } =req.params;
+export const getCheckChatRoom = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
 
-//   const rows: ICheckChatRoom[] = await sqlSelectHandler(
-//     ``,
-//     []
-//   )
-
-// }
+)=> {  
+  const { marketItemId,loginUserId } = req.params;
+  const rows: ICheckChatRoom[] = await sqlSelectHandler(
+    `SELECT c.id
+      FROM chatroom c 
+      INNER JOIN chatuser cu ON
+      c.id = cu.chatRoom 
+      WHERE sellarticleid = ?
+      AND cu.user = ?`,
+    [marketItemId, loginUserId]
+  );
+    res.status(200).json(rows);
+    console.log(rows[0]);
+};
 
 
 export const getSellItem = async (
