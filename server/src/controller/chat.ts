@@ -22,17 +22,15 @@ export const getSellItem = async (
   next: NextFunction
 ) => {
   const { marketItemId } = req.params;
-  console.log('🚀 ~ file: chat.ts ~ line 25 ~ marketItemId', marketItemId);
 
   const rows: ISellItem[] = await sqlSelectHandler(
-    `SELECT p.id, p.photocard, p.title, p.price, p2.path 
-    FROM photocardsellarticle p 
-    INNER JOIN photocard p2  ON p.photocard = p2.id 
-    WHERE p2.id = (SELECT id from photocard p2 WHERE p2.id = 
-      (SELECT photocard FROM photocardsellarticle p3 WHERE id = ?))`,
+    `SELECT p.id, p.title, p.price, p2.path 
+    From photocardsellarticle p
+    INNER JOIN photocard p2  ON p.photocard = p2.id
+    where p.id = ?`,
     [marketItemId]
   );
-  res.status(200).json(rows);
+    res.status(200).json(rows);
 };
 
 export const getChat = async (
@@ -64,6 +62,7 @@ export const createChat = async (data: any) => {
 
   // res.status(200).json(row[0]);
 
+  console.log('object :>> ', row[0]);
   getSocketIO().to(row[0].chatRoom.toString()).emit('new-message', row[0]);
   getSocketIO()
     .to(row[0].chatRoom.toString())
