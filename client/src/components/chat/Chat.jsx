@@ -98,6 +98,7 @@ const Chat = ({ socket }) => {
               sellerNickname={sellerNickname}
               navigate={navigate}
               sellItem={sellItem}
+              marketItemId={marketItemId}
             />
             <Messages chats={chats} sellerNickname={sellerNickname} />
             <InputMsg handleMessage={handleMessage} />
