@@ -70,10 +70,8 @@ const Chat = ({ socket }) => {
 
   const getItemInfo = async () => {
     if (marketItemId) {
-      const {
-        data: [result],
-      } = await apis.getSellItem(marketItemId);
-      return setSellItem(result);
+      const { data } = await apis.getSellItem(marketItemId);
+      return data;
     }
   };
 

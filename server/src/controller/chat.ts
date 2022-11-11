@@ -30,7 +30,7 @@ export const getSellItem = async (
     where p.id = ?`,
     [marketItemId]
   );
-    res.status(200).json(rows);
+    res.status(200).json(rows[0]);
 };
 
 export const getChat = async (
