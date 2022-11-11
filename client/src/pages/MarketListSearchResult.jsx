@@ -31,18 +31,21 @@ const MarketSearchResult = () => {
       let keyword;
       if (location.state) {
         const { searchKeyword } = location.state;
+        console.log(searchKeyword);
         keyword = searchKeyword;
       }
-      // const res = await axios.get(
-      //     `http://localhost:8080/api/market?&keyword=${keyword}
-      //     &lastPostId=${pageParam}&SIZE=${NUMBER_OF_POSTS_ON_PAGE}`
-      // );
+      const res = await axios.get(
+        `http://localhost:8080/api/market?&keyword=${keyword
+          .split(' ')
+          .join('.')}&lastPostId=${pageParam}&SIZE=${NUMBER_OF_POSTS_ON_PAGE}`
+      );
 
-      const res = await apis.MarketSearch({
-        keyword,
-        pageParam,
-        size: NUMBER_OF_POSTS_ON_PAGE,
-      });
+      // const res = await apis.MarketSearch({
+      //   keyword,
+      //   pageParam,
+      //   size: NUMBER_OF_POSTS_ON_PAGE,
+      // });
+      console.log('🚀 Res=>>>>>>', res);
 
       return res.data;
     },
