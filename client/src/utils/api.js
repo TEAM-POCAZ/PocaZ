@@ -21,4 +21,12 @@ export const apis = {
 
     // post
     postChat: (data) => api.post("/chat", data), //update 시킬 함수 추가
+
+    // market
+    MarketSearch: (data) => {
+        const { keyword, pageParam, size } = data;
+
+        api.get(`http://localhost:8080/api/market?&keyword=${keyword}
+&lastPostId=${pageParam}&SIZE=${size}`);
+    },
 };
