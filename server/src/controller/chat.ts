@@ -24,14 +24,13 @@ export const getSellItem = async (
   const { marketItemId } = req.params;
 
   const rows: ISellItem[] = await sqlSelectHandler(
-    `SELECT p.id, p.photocard, p.title, p.price, p2.path 
-    FROM photocardsellarticle p 
-    INNER JOIN photocard p2  ON p.photocard = p2.id 
-    WHERE p2.id = (SELECT id from photocard p2 WHERE p2.id = 
-      (SELECT photocard FROM photocardsellarticle p3 WHERE id = ?))`,
+    `SELECT p.id, p.title, p.price, p2.path 
+    From photocardsellarticle p
+    INNER JOIN photocard p2  ON p.photocard = p2.id
+    where p.id = ?`,
     [marketItemId]
   );
-    res.status(200).json(rows);
+    res.status(200).json(rows[0]);
 };
 
 export const getChat = async (
