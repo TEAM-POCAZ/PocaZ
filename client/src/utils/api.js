@@ -11,11 +11,22 @@ const api = axios.create({
 export const source = axios.CancelToken.source();
 export const apis = {
     // get
-    getChatList: (id) =>
-        api.get(`/chatroom/${id}`, { cancelToken: source.token }), // ChatMain.tsx
+    getChatList: (roomid) =>
+        api.get(`/chatroom/${roomid}`, { cancelToken: source.token }), // ChatMain.tsx
+
     getChat: (roomNumber) => api.get(`/chat/${roomNumber}`), // Chat.tsx
+    getSellItem: (marketItemId) => api.get(`/chat/item/${marketItemId}`),
+
     getMarketDetail: (id) => api.get(`/market/${id}`), // MarketDetail.tsx
 
     // post
     postChat: (data) => api.post("/chat", data), //update 시킬 함수 추가
+
+    // market
+    MarketSearch: (data) => {
+        const { keyword, pageParam, size } = data;
+
+        api.get(`http://localhost:8080/api/market?&keyword=${keyword}
+&lastPostId=${pageParam}&SIZE=${size}`);
+    },
 };

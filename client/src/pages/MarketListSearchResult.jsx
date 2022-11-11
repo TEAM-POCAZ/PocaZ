@@ -7,10 +7,12 @@ import { useInView } from 'react-intersection-observer';
 import { useInfiniteQuery } from 'react-query';
 import axios from 'axios';
 import { Link, useLocation } from 'react-router-dom';
+import { apis } from '../utils/api';
+import { IsLoading } from '../utils/IsLoading';
 
 const NUMBER_OF_POSTS_ON_PAGE = 10;
 
-const MarketList = () => {
+const MarketSearchResult = () => {
   const location = useLocation();
   const { ref, inView } = useInView();
   const [group, setGroup] = useState(0);
@@ -24,13 +26,27 @@ const MarketList = () => {
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery(
-    ['projects', group],
+    ['MarketSearch', group],
     async ({ pageParam = Number.MAX_SAFE_INTEGER }) => {
+      let keyword;
+      if (location.state) {
+        const { searchKeyword } = location.state;
+        console.log(searchKeyword);
+        keyword = searchKeyword;
+      }
       const res = await axios.get(
-        `http://localhost:8080/api/market?lastPostId=${pageParam}&SIZE=${NUMBER_OF_POSTS_ON_PAGE}${
-          group ? '&group=' + group : ''
-        }`
+        `http://localhost:8080/api/market?&keyword=${keyword
+          .split(' ')
+          .join('.')}&lastPostId=${pageParam}&SIZE=${NUMBER_OF_POSTS_ON_PAGE}`
       );
+
+      // const res = await apis.MarketSearch({
+      //   keyword,
+      //   pageParam,
+      //   size: NUMBER_OF_POSTS_ON_PAGE,
+      // });
+      console.log('🚀 Res=>>>>>>', res);
+
       return res.data;
     },
     {
@@ -62,7 +78,7 @@ const MarketList = () => {
         <MarketCategory setGroup={setGroup} />
 
         {status === 'loading' ? (
-          <p>Loading...</p>
+          <IsLoading />
         ) : status === 'error' ? (
           <span>Error: {error.message}</span>
         ) : (
@@ -94,4 +110,4 @@ const MarketList = () => {
   );
 };
 
-export default MarketList;
+export default MarketSearchResult;

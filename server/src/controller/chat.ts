@@ -12,6 +12,27 @@ interface IChats extends RowDataPacket {
   createAt: Date;
 }
 
+interface ISellItem extends RowDataPacket {
+  marketItemId: number;
+}
+
+export const getSellItem = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { marketItemId } = req.params;
+
+  const rows: ISellItem[] = await sqlSelectHandler(
+    `SELECT p.id, p.title, p.price, p2.path 
+    From photocardsellarticle p
+    INNER JOIN photocard p2  ON p.photocard = p2.id
+    where p.id = ?`,
+    [marketItemId]
+  );
+    res.status(200).json(rows[0]);
+};
+
 export const getChat = async (
   req: Request,
   res: Response,
@@ -26,7 +47,6 @@ export const getChat = async (
 
   res.status(200).json(rows);
 };
-
 export const createChat = async (data: any) => {
   const { chatRoom, user, message } = data;
 
