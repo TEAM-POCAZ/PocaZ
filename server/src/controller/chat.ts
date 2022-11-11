@@ -15,6 +15,28 @@ interface IChats extends RowDataPacket {
 interface ISellItem extends RowDataPacket {
   marketItemId: number;
 }
+// interface ICheckChatRoom extends RowDataPacket{
+//   sellerId : number;
+//   loginUserId : number;
+//   marketItemId : number;
+// }
+
+// export const getCheckChatRoom = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+  
+ 
+//   const { marketItemId, } =req.params;
+
+//   const rows: ICheckChatRoom[] = await sqlSelectHandler(
+//     ``,
+//     []
+//   )
+
+// }
+
 
 export const getSellItem = async (
   req: Request,
