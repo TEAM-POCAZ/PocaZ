@@ -26,26 +26,34 @@ const MarketDetail = ({ socket }) => {
   const { id: _id } = useParams(); // 포카판매글 id
 
   const onClickLinkChat = () => {
-    // sellerId, userInfo.id, _id
     console.log(_id);
     socket.createRoom(
       {
         sellerId: content.sellerId,
         loginUserId: userInfo.id,
-        marketItemId: _id,
+        marketItemId: Number(_id),
       },
       (res) => {
         if (res) {
           console.log('market detail chat res ===>', res);
+          navigate('/chat', {
+            state: {
+              sellerNickname: content.nickname,
+              marketItemId: _id,
+              room: res,
+            },
+          });
         }
       }
     );
-    navigate('/chat', {
-      state: {
-        sellerNickname: content.nickname,
-        marketItemId: _id,
-      },
-    });
+    // console.log('@@@@@', room);
+    // navigate('/chat', {
+    //   state: {
+    //     sellerNickname: content.nickname,
+    //     marketItemId: _id,
+    //     room,
+    //   },
+    // });
   };
 
   //TODO API post 보내야함
@@ -116,7 +124,6 @@ const MarketDetail = ({ socket }) => {
                   {price.toLocaleString()}
                   <b className='font-normal'>원</b>
                 </p>
-                {/* //TODO content.sellerId로 수정 필요 */}
                 {userInfo.id === content.sellerId ? (
                   <div className='flex'>
                     <select value={tradeStat} onChange={onChangeTradeStat}>
