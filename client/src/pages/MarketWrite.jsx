@@ -1,10 +1,8 @@
 import React from 'react';
 import Layout from '../utils/Layout';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { useRef } from 'react';
 import MarketWritePocaList from '../components/Market/MarketWritePocaList';
 import { toast } from 'react-toastify';
 import { useLoginStore } from '../store/store';
@@ -19,7 +17,6 @@ const MarketWrite = () => {
   const [pocas, setPoca] = useState([]); // 멤버 선택 시 불러온 포카 저장
   const [modal, setModal] = useState(false);
   const [pocaMemo, setPocaMemo] = useState({});
-  // const artistRef = useRef();
   const [artist, setArtist] = useState(1);
   const titleRef = useRef();
   const descriptionRef = useRef();
@@ -35,31 +32,55 @@ const MarketWrite = () => {
     setPoca(data);
   };
   const marketSubmit = async () => {
-    // console.log(pocaMemo.id)
-    const [marketId] = await (
-      await fetch('http://localhost:8080/api/market', {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify([
-          {
-            photocard: pocaMemo.id,
-            user: userInfo.id,
-            title: titleRef.current.value,
-            description: descriptionRef.current.value,
-            price: priceRef.current.value,
+    if (marketInfo?.state?.MarketId) {
+      await fetch(
+        `http://localhost:8080/api/market/${marketInfo?.state?.MarketId}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-type': 'application/json',
           },
-        ]),
-      })
-    ).json();
-    toast.success('게시물이 작성되었습니다.', {
-      autoClose: 500,
-      position: toast.POSITION.BOTTOM_CENTER,
-    });
-    // console.log(marketId);
-    navigate(`/Market/${marketId}`);
+          credentials: 'include',
+          body: JSON.stringify([
+            {
+              title: titleRef.current.value,
+              description: descriptionRef.current.value,
+              price: priceRef.current.value,
+            },
+          ]),
+        }
+      );
+
+      toast.success('게시물이 수정되었습니다.', {
+        autoClose: 500,
+        position: toast.POSITION.BOTTOM_CENTER,
+      });
+      navigate(`/Market/${marketInfo?.state?.MarketId}`);
+    } else {
+      const [marketId] = await (
+        await fetch('http://localhost:8080/api/market', {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify([
+            {
+              photocard: pocaMemo.id,
+              user: userInfo.id,
+              title: titleRef.current.value,
+              description: descriptionRef.current.value,
+              price: priceRef.current.value,
+            },
+          ]),
+        })
+      ).json();
+      toast.success('게시물이 작성되었습니다.', {
+        autoClose: 500,
+        position: toast.POSITION.BOTTOM_CENTER,
+      });
+      navigate(`/Market/${marketId}`);
+    }
   };
   useEffect(() => {
     Promise.all([
@@ -93,10 +114,9 @@ const MarketWrite = () => {
   }, []);
 
   useEffect(() => {
-    getPhotocard();
+    !marketInfo?.state?.MarketId && getPhotocard();
   }, [artist]);
-  //   artistRef?.current?.value && getPhotocard();
-  // }, [artistRef?.current?.value]);
+
   return (
     <>
       <Layout>
