@@ -26,7 +26,8 @@ const MarketDetail = ({ socket }) => {
   const { id: _id } = useParams(); // 포카판매글 id
 
   const onClickLinkChat = () => {
-    console.log(_id);
+    if (!userInfo) navigate('/login');
+
     socket.createRoom(
       {
         sellerId: content.sellerId,
@@ -113,7 +114,7 @@ const MarketDetail = ({ socket }) => {
                 </h3>
                 <p className='text-gray-400 text-sm break-all pb-3'>
                   {/* 포카 카테고리입니다. */}
-                  {content.sellDesc}
+                  {content.pocaName} : 포카이름입니다.
                 </p>
                 <p className='text-black text-base break-all pb-3'>
                   {content.sellDesc}
@@ -124,7 +125,7 @@ const MarketDetail = ({ socket }) => {
                   {price.toLocaleString()}
                   <b className='font-normal'>원</b>
                 </p>
-                {userInfo.id === content.sellerId ? (
+                {userInfo && userInfo.id === content.sellerId ? (
                   <div className='flex'>
                     <select value={tradeStat} onChange={onChangeTradeStat}>
                       <option value={1}>판매중</option>

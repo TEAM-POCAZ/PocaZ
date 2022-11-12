@@ -74,7 +74,11 @@ const ChatMain = ({ socket }) => {
   return (
     <Layout>
       {isLoading ? (
-        <IsLoading />
+        userInfo ? (
+          <IsLoading />
+        ) : (
+          <IsLoading needLogin='로그인이 필요합니다.' />
+        )
       ) : (
         <>
           <div className='h-[86vh]'>
@@ -100,7 +104,7 @@ const ChatMain = ({ socket }) => {
                       <li className='flex w-full '>
                         <div className='m-3'>
                           <img
-                            className='w-10 h-10 rounded-full'
+                            className='w-10 rounded-full'
                             src={item.profileImage}
                             alt='profile'
                           />
