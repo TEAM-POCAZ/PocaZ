@@ -93,7 +93,7 @@ const ChatMain = ({ socket }) => {
                       state={{
                         room: item.chatRoom,
                         sellerNickname: item.nickname,
-                        marketItemId: 100, //FIXME 실제 chatlist api 에서 바뀐 데이터!
+                        marketItemId: item.sellItemid, //FIXME 실제 chatlist api 에서 바뀐 데이터!
                       }}
                       className='flex py-4 border-2x'
                     >
