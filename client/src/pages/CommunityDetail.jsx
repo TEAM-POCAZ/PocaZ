@@ -208,7 +208,7 @@ const CommunityDetail = () => {
                           />
                         ) : null}
                       </div>
-                      <p className="py-2.5 break-all">{DetailContent.text}</p>
+                      <p className='py-2.5 break-all'>{DetailContent.text}</p>
                     </div>
                     <LikeBtn
                       like={like}
@@ -219,7 +219,7 @@ const CommunityDetail = () => {
                 );
               })()}
             <div className='replyWrap m-2.5 border-t '>
-              <CommentList comments={comments} />
+              <CommentList comments={comments} userId={userInfo.id} />
               <div className='commentWriteBtn flex mt-4'>
                 <textarea className='border w-full p-2.5' ref={replyRef} />
                 <button
