@@ -174,15 +174,15 @@ const tranSQL = {
              pc.description	AS description, -- photocard description
              pcs.price      AS price,		    -- photocard sell Price
              pcs.createAt   AS createAt,    -- sell post create date
-             pcs.tradeStatus  AS tradeStatus  -- sell status
+             pcs.tradeStatus  AS tradeStatus,  -- sell status
+             pcs.title       AS title,       -- photocard sell title
+             pcs.description AS sellDesc     -- photocard sell description
              `,
     detail: `
-           ,pcs.title       AS title,       -- photocard sell title
-            a.id           AS artistId,    -- artist pk
+           ,a.id           AS artistId,    -- artist pk
             ag.id          AS groupId,     -- group pk
             u.id           AS sellerId,    -- seller id
-            pc.id           AS pocaId,     -- poca id
-             pcs.description AS sellDesc     -- photocard sell description`,
+            pc.id           AS pocaId,     -- poca id `,
     from: `
      FROM PhotocardSellArticle pcs
         INNER JOIN User u ON pcs.user = u.id
