@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 const CommunityTop = ({ category }) => {
   return (
@@ -8,10 +8,10 @@ const CommunityTop = ({ category }) => {
       <div className="communityTab relative px-2.5 pb-2.5 border-b">
         <ul className="flex justify-evenly">
           <li>
-            <Link to="/CommunityList">자유</Link>
+            <NavLink to="/CommunityList">자유</NavLink>
           </li>
           <li>
-            <Link to="/CommunityBoast">자랑</Link>
+            <NavLink to="/CommunityBoast">자랑</NavLink>
           </li>
         </ul>
         <button

@@ -208,7 +208,7 @@ const CommunityDetail = () => {
                           />
                         ) : null}
                       </div>
-                      <p className='break-all'>{DetailContent.text}</p>
+                      <p className="py-2.5 break-all">{DetailContent.text}</p>
                     </div>
                     <LikeBtn
                       like={like}

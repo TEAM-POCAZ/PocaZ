@@ -20,7 +20,6 @@ const MyIdol = () => {
     },
     {
       retry: false,
-      enabled: !userInfo,
       onSuccess: (res) => {
         setUserInfo(res.data);
       },
