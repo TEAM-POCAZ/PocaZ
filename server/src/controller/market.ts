@@ -18,47 +18,56 @@ export default {
     );
   },
 
-
   getMarkets: async (req: Request, res: Response) => {
     const {
       query: { keyword, lastPostId, SIZE, group },
     } = req;
 
-    const keywordMap: string = typeof keyword === 'string' ?
-      keyword.split('.')
-      .reduce(
-        (result: string, kw: string) =>
-          `${result} OR pcs.title LIKE '%${kw}%' OR pcs.description LIKE '%${kw}%'`,
-        ''
-      ) : '';
+    const keywordMap: string =
+      typeof keyword === 'string'
+        ? keyword
+            .split('.')
+            .reduce(
+              (result: string, kw: string) =>
+                `${result} OR pcs.title LIKE '%${kw}%' OR pcs.description LIKE '%${kw}%'`,
+              ''
+            )
+        : '';
     // console.log( typeof group)
     const sellList: IMarket2[] = await sqlSelectHandler(
       `${tranSQL.market.main}
        ${tranSQL.market.from}
-       ${keyword ? `AND (1 != 1
-       ${keywordMap})` : ''}
+       ${
+         keyword
+           ? `AND (1 != 1
+       ${keywordMap})`
+           : ''
+       }
        AND pcs.deleteAt IS NULL
        AND pcs.id < ?
        ${group ? `AND ag.id = ${group} ` : ''}
        ORDER BY pcs.id DESC
        LIMIT ?`,
-       [lastPostId || Number.MAX_SAFE_INTEGER,
-        SIZE || '30']
+      [lastPostId || Number.MAX_SAFE_INTEGER, SIZE || '30']
     );
     // res.send(sellList);
-    const nextId = typeof lastPostId === 'string' && typeof SIZE === 'string' && 
-                     parseInt(lastPostId) > 0 && sellList.length === parseInt(SIZE)
-      ? sellList[sellList.length - 1]?.id - 1
-      : null;
-    const previousId = (lastPostId || Number.MAX_SAFE_INTEGER > 0) && typeof SIZE === 'string'
-          ? sellList[0]?.id + parseInt(SIZE) : null;
-      
-    res.send({ sellList, nextId, previousId })
+    const nextId =
+      typeof lastPostId === 'string' &&
+      typeof SIZE === 'string' &&
+      parseInt(lastPostId) > 0 &&
+      sellList.length === parseInt(SIZE)
+        ? sellList[sellList.length - 1]?.id - 1
+        : null;
+    const previousId =
+      (lastPostId || Number.MAX_SAFE_INTEGER > 0) && typeof SIZE === 'string'
+        ? sellList[0]?.id + parseInt(SIZE)
+        : null;
+
+    res.send({ sellList, nextId, previousId });
   },
   writeMarket: async (req: any, res: Response) => {
-    const [{ photocard, title, description, price }]: IMarket[] =
-      req.body;
-    const user = req.user.id
+    const [{ photocard, title, description, price }]: IMarket[] = req.body;
+    const user = req.user.id;
     const insertId = await tranSQL.postOne(
       `INSERT INTO PhotocardSellArticle (photocard, user, title, description, price, viewCount, tradeStatus)
        VALUES (?, 0, 1)`,
@@ -66,22 +75,20 @@ export default {
     );
     res.send([insertId]);
   },
-  modifyMarket: async (req: Request, res: Response) => {
+  modifyMarket: async (req: any, res: Response) => {
     const { id } = req.params;
-    const [
-      { photocard, user, title, description, price},
-    ]: IMarket2[] = req.body;
+    const user = req.user.id;
+    const [{ title, description, price }]: IMarket2[] = req.body;
     await tranSQL.getOne(
       `UPDATE PhotocardSellArticle
-          SET photocard = ?,
-              title = ?,
+          SET title = ?,
               description = ?,
               price = ?,
               refreshedDate = now()
         WHERE 1 = 1
         ${tranSQL.where('id')}
         ${tranSQL.where('user')}`,
-      [photocard, title, description, price, id, user]
+      [title, description, price, id, user]
     );
     res.send('successfully fixed on market!!');
   },

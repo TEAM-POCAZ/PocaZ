@@ -1,11 +1,14 @@
-import React from "react";
-import Layout from "../../utils/Layout";
-import { useNavigate, useParams } from "react-router-dom";
-import { useEffect } from "react";
-import { useState } from "react";
-import { useLoginStore } from "../../store/store";
 
-import { apis } from "../../utils/api";
+import React from 'react';
+import Layout from '../../utils/Layout';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { useLoginStore } from '../../store/store';
+
+import { apis } from '../../utils/api';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
 /**
  * for chat
@@ -18,47 +21,69 @@ import { apis } from "../../utils/api";
  * @returns chatDetail page => seller and user chatting 연결
  */
 const MarketDetail = ({ socket }) => {
-    const { userInfo } = useLoginStore();
-    const navigate = useNavigate();
-    const [content, setContent] = useState([]);
+  const { userInfo } = useLoginStore();
+  const navigate = useNavigate();
+  const [content, setContent] = useState([]);
+  const [tradeStat, setTradeStat] = useState();
+  const { id: _id } = useParams(); // 포카판매글 id
 
-    const [tradeStat, setTradeStat] = useState();
-    const { id: _id } = useParams(); // 포카판매글 id
+  const onClickLinkChat = () => {
+    // sellerId, userInfo.id, _id
+    socket.createRoom(
+      {
+        sellerId: null,
+        loginUserId: userInfo.id,
+        marketItemId: _id,
+      },
+      (res) => {
+        if (res) {
+          console.log('market detail chat res ===>', res);
+        }
+      }
+    );
+    navigate('/chat', {
+      state: { sellerNickname: content.nickname, marketItemId: _id },
+    });
+  };
 
-    const onClickLinkChat = () => {
-        // sellerId, userInfo.id, _id
-        console.log(_id);
-        socket.createRoom(
-            {
-                sellerId: content.sellerId,
-                loginUserId: userInfo.id,
-                marketItemId: _id,
-            },
-            (res) => {
-                if (res) {
-                    console.log("market detail chat res ===>", res);
-                }
-            }
-        );
-        navigate("/chat", {
-            state: { sellerNickname: content.nickname, marketItemId: _id },
+  //TODO API post 보내야함
+  const onChangeTradeStat = (e) => {
+    setTradeStat(e.target.value);
+  };
+
+  const onModify = (sellerId) =>
+    userInfo.id != sellerId
+      ? toast.error('해당 글 작성자만 수정할 수 있습니다')
+      : navigate('/MarketWrite', {
+          state: { MarketId: _id },
         });
-    };
 
-    //TODO API post 보내야함
-    const onChangeTradeStat = (e) => {
-        setTradeStat(e.target.value);
-    };
+  const onDelete = async (sellerId) => {
+    if (userInfo.id != sellerId) {
+      toast.error('해당 글 작성자만 삭제할 수 있습니다');
+      return;
+    }
+    try {
+      await axios.delete(`http://localhost:8080/api/market/${_id}`);
+      toast.success('삭제가 완료되었습니다.', {
+        autoClose: 500,
+        position: toast.POSITION.BOTTOM_CENTER,
+      });
+      navigate('/Market');
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
-    useEffect(() => {
-        (async () => {
-            const {
-                data: [result],
-            } = await apis.getMarketDetail(_id);
-            setContent(result);
-            setTradeStat(result.tradeStatus);
-        })();
-    }, []);
+  useEffect(() => {
+    (async () => {
+      const {
+        data: [result],
+      } = await apis.getMarketDetail(_id);
+      setContent(result);
+      setTradeStat(result.tradeStatus);
+    })();
+  }, []);
 
     const price = Number(content.price);
     return (
