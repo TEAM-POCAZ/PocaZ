@@ -150,7 +150,7 @@ const MarketWrite = () => {
               className='hidden'
             />
           </div>
-          <div className='subject border-b'>
+          <div className='subject border-t'>
             <h3 className='py-5 pb-0 px-3.5'>제목</h3>
             <textarea
               ref={titleRef}
@@ -205,8 +205,13 @@ const MarketWrite = () => {
             onClick={() => setModal(!modal)}
             disabled={marketInfo?.state?.MarketId ? true : false}
           >
-            포카 리스트 {pocaMemo.id ? <span>{pocaMemo.name}</span> : null}
-            <i className='ri-arrow-right-s-fill'></i>
+            <p className='w-6/12'>포카 리스트</p>
+            {pocaMemo.id ? (
+              <span className='relative w-6/12'>
+                {pocaMemo.name}
+                <i className='ri-arrow-right-s-fill absolute right-0'></i>
+              </span>
+            ) : null}
           </button>
           {modal ? (
             <MarketWritePocaList
@@ -223,7 +228,7 @@ const MarketWrite = () => {
               className='w-full p-3.5 border-0'
             />
           </div>
-          <div className='price pb-5 px-3.5 border-t'>
+          <div className='price pb-9 px-3.5 border-t'>
             <h3 className='pt-4 pb-3.5'>가격 입력</h3>
             <input
               type='text'
