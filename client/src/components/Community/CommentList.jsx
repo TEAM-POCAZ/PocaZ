@@ -1,9 +1,9 @@
-import React, { useRef, useState } from "react";
-import { useParams } from "react-router-dom";
-import CommentListItem from "./CommentListItem";
-import ReplyList from "./ReplyList";
+import React, { useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import CommentListItem from './CommentListItem';
+import ReplyList from './ReplyList';
 
-const CommentList = ({ comments }) => {
+const CommentList = ({ comments, userId }) => {
   const [isReply, setReply] = useState({});
   const { category, id } = useParams();
   const replyRef = useRef();
@@ -15,14 +15,16 @@ const CommentList = ({ comments }) => {
   };
 
   const commentSubmit = async (event) => {
+    if (!userId) return toast.error('로그인 유저만 댓글을 달 수 있습니다');
+
     if (replyRef.current.value)
       try {
         await fetch(
-          `http://localhost:8080/api/post/reply/${category}/${id}/2`,
+          `http://localhost:8080/api/post/reply/${category}/${id}/${userId}`,
           {
-            method: "POST",
+            method: 'POST',
             headers: {
-              "Content-type": "application/json",
+              'Content-type': 'application/json',
             },
             body: JSON.stringify([
               {
@@ -47,17 +49,18 @@ const CommentList = ({ comments }) => {
               key={comment.id}
               comment={comment}
               toggleReply={toggleReply}
+              userId={userId}
             />
             {isReply[comment.id] ? (
               <>
-                <div className="flex py-4">
+                <div className='flex py-4'>
                   <input
-                    className="border w-full p-2.5"
-                    type="text"
+                    className='border w-full p-2.5'
+                    type='text'
                     ref={replyRef}
                   />
                   <button
-                    className="min-w-[40px] ml-2.5 text-xs bg-slate-500 text-white"
+                    className='min-w-[40px] ml-2.5 text-xs bg-slate-500 text-white'
                     onClick={commentSubmit}
                   >
                     답글
@@ -67,7 +70,7 @@ const CommentList = ({ comments }) => {
                 </div>
               </>
             ) : null}
-            <div className="preply">
+            <div className='preply'>
               <ReplyList comment={comment} />
             </div>
           </>
