@@ -1,3 +1,4 @@
+import express from 'express';
 import { RowDataPacket } from 'mysql2';
 import { Request, Response, NextFunction } from 'express';
 
@@ -15,6 +16,60 @@ interface IChats extends RowDataPacket {
 interface ISellItem extends RowDataPacket {
   marketItemId: number;
 }
+interface ICheckChatRoom extends RowDataPacket {
+  sellerId: number;
+  loginUserId: number;
+  marketItemId: number;
+}
+
+export const getCheckChatRoom = async (
+  chatInfo: ICheckChatRoom
+  // req: express.Request,
+  // res: express.Response
+) => {
+  console.log('req :>> ', chatInfo);
+  const { marketItemId, loginUserId, sellerId } = chatInfo;
+  console.log('🚀 ~ file: chat.ts ~ line 32 ~ loginUserId', loginUserId);
+  console.log('🚀 ~ file: chat.ts ~ line 32 ~ marketItemId', marketItemId);
+  const rows: ICheckChatRoom[] = await sqlSelectHandler(
+    `select id
+    from chatroom c
+   inner join chatuser cu on
+   c.id = cu.chatRoom
+   where sellarticleid = ?
+     and cu.user = ?`,
+    [marketItemId, loginUserId]
+  );
+  // console.log('rows[0] :>> ', rows[0].id);
+  
+  // return rows[0].id;
+  if(rows.length!==0){
+    return rows[0].id;
+  } else{
+
+  const insertChatRoom : any = await sqlInsertHandler(
+    `INSERT INTO chatroom (sellarticleid) VALUES (?)`, [marketItemId] 
+  );
+  console.log('@@@@@@@ newChatRoom', insertChatRoom);
+  const room = insertChatRoom.insertId;
+  console.log('###### newChatRoomId', room);
+const insertChatUser = await sqlInsertHandler(
+    `INSERT INTO chatuser (chatRoom, user)
+    VALUES (?, ?), (?, ?)`, [room, sellerId, room, loginUserId]
+  );
+  return room;
+  } ;
+};
+
+
+// //-- createChatRoom
+
+
+// // -- insertChatUser
+// INSERT INTO chatuser (chatRoom, user)
+// VALUES (?, ?), (?, ?), [room, sellerId, room, loginUserId]
+
+
 
 export const getSellItem = async (
   req: Request,
@@ -30,7 +85,7 @@ export const getSellItem = async (
     where p.id = ?`,
     [marketItemId]
   );
-    res.status(200).json(rows[0]);
+  res.status(200).json(rows[0]);
 };
 
 export const getChat = async (

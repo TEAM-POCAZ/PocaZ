@@ -1,5 +1,6 @@
 import { Server } from 'socket.io';
 import { createChat } from './../controller/chat';
+import { getCheckChatRoom } from './../controller/chat';
 
 class Socket {
   private io;
@@ -19,7 +20,7 @@ class Socket {
         const isRoom = this.io.sockets.adapter.rooms.get(roomId)?.size ?? 1;
 
         console.log(
-          '확인>>>>>>>>>>',
+          '채팅방 확인>>>>>>>>>>',
           this.io.sockets.adapter.rooms.get(roomId)?.has(socketId)
         );
         // console.log(this.io.sockets.adapter.rooms);
@@ -39,6 +40,15 @@ class Socket {
           );
 
           // Socket.join is not executed, hence the room not created.
+        }
+      });
+
+      so.on('createRoom', async (chatInfo: any, callback: any) => {
+        if (chatInfo) {
+          const res = await getCheckChatRoom(chatInfo);
+          const newRoom = String(res);
+          so.join(newRoom);
+          callback(newRoom);
         }
       });
 

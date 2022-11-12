@@ -24,7 +24,6 @@ const Chat = ({ socket }) => {
   const [chats, setChats] = useState([]);
   const [sellItem, setSellItem] = useState();
   const [isLoading, setIsLoading] = useState(true);
-
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -48,11 +47,11 @@ const Chat = ({ socket }) => {
       )
       .then(() => setIsLoading(false));
 
-    socket.joinRoom(String(room), (res) => {
-      if (res) {
-        console.log('join ===>', res);
-      }
-    }); // from 장터에서 새로운 채팅방이 생겼을 때 join
+    // socket.joinRoom(String(room), (res) => {
+    //   if (res) {
+    //     console.log('join ===>', res);
+    //   }
+    // }); // from 장터에서 새로운 채팅방이 생겼을 때 join
 
     socket.onSync('new-message', (message) => {
       setChats((prev) => [...prev, message]);

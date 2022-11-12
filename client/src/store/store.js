@@ -1,5 +1,5 @@
-import create from "zustand";
-import { devtools, persist } from "zustand/middleware";
+import create from 'zustand';
+import { devtools, persist } from 'zustand/middleware';
 
 // TODO store 분리
 export const useStore = create(
@@ -33,11 +33,11 @@ const useLoginStore = create(
   devtools(
     persist(
       (set, get) => ({
-        userInfo: {}, //state
+        userInfo: null, //state
         setUserInfo: (input) => set({ userInfo: input }),
       }),
       {
-        name: "login-storage", // name of item in the storage (must be unique)
+        name: 'login-storage', // name of item in the storage (must be unique)
         getStorage: () => sessionStorage, // (optional) by default the 'localStorage' is used
       }
     )
