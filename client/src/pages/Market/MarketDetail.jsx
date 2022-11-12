@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Layout from '../../utils/Layout';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -6,6 +7,7 @@ import { useState } from 'react';
 import { useLoginStore } from '../../store/store';
 
 import { apis } from '../../utils/api';
+
 
 /**
  * for chat
@@ -60,6 +62,7 @@ const MarketDetail = ({ socket }) => {
   //TODO API post 보내야함
   const onChangeTradeStat = (e) => {
     setTradeStat(e.target.value);
+
   };
 
   useEffect(() => {

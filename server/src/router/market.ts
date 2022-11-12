@@ -122,8 +122,7 @@ router.get('/:id', markets.getMarket);
  *           schema:
  *             type: object
  *             example:
- *               - photocard: 1
- *                 title: 포토카드 팝니다
+ *               - title: 포토카드 팝니다
  *                 description: 싱싱한 포토카드 싸게 팝니다.
  *                 price: 20000
  *     responses:
@@ -150,7 +149,7 @@ router.get('/:id', markets.getMarket);
  *         content:
  *           application/json: {}
  */
-router.put('/:id', markets.modifyMarket);
+router.put('/:id', checkAuthenticated, markets.modifyMarket);
 
 router.delete('/:id', markets.deleteMarket);
 
