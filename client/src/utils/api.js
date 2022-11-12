@@ -16,9 +16,8 @@ export const apis = {
 
   getChat: (roomNumber) => api.get(`/chat/${roomNumber}`), // Chat.tsx
   getSellItem: (marketItemId) => api.get(`/chat/item/${marketItemId}`),
-  getCheckChatRoom: (data) => {
-    const { marketItemId, loginUserId } = data;
-    api.get(`/chat/CheckChatRoom?marketItemId=${marketItemId}&userId=${loginUserId}`)
+  getCheckChatRoom: (marketItemId, loginUserId) => {
+    api.get(`/chat/CheckChatRoom?marketItemId=${marketItemId}&loginUserId=${loginUserId}`)
   },
   getMarketDetail: (id) => api.get(`/market/${id}`), // MarketDetail.tsx
 

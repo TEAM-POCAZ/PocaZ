@@ -4,9 +4,9 @@ import { createChat, getChat, getCheckChatRoom, getSellItem } from '../controlle
 
 const router = express.Router();
 
-router.get('/:chatRoom', getChat);
+router.get('/CheckChatRoom',getCheckChatRoom)
 router.get('/item/:marketItemId', getSellItem);
-router.get('/CheckChatRoom?marketItemId=:marketItemId&userId=:loginUserId',getCheckChatRoom)
+router.get('/:chatRoom', getChat);
 router.post('/', createChat);
 
 export default router;

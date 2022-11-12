@@ -24,7 +24,6 @@ const Chat = ({ socket }) => {
   const [chats, setChats] = useState([]);
   const [sellItem, setSellItem] = useState();
   const [isLoading, setIsLoading] = useState(true);
-
   const navigate = useNavigate();
   const location = useLocation();
 
