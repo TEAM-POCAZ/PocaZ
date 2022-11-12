@@ -28,16 +28,14 @@ export const getCheckChatRoom = async (
 
 )=> {  
   const { marketItemId,loginUserId } = req.params;
+  
   const rows: ICheckChatRoom[] = await sqlSelectHandler(
-    `SELECT c.id
-      FROM chatroom c 
-      INNER JOIN chatuser cu ON
-      c.id = cu.chatRoom 
-      WHERE sellarticleid = ?
-      AND cu.user = ?`,
+    'SELECT id FROM chatroom WHERE sellarticleid = ? AND participant = ?',
     [marketItemId, loginUserId]
   );
+    res.status(200).json(rows[0]);
     res.status(200).json(rows);
+    console.log(rows)
     console.log(rows[0]);
 };
 
