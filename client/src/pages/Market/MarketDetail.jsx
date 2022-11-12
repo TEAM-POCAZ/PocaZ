@@ -50,15 +50,12 @@ const MarketDetail = ({ socket }) => {
     setTradeStat(e.target.value);
   };
 
-  const onModify = (sellerId) => {
-    if (userInfo.id != sellerId) {
-      toast.error('해당 글 작성자만 수정할 수 있습니다');
-    } else {
-      navigate('/MarketWrite', {
-        state: { MarketId: _id },
-      });
-    }
-  };
+  const onModify = (sellerId) =>
+    userInfo.id != sellerId
+      ? toast.error('해당 글 작성자만 수정할 수 있습니다')
+      : navigate('/MarketWrite', {
+          state: { MarketId: _id },
+        });
 
   const onDelete = async (sellerId) => {
     if (userInfo.id != sellerId) {
