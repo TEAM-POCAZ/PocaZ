@@ -3,6 +3,9 @@ import { checkAuthenticated } from '../middleware/checkAuthenticated';
 const router = express.Router();
 
 import markets from '../controller/market';
+import marketImgRouter from './marketImage';
+
+router.use('/img', marketImgRouter);
 
 /**
  * @swagger
