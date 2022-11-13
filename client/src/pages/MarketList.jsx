@@ -7,11 +7,13 @@ import { useInView } from 'react-intersection-observer';
 import { useInfiniteQuery } from 'react-query';
 import axios from 'axios';
 import { Link, useLocation } from 'react-router-dom';
+import { useLoginStore } from '../store/store';
 
 const NUMBER_OF_POSTS_ON_PAGE = 10;
 
 const MarketList = () => {
   const location = useLocation();
+  const { userInfo } = useLoginStore();
   const { ref, inView } = useInView();
   const [group, setGroup] = useState(0);
 
@@ -52,7 +54,7 @@ const MarketList = () => {
             className='min-w-[50px] w-[50px] h-[50px] m-2.5 bg-black rounded-full text-white text-sm'
           >
             <Link
-              to='/MarketWrite'
+              to={userInfo?.id ? '/MarketWrite' : '/login'}
               className='flex items-center justify-center h-full'
             >
               <i className='ri-pencil-line text-base'></i>
