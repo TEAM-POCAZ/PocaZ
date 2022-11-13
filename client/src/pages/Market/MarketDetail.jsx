@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Layout from '../../utils/Layout';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -7,7 +6,8 @@ import { useState } from 'react';
 import { useLoginStore } from '../../store/store';
 
 import { apis } from '../../utils/api';
-
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
 /**
  * for chat
@@ -23,6 +23,7 @@ const MarketDetail = ({ socket }) => {
   const { userInfo } = useLoginStore();
   const navigate = useNavigate();
   const [content, setContent] = useState([]);
+  const [imgs, setImgs] = useState([]);
 
   const [tradeStat, setTradeStat] = useState();
   const { id: _id } = useParams(); // 포카판매글 id
@@ -62,7 +63,33 @@ const MarketDetail = ({ socket }) => {
   //TODO API post 보내야함
   const onChangeTradeStat = (e) => {
     setTradeStat(e.target.value);
+  };
 
+  const deleteAction = async () => {
+    if (!userInfo) {
+      return toast.error('로그인 이후 삭제할 수 있습니다.', {
+        autoClose: 500,
+        position: toast.POSITION.BOTTOM_CENTER,
+      });
+    }
+    if (content.sellerId != userInfo?.id) {
+      return toast.error('게시글 작성자만 삭제할 수 있습니다.', {
+        autoClose: 500,
+        position: toast.POSITION.BOTTOM_CENTER,
+      });
+    }
+    if (confirm('정말 삭제할까용')) {
+      try {
+        await axios.delete(`http://localhost:8080/api/market/${_id}`);
+        toast.success('삭제가 완료되었습니다.', {
+          autoClose: 500,
+          position: toast.POSITION.BOTTOM_CENTER,
+        });
+        navigate('/Market');
+      } catch (e) {
+        console.error(e);
+      }
+    }
   };
 
   useEffect(() => {
@@ -72,6 +99,8 @@ const MarketDetail = ({ socket }) => {
       } = await apis.getMarketDetail(_id);
       setContent(result);
       setTradeStat(result.tradeStatus);
+      const { data: marketImgs } = await apis.getMarketImgs(_id);
+      setImgs(marketImgs);
     })();
   }, []);
 
@@ -96,12 +125,23 @@ const MarketDetail = ({ socket }) => {
           </div>
           {content && (
             <div className='m-3'>
-              {/* <div className="pocaDetailImg h-80 mb-2.5 pb-80 rounded-xl bg-slate-200"> */}
-              <img
+              {/* <div className='pocaDetailImg h-80 mb-2.5 pb-80 rounded-xl bg-slate-200'> */}
+              {/* <img
                 className='relative w-full h-full object-cover mb-2.5 rounded-xl'
                 src={content.pocaImg}
                 alt={content.pocaName}
-              />
+              /> */}
+              {imgs.length > 0
+                ? imgs.map((img) => (
+                    <img
+                      src={`http://localhost:8080/${img.path}`}
+                      className='relative w-full h-full object-cover mb-2.5 rounded-xl'
+                      //
+                      crossOrigin='anonymous'
+                      //문제가 해결되면 crossOrigin 삭제할 예정\
+                    />
+                  ))
+                : null}
               {/* </div> */}
               <div className='sellerInfo pt-3 items-center flex border-b'>
                 <img
@@ -144,7 +184,10 @@ const MarketDetail = ({ socket }) => {
                     >
                       수정
                     </button>
-                    <button className='bg-gray-500 text-white p-2 rounded-md text-xl my-2.5'>
+                    <button
+                      className='bg-gray-500 text-white p-2 rounded-md text-xl my-2.5'
+                      onClick={deleteAction}
+                    >
                       삭제
                     </button>
                   </div>
