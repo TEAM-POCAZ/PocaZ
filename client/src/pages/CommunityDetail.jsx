@@ -24,21 +24,30 @@ const CommunityDetail = () => {
   useEffect(() => {
     const Detail = async () => {
       try {
+        let isLiked = 0;
+        if (userInfo?.id)
+          (async () => {
+            const { data: toggleLike } = await axios.get(
+              `http://localhost:8080/api/post/likes/${id}/${userInfo.id}`
+            );
+            toggleLike.length > 0 && (setLike(true) || isLiked++);
+          })();
         await axios.patch(
           `http://localhost:8080/api/post/view/${category}/${id}`
         );
 
         setDetailContent(null);
-        const response = await axios.get(
-          `http://localhost:8080/api/post/${category}/${id}`
-        );
-        setDetailContent(response.data[0]);
+        const {
+          data: [detail],
+        } = await axios.get(`http://localhost:8080/api/post/${category}/${id}`);
+        // console.log(response.data);/
+        setDetailContent({ ...detail, likesCnt: detail.likesCnt - isLiked });
         const { data } = await axios.get(
           `http://localhost:8080/api/post/img/${category}/${id}`
         );
+        console.log(data);
         const [{ path: imgPath }] = data;
         setImg(imgPath);
-        console.log(data);
         //console.log(imgPath)
       } catch (e) {
         console.error(e);
@@ -47,42 +56,31 @@ const CommunityDetail = () => {
     Detail();
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      const {
-        data: [toggleLike],
-      } = await axios.get(
-        `http://localhost:8080/api/post/likes/${id}/${userInfo.id}`
-      );
-      toggleLike ? setLike(true) : setLike(false);
-    })();
-  }, [like]);
-
   const onReplySubmit = async () => {
-    try {
-      const { data } = await axios.post(
-        `http://localhost:8080/api/post/reply/${category}/${id}/${userInfo.id}`,
-        [
-          {
-            pid: null,
-            content: replyRef.current.value,
-          },
-        ]
-      );
-      // console.log('성공')
-      // console.log(data)
-      toast.success('댓글이 등록되었습니다.', {
-        autoClose: 500,
-        position: toast.POSITION.BOTTOM_CENTER,
-      });
-      window.location.reload();
-    } catch (err) {
-      console.error(err);
-    }
+    // console.log(userInfo);
+    if (userInfo?.id)
+      try {
+        const { data } = await axios.post(
+          `http://localhost:8080/api/post/reply/${category}/${id}/${userInfo.id}`,
+          [
+            {
+              pid: null,
+              content: replyRef.current.value,
+            },
+          ]
+        );
+        toast.success('댓글이 등록되었습니다.', {
+          autoClose: 500,
+          position: toast.POSITION.BOTTOM_CENTER,
+        });
+        window.location.reload();
+      } catch (err) {
+        console.error(err);
+      }
   };
 
   const modifyAction = () => {
-    if (DetailContent && DetailContent.userId === userInfo.id) {
+    if (DetailContent && DetailContent.userId === userInfo?.id) {
       navigate('/Community', { state: { category, id } });
     } else {
       toast.success('수정 권한이 없습니다.', {
@@ -99,7 +97,7 @@ const CommunityDetail = () => {
         position: toast.POSITION.BOTTOM_CENTER,
       });
     }
-    if (DetailContent.userId != userInfo.id) {
+    if (DetailContent.userId != userInfo?.id) {
       return toast.error('게시글 작성자만 삭제할 수 있습니다.', {
         autoClose: 500,
         position: toast.POSITION.BOTTOM_CENTER,
@@ -122,7 +120,7 @@ const CommunityDetail = () => {
   };
 
   const onToggleLike = () => {
-    if (!userInfo) {
+    if (!userInfo?.id) {
       return toast.error('로그인 이후 좋아요를 누를 수 있습니다.', {
         autoClose: 500,
         position: toast.POSITION.BOTTOM_CENTER,
@@ -199,7 +197,7 @@ const CommunityDetail = () => {
                     <div className='px-2.5 min-h-[300px]'>
                       {/* {imgs ? <ImageList imgs={datum.imgs} /> : null} */}
                       <div className='attachedFile'>
-                        {img ? (
+                        {img.length > 0 ? (
                           <img
                             src={`http://localhost:8080/${img}`}
                             //
@@ -219,7 +217,7 @@ const CommunityDetail = () => {
                 );
               })()}
             <div className='replyWrap m-2.5 border-t '>
-              <CommentList comments={comments} userId={userInfo.id} />
+              <CommentList comments={comments} userId={userInfo?.id} />
               <div className='commentWriteBtn flex mt-4'>
                 <textarea className='border w-full p-2.5' ref={replyRef} />
                 <button
