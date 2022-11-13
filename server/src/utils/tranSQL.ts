@@ -182,7 +182,7 @@ const tranSQL = {
            ,a.id           AS artistId,    -- artist pk
             ag.id          AS groupId,     -- group pk
             u.id           AS sellerId,    -- seller id
-            pc.id           AS pocaId,     -- poca id `,
+            pc.id           AS pocaId     -- poca id `,
     from: `
      FROM PhotocardSellArticle pcs
         INNER JOIN User u ON pcs.user = u.id
