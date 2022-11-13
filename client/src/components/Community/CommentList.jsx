@@ -71,7 +71,7 @@ const CommentList = ({ comments, userId }) => {
               </>
             ) : null}
             <div className='preply'>
-              <ReplyList comment={comment} />
+              <ReplyList comment={comment} userId={userId} />
             </div>
           </>
         ))}

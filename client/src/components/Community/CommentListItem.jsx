@@ -57,22 +57,26 @@ const CommentListItem = ({ comment, toggleReply, userId }) => {
               답글달기
             </div>
           )}
-          <button
-            className='mr-2.5 text-sm'
-            onClick={() => modifyToggle(comment.content)}
-          >
-            수정
-          </button>
-          <button className=' text-sm' onClick={clickDelete}>
-            삭제
-          </button>
+          {comment.user == userId ? (
+            <>
+              <button
+                className='mr-2.5 text-sm'
+                onClick={() => modifyToggle(comment.content)}
+              >
+                수정
+              </button>
+              <button className=' text-sm' onClick={clickDelete}>
+                삭제
+              </button>
+            </>
+          ) : null}
         </div>
       </div>
       {
         <div hidden={hidden}>
           <textarea height={40} ref={modifyRef} />
           <button
-            title='댓글 수정하기'
+            className=' text-sm'
             onClick={() => {
               userId === comment.user
                 ? clickModify(comment.id)
@@ -81,7 +85,9 @@ const CommentListItem = ({ comment, toggleReply, userId }) => {
                     position: toast.POSITION.BOTTOM_CENTER,
                   });
             }}
-          />
+          >
+            댓글 수정하기
+          </button>
         </div>
       }
     </>

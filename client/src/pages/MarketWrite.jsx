@@ -22,7 +22,13 @@ const MarketWrite = () => {
   const descriptionRef = useRef();
   const priceRef = useRef();
 
-  const chooseGroup = (e) => setGroup(e.target.value);
+  const chooseGroup = (e) => {
+    const group = e.target.value;
+    setGroup(group);
+    setArtist(
+      choose.artists.filter((artist) => artist.artistGroup == group)[0].id
+    );
+  };
   const chooseArtist = (e) => setArtist(e.target.value);
 
   const getPhotocard = async () => {
@@ -202,7 +208,10 @@ const MarketWrite = () => {
             type='button'
             className={`flex justify-between w-full py-5 px-3.5 border-b text-left
                         ${marketInfo?.state?.MarketId ? 'text-gray-300' : ''}`}
-            onClick={() => setModal(!modal)}
+            onClick={() => {
+              console.log(pocaMemo);
+              setModal(!modal);
+            }}
             disabled={marketInfo?.state?.MarketId ? true : false}
           >
             <p className='w-6/12'>포카 리스트</p>
