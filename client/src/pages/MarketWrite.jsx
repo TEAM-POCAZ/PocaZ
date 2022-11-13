@@ -18,6 +18,10 @@ const MarketWrite = () => {
   const [modal, setModal] = useState(false);
   const [pocaMemo, setPocaMemo] = useState({});
   const [artist, setArtist] = useState(1);
+  const [imgs, setImgs] = useState([]);
+  const [prevImgs, setPrevImgs] = useState([]);
+  const [currImgs, setCurrImgs] = useState([]);
+
   const titleRef = useRef();
   const descriptionRef = useRef();
   const priceRef = useRef();
@@ -37,31 +41,76 @@ const MarketWrite = () => {
     );
     setPoca(data);
   };
-  const marketSubmit = async () => {
-    if (marketInfo?.state?.MarketId) {
-      await fetch(
-        `http://localhost:8080/api/market/${marketInfo?.state?.MarketId}`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-type': 'application/json',
-          },
-          credentials: 'include',
-          body: JSON.stringify([
-            {
-              title: titleRef.current.value,
-              description: descriptionRef.current.value,
-              price: priceRef.current.value,
-            },
-          ]),
-        }
-      );
 
-      toast.success('게시물이 수정되었습니다.', {
-        autoClose: 500,
-        position: toast.POSITION.BOTTOM_CENTER,
+  const onImgSubmit = async (e) => {
+    e.preventDefault();
+
+    if (prevImgs.length + currImgs.length > 2) {
+      return toast.error('이미지는 최대 10개까지 올릴 수 있습니다.');
+    }
+
+    if (e.target.files) {
+      const uploadFile = e.target.files[0];
+      setImgs((imgs) => [...imgs, uploadFile]);
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setCurrImgs((prev) => [...prev, e.target.result]);
+      };
+      reader.readAsDataURL(uploadFile);
+    }
+  };
+
+  const onImgDelete = (e, action) => {
+    const imgKey = e.target.value;
+    if (action === 'prev') {
+      setPrevImgs((prev) =>
+        prev.map((img) => (img.file == imgKey ? { ...img, isDel: true } : img))
+      );
+    }
+    if (action === 'curr') {
+      setCurrImgs((prev) => prev.filter((_, idx) => idx != imgKey));
+    }
+  };
+
+  const marketSubmit = async () => {
+    if (!titleRef.current.value) {
+      return toast.error('제목을 입력해주세요');
+    }
+    if (!descriptionRef.current.value) {
+      return toast.error('내용을 입력해주세요');
+    }
+
+    let mId;
+
+    if (marketInfo?.state?.MarketId) {
+      mId = marketInfo.state.MarketId;
+      await fetch(`http://localhost:8080/api/market/${mId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify([
+          {
+            title: titleRef.current.value,
+            description: descriptionRef.current.value,
+            price: priceRef.current.value,
+          },
+        ]),
       });
-      navigate(`/Market/${marketInfo?.state?.MarketId}`);
+      await fetch(`http://localhost:8080/api/market/img/${mId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          filesKeys: prevImgs.reduce(
+            (result, img) => (img.isDel ? [...result, img.file] : result),
+            []
+          ),
+        }),
+      });
     } else {
       const [marketId] = await (
         await fetch('http://localhost:8080/api/market', {
@@ -81,12 +130,47 @@ const MarketWrite = () => {
           ]),
         })
       ).json();
-      toast.success('게시물이 작성되었습니다.', {
+      mId = marketId;
+    }
+
+    if (imgs.length > 0) {
+      const formData = new FormData();
+      imgs.forEach((img) => {
+        formData.append('img', img);
+      });
+      const {
+        data: [fileId],
+      } = await axios({
+        method: 'post',
+        url: 'http://localhost:8080/api/file',
+        data: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data; charset=utf-8',
+        },
+      });
+
+      await fetch(`http://localhost:8080/api/market/img/${mId}`, {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          filesKeys: new Array(imgs.length)
+            .fill()
+            .map((_, idx) => idx + fileId),
+        }),
+      });
+    }
+
+    toast.success(
+      `게시물이 ${marketInfo?.state?.MarketId ? '수정' : '작성'}되었습니다.`,
+      {
         autoClose: 500,
         position: toast.POSITION.BOTTOM_CENTER,
-      });
-      navigate(`/Market/${marketId}`);
-    }
+      }
+    );
+
+    navigate(`/Market/${mId}`);
   };
   useEffect(() => {
     Promise.all([
@@ -106,15 +190,21 @@ const MarketWrite = () => {
 
     if (marketInfo?.state?.MarketId) {
       (async () => {
+        const m_id = marketInfo?.state?.MarketId;
         const {
           data: [result],
-        } = await apis.getMarketDetail(marketInfo?.state?.MarketId);
+        } = await apis.getMarketDetail(m_id);
         setGroup(result.groupId);
         titleRef.current.value = result.title;
         descriptionRef.current.value = result.sellDesc;
         priceRef.current.value = result.price;
         setArtist(result.artistId);
         setPocaMemo({ id: result.pocaId, name: result.pocaName });
+
+        const { data: marketImgs } = await apis.getMarketImgs(m_id);
+        setPrevImgs(
+          marketImgs.map((marketImg) => ({ ...marketImg, isDel: false }))
+        );
       })();
     }
   }, []);
@@ -141,6 +231,47 @@ const MarketWrite = () => {
             등록
           </button>
         </div>
+        <button onClick={() => console.log(prevImgs)}>ddd</button>
+        {currImgs.length > 0
+          ? currImgs.map((currImg, idx) => (
+              <div className='relative' key={`${idx}th curr`}>
+                <img src={currImg} alt='preview' />
+                <button
+                  className='absolute top-5 right-5 bg-blue-700 rounded p-2'
+                  onClick={(e) => {
+                    onImgDelete(e, 'curr');
+                  }}
+                  value={idx}
+                >
+                  삭제
+                </button>
+              </div>
+            ))
+          : null}
+        {prevImgs.length > 0
+          ? prevImgs.map((img) =>
+              !img.isDel ? (
+                <div className='relative' key={img.file}>
+                  <img
+                    src={`http://localhost:8080/${img.path}`}
+                    className='relative w-full h-full object-cover mb-2.5 rounded-xl'
+                    //
+                    crossOrigin='anonymous'
+                    //문제가 해결되면 crossOrigin 삭제할 예정\
+                  />
+                  <button
+                    className='absolute top-5 right-5 bg-blue-700 rounded p-2'
+                    onClick={(e) => {
+                      onImgDelete(e, 'prev');
+                    }}
+                    value={img.file}
+                  >
+                    삭제
+                  </button>
+                </div>
+              ) : null
+            )
+          : null}
         <div className=''>
           <div className='attachedFileBtn'>
             <label htmlFor='file'>
@@ -154,6 +285,7 @@ const MarketWrite = () => {
               id='file'
               accept='image/png, image/jpeg'
               className='hidden'
+              onChange={onImgSubmit}
             />
           </div>
           <div className='subject border-t'>
@@ -209,7 +341,7 @@ const MarketWrite = () => {
             className={`flex justify-between w-full py-5 px-3.5 border-b text-left
                         ${marketInfo?.state?.MarketId ? 'text-gray-300' : ''}`}
             onClick={() => {
-              console.log(pocaMemo);
+              // console.log(pocaMemo);
               setModal(!modal);
             }}
             disabled={marketInfo?.state?.MarketId ? true : false}
