@@ -64,7 +64,7 @@ export const getSellItem = async (
     `SELECT p.id, p.title, p.price, p2.path 
     From PhotocardSellArticle p
     INNER JOIN PhotoCard p2  ON p.photocard = p2.id
-    where p.id = ?`,
+    WHERE p.id = ?`,
     [marketItemId]
   );
   res.status(200).json(rows[0]);
