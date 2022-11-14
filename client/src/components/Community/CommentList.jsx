@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import CommentListItem from './CommentListItem';
 import ReplyList from './ReplyList';
 
-const CommentList = ({ comments, userId }) => {
+const CommentList = ({ comments, userId, refetch }) => {
   const [isReply, setReply] = useState({});
   const { category, id } = useParams();
   const replyRef = useRef();
@@ -34,7 +34,8 @@ const CommentList = ({ comments, userId }) => {
             ]),
           }
         );
-        window.location.reload();
+        setReply({});
+        refetch();
       } catch (err) {
         console.error(err);
       }
@@ -50,6 +51,7 @@ const CommentList = ({ comments, userId }) => {
               comment={comment}
               toggleReply={toggleReply}
               userId={userId}
+              refetch={refetch}
             />
             {isReply[comment.id] ? (
               <>
@@ -71,7 +73,7 @@ const CommentList = ({ comments, userId }) => {
               </>
             ) : null}
             <div className='preply'>
-              <ReplyList comment={comment} userId={userId} />
+              <ReplyList comment={comment} userId={userId} refetch={refetch} />
             </div>
           </>
         ))}
