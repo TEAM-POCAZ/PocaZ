@@ -9,6 +9,8 @@ import { useLoginStore } from '../store/store';
 import { apis } from '../utils/api';
 import { useQuery } from 'react-query';
 
+const MAX_IMAGE_SIZE = 20 * 1024 * 1024;
+
 const MarketWrite = () => {
   const navigate = useNavigate();
   const { userInfo } = useLoginStore();
@@ -64,6 +66,9 @@ const MarketWrite = () => {
 
     if (e.target.files) {
       const uploadFile = e.target.files[0];
+      if (uploadFile.size > MAX_IMAGE_SIZE) {
+        return toast.error('이미지 작은거 좀 넣어줄래');
+      }
       setImgs((imgs) => [...imgs, uploadFile]);
 
       const reader = new FileReader();
@@ -76,6 +81,9 @@ const MarketWrite = () => {
 
   const onImgDelete = (e, action) => {
     const imgKey = e.target.value;
+    if (prevImgs.length + currImgs.length === 1) {
+      return toast.error('장터게시판에는 최소 1개의 사진이 필요해요');
+    }
     if (action === 'prev') {
       setPrevImgs((prev) =>
         prev.map((img) => (img.file == imgKey ? { ...img, isDel: true } : img))
@@ -83,6 +91,7 @@ const MarketWrite = () => {
     }
     if (action === 'curr') {
       setCurrImgs((prev) => prev.filter((_, idx) => idx != imgKey));
+      setImgs((prev) => prev.filter((_, idx) => idx != imgKey));
     }
   };
 
@@ -93,7 +102,9 @@ const MarketWrite = () => {
     if (!descriptionRef.current.value) {
       return toast.error('내용을 입력해주세요');
     }
-
+    if (prevImgs.length + currImgs.length < 1) {
+      return toast.error('장터게시판에는 최소 1개의 사진이 필요해요');
+    }
     let mId;
 
     if (marketInfo?.state?.MarketId) {
@@ -248,54 +259,55 @@ const MarketWrite = () => {
           </button>
         </div>
         {/* <button onClick={() => console.log(prevImgs)}>ddd</button> */}
-
-        <div className='relative dfdfdf'>
-          <ul className='m-5'>
-            {prevImgs.length > 0
-              ? prevImgs.map((img) =>
-                  !img.isDel ? (
-                    <li
-                      className='relative border-2 border-black rounded-xl'
-                      key={img.file}
-                    >
-                      <img
-                        src={`http://localhost:8080/${img.path}`}
-                        className='relative w-full h-full object-cover mb-2.5 rounded-xl'
-                        //
-                        crossOrigin='anonymous'
-                        //문제가 해결되면 crossOrigin 삭제할 예정\
-                      />
-                      <button
-                        className='absolute top-5 right-5 bg-blue-700 rounded-full p-2'
-                        onClick={(e) => {
-                          onImgDelete(e, 'prev');
-                        }}
-                        value={img.file}
+        {prevImgs.length + currImgs.length > 0 ? (
+          <div className='relative dfdfdf'>
+            <ul className='m-5'>
+              {prevImgs.length > 0
+                ? prevImgs.map((img) =>
+                    !img.isDel ? (
+                      <li
+                        className='relative border-2 border-black rounded-xl'
+                        key={img.file}
                       >
-                        X
+                        <img
+                          src={`http://localhost:8080/${img.path}`}
+                          className='relative w-full h-full object-cover mb-2.5 rounded-xl'
+                          //
+                          crossOrigin='anonymous'
+                          //문제가 해결되면 crossOrigin 삭제할 예정\
+                        />
+                        <button
+                          className='absolute top-5 right-5 bg-blue-700 rounded-full p-2'
+                          onClick={(e) => {
+                            onImgDelete(e, 'prev');
+                          }}
+                          value={img.file}
+                        >
+                          X
+                        </button>
+                      </li>
+                    ) : null
+                  )
+                : null}
+              {currImgs.length > 0
+                ? currImgs.map((currImg, idx) => (
+                    <li className='relative' key={`${idx}th curr`}>
+                      <img src={currImg} alt='preview' />
+                      <button
+                        className='absolute top-5 right-5 bg-blue-700 rounded p-2'
+                        onClick={(e) => {
+                          onImgDelete(e, 'curr');
+                        }}
+                        value={idx}
+                      >
+                        삭제
                       </button>
                     </li>
-                  ) : null
-                )
-              : null}
-            {currImgs.length > 0
-              ? currImgs.map((currImg, idx) => (
-                  <li className='relative' key={`${idx}th curr`}>
-                    <img src={currImg} alt='preview' />
-                    <button
-                      className='absolute top-5 right-5 bg-blue-700 rounded p-2'
-                      onClick={(e) => {
-                        onImgDelete(e, 'curr');
-                      }}
-                      value={idx}
-                    >
-                      삭제
-                    </button>
-                  </li>
-                ))
-              : null}
-          </ul>
-        </div>
+                  ))
+                : null}
+            </ul>
+          </div>
+        ) : null}
         <div className=''>
           <div className='attachedFileBtn'>
             <label htmlFor='file'>
