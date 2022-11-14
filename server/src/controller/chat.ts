@@ -30,7 +30,7 @@ export const getCheckChatRoom = async (
   console.log('🚀 ~ file: chat.ts ~ line 32 ~ marketItemId', marketItemId);
   const rows: ICheckChatRoom[] = await sqlSelectHandler(
     `SELECT id
-    FROM chatroom c
+    FROM ChatRoom c
     INNER JOIN chatuser cu on
     c.id = cu.chatRoom
     WHERE sellarticleid = ?
@@ -41,11 +41,11 @@ export const getCheckChatRoom = async (
     return rows[0].id;
   } else{
     const insertChatRoom : any = await sqlInsertHandler(
-    `INSERT INTO chatroom (sellarticleid) VALUES (?)`, [marketItemId] 
+    `INSERT INTO ChatRoom (sellarticleid) VALUES (?)`, [marketItemId] 
   );
   const room = insertChatRoom.insertId;
   const insertChatUser = await sqlInsertHandler(
-    `INSERT INTO chatuser (chatRoom, user,sellItemId)
+    `INSERT INTO ChatUser (chatRoom, user,sellItemId)
     VALUES (?, ?,?), (?, ?,?)`, [room, sellerId, marketItemId, room, loginUserId, marketItemId]
   );
   return room;
@@ -62,7 +62,7 @@ export const getSellItem = async (
   const rows: ISellItem[] = await sqlSelectHandler(
     `SELECT p.id, p.title, p.price, p2.path 
     From photocardsellarticle p
-    INNER JOIN photocard p2  ON p.photocard = p2.id
+    INNER JOIN PhotoCard p2  ON p.photocard = p2.id
     WHERE p.id = ?`,
     [marketItemId]
   );
