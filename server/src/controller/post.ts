@@ -69,13 +69,13 @@ export default {
     // res.send(['33', user])
     res.send([insertId]);
   },
-  modifyPost: async (req: express.Request, res: express.Response) => {
-    const { category, post, user } = req.params;
+  modifyPost: async (req: any, res: express.Response) => {
+    const user = req.user.id;
+    const { category, post } = req.params;
     const [{ title, content }]: [
       {
         title: string;
         content: string;
-        // user: string;
       }
     ] = req.body;
 
