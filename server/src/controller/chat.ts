@@ -62,7 +62,7 @@ export const getSellItem = async (
 
   const rows: ISellItem[] = await sqlSelectHandler(
     `SELECT p.id, p.title, p.price, p2.path 
-    From photocardsellarticle p
+    From PhotocardSellArticle p
     INNER JOIN PhotoCard p2  ON p.photocard = p2.id
     where p.id = ?`,
     [marketItemId]
