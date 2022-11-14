@@ -53,9 +53,9 @@ export const getCheckChatRoom = async (
   console.log('@@@@@@@ newChatRoom', insertChatRoom);
   const room = insertChatRoom.insertId;
   console.log('###### newChatRoomId', room);
-const insertChatUser = await sqlInsertHandler(
-    `INSERT INTO chatuser (chatRoom, user)
-    VALUES (?, ?), (?, ?)`, [room, sellerId, room, loginUserId]
+  const insertChatUser = await sqlInsertHandler(
+    `INSERT INTO chatuser (chatRoom, user,sellItemId)
+    VALUES (?, ?,?), (?, ?,?)`, [room, sellerId, marketItemId, room, loginUserId, marketItemId]
   );
   return room;
   } ;

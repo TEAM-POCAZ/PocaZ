@@ -2,32 +2,32 @@ import create from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
 // TODO store 분리
-export const useStore = create(
-  devtools((set) => ({
-    isLogin: false,
-    toggleIsLogin: () => set((state) => ({ isLogin: !state.isLogin })),
+// export const useStore = create(
+//   devtools((set) => ({
+//     isLogin: false,
+//     toggleIsLogin: () => set((state) => ({ isLogin: !state.isLogin })),
 
-    count: 1, //state
+//     count: 1, //state
 
-    increase: () => {
-      // count 1만큼 증가
-      // set method로 상태 변경 가능
-      set((state) => ({ count: state.count + 1 }));
-    },
+//     increase: () => {
+//       // count 1만큼 증가
+//       // set method로 상태 변경 가능
+//       set((state) => ({ count: state.count + 1 }));
+//     },
 
-    setCnt: (input) => {
-      // 입력받은 input만큼 count 설정
-      set({ count: input });
-    },
+//     setCnt: (input) => {
+//       // 입력받은 input만큼 count 설정
+//       set({ count: input });
+//     },
 
-    clearCnt: () => {
-      // count 초기화
-      set((state) => ({ count: 0 }));
-    },
+//     clearCnt: () => {
+//       // count 초기화
+//       set((state) => ({ count: 0 }));
+//     },
 
-    setUserInfo: (input) => {},
-  }))
-);
+//     setUserInfo: (input) => {},
+//   }))
+// );
 
 const useLoginStore = create(
   devtools(
@@ -35,6 +35,11 @@ const useLoginStore = create(
       (set, get) => ({
         userInfo: null, //state
         setUserInfo: (input) => set({ userInfo: input }),
+        resetUserInfo: () => {
+          set((state) => ({ userInfo: null }));
+          console.log('userInfo :>> ', userInfo);
+          sessionStorage.removeItem('login-storage');
+        },
       }),
       {
         name: 'login-storage', // name of item in the storage (must be unique)
