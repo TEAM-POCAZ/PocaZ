@@ -7,6 +7,9 @@ import MarketWritePocaList from '../components/Market/MarketWritePocaList';
 import { toast } from 'react-toastify';
 import { useLoginStore } from '../store/store';
 import { apis } from '../utils/api';
+import { useQuery } from 'react-query';
+
+const MAX_IMAGE_SIZE = 20 * 1024 * 1024;
 
 const MarketWrite = () => {
   const navigate = useNavigate();
@@ -14,7 +17,6 @@ const MarketWrite = () => {
   const marketInfo = useLocation();
   const [choose, setChoose] = useState({ artists: [], groups: [] });
   const [group, setGroup] = useState(1);
-  const [pocas, setPoca] = useState([]); // 멤버 선택 시 불러온 포카 저장
   const [modal, setModal] = useState(false);
   const [pocaMemo, setPocaMemo] = useState({});
   const [artist, setArtist] = useState(1);
@@ -35,22 +37,38 @@ const MarketWrite = () => {
   };
   const chooseArtist = (e) => setArtist(e.target.value);
 
-  const getPhotocard = async () => {
-    const { data } = await axios.get(
-      `http://localhost:8080/api/artist/poca?artist=${artist}`
-    );
-    setPoca(data);
-  };
-
+  const {
+    isLoading,
+    isError,
+    data: pocas,
+  } = useQuery(
+    ['artistPoca', artist],
+    () =>
+      axios
+        .get(`http://localhost:8080/api/artist/poca?artist=${artist}`)
+        .then((a) => a.data),
+    {
+      enabled: !marketInfo?.state?.MarketId,
+    }
+  );
+  /**
+   * 신규 이미지 업로드를 위한 함수. 게시글 당 이미지 갯수를 제한하며
+   * 화면 상으로 이미지 업로드시 이미지 상태 관리 배열에 이미지를 추가한다.
+   * @param {Event} e : 기본 이벤트 방지 및 파일 업로드를 위한 param
+   * @returns
+   */
   const onImgSubmit = async (e) => {
     e.preventDefault();
-
-    if (prevImgs.length + currImgs.length > 2) {
+    // 게시글 당 이미지 갯수 제한
+    if (prevImgs.length + currImgs.length > 9) {
       return toast.error('이미지는 최대 10개까지 올릴 수 있습니다.');
     }
 
     if (e.target.files) {
       const uploadFile = e.target.files[0];
+      if (uploadFile.size > MAX_IMAGE_SIZE) {
+        return toast.error('이미지 작은거 좀 넣어줄래');
+      }
       setImgs((imgs) => [...imgs, uploadFile]);
 
       const reader = new FileReader();
@@ -63,6 +81,9 @@ const MarketWrite = () => {
 
   const onImgDelete = (e, action) => {
     const imgKey = e.target.value;
+    if (prevImgs.length + currImgs.length === 1) {
+      return toast.error('장터게시판에는 최소 1개의 사진이 필요해요');
+    }
     if (action === 'prev') {
       setPrevImgs((prev) =>
         prev.map((img) => (img.file == imgKey ? { ...img, isDel: true } : img))
@@ -70,6 +91,7 @@ const MarketWrite = () => {
     }
     if (action === 'curr') {
       setCurrImgs((prev) => prev.filter((_, idx) => idx != imgKey));
+      setImgs((prev) => prev.filter((_, idx) => idx != imgKey));
     }
   };
 
@@ -80,7 +102,9 @@ const MarketWrite = () => {
     if (!descriptionRef.current.value) {
       return toast.error('내용을 입력해주세요');
     }
-
+    if (prevImgs.length + currImgs.length < 1) {
+      return toast.error('장터게시판에는 최소 1개의 사진이 필요해요');
+    }
     let mId;
 
     if (marketInfo?.state?.MarketId) {
@@ -99,18 +123,19 @@ const MarketWrite = () => {
           },
         ]),
       });
-      await fetch(`http://localhost:8080/api/market/img/${mId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          filesKeys: prevImgs.reduce(
-            (result, img) => (img.isDel ? [...result, img.file] : result),
-            []
-          ),
-        }),
-      });
+      prevImgs.length > 0 &&
+        (await fetch(`http://localhost:8080/api/market/img/${mId}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            filesKeys: prevImgs.reduce(
+              (result, img) => (img.isDel ? [...result, img.file] : result),
+              []
+            ),
+          }),
+        }));
     } else {
       const [marketId] = await (
         await fetch('http://localhost:8080/api/market', {
@@ -173,9 +198,12 @@ const MarketWrite = () => {
     navigate(`/Market/${mId}`);
   };
   useEffect(() => {
+    const ctr = new AbortController();
+    const { signal } = ctr;
     Promise.all([
       axios.get('http://localhost:8080/api/artist'),
       axios.get('http://localhost:8080/api/artist/group'),
+      { signal },
     ])
       //async 쓰삼***
       .then(
@@ -207,11 +235,10 @@ const MarketWrite = () => {
         );
       })();
     }
+    return () => {
+      ctr.abort();
+    };
   }, []);
-
-  useEffect(() => {
-    !marketInfo?.state?.MarketId && getPhotocard();
-  }, [artist]);
 
   return (
     <>
@@ -231,47 +258,56 @@ const MarketWrite = () => {
             등록
           </button>
         </div>
-        <button onClick={() => console.log(prevImgs)}>ddd</button>
-        {currImgs.length > 0
-          ? currImgs.map((currImg, idx) => (
-              <div className='relative' key={`${idx}th curr`}>
-                <img src={currImg} alt='preview' />
-                <button
-                  className='absolute top-5 right-5 bg-blue-700 rounded p-2'
-                  onClick={(e) => {
-                    onImgDelete(e, 'curr');
-                  }}
-                  value={idx}
-                >
-                  삭제
-                </button>
-              </div>
-            ))
-          : null}
-        {prevImgs.length > 0
-          ? prevImgs.map((img) =>
-              !img.isDel ? (
-                <div className='relative' key={img.file}>
-                  <img
-                    src={`http://localhost:8080/${img.path}`}
-                    className='relative w-full h-full object-cover mb-2.5 rounded-xl'
-                    //
-                    crossOrigin='anonymous'
-                    //문제가 해결되면 crossOrigin 삭제할 예정\
-                  />
-                  <button
-                    className='absolute top-5 right-5 bg-blue-700 rounded p-2'
-                    onClick={(e) => {
-                      onImgDelete(e, 'prev');
-                    }}
-                    value={img.file}
-                  >
-                    삭제
-                  </button>
-                </div>
-              ) : null
-            )
-          : null}
+        {/* <button onClick={() => console.log(prevImgs)}>ddd</button> */}
+        {prevImgs.length + currImgs.length > 0 ? (
+          <div className='relative dfdfdf'>
+            <ul className='m-5'>
+              {prevImgs.length > 0
+                ? prevImgs.map((img) =>
+                    !img.isDel ? (
+                      <li
+                        className='relative border-2 border-black rounded-xl'
+                        key={img.file}
+                      >
+                        <img
+                          src={`http://localhost:8080/${img.path}`}
+                          className='relative w-full h-full object-cover mb-2.5 rounded-xl'
+                          //
+                          crossOrigin='anonymous'
+                          //문제가 해결되면 crossOrigin 삭제할 예정\
+                        />
+                        <button
+                          className='absolute top-5 right-5 bg-blue-700 rounded-full p-2'
+                          onClick={(e) => {
+                            onImgDelete(e, 'prev');
+                          }}
+                          value={img.file}
+                        >
+                          X
+                        </button>
+                      </li>
+                    ) : null
+                  )
+                : null}
+              {currImgs.length > 0
+                ? currImgs.map((currImg, idx) => (
+                    <li className='relative' key={`${idx}th curr`}>
+                      <img src={currImg} alt='preview' />
+                      <button
+                        className='absolute top-5 right-5 bg-blue-700 rounded p-2'
+                        onClick={(e) => {
+                          onImgDelete(e, 'curr');
+                        }}
+                        value={idx}
+                      >
+                        삭제
+                      </button>
+                    </li>
+                  ))
+                : null}
+            </ul>
+          </div>
+        ) : null}
         <div className=''>
           <div className='attachedFileBtn'>
             <label htmlFor='file'>
@@ -355,11 +391,17 @@ const MarketWrite = () => {
             ) : null}
           </button>
           {modal ? (
-            <MarketWritePocaList
-              pocas={pocas}
-              setPocaMemo={setPocaMemo}
-              setModal={setModal}
-            />
+            isLoading ? (
+              'loading'
+            ) : isError ? (
+              'error'
+            ) : (
+              <MarketWritePocaList
+                pocas={pocas}
+                setPocaMemo={setPocaMemo}
+                setModal={setModal}
+              />
+            )
           ) : null}
           <div className='desc'>
             <h3 className='py-5 pb-0 px-3.5'>한줄 소개</h3>
