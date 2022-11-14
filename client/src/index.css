@@ -158,4 +158,8 @@
   }
 
   .communityTab ul li a.active { color:#034ac5; }
+
+  .idolCate { margin:20px 0; text-align:center; }
+  .idolCate li p { padding:10px 0; }
+  .idolCate li img { display:block; width:40px; height:100%; margin:0 auto; }
 }

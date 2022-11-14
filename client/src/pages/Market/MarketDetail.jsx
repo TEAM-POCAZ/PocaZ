@@ -157,7 +157,7 @@ const MarketDetail = ({ socket }) => {
                 </h3>
                 <p className='text-gray-400 text-sm break-all pb-3'>
                   {/* 포카 카테고리입니다. */}
-                  {content.pocaName} : 포카이름입니다.
+                  {content.pocaName}
                 </p>
                 <p className='text-black text-base break-all pb-3'>
                   {content.sellDesc}

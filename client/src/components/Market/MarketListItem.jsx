@@ -18,7 +18,7 @@ const MarketListItem = ({ list }) => {
               {page.sellList.map((post) => {
                 return (
                   <li
-                    className='flex-[0_1_48%] mb-3.5'
+                    className='flex-[0_1_48%] mb-3.5 cursor-pointer'
                     key={post.id}
                     onClick={() => {
                       navigate(`/Market/${post.id}`);
