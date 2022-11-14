@@ -25,6 +25,7 @@ export const apis = {
   getMarketImgs: (id) => api.get(`/market/img/${id}`), // use in Detail and write
   // post
   postChat: (data) => api.post('/chat', data), //update 시킬 함수 추가
+  getArtistGroup: () => api.get(`/artist/group`),
 
   // market
   MarketSearch: (data) => {
