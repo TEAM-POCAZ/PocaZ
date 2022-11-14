@@ -157,7 +157,7 @@ router.get('/:category/:post', posts.getPost);
  *         required: true
  *         description: 게시글 검색 키워드
  *         schema:
- *           type: string     
+ *           type: string
  *       - name: lastPostId
  *         in: query
  *         description: 페이지의 마지막 글의 id를 얻습니다. 공백으로 둘 경우 최신 get id of Last post of Page
@@ -211,7 +211,7 @@ router.get('/search', posts.searchPost);
  *           type: string
  *           enum:
  *             - recent
- *             - popular     
+ *             - popular
  *       - name: lastPostId
  *         in: query
  *         description: 페이지의 마지막 글의 id를 얻습니다. 공백으로 둘 경우 최신 get id of Last post of Page
@@ -245,7 +245,7 @@ router.get('/:category/', posts.getPosts);
 
 /**
  * @swagger
- * /api/post/{category}/{post}/{user}:
+ * /api/post/{category}/{post}:
  *   put:
  *     summary: 게시글 하나를 수정합니다.
  *     description: ''
@@ -267,14 +267,6 @@ router.get('/:category/', posts.getPosts);
  *         schema:
  *           type: string
  *         example: 1
- *       - name: user
- *         in: path
- *         description: ID of user that need to post
- *         required: true
- *         schema:
- *           type: integer
- *           format: int64
- *         example: 1
  *     requestBody:
  *       description: 수정할 내용을 입력해요
  *       content:
@@ -294,7 +286,7 @@ router.get('/:category/', posts.getPosts);
  *       '405':
  *         description: Invalid input
  */
-router.put('/:category/:post/:user', posts.modifyPost);
+router.put('/:category/:post', checkAuthenticated, posts.modifyPost);
 
 /**
  * @swagger
@@ -375,9 +367,9 @@ router.delete('/:category/:post/:user', posts.deletePost);
 router.patch('/view/:category/:post', posts.viewPost);
 
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-    res.status(401);
-    res.json({ error: err.message });
-  };
+  res.status(401);
+  res.json({ error: err.message });
+};
 
 router.use(errorHandler);
 export default router;

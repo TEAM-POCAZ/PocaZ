@@ -19,7 +19,7 @@ const CommunityDetail = () => {
   const [replyCnt, setReplyCnt] = useState(0);
   const navigate = useNavigate();
   const [like, setLike] = useState(false);
-  const [img, setImg] = useState([]);
+  const [imgs, setImg] = useState([]);
 
   useEffect(() => {
     const Detail = async () => {
@@ -42,12 +42,12 @@ const CommunityDetail = () => {
         } = await axios.get(`http://localhost:8080/api/post/${category}/${id}`);
         // console.log(response.data);/
         setDetailContent({ ...detail, likesCnt: detail.likesCnt - isLiked });
-        const { data } = await axios.get(
+        const { data: postImgs } = await axios.get(
           `http://localhost:8080/api/post/img/${category}/${id}`
         );
-        console.log(data);
-        const [{ path: imgPath }] = data;
-        setImg(imgPath);
+        // console.log(data);
+        // const [{ path: imgPath }] = data;
+        setImg(postImgs);
         //console.log(imgPath)
       } catch (e) {
         console.error(e);
@@ -195,17 +195,18 @@ const CommunityDetail = () => {
                       </span>
                     </div>
                     <div className='px-2.5 min-h-[300px]'>
+                      {imgs.length > 0
+                        ? imgs.map((img) => (
+                            <img
+                              src={`http://localhost:8080/${img.path}`}
+                              className='relative w-full h-full object-cover mb-2.5 rounded-xl'
+                              //
+                              crossOrigin='anonymous'
+                              //문제가 해결되면 crossOrigin 삭제할 예정\
+                            />
+                          ))
+                        : null}
                       {/* {imgs ? <ImageList imgs={datum.imgs} /> : null} */}
-                      <div className='attachedFile'>
-                        {img.length > 0 ? (
-                          <img
-                            src={`http://localhost:8080/${img}`}
-                            //
-                            crossOrigin='anonymous'
-                            //문제가 해결되면 crossOrigin 삭제할 예정\
-                          />
-                        ) : null}
-                      </div>
                       <p className='py-2.5 break-all'>{DetailContent.text}</p>
                     </div>
                     <LikeBtn
