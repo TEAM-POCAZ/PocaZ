@@ -8,7 +8,7 @@ export default {
     try {
       const {
         params: { category },
-        query: { sortBy, lastPostId, SIZE },
+        query: { sortBy, lastPostId, SIZE, userId },
       } = req;
 
       const postList: IPosts[] = await sqlSelectHandler(
@@ -16,7 +16,8 @@ export default {
          ${tranSQL.posts.listsFrom}
           WHERE p.category = ?
           AND p.deleteAt IS NULL
-          AND p.id < ? 
+          AND p.id < ?
+          ${userId ? `AND p.user =${userId} ` : ''} 
           ORDER BY ${sortBy === 'popular' ? 'LikesCnt DESC, ' : ''} p.id DESC 
           LIMIT ? `,
         [category, lastPostId || Number.MAX_SAFE_INTEGER, SIZE || '10']
@@ -69,13 +70,13 @@ export default {
     // res.send(['33', user])
     res.send([insertId]);
   },
-  modifyPost: async (req: express.Request, res: express.Response) => {
-    const { category, post, user } = req.params;
+  modifyPost: async (req: any, res: express.Response) => {
+    const user = req.user.id;
+    const { category, post } = req.params;
     const [{ title, content }]: [
       {
         title: string;
         content: string;
-        // user: string;
       }
     ] = req.body;
 

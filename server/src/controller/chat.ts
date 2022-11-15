@@ -1,3 +1,4 @@
+import express from 'express';
 import { RowDataPacket } from 'mysql2';
 import { Request, Response, NextFunction } from 'express';
 
@@ -15,6 +16,40 @@ interface IChats extends RowDataPacket {
 interface ISellItem extends RowDataPacket {
   marketItemId: number;
 }
+interface ICheckChatRoom extends RowDataPacket {
+  sellerId: number;
+  loginUserId: number;
+  marketItemId: number;
+}
+
+export const getCheckChatRoom = async (
+  chatInfo: ICheckChatRoom
+) => {
+  const { marketItemId, loginUserId, sellerId } = chatInfo;
+  const rows: ICheckChatRoom[] = await sqlSelectHandler(
+    `SELECT id
+    From ChatRoom c
+    INNER JOIN ChatUser cu on
+    c.id = cu.chatRoom
+    WHERE sellarticleid = ?
+    AND cu.user = ?`,
+    [marketItemId, loginUserId]
+  );
+  if(rows.length!==0){
+    return rows[0].id;
+  } else{
+
+  const insertChatRoom : any = await sqlInsertHandler(
+    `INSERT INTO ChatRoom (sellarticleid) VALUES (?)`, [marketItemId] 
+  );
+  const room = insertChatRoom.insertId;
+  const insertChatUser = await sqlInsertHandler(
+    `INSERT INTO ChatUser (chatRoom, user,sellItemId)
+    VALUES (?, ?, ?), (?, ?, ?)`, [room, sellerId, marketItemId, room, loginUserId, marketItemId]
+  );
+  return room;
+  } ;
+};
 
 export const getSellItem = async (
   req: Request,
@@ -25,12 +60,12 @@ export const getSellItem = async (
 
   const rows: ISellItem[] = await sqlSelectHandler(
     `SELECT p.id, p.title, p.price, p2.path 
-    From photocardsellarticle p
-    INNER JOIN photocard p2  ON p.photocard = p2.id
-    where p.id = ?`,
+    From PhotocardSellArticle p
+    INNER JOIN Photocard p2  ON p.photocard = p2.id
+    WHERE p.id = ?`,
     [marketItemId]
   );
-    res.status(200).json(rows[0]);
+  res.status(200).json(rows[0]);
 };
 
 export const getChat = async (
@@ -59,8 +94,6 @@ export const createChat = async (data: any) => {
     'SELECT * FROM Chat WHERE id=?',
     [inserResult.insertId]
   );
-
-  // res.status(200).json(row[0]);
 
   console.log('object :>> ', row[0]);
   getSocketIO().to(row[0].chatRoom.toString()).emit('new-message', row[0]);

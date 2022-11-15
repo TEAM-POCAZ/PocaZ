@@ -18,7 +18,7 @@ const MarketListItem = ({ list }) => {
               {page.sellList.map((post) => {
                 return (
                   <li
-                    className='flex-[0_1_48%] mb-3.5'
+                    className='flex-[0_1_48%] mb-3.5 cursor-pointer'
                     key={post.id}
                     onClick={() => {
                       navigate(`/Market/${post.id}`);
@@ -26,7 +26,10 @@ const MarketListItem = ({ list }) => {
                   >
                     <div className='pocaThumb relative h-72 lg:h-96 mm:h-60 rounded-xl overflow-hidden'>
                       <img
-                        src={post.pocaImg}
+                        src={`${import.meta.env.VITE_HOST_URL}/${
+                          post.filePath
+                        }`}
+                        crossOrigin={'anonymous'}
                         className='w-full h-full object-cover'
                       />
                     </div>

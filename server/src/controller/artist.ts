@@ -7,6 +7,7 @@ export default {
   getArtists: async (req: Request, res: Response) => {
     res.send(await tranSQL.getOne(tranSQL.artist));
   },
+
   getArtist: async (req: Request, res: Response) => {
     const { id } = req.params;
     const artists = await sqlSelectHandler(

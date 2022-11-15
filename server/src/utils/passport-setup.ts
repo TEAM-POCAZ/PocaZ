@@ -17,7 +17,6 @@ import db from '../db/database';
 import { PoolConnection } from 'mysql2/promise';
 import { WithdrawalError } from '../error/WithdrawalError';
 import { DbConnectionError } from '../error/DbConnectionError';
-
 function passportSetup() {
   const GoogleStrategy = passport_google_oauth20.Strategy;
 
@@ -72,7 +71,9 @@ function passportSetup() {
           } else {
             const userCreationDto: UserCreationDto = {
               username,
-              profileImage: profile.profile_image_url,
+              profileImage:
+                profile.profile_image_url ??
+                `${config.host.url}/api/defaultProfile.png`,
             };
             user = await User.create(conn, userCreationDto);
             console.log('twitter login user created, id: ', user);
@@ -128,7 +129,9 @@ function passportSetup() {
             const userCreationDto: UserCreationDto = {
               username,
               email: profile._json.email,
-              profileImage: profile._json.picture,
+              profileImage:
+                profile._json.picture ??
+                `${config.host.url}/api/defaultProfile.png`,
             };
             user = await User.create(conn, userCreationDto);
             console.log('google login user created, ', user);
@@ -177,7 +180,9 @@ function passportSetup() {
             const userCreationDto: UserCreationDto = {
               username: username,
               email: profile.email,
-              profileImage: profile.profile_image_url,
+              profileImage:
+                profile.profile_image_url ??
+                `${config.host.url}/api/defaultProfile.png`,
             };
             user = await User.create(conn, userCreationDto);
             console.log('apple login user created, ', user);

@@ -6,6 +6,8 @@ import groupRouter from './artistGroup';
 import photocardRouter from './photocard';
 import galmangRouter from './galmangPoca';
 import artists from '../controller/artist';
+import { PoolConnection } from 'mysql2/promise';
+import db from '../db/database';
 
 router.use('/agency', agencyRouter);
 router.use('/group', groupRouter);
@@ -89,6 +91,30 @@ router.post('/', artists.writeArtist);
  */
 
 router.get('/', artists.getArtists);
+
+class Artist {
+  static async selectAll(conn: PoolConnection): Promise<any> {
+    const [arists] = await conn.query<any>(
+      `SELECT a.id, a.artistGroup, a.stageName, a.realName, ag.name as agencyName 
+      FROM Artist as a
+      INNER JOIN Agency as ag ON a.agency = ag.id
+      `
+    );
+    return arists;
+  }
+}
+
+router.get('/mypage', async (req, res, next) => {
+  let conn: PoolConnection | null = null;
+  try {
+    conn = await db.getPool().getConnection();
+    return res.json(await Artist.selectAll(conn));
+  } catch (err) {
+    next(err);
+  } finally {
+    conn?.release();
+  }
+});
 
 /**
  * @swagger

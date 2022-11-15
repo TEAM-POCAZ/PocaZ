@@ -23,7 +23,8 @@ export const getChatRoom = async (
             u.profileImage, -- 상대방 프로필 이미지
             cr3.message, -- 채팅방의 가장 최근 메세지
             cr3.createAt, -- 최근 메시지 보낸 시각
-            cr3.msgId -- 최근 메시지의 ID
+            cr3.msgId, -- 최근 메시지의 ID
+            cr.sellItemid -- 채팅방과 연결된 판매글 ID
       FROM ChatUser cr 
         INNER JOIN (SELECT chatRoom, user FROM ChatUser WHERE user != ?) cr2 
           ON cr.chatRoom = cr2.chatRoom 
@@ -36,9 +37,3 @@ export const getChatRoom = async (
   res.status(200).json(rows);
 
 };
-
-export const createChatRoom = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {};

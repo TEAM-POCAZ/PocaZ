@@ -29,6 +29,7 @@ const ChatMain = ({ socket }) => {
     (async () => {
       try {
         const { data } = await apis.getChatList(userInfo.id);
+        data.sort((a, b) => dayjs(b.createAt) - dayjs(a.createAt));
         setChatList(data);
         setIsLoading(false);
       } catch (e) {
@@ -50,7 +51,6 @@ const ChatMain = ({ socket }) => {
         }
       });
     });
-    console.log('chatList :>> ', chatList);
   }, [chatList]);
 
   useEffect(() => {
@@ -67,6 +67,7 @@ const ChatMain = ({ socket }) => {
         }
         newChatRooms.push(value);
       }
+      newChatRooms.sort((a, b) => dayjs(b.createAt) - dayjs(a.createAt));
       setChatList(newChatRooms);
     }
   }, [updatedRoom]);
@@ -74,7 +75,11 @@ const ChatMain = ({ socket }) => {
   return (
     <Layout>
       {isLoading ? (
-        <IsLoading />
+        userInfo ? (
+          <IsLoading />
+        ) : (
+          <IsLoading needLogin='로그인이 필요합니다.' />
+        )
       ) : (
         <>
           <div className='h-[86vh]'>
@@ -93,14 +98,14 @@ const ChatMain = ({ socket }) => {
                       state={{
                         room: item.chatRoom,
                         sellerNickname: item.nickname,
-                        marketItemId: 100, //FIXME 실제 chatlist api 에서 바뀐 데이터!
+                        marketItemId: item.sellItemid, //FIXME 실제 chatlist api 에서 바뀐 데이터!
                       }}
                       className='flex py-4 border-2x'
                     >
                       <li className='flex w-full '>
                         <div className='m-3'>
                           <img
-                            className='w-10 h-10 rounded-full'
+                            className='w-10 rounded-full'
                             src={item.profileImage}
                             alt='profile'
                           />
