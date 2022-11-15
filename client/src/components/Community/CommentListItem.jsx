@@ -50,36 +50,44 @@ const CommentListItem = ({ comment, toggleReply, userId, refetch }) => {
   return (
     <>
       <div className='mb-2.5 p-2.5 border-b'>
-        <div className='writeWrap flex items-center'>
-          <div className='commentThumb w-10 h-10 rounded-full bg-black mr-2.5'></div>
-          <span className='writeName'>{comment.nickname}</span>
-        </div>
-        <div className='commentBox py-2.5'>
-          <p>{comment.content}</p>
-        </div>
-        <div className='flex cursor-pointer'>
-          {comment.pid ? null : (
-            <div
-              className='mr-2.5 text-slate-500 text-sm'
-              onClick={() => toggleReply(comment.id)}
-            >
-              답글달기
+        {!comment.deleteAt ? (
+          <>
+            <div className='writeWrap flex items-center'>
+              <div className='commentThumb w-10 h-10 rounded-full bg-black mr-2.5'></div>
+              <span className='writeName'>{comment.nickname}</span>
             </div>
-          )}
-          {comment.user == userId ? (
-            <>
-              <button
-                className='mr-2.5 text-sm'
-                onClick={() => modifyToggle(comment.content)}
-              >
-                수정
-              </button>
-              <button className=' text-sm' onClick={clickDelete}>
-                삭제
-              </button>
-            </>
-          ) : null}
-        </div>
+            <div className='commentBox py-2.5'>
+              <p>{comment.content}</p>
+            </div>
+            <div className='flex cursor-pointer'>
+              {comment.pid ? null : (
+                <div
+                  className='mr-2.5 text-slate-500 text-sm'
+                  onClick={() => toggleReply(comment.id)}
+                >
+                  답글달기
+                </div>
+              )}
+              {comment.user == userId ? (
+                <>
+                  <button
+                    className='mr-2.5 text-sm'
+                    onClick={() => modifyToggle(comment.content)}
+                  >
+                    수정
+                  </button>
+                  <button className=' text-sm' onClick={clickDelete}>
+                    삭제
+                  </button>
+                </>
+              ) : null}
+            </div>
+          </>
+        ) : (
+          <div className='commentBox py-2.5'>
+            <p>삭제된 댓글입니다.</p>
+          </div>
+        )}
       </div>
       {
         <div hidden={hidden}>

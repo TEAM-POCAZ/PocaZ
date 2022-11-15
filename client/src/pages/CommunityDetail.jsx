@@ -19,8 +19,8 @@ const getReply = async (category, id, setReplyCnt) => {
     const [originComments, replyComments] = response.data;
     // console.log(originComments);
     setReplyCnt(
-      originComments.length +
-        replyComments.filter(({ pid }) => originComments.includes(pid)).length
+      originComments.filter(({ deleteAt }) => !deleteAt).length +
+        replyComments.filter(({ deleteAt }) => !deleteAt).length
     );
     return originComments.map((preply) => {
       preply.reply = replyComments.filter((rep) => rep.pid == preply.id);
