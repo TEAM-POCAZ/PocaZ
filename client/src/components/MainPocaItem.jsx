@@ -29,7 +29,7 @@ const MainPocaItem = () => {
           'error'
         ) : result.data ? (
           result.data.map((pocas) => {
-            console.log(typeof pocas.price);
+            // console.log(typeof pocas.price);
             return (
               <SwiperSlide key={pocas.id}>
                 <div
