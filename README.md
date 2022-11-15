@@ -1,5 +1,6 @@
 # 프로젝트 소개
 PHOTO CARD A TO Z.
+<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FbHVMui%2FbtrRfIvbla6%2FNQoWchXxVWVPKmVRBtHFZK%2Fimg.png" alt="캡처" />
 # 프로젝트 팀원
 |김만중1|김별이2|문승현3|배성재4| 🧸이호준5|
 |---|---|---|---|---|
