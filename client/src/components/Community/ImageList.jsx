@@ -1,3 +1,5 @@
+import { baseURL } from '../../utils/api';
+
 const ImageList = ({ imgs, isWrite, imgDelete }) => {
   return (
     <>
@@ -7,7 +9,7 @@ const ImageList = ({ imgs, isWrite, imgDelete }) => {
             <div
               className='relative w-[500px] h-[500px] object-cover z-10'
               crossOrigin='anonymous'
-              src={`http://localhost:8080/${img.path}`}
+              src={`${baseURL}/${img.path}`}
               alt={img.path}
             />
             {isWrite ? (

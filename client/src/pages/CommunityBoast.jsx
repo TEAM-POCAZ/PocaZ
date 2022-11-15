@@ -9,6 +9,7 @@ import { useInfiniteQuery } from 'react-query';
 import { useInView } from 'react-intersection-observer';
 import Masonry from 'react-masonry-css';
 import { useLoginStore } from '../store/store';
+import { baseURL } from '../utils/api';
 
 const NUMBER_OF_POSTS_ON_PAGE = 10;
 
@@ -31,7 +32,7 @@ const CommunityBoast = () => {
     ['projects'],
     async ({ pageParam = Number.MAX_SAFE_INTEGER }) => {
       const res = await axios.get(
-        `http://localhost:8080/api/post/2?sortBy=recent&lastPostId=${pageParam}&SIZE=${NUMBER_OF_POSTS_ON_PAGE}`
+        `${baseURL}/post/2?sortBy=recent&lastPostId=${pageParam}&SIZE=${NUMBER_OF_POSTS_ON_PAGE}`
       );
       return res.data;
     },
@@ -74,7 +75,7 @@ const CommunityBoast = () => {
                         >
                           <div className='boastThumb rounded-lg overflow-hidden'>
                             <img
-                              src={'http://localhost:8080/' + lists.filePath}
+                              src={`${baseURL}/${lists.filePath}`}
                               crossOrigin='anonymous'
                             />
                           </div>

@@ -12,6 +12,7 @@ import CommunityListItem from '../components/Community/CommunityListItem';
 import { useInView } from 'react-intersection-observer';
 import { useInfiniteQuery } from 'react-query';
 import { useLoginStore } from '../store/store';
+import { baseURL } from '../utils/api';
 
 const NUMBER_OF_POSTS_ON_PAGE = 20;
 
@@ -37,7 +38,7 @@ const MyPageUserPosts = () => {
     ['userPosts', sort],
     async ({ pageParam = Number.MAX_SAFE_INTEGER }) => {
       const res = await axios.get(
-        `http://localhost:8080/api/post/1?userId=${userInfo.id}&sortBy=${sort}&lastPostId=${pageParam}&SIZE=${NUMBER_OF_POSTS_ON_PAGE}`
+        `${baseURL}/post/1?userId=${userInfo.id}&sortBy=${sort}&lastPostId=${pageParam}&SIZE=${NUMBER_OF_POSTS_ON_PAGE}`
       );
       return res.data;
     },
@@ -61,7 +62,7 @@ const MyPageUserPosts = () => {
     ['userposts', group],
     async ({ pageParam = Number.MAX_SAFE_INTEGER }) => {
       const res = await axios.get(
-        `http://localhost:8080/api/market?userId=${
+        `${baseURL}/market?userId=${
           userInfo.id
         }&lastPostId=${pageParam}&SIZE=${NUMBER_OF_POSTS_ON_PAGE}${
           group ? '&group=' + group : ''

@@ -7,7 +7,7 @@ import { useInView } from 'react-intersection-observer';
 import { useInfiniteQuery } from 'react-query';
 import axios from 'axios';
 import { Link, useLocation } from 'react-router-dom';
-import { apis } from '../utils/api';
+import { apis, baseURL } from '../utils/api';
 import { IsLoading } from '../utils/IsLoading';
 
 const NUMBER_OF_POSTS_ON_PAGE = 10;
@@ -35,7 +35,7 @@ const MarketSearchResult = () => {
         keyword = searchKeyword;
       }
       const res = await axios.get(
-        `http://localhost:8080/api/market?&keyword=${keyword
+        `${baseURL}/market?&keyword=${keyword
           .split(' ')
           .join('.')}&lastPostId=${pageParam}&SIZE=${NUMBER_OF_POSTS_ON_PAGE}`
       );

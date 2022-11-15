@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { baseURL } from '../../utils/api';
 
 const CommentListItem = ({ comment, toggleReply, userId, refetch }) => {
   const [hidden, setHidden] = useState(true);
@@ -13,30 +14,24 @@ const CommentListItem = ({ comment, toggleReply, userId, refetch }) => {
   };
 
   const clickModify = async (cid) => {
-    await fetch(
-      `http://localhost:8080/api/post/reply/${category}/${id}/${userId}/${cid}`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          content: modifyRef.current.value,
-        }),
-      }
-    );
+    await fetch(`${baseURL}/post/reply/${category}/${id}/${userId}/${cid}`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        content: modifyRef.current.value,
+      }),
+    });
     setHidden(true);
     refetch();
   };
 
   const clickDelete = (event) => {
     if (confirm('정말 삭제할까용')) {
-      fetch(
-        `http://localhost:8080/api/post/reply/${category}/${id}/${userId}/${comment.id}`,
-        {
-          method: 'DELETE',
-        }
-      );
+      fetch(`${baseURL}/post/reply/${category}/${id}/${userId}/${comment.id}`, {
+        method: 'DELETE',
+      });
       toast.success('삭제가 완료되었습니다.', {
         autoClose: 500,
         position: toast.POSITION.BOTTOM_CENTER,

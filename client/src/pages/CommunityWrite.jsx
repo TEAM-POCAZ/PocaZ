@@ -6,6 +6,7 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ImageList from '../components/Community/ImageList';
+import { baseURL } from '../utils/api';
 
 const CommunityWrite = () => {
   const navigate = useNavigate();
@@ -29,8 +30,8 @@ const CommunityWrite = () => {
         },
         { data: postImgs },
       ] = await Promise.all([
-        axios.get(`http://localhost:8080/api/post/${category}/${id}`),
-        axios.get(`http://localhost:8080/api/post/img/${category}/${id}`),
+        axios.get(`${baseURL}/post/${category}/${id}`),
+        axios.get(`${baseURL}/post/img/${category}/${id}`),
       ]);
       titleRef.current.value = post.title;
       contentRef.current.value = post.text;
@@ -101,7 +102,7 @@ const CommunityWrite = () => {
       if (postInfo?.state?.id) {
         const { category, id } = postInfo.state;
         // 글 제목 및 내용 수정
-        await fetch(`http://localhost:8080/api/post/${category}/${id}`, {
+        await fetch(`${baseURL}/post/${category}/${id}`, {
           method: 'PUT',
           headers: {
             'Content-type': 'application/json',
@@ -117,7 +118,7 @@ const CommunityWrite = () => {
         // 기존 이미지 중 삭제 상태의 이미지 삭제 요청
         prevImgs.length > 0 &&
           prevImgs.filter((img) => img.isDel).length > 0 &&
-          (await fetch(`http://localhost:8080/api/post/img/${cate}/${id}`, {
+          (await fetch(`${baseURL}/post/img/${cate}/${id}`, {
             method: 'PATCH',
             headers: {
               'Content-type': 'application/json',
@@ -132,7 +133,7 @@ const CommunityWrite = () => {
         pid = id;
       } else {
         const [newPostId] = await (
-          await fetch('http://localhost:8080/api/post', {
+          await fetch(`${baseURL}/post`, {
             method: 'POST',
             headers: {
               'Content-type': 'application/json',
@@ -159,14 +160,14 @@ const CommunityWrite = () => {
           data: [fileId],
         } = await axios({
           method: 'post',
-          url: 'http://localhost:8080/api/file',
+          url: `${baseURL}/file`,
           data: formData,
           headers: {
             'Content-Type': 'multipart/form-data; charset=utf-8',
           },
         });
 
-        await fetch(`http://localhost:8080/api/post/img/${cate}/${pid}`, {
+        await fetch(`${baseURL}/post/img/${cate}/${pid}`, {
           method: 'POST',
           headers: {
             'Content-type': 'application/json',
@@ -243,7 +244,7 @@ const CommunityWrite = () => {
                   !img.isDel ? (
                     <div className='relative' key={img.file}>
                       <img
-                        src={`http://localhost:8080/${img.path}`}
+                        src={`${baseURL}/${img.path}`}
                         className='relative w-full h-full object-cover mb-2.5 rounded-xl'
                         //
                         crossOrigin='anonymous'

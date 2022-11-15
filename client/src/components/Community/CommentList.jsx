@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { baseURL } from '../../utils/api';
 import CommentListItem from './CommentListItem';
 import ReplyList from './ReplyList';
 
@@ -19,21 +20,18 @@ const CommentList = ({ comments, userId, refetch }) => {
 
     if (replyRef.current.value)
       try {
-        await fetch(
-          `http://localhost:8080/api/post/reply/${category}/${id}/${userId}`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-type': 'application/json',
+        await fetch(`${baseURL}/post/reply/${category}/${id}/${userId}`, {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify([
+            {
+              pid: Object.entries(isReply).filter((value) => value[1])[0][0],
+              content: replyRef.current.value,
             },
-            body: JSON.stringify([
-              {
-                pid: Object.entries(isReply).filter((value) => value[1])[0][0],
-                content: replyRef.current.value,
-              },
-            ]),
-          }
-        );
+          ]),
+        });
         setReply({});
         refetch();
       } catch (err) {

@@ -10,12 +10,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useRef } from 'react';
 import { useLoginStore } from '../store/store';
 import { useQuery } from 'react-query';
+import { baseURL } from '../utils/api';
 
 const getReply = async (category, id, setReplyCnt) => {
   try {
-    const response = await axios.get(
-      `http://localhost:8080/api/post/reply/${category}/${id}`
-    );
+    const response = await axios.get(`${baseURL}/post/reply/${category}/${id}`);
     const [originComments, replyComments] = response.data;
     // console.log(originComments);
     setReplyCnt(
@@ -56,22 +55,20 @@ const CommunityDetail = () => {
         if (userInfo?.id)
           (async () => {
             const { data: toggleLike } = await axios.get(
-              `http://localhost:8080/api/post/likes/${id}/${userInfo.id}`
+              `${baseURL}/post/likes/${id}/${userInfo.id}`
             );
             toggleLike.length > 0 && (setLike(true) || isLiked++);
           })();
-        await axios.patch(
-          `http://localhost:8080/api/post/view/${category}/${id}`
-        );
+        await axios.patch(`${baseURL}/post/view/${category}/${id}`);
 
         setDetailContent(null);
         const {
           data: [detail],
-        } = await axios.get(`http://localhost:8080/api/post/${category}/${id}`);
+        } = await axios.get(`${baseURL}/post/${category}/${id}`);
         // console.log(detail);
         setDetailContent({ ...detail, likesCnt: detail.likesCnt - isLiked });
         const { data: postImgs } = await axios.get(
-          `http://localhost:8080/api/post/img/${category}/${id}`
+          `${baseURL}/post/img/${category}/${id}`
         );
         setImg(postImgs);
       } catch (e) {
@@ -86,7 +83,7 @@ const CommunityDetail = () => {
     if (userInfo?.id)
       try {
         const { data } = await axios.post(
-          `http://localhost:8080/api/post/reply/${category}/${id}/${userInfo.id}`,
+          `${baseURL}/post/reply/${category}/${id}/${userInfo.id}`,
           [
             {
               pid: null,
@@ -132,7 +129,7 @@ const CommunityDetail = () => {
     if (confirm('정말 삭제할까용')) {
       try {
         const del = await axios.delete(
-          `http://localhost:8080/api/post/${category}/${id}/${userInfo.id}`
+          `${baseURL}/post/${category}/${id}/${userInfo.id}`
         );
         toast.success('삭제가 완료되었습니다.', {
           autoClose: 500,
@@ -153,10 +150,10 @@ const CommunityDetail = () => {
       });
     }
     if (like) {
-      axios.delete(`http://localhost:8080/api/post/likes/${id}/${userInfo.id}`);
+      axios.delete(`${baseURL}/post/likes/${id}/${userInfo.id}`);
       setLike(false);
     } else {
-      axios.post(`http://localhost:8080/api/post/likes/${id}/${userInfo.id}`);
+      axios.post(`${baseURL}/post/likes/${id}/${userInfo.id}`);
       setLike(true);
     }
   };
@@ -203,7 +200,7 @@ const CommunityDetail = () => {
                       {imgs.length > 0
                         ? imgs.map((img) => (
                             <img
-                              src={`http://localhost:8080/${img.path}`}
+                              src={`${baseURL}/${img.path}`}
                               className='relative w-full h-full object-cover mb-2.5 rounded-xl'
                               //
                               crossOrigin='anonymous'

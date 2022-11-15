@@ -1,7 +1,10 @@
 import axios from 'axios';
 
+export const baseURL = `${import.meta.env.VITE_HOST_URL}/api`;
+
 const api = axios.create({
-  baseURL: 'http://localhost:8080/api',
+  baseURL,
+  // baseURL: 'http://localhost:8080/api',
   // baseURL: 'https://slowtest.ml/api',
   headers: {
     'Content-type': 'application/json; charset=UTF-8',
@@ -31,7 +34,8 @@ export const apis = {
   MarketSearch: (data) => {
     const { keyword, pageParam, size } = data;
 
-    api.get(`http://localhost:8080/api/market?&keyword=${keyword}
-&lastPostId=${pageParam}&SIZE=${size}`);
+    api.get(
+      `${baseURL}/market?&keyword=${keyword}&lastPostId=${pageParam}&SIZE=${size}`
+    );
   },
 };

@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
+import { baseURL } from '../../utils/api';
 
 const MarketListItem = ({ list }) => {
   console.log(
@@ -26,9 +27,7 @@ const MarketListItem = ({ list }) => {
                   >
                     <div className='pocaThumb relative h-72 lg:h-96 mm:h-60 rounded-xl overflow-hidden'>
                       <img
-                        src={`${import.meta.env.VITE_HOST_URL}/${
-                          post.filePath
-                        }`}
+                        src={`${baseURL}/${post.filePath}`}
                         crossOrigin={'anonymous'}
                         className='w-full h-full object-cover'
                       />

@@ -15,6 +15,7 @@ import dayjs from 'dayjs';
 import MainPocaItem from '../components/MainPocaItem';
 import Footer from '../components/Footer';
 import MainPocaRecentItem from '../components/MainRecentPocaItem';
+import { baseURL } from '../utils/api';
 
 const Main = () => {
   const [users, setUsers] = useState(null);
@@ -27,10 +28,7 @@ const Main = () => {
 
   useEffect(() => {
     axios
-      .all([
-        axios.get('http://localhost:8080/api/post/1'),
-        axios.get('http://localhost:8080/api/post/2'),
-      ])
+      .all([axios.get(`${baseURL}/post/1`), axios.get(`${baseURL}/post/2`)])
       //async 쓰삼***
       .then(
         axios.spread((response1, response2) => {
@@ -146,7 +144,7 @@ const Main = () => {
                         className='h-36 cursor-pointer'
                       >
                         <img
-                          src={'http://localhost:8080/' + user.filePath}
+                          src={`${baseURL}/${user.filePath}`}
                           className='w-full h-full object-cover'
                           crossOrigin='anonymous'
                         />

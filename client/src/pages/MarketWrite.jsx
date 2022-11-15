@@ -6,7 +6,7 @@ import axios from 'axios';
 import MarketWritePocaList from '../components/Market/MarketWritePocaList';
 import { toast } from 'react-toastify';
 import { useLoginStore } from '../store/store';
-import { apis } from '../utils/api';
+import { apis, baseURL } from '../utils/api';
 import { useQuery } from 'react-query';
 import 'remixicon/fonts/remixicon.css';
 
@@ -45,9 +45,7 @@ const MarketWrite = () => {
   } = useQuery(
     ['artistPoca', artist],
     () =>
-      axios
-        .get(`http://localhost:8080/api/artist/poca?artist=${artist}`)
-        .then((a) => a.data),
+      axios.get(`${baseURL}/artist/poca?artist=${artist}`).then((a) => a.data),
     {
       enabled: !marketInfo?.state?.MarketId,
     }
@@ -110,7 +108,7 @@ const MarketWrite = () => {
 
     if (marketInfo?.state?.MarketId) {
       mId = marketInfo.state.MarketId;
-      await fetch(`http://localhost:8080/api/market/${mId}`, {
+      await fetch(`${baseURL}/market/${mId}`, {
         method: 'PUT',
         headers: {
           'Content-type': 'application/json',
@@ -126,7 +124,7 @@ const MarketWrite = () => {
       });
       prevImgs.length > 0 &&
         prevImgs.filter(({ isDel }) => isDel).length > 0 &&
-        (await fetch(`http://localhost:8080/api/market/img/${mId}`, {
+        (await fetch(`${baseURL}/market/img/${mId}`, {
           method: 'PATCH',
           headers: {
             'Content-type': 'application/json',
@@ -140,7 +138,7 @@ const MarketWrite = () => {
         }));
     } else {
       const [marketId] = await (
-        await fetch('http://localhost:8080/api/market', {
+        await fetch(`${baseURL}/market`, {
           method: 'POST',
           headers: {
             'Content-type': 'application/json',
@@ -169,14 +167,14 @@ const MarketWrite = () => {
         data: [fileId],
       } = await axios({
         method: 'post',
-        url: 'http://localhost:8080/api/file',
+        url: `${baseURL}/file`,
         data: formData,
         headers: {
           'Content-Type': 'multipart/form-data; charset=utf-8',
         },
       });
 
-      await fetch(`http://localhost:8080/api/market/img/${mId}`, {
+      await fetch(`${baseURL}/market/img/${mId}`, {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
@@ -203,8 +201,8 @@ const MarketWrite = () => {
     const ctr = new AbortController();
     const { signal } = ctr;
     Promise.all([
-      axios.get('http://localhost:8080/api/artist'),
-      axios.get('http://localhost:8080/api/artist/group'),
+      axios.get(`${baseURL}/artist`),
+      axios.get(`${baseURL}/artist/group`),
       { signal },
     ])
       //async 쓰삼***
@@ -272,7 +270,7 @@ const MarketWrite = () => {
                         key={img.file}
                       >
                         <img
-                          src={`http://localhost:8080/${img.path}`}
+                          src={`${baseURL}/${img.path}`}
                           className='relative w-full h-full object-cover mb-2.5 rounded-xl'
                           //
                           crossOrigin='anonymous'

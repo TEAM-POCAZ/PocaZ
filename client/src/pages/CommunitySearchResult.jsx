@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
-import Layout from "../utils/Layout";
-import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
-import CommunityListItem from "../components/Community/CommunityListItem";
-import { useInView } from "react-intersection-observer";
-import { useInfiniteQuery } from "react-query";
+import React, { useEffect, useState } from 'react';
+import Layout from '../utils/Layout';
+import { useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
+import CommunityListItem from '../components/Community/CommunityListItem';
+import { useInView } from 'react-intersection-observer';
+import { useInfiniteQuery } from 'react-query';
+import { baseURL } from '../utils/api';
 
 const NUMBER_OF_POSTS_ON_PAGE = 20;
 
@@ -25,7 +26,7 @@ const CommunitySearchResult = () => {
     hasNextPage,
     // hasPreviousPage,
   } = useInfiniteQuery(
-    ["projects"],
+    ['projects'],
     async ({ pageParam = Number.MAX_SAFE_INTEGER }) => {
       // console.log(keyInfo)
       if (keyInfo.state) {
@@ -33,9 +34,9 @@ const CommunitySearchResult = () => {
           state: { keyword },
         } = keyInfo;
         const res = await axios.get(
-          `http://localhost:8080/api/post/search/?keyword=${keyword
-            .split(" ")
-            .join(".")}&lastPostId=${pageParam}&SIZE=${NUMBER_OF_POSTS_ON_PAGE}`
+          `${baseURL}/post/search/?keyword=${keyword
+            .split(' ')
+            .join('.')}&lastPostId=${pageParam}&SIZE=${NUMBER_OF_POSTS_ON_PAGE}`
         );
         return res.data;
       }
@@ -53,28 +54,28 @@ const CommunitySearchResult = () => {
   return (
     <>
       <Layout>
-        <div className="relative flex m-2.5">
-          <button type="button" onClick={() => navigate(-1)} className="px-2.5">
-            <i className="ri-arrow-left-line"></i>
+        <div className='relative flex m-2.5'>
+          <button type='button' onClick={() => navigate(-1)} className='px-2.5'>
+            <i className='ri-arrow-left-line'></i>
           </button>
           <input
-            type="text"
-            className="w-full h-11 px-2.5 border rounded text-sm"
+            type='text'
+            className='w-full h-11 px-2.5 border rounded text-sm'
           />
           <button
-            type="button"
-            className="absolute top-0 right-0 h-full px-2.5"
+            type='button'
+            className='absolute top-0 right-0 h-full px-2.5'
           >
-            <i className="ri-search-line"></i>
+            <i className='ri-search-line'></i>
           </button>
         </div>
-        {status === "loading" ? (
+        {status === 'loading' ? (
           <p>Loading...</p>
-        ) : status === "error" ? (
+        ) : status === 'error' ? (
           <span>Error: {error.message}</span>
         ) : (
           <>
-            <div className="mx-2.5">
+            <div className='mx-2.5'>
               {data?.pages?.length > 0 ? (
                 <CommunityListItem list={data} />
               ) : (
@@ -87,15 +88,15 @@ const CommunitySearchResult = () => {
                   disabled={!hasNextPage || isFetchingNextPage}
                 >
                   {isFetchingNextPage
-                    ? "Loading more..."
+                    ? 'Loading more...'
                     : hasNextPage
-                    ? "Load Newer"
-                    : "Nothing more to load"}
+                    ? 'Load Newer'
+                    : 'Nothing more to load'}
                 </button>
               </div>
               <div>
                 {isFetching && !isFetchingNextPage
-                  ? "Background Updating..."
+                  ? 'Background Updating...'
                   : null}
               </div>
             </div>

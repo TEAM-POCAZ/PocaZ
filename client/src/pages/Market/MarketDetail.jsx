@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useLoginStore } from '../../store/store';
 
-import { apis } from '../../utils/api';
+import { apis, baseURL } from '../../utils/api';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
@@ -80,7 +80,7 @@ const MarketDetail = ({ socket }) => {
     }
     if (confirm('정말 삭제할까용')) {
       try {
-        await axios.delete(`http://localhost:8080/api/market/${_id}`);
+        await axios.delete(`${baseURL}/market/${_id}`);
         toast.success('삭제가 완료되었습니다.', {
           autoClose: 500,
           position: toast.POSITION.BOTTOM_CENTER,
@@ -134,7 +134,7 @@ const MarketDetail = ({ socket }) => {
               {imgs.length > 0
                 ? imgs.map((img) => (
                     <img
-                      src={`http://localhost:8080/${img.path}`}
+                      src={`${baseURL}/${img.path}`}
                       className='relative w-full h-full object-cover mb-2.5 rounded-xl'
                       //
                       crossOrigin='anonymous'

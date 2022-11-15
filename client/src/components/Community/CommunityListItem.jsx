@@ -1,6 +1,7 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
+import { baseURL } from '../../utils/api';
 
 const CommentListItem = ({ list }) => {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ const CommentListItem = ({ list }) => {
                         />
                       ) : (
                         <img
-                          src={`http://localhost:8080/${post.filePath}`}
+                          src={`${baseURL}/${post.filePath}`}
                           //
                           crossOrigin='anonymous'
                           //문제가 해결되면 crossOrigin 삭제할 예정

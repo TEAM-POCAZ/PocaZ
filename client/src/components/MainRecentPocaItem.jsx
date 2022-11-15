@@ -6,10 +6,11 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import axios from 'axios';
 import { useQuery } from 'react-query';
+import { baseURL } from '../utils/api';
 
 const MainPocaRecentItem = () => {
   const { isLoading, isError, data } = useQuery('poca', () =>
-    axios.get('http://localhost:8080/api/market/').then((a) => a.data.sellList)
+    axios.get(`${baseURL}/market/`).then((a) => a.data.sellList)
   );
 
   return (
@@ -24,9 +25,7 @@ const MainPocaRecentItem = () => {
               <SwiperSlide key={pocas.id}>
                 <div className='pocaThumb relative h-72 lg:h-96 mm:h-60 rounded-xl overflow-hidden'>
                   <img
-                    src={`${import.meta.env.VITE_HOST_URL}/api/${
-                      pocas.filePath
-                    }`}
+                    src={`${baseURL}/${pocas.filePath}`}
                     crossOrigin={'anonymous'}
                     className='w-full h-full object-cover'
                   />

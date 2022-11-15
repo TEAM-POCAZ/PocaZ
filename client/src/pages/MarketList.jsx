@@ -8,6 +8,7 @@ import { useInfiniteQuery } from 'react-query';
 import axios from 'axios';
 import { Link, useLocation } from 'react-router-dom';
 import { useLoginStore } from '../store/store';
+import { baseURL } from '../utils/api';
 
 const NUMBER_OF_POSTS_ON_PAGE = 10;
 
@@ -29,7 +30,7 @@ const MarketList = () => {
     ['projects', group],
     async ({ pageParam = Number.MAX_SAFE_INTEGER }) => {
       const res = await axios.get(
-        `http://localhost:8080/api/market?lastPostId=${pageParam}&SIZE=${NUMBER_OF_POSTS_ON_PAGE}${
+        `${baseURL}/market?lastPostId=${pageParam}&SIZE=${NUMBER_OF_POSTS_ON_PAGE}${
           group ? '&group=' + group : ''
         }`
       );
