@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @layer components {
-  @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,300;0,400;0,500;0,900;1,100;1,300;1,900&display=swap");
-  @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.5/dist/web/static/pretendard.css");
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,300;0,400;0,500;0,900;1,100;1,300;1,900&display=swap');
+  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.5/dist/web/static/pretendard.css');
   body {
     background-image: url(/public/hero_jobs.png);
     /* 백그라운드 이미지 변경 예정 */
@@ -151,15 +151,28 @@
     padding-left: 30px; /* gutter size */
     background-clip: padding-box;
   }
-  
+
   /* Style your items */
-  .my-masonry-grid_column > div { /* change div to reference your elements you put in <Masonry> */
+  .my-masonry-grid_column > div {
+    /* change div to reference your elements you put in <Masonry> */
     margin-bottom: 30px;
   }
 
-  .communityTab ul li a.active { color:#034ac5; }
+  .communityTab ul li a.active {
+    color: #034ac5;
+  }
 
-  .idolCate { margin:20px 0; text-align:center; }
-  .idolCate li p { padding:10px 0; }
-  .idolCate li img { display:block; width:40px; height:100%; margin:0 auto; }
+  .idolCate {
+    margin: 20px 0;
+    text-align: center;
+  }
+  .idolCate li p {
+    padding: 10px 0;
+  }
+  .idolCate li img {
+    display: block;
+    width: 40px;
+    height: 100%;
+    margin: 0 auto;
+  }
 }
