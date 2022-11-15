@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import CommentListItem from './CommentListItem';
 
 const ReplyList = ({ comment, userId, refetch }) => (

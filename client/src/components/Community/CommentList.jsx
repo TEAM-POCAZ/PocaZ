@@ -1,5 +1,6 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { baseURL } from '../../utils/api';
 import CommentListItem from './CommentListItem';
 import ReplyList from './ReplyList';
@@ -15,7 +16,7 @@ const CommentList = ({ comments, userId, refetch }) => {
       : setReply({ [pid]: true });
   };
 
-  const commentSubmit = async (event) => {
+  const commentSubmit = async () => {
     if (!userId) return toast.error('로그인 유저만 댓글을 달 수 있습니다');
 
     if (replyRef.current.value)
