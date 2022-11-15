@@ -54,14 +54,19 @@ const CommentListItem = ({ comment, toggleReply, userId, refetch }) => {
             </div>
             <div className='commentBox py-2.5'>
               <p>{comment.content}</p>
-              <br />
-              <p>{getTimeDiff(comment.createAt)}</p>
             </div>
             <div className='flex cursor-pointer'>
+              <p className='text-slate-500 text-sm'>
+                {getTimeDiff(comment.createAt)} &nbsp;
+                {!comment?.pid | (comment.user == userId) ? '·' : ''} &nbsp;
+              </p>
               {comment.pid ? null : (
                 <button
                   className='mr-2.5 text-slate-500 text-sm'
-                  onClick={() => toggleReply(comment.id)}
+                  onClick={() => {
+                    setHidden(true);
+                    toggleReply(comment.id);
+                  }}
                 >
                   답글달기
                 </button>
@@ -70,7 +75,10 @@ const CommentListItem = ({ comment, toggleReply, userId, refetch }) => {
                 <>
                   <button
                     className='mr-2.5 text-sm'
-                    onClick={() => modifyToggle(comment.content)}
+                    onClick={() => {
+                      toggleReply(0);
+                      modifyToggle(comment.content);
+                    }}
                   >
                     수정
                   </button>
