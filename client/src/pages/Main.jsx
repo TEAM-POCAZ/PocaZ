@@ -76,7 +76,7 @@ const Main = () => {
                 />
                 <div className='slideTxt absolute top-[60%] left-0 ml-3.5 text-white font-bold text-[30px] tracking-tighter'>
                   <h3>르세라핌 컴백</h3>
-                  <h4>랜덤 포토카드 5종 출시!</h4>
+                  <h4>랜덤 포토카드 5종 출시❗️</h4>
                 </div>
               </SwiperSlide>
               <SwiperSlide className='relative'>
@@ -87,7 +87,7 @@ const Main = () => {
                 />
                 <div className='slideTxt absolute top-[60%] left-0 ml-3.5 text-white font-bold text-[30px] tracking-tighter'>
                   <h3>MZ 세대들의 중심</h3>
-                  <h4>뉴진스 본격 분석</h4>
+                  <h4>뉴진스 본격 분석 💙</h4>
                 </div>
               </SwiperSlide>
             </Swiper>
