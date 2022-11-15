@@ -124,6 +124,7 @@ const MarketWrite = () => {
         ]),
       });
       prevImgs.length > 0 &&
+        prevImgs.filter(({ isDel }) => isDel).length > 0 &&
         (await fetch(`http://localhost:8080/api/market/img/${mId}`, {
           method: 'PATCH',
           headers: {
