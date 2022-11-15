@@ -48,7 +48,7 @@ export const getCheckChatRoom = async (
     VALUES (?, ?, ?), (?, ?, ?)`, [room, sellerId, marketItemId, room, loginUserId, marketItemId]
   );
   return room;
-  } ;
+  };
 };
 
 export const getSellItem = async (
