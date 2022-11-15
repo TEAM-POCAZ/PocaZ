@@ -26,11 +26,9 @@ export const getCheckChatRoom = async (
   chatInfo: ICheckChatRoom
 ) => {
   const { marketItemId, loginUserId, sellerId } = chatInfo;
-  console.log('🚀 ~ file: chat.ts ~ line 32 ~ loginUserId', loginUserId);
-  console.log('🚀 ~ file: chat.ts ~ line 32 ~ marketItemId', marketItemId);
   const rows: ICheckChatRoom[] = await sqlSelectHandler(
     `SELECT id
-    from ChatRoom c
+    From ChatRoom c
     INNER JOIN ChatUser cu on
     c.id = cu.chatRoom
     WHERE sellarticleid = ?
@@ -47,7 +45,7 @@ export const getCheckChatRoom = async (
   const room = insertChatRoom.insertId;
   const insertChatUser = await sqlInsertHandler(
     `INSERT INTO ChatUser (chatRoom, user,sellItemId)
-    VALUES (?, ?,?), (?, ?,?)`, [room, sellerId, marketItemId, room, loginUserId, marketItemId]
+    VALUES (?, ?, ?), (?, ?, ?)`, [room, sellerId, marketItemId, room, loginUserId, marketItemId]
   );
   return room;
   } ;
@@ -96,8 +94,6 @@ export const createChat = async (data: any) => {
     'SELECT * FROM Chat WHERE id=?',
     [inserResult.insertId]
   );
-
-  // res.status(200).json(row[0]);
 
   console.log('object :>> ', row[0]);
   getSocketIO().to(row[0].chatRoom.toString()).emit('new-message', row[0]);
