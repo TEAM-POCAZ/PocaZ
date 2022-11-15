@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Layout from '../utils/Layout';
 import Input from '../components/MyPage/Input';
@@ -15,6 +15,7 @@ const MyPage = () => {
 
   const [disabled, setDisabled] = useState(true);
   const navigate = useNavigate();
+  const fileInput = useRef();
   const { isLoading, data, isError, error } = useQuery(
     'me',
     () => {
@@ -36,6 +37,7 @@ const MyPage = () => {
   );
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(`Selected file - ${fileInput.current.files[0]}`);
     if (disabled) {
       setDisabled(false);
     } else {
@@ -46,8 +48,15 @@ const MyPage = () => {
         profileImage: userInfo.profileImage,
         artist: userInfo.artist,
       };
+      const formData = new FormData();
+      for (const [key, value] of Object.entries(data)) {
+        formData.append(key, value);
+      }
+      if (fileInput.current.files[0]) {
+        formData.append('photo', fileInput.current.files[0]);
+      }
       try {
-        const res = await axios.put(`${API}/api/user`, data, {
+        const res = await axios.put(`${API}/api/user`, formData, {
           retry: false,
           withCredentials: true,
         });
@@ -129,9 +138,13 @@ const MyPage = () => {
       <Layout>
         <div>{axiosError}</div>
         <div className='flex flex-col justify-center'>
-          <img className='mx-auto' src={userInfo.profileImage}></img>
+          <img
+            className='mx-auto'
+            crossOrigin='anonymous'
+            src={userInfo.profileImage}
+          ></img>
         </div>
-        <form onSubmit={handleSubmit}>
+        <form encType='multipart/form-data' onSubmit={handleSubmit}>
           <Input
             property='id'
             optionalText='개발용'
@@ -181,6 +194,16 @@ const MyPage = () => {
             }}
             disabled={disabled}
           />
+          <label>
+            프로필 파일 업로드하기
+            <input
+              type='file'
+              accept='image/*'
+              name='photo'
+              ref={fileInput}
+              disabled={disabled}
+            />
+          </label>
           <Input
             property='artist'
             placeholder='최애 아이돌id'
@@ -228,6 +251,10 @@ const MyPage = () => {
         </form>
         <div className='right'>
           <Link to={'/MyIdol'}>최애 아이돌 변경하기</Link>
+          <br></br>
+          <Link to={'/MyPage/UserPosts'}>내가 작성한 게시글 보기</Link>
+          <br></br>
+          <Link to={'/MyPage/UserReplys'}>내가 작성한 댓글 보기</Link>
           <br></br>
           <button className='submit mt-5' onClick={logout}>
             로그아웃하기

@@ -44,7 +44,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(express.static('uploads'));
+app.use(`${API}`, express.static('uploads'));
 app.use('/api-yaml', swaggerUi.serve, swaggerUi.setup(swaggerJsDoc(options)));
 
 app.use(`${API}/chatRoom`, chatRoomRouter);
