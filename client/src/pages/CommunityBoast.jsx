@@ -104,7 +104,7 @@ const CommunityBoast = () => {
                     })}
                   </React.Fragment>
                 ))}
-                <div>
+                {/* <div>
                   <button
                     ref={ref}
                     onClick={() => fetchNextPage()}
@@ -121,7 +121,7 @@ const CommunityBoast = () => {
                   {isFetching && !isFetchingNextPage
                     ? 'Background Updating...'
                     : null}
-                </div>
+                </div> */}
               </Masonry>
             </>
           )}
