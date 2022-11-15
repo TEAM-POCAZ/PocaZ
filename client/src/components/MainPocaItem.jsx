@@ -32,7 +32,10 @@ const MainPocaItem = () => {
             console.log(typeof pocas.price);
             return (
               <SwiperSlide key={pocas.id}>
-                <div onClick={() => navigate(`/Market/${pocas.id}`)}>
+                <div
+                  onClick={() => navigate(`/Market/${pocas.id}`)}
+                  className='cursor-pointer'
+                >
                   <div className='pocaThumb relative h-72 lg:h-96 mm:h-60 rounded-xl overflow-hidden'>
                     <img
                       src={pocas.pocaImg}
