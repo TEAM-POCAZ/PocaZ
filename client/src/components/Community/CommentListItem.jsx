@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { baseURL } from '../../utils/api';
+import { getTimeDiff } from '../../utils/dayday';
 
 const CommentListItem = ({ comment, toggleReply, userId, refetch }) => {
   const [hidden, setHidden] = useState(true);
@@ -53,6 +54,8 @@ const CommentListItem = ({ comment, toggleReply, userId, refetch }) => {
             </div>
             <div className='commentBox py-2.5'>
               <p>{comment.content}</p>
+              <br />
+              <p>{getTimeDiff(comment.createAt)}</p>
             </div>
             <div className='flex cursor-pointer'>
               {comment.pid ? null : (
