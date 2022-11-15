@@ -137,25 +137,9 @@
     height: 100%;
     object-fit: cover;
   }
-  /* .boastListWrap ul { display:flex; flex-flow: row wrap; justify-content:space-between; }
-  .boastListWrap ul li { flex: 0 1 48%; }
-  .boastListWrap ul li img { width:100%; height:100%; object-fit:cover; } */
-  .my-masonry-grid {
-    display: -webkit-box; /* Not needed if autoprefixing */
-    display: -ms-flexbox; /* Not needed if autoprefixing */
-    display: flex;
-    margin-left: -30px; /* gutter size offset */
-    width: auto;
-  }
-  .my-masonry-grid_column {
-    padding-left: 30px; /* gutter size */
-    background-clip: padding-box;
-  }
-  
-  /* Style your items */
-  .my-masonry-grid_column > div { /* change div to reference your elements you put in <Masonry> */
-    margin-bottom: 30px;
-  }
+  .boastListWrap { display:flex; flex-flow: row wrap; justify-content:space-between; }
+  .boastListWrap > div { flex: 0 1 48%; margin: 0 0 20px; }
+  .boastListWrap > div img { width:100%; height:100%; object-fit:cover; }
 
   .communityTab ul li a.active { color:#034ac5; }
 
