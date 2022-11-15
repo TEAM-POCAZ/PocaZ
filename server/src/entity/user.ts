@@ -7,14 +7,14 @@ interface UserCreationDto {
   email?: string;
   nickname?: string;
   profileImage?: string;
-  artist?: number;
+  artist?: number | string;
 }
 interface UserUpdateDto {
   id: number;
   email?: string;
   nickname?: string;
   profileImage?: string;
-  artist?: number;
+  artist?: number | string;
 }
 interface UserDto {
   id: number;
@@ -26,7 +26,7 @@ interface UserDto {
   score?: number;
   createAt: string;
   updateAt?: string;
-  artist?: number;
+  artist?: number | string;
 }
 
 interface IUser extends RowDataPacket, UserDto {} //select용도
@@ -66,11 +66,27 @@ class User {
     return User.selectById(conn, insertId);
   }
   static async update(conn: PoolConnection, user: UserUpdateDto) {
-    await conn.query<OkPacket>(
-      `UPDATE User SET email = ?, nickname = ?, profileImage = ?, artist = ?, updateAt=now() WHERE id = ?`,
-      [user.email, user.nickname, user.profileImage, user.artist, user.id]
-    );
-    return await User.selectById(conn, user.id);
+    const query = `UPDATE User SET email = ?, nickname = ?, profileImage = ?, ${
+      user.artist !== 'null' ? `artist = ${user.artist} , ` : ''
+    } updateAt=now() WHERE id = ?`;
+    if (user.artist == 'null') {
+      const result = await conn.query<OkPacket>(query, [
+        user.email,
+        user.nickname,
+        user.profileImage,
+        user.id,
+      ]);
+    } else {
+      const result = await conn.query<OkPacket>(query, [
+        user.email,
+        user.nickname,
+        user.profileImage,
+        user.artist,
+        user.id,
+      ]);
+    }
+    const resultUser = await User.selectById(conn, user.id);
+    return resultUser;
   }
 
   static async softDelete(conn: PoolConnection, id: number | string) {

@@ -24,7 +24,9 @@ const MainPocaRecentItem = () => {
               <SwiperSlide key={pocas.id}>
                 <div className='pocaThumb relative h-72 lg:h-96 mm:h-60 rounded-xl overflow-hidden'>
                   <img
-                    src={`${import.meta.env.VITE_HOST_URL}/${pocas.filePath}`}
+                    src={`${import.meta.env.VITE_HOST_URL}/api/${
+                      pocas.filePath
+                    }`}
                     crossOrigin={'anonymous'}
                     className='w-full h-full object-cover'
                   />
