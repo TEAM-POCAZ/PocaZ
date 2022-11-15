@@ -18,7 +18,7 @@ const MarketCategory = ({ setGroup }) => {
   return (
     <>
       <div className='bg-white mb-1'>
-        <ul className='idolCate flex items-center justify-around h-full'>
+        <ul className='idolCate flex items-center justify-around h-full cursor-pointer'>
           <li key={0} onClick={() => setGroup(0)}>
             <p className='text-xs cursor-pointer text-slate-600 hover:text-blue-700'>
               전체

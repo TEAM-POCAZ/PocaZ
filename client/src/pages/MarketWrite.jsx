@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { useLoginStore } from '../store/store';
 import { apis } from '../utils/api';
 import { useQuery } from 'react-query';
+import 'remixicon/fonts/remixicon.css';
 
 const MAX_IMAGE_SIZE = 20 * 1024 * 1024;
 
@@ -277,13 +278,13 @@ const MarketWrite = () => {
                           //문제가 해결되면 crossOrigin 삭제할 예정\
                         />
                         <button
-                          className='absolute top-5 right-5 bg-blue-700 rounded-full p-2'
+                          className='flex items-center w-[32px] h-[32px] absolute top-5 right-5 bg-blue-700 rounded-full p-2'
                           onClick={(e) => {
                             onImgDelete(e, 'prev');
                           }}
                           value={img.file}
                         >
-                          X
+                          <i className='ri-close-line text-white'></i>
                         </button>
                       </li>
                     ) : null
@@ -294,13 +295,13 @@ const MarketWrite = () => {
                     <li className='relative' key={`${idx}th curr`}>
                       <img src={currImg} alt='preview' />
                       <button
-                        className='absolute top-5 right-5 bg-blue-700 rounded p-2'
+                        className='flex items-center w-[32px] h-[32px] absolute top-5 right-5 bg-blue-700 rounded-full p-2'
                         onClick={(e) => {
                           onImgDelete(e, 'curr');
                         }}
                         value={idx}
                       >
-                        삭제
+                        <i className='ri-close-line text-white'></i>
                       </button>
                     </li>
                   ))
