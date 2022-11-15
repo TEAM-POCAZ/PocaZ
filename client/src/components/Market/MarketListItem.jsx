@@ -37,14 +37,17 @@ const MarketListItem = ({ list }) => {
                         {post.groupName}✨
                       </p>
                       <p className='memberName text-sm'>{post.stageName}</p>
-                      <p className='pocaDetail mt-2.5 font-medium text-base'>
+                      <p className='pocaDetail mt-1.5 font-medium text-sm text-gray-300'>
                         {post.pocaName}
                       </p>
-                      <p className='pocaDesc mb-1 text-gray-500'>
-                        {post.description}
+                      <p className='pocaDetail mt-2.5 font-medium text-lg'>
+                        {post.title}
                       </p>
-                      <p className='pocaPrice mt-2.5 font-semibold text-base'>
-                        <span>{post.price}</span>
+                      {/* <p className='pocaDesc mb-1 text-gray-500'>
+                        {post.description}
+                      </p> */}
+                      <p className='pocaPrice mt-2.5 font-semibold text-base text-right'>
+                        <span>{post.price.toLocaleString()}</span>
                         <span className='won'>원</span>
                       </p>
                     </div>

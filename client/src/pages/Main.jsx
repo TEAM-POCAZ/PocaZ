@@ -125,7 +125,7 @@ const Main = () => {
                   내 콜렉트북 한 자리를 차지할 HOT한 포카 😘
                 </h4>
               </div>
-              <MainPocaRecentItem />
+              <MainPocaItem />
             </div>
             <div className='boardBoast mb-6'>
               <div className='subject mb-3.5'>

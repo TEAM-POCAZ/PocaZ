@@ -27,7 +27,7 @@ const InfoBar = ({ sellerNickname, navigate, sellItem, marketItemId }) => {
         <img
           src={sellItem.path}
           alt='포카이미지'
-          className='m-2 h-5 rounded-md'
+          className='m-2 w-[40px] h-[40px] object-cover rounded-md'
         />
         <div>
           <p>{sellItem.title}</p>

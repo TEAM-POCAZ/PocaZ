@@ -72,58 +72,18 @@ const MyPage = () => {
     }
   };
 
-  const logout = () => {
-    axios.get(
-      `${API}/api/auth/logout`,
-      { withCredentials: true },
-      {
-        retry: false,
-        onSuccess: (res) => {
-          console.log(res.data);
-          setUserInfo(null);
-        },
-        onError: (err) => {
-          if (axios.isAxiosError(err)) {
-            setAxiosError(err.response.data.error);
-            navigate('/login');
-          } else {
-            console.log('unexpected error: ', err);
-          }
-        },
-      }
-    );
-    setUserInfo(null);
+  const logout = async () => {
+    await axios.get(`${API}/api/auth/logout`, { withCredentials: true });
+    setUserInfo({});
     navigate('/');
   };
 
-  const withdrawal = () => {
-    axios.post(
-      `${API}/api/auth/withdrawal`,
-      null,
-      {
-        headers: {
-          Accept: 'application/json, text/plain, */*',
-          ContentType: 'application/json',
-        },
-        withCredentials: true,
-      },
-      null,
-      {
-        retry: false,
-        onSuccess: (res) => {
-          setUserInfo({});
-          navigate('/');
-        },
-        onError: (err) => {
-          if (axios.isAxiosError(err)) {
-            setAxiosError(err.response.data.error);
-            navigate('/login');
-          } else {
-            console.log('unexpected error: ', err);
-          }
-        },
-      }
-    );
+  const withdrawal = async () => {
+    await axios.post(`${API}/api/auth/withdrawal`, null, {
+      withCredentials: true,
+    });
+    setUserInfo({});
+    navigate('/');
   };
 
   if (isLoading) {
@@ -253,8 +213,6 @@ const MyPage = () => {
           <Link to={'/MyIdol'}>최애 아이돌 변경하기</Link>
           <br></br>
           <Link to={'/MyPage/UserPosts'}>내가 작성한 게시글 보기</Link>
-          <br></br>
-          <Link to={'/MyPage/UserReplys'}>내가 작성한 댓글 보기</Link>
           <br></br>
           <button className='submit mt-5' onClick={logout}>
             로그아웃하기

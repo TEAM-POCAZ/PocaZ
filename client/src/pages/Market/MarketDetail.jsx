@@ -163,7 +163,7 @@ const MarketDetail = ({ socket }) => {
                   {content.sellDesc}
                 </p>
               </div>
-              <div className='flex justify-between border-t'>
+              <div className='flex justify-between items-center border-t'>
                 <p className='my-2.5 text-2xl font-bold mr-2'>
                   {price.toLocaleString()}
                   <b className='font-normal'>원</b>
