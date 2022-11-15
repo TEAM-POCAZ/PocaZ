@@ -26,7 +26,10 @@ const MarketListItem = ({ list }) => {
                   >
                     <div className='pocaThumb relative h-72 lg:h-96 mm:h-60 rounded-xl overflow-hidden'>
                       <img
-                        src={post.pocaImg}
+                        src={`${import.meta.env.VITE_HOST_URL}/${
+                          post.filePath
+                        }`}
+                        crossOrigin={'anonymous'}
                         className='w-full h-full object-cover'
                       />
                     </div>
