@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-const CommentListItem = ({ comment, toggleReply, userId }) => {
+const CommentListItem = ({ comment, toggleReply, userId, refetch }) => {
   const [hidden, setHidden] = useState(true);
   const { category, id } = useParams();
   const modifyRef = useRef();
@@ -25,52 +25,69 @@ const CommentListItem = ({ comment, toggleReply, userId }) => {
         }),
       }
     );
-    window.location.reload();
+    setHidden(true);
+    refetch();
   };
 
   const clickDelete = (event) => {
-    fetch(
-      `http://localhost:8080/api/post/reply/${category}/${id}/${userId}/${comment.id}`,
-      {
-        method: 'DELETE',
-      }
-    );
-    window.location.reload();
+    if (confirm('정말 삭제할까용')) {
+      fetch(
+        `http://localhost:8080/api/post/reply/${category}/${id}/${userId}/${comment.id}`,
+        {
+          method: 'DELETE',
+        }
+      );
+      toast.success('삭제가 완료되었습니다.', {
+        autoClose: 500,
+        position: toast.POSITION.BOTTOM_CENTER,
+      });
+      setHidden(true);
+      // refetch();
+      window.location.reload();
+    }
   };
 
   return (
     <>
       <div className='mb-2.5 p-2.5 border-b'>
-        <div className='writeWrap flex items-center'>
-          <div className='commentThumb w-10 h-10 rounded-full bg-black mr-2.5'></div>
-          <span className='writeName'>{comment.nickname}</span>
-        </div>
-        <div className='commentBox py-2.5'>
-          <p>{comment.content}</p>
-        </div>
-        <div className='flex cursor-pointer'>
-          {comment.pid ? null : (
-            <div
-              className='mr-2.5 text-slate-500 text-sm'
-              onClick={() => toggleReply(comment.id)}
-            >
-              답글달기
+        {!comment.deleteAt ? (
+          <>
+            <div className='writeWrap flex items-center'>
+              <div className='commentThumb w-10 h-10 rounded-full bg-black mr-2.5'></div>
+              <span className='writeName'>{comment.nickname}</span>
             </div>
-          )}
-          {comment.user == userId ? (
-            <>
-              <button
-                className='mr-2.5 text-sm'
-                onClick={() => modifyToggle(comment.content)}
-              >
-                수정
-              </button>
-              <button className=' text-sm' onClick={clickDelete}>
-                삭제
-              </button>
-            </>
-          ) : null}
-        </div>
+            <div className='commentBox py-2.5'>
+              <p>{comment.content}</p>
+            </div>
+            <div className='flex cursor-pointer'>
+              {comment.pid ? null : (
+                <div
+                  className='mr-2.5 text-slate-500 text-sm'
+                  onClick={() => toggleReply(comment.id)}
+                >
+                  답글달기
+                </div>
+              )}
+              {comment.user == userId ? (
+                <>
+                  <button
+                    className='mr-2.5 text-sm'
+                    onClick={() => modifyToggle(comment.content)}
+                  >
+                    수정
+                  </button>
+                  <button className=' text-sm' onClick={clickDelete}>
+                    삭제
+                  </button>
+                </>
+              ) : null}
+            </div>
+          </>
+        ) : (
+          <div className='commentBox py-2.5'>
+            <p>삭제된 댓글입니다.</p>
+          </div>
+        )}
       </div>
       {
         <div hidden={hidden}>

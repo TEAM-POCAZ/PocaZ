@@ -93,6 +93,7 @@ const tranSQL = {
     INNER JOIN User u ON p.user = u.id
     LEFT JOIN (SELECT post, count(*) as cnt
                 FROM Reply
+               WHERE deleteAt IS NULL
                 GROUP BY post) rep on p.id = rep.post
     LEFT JOIN (SELECT pi.post  as post,
                     f.path   as path
@@ -123,7 +124,8 @@ const tranSQL = {
           u.nickname,     -- user nickname
           u.profileImage, -- user profile img
           r.content,      -- reply content
-          r.createAt      -- reply created Date
+          r.createAt,     -- reply created Date
+          r.deleteAt      -- reply deleted Date
     FROM  Reply r
    INNER JOIN User u ON r.user = u.id
    WHERE  1 = 1`,
@@ -170,6 +172,7 @@ const tranSQL = {
              u.nickname     AS nickname,    -- seller nickname
              u.profileImage AS profileImage,-- seller profile image
              pc.path        AS pocaImg,     -- poca image
+             img.path       AS filePath,		-- market main img src
              pc.name		    AS pocaName,	  -- photocard Name
              pc.description	AS description, -- photocard description
              pcs.price      AS price,		    -- photocard sell Price
@@ -182,9 +185,16 @@ const tranSQL = {
            ,a.id           AS artistId,    -- artist pk
             ag.id          AS groupId,     -- group pk
             u.id           AS sellerId,    -- seller id
-            pc.id           AS pocaId     -- poca id `,
+            pc.id          AS pocaId     -- poca id `,
     from: `
      FROM PhotocardSellArticle pcs
+     LEFT JOIN (SELECT pa.photocardSellArticle as photocardSellArticle,
+                       f.path   as path
+                  FROM (SELECT photocardSellArticle, min(file) as main
+                          FROM PhotocardImage
+                          GROUP BY photocardSellArticle) pa
+                  LEFT JOIN File f ON pa.main = f.id
+                  ) img on pcs.id = img.photocardSellArticle
         INNER JOIN User u ON pcs.user = u.id
         LEFT JOIN Photocard pc on pcs.photocard = pc.id
              -- LEFT JOIN because photocard seller want to submit

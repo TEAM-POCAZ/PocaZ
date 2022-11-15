@@ -9,17 +9,45 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRef } from 'react';
 import { useLoginStore } from '../store/store';
+import { useQuery } from 'react-query';
+
+const getReply = async (category, id, setReplyCnt) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:8080/api/post/reply/${category}/${id}`
+    );
+    const [originComments, replyComments] = response.data;
+    // console.log(originComments);
+    setReplyCnt(
+      originComments.filter(({ deleteAt }) => !deleteAt).length +
+        replyComments.filter(({ deleteAt }) => !deleteAt).length
+    );
+    return originComments.map((preply) => {
+      preply.reply = replyComments.filter((rep) => rep.pid == preply.id);
+      return preply;
+    });
+  } catch (e) {
+    console.error(e);
+  }
+};
 
 const CommunityDetail = () => {
   const { category, id } = useParams();
   const { userInfo } = useLoginStore();
   const [DetailContent, setDetailContent] = useState(null);
-  const [comments, setComments] = useState(null);
+  // const [comments, setComments] = useState(null);
   const replyRef = useRef();
   const [replyCnt, setReplyCnt] = useState(0);
   const navigate = useNavigate();
   const [like, setLike] = useState(false);
   const [imgs, setImg] = useState([]);
+
+  const {
+    data: comments,
+    isLoading: replyLoading,
+    isError: replyError,
+    refetch,
+  } = useQuery('reply', () => getReply(category, id, setReplyCnt));
 
   useEffect(() => {
     const Detail = async () => {
@@ -40,15 +68,12 @@ const CommunityDetail = () => {
         const {
           data: [detail],
         } = await axios.get(`http://localhost:8080/api/post/${category}/${id}`);
-        // console.log(response.data);/
+        // console.log(detail);
         setDetailContent({ ...detail, likesCnt: detail.likesCnt - isLiked });
         const { data: postImgs } = await axios.get(
           `http://localhost:8080/api/post/img/${category}/${id}`
         );
-        // console.log(data);
-        // const [{ path: imgPath }] = data;
         setImg(postImgs);
-        //console.log(imgPath)
       } catch (e) {
         console.error(e);
       }
@@ -73,7 +98,8 @@ const CommunityDetail = () => {
           autoClose: 500,
           position: toast.POSITION.BOTTOM_CENTER,
         });
-        window.location.reload();
+        replyRef.current.value = '';
+        refetch();
       } catch (err) {
         console.error(err);
       }
@@ -135,27 +161,6 @@ const CommunityDetail = () => {
     }
   };
 
-  useEffect(() => {
-    (async () => {
-      try {
-        setComments(null);
-        const response = await axios.get(
-          `http://localhost:8080/api/post/reply/${category}/${id}`
-        );
-        const [originComments, replyComments] = response.data;
-        setComments(
-          originComments.map((preply) => {
-            preply.reply = replyComments.filter((rep) => rep.pid == preply.id);
-            return preply;
-          })
-        );
-        // console.log(originComments)
-        setReplyCnt(originComments.length + replyComments.length);
-      } catch (e) {
-        console.error(e);
-      }
-    })();
-  }, []);
   return (
     <>
       <Layout>
@@ -218,7 +223,17 @@ const CommunityDetail = () => {
                 );
               })()}
             <div className='replyWrap m-2.5 border-t '>
-              <CommentList comments={comments} userId={userInfo?.id} />
+              {replyLoading ? (
+                <div>로딩 중...</div>
+              ) : replyError ? (
+                <div>에러!</div>
+              ) : comments ? (
+                <CommentList
+                  comments={comments}
+                  userId={userInfo?.id}
+                  refetch={refetch}
+                />
+              ) : null}
               <div className='commentWriteBtn flex mt-4'>
                 <textarea className='border w-full p-2.5' ref={replyRef} />
                 <button
