@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import Layout from '../utils/Layout';
 import axios from 'axios';
 import LikeBtn from '../components/Community/LikeBtn';
 import CommentList from '../components/Community/CommentList';
 import dayjs from 'dayjs';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRef } from 'react';
 import { useLoginStore } from '../store/store';
@@ -46,7 +46,9 @@ const CommunityDetail = () => {
     isLoading: replyLoading,
     isError: replyError,
     refetch,
-  } = useQuery('reply', () => getReply(category, id, setReplyCnt));
+  } = useQuery('reply', () => getReply(category, id, setReplyCnt), {
+    refetchOnWindowFocus: true,
+  });
 
   useEffect(() => {
     const Detail = async () => {
@@ -82,7 +84,8 @@ const CommunityDetail = () => {
     // console.log(userInfo);
     if (userInfo?.id)
       try {
-        const { data } = await axios.post(
+        // const { data } =
+        await axios.post(
           `${baseURL}/post/reply/${category}/${id}/${userInfo.id}`,
           [
             {
@@ -200,8 +203,10 @@ const CommunityDetail = () => {
                       {imgs.length > 0
                         ? imgs.map((img) => (
                             <img
+                              key={`${img.id}_img`}
                               src={`${baseURL}/${img.path}`}
                               className='relative w-full h-full object-cover mb-2.5 rounded-xl'
+                              alt={img.path}
                               //
                               crossOrigin='anonymous'
                               //문제가 해결되면 crossOrigin 삭제할 예정\
