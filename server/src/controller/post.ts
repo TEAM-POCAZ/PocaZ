@@ -8,7 +8,7 @@ export default {
     try {
       const {
         params: { category },
-        query: { sortBy, lastPostId, SIZE },
+        query: { sortBy, lastPostId, SIZE, userId },
       } = req;
 
       const postList: IPosts[] = await sqlSelectHandler(
@@ -16,7 +16,8 @@ export default {
          ${tranSQL.posts.listsFrom}
           WHERE p.category = ?
           AND p.deleteAt IS NULL
-          AND p.id < ? 
+          AND p.id < ?
+          ${userId ? `AND p.user =${userId} ` : ''} 
           ORDER BY ${sortBy === 'popular' ? 'LikesCnt DESC, ' : ''} p.id DESC 
           LIMIT ? `,
         [category, lastPostId || Number.MAX_SAFE_INTEGER, SIZE || '10']

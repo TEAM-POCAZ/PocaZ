@@ -20,7 +20,7 @@ export default {
 
   getMarkets: async (req: Request, res: Response) => {
     const {
-      query: { keyword, lastPostId, SIZE, group },
+      query: { keyword, lastPostId, SIZE, group, userId },
     } = req;
 
     const keywordMap: string =
@@ -46,6 +46,7 @@ export default {
        AND pcs.deleteAt IS NULL
        AND pcs.id < ?
        ${group ? `AND ag.id = ${group} ` : ''}
+       ${userId ? `AND u.id =${userId} ` : ''} 
        ORDER BY pcs.id DESC
        LIMIT ?`,
       [lastPostId || Number.MAX_SAFE_INTEGER, SIZE || '30']

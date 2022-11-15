@@ -3,11 +3,12 @@ import { PoolConnection } from 'mysql2/promise';
 import db from '../db/database';
 import type { ErrorRequestHandler } from 'express';
 import { DbConnectionError } from '../error/DbConnectionError';
-
+import { multerUpload, uploadFiles } from '../middleware/multer';
 import { config } from '../config';
+import { tranSQL } from '../utils/tranSQL';
 import { User, UserCreationDto, UserUpdateDto } from '../entity/user';
 const REACT_URL: string = config.host.reactAppHostUrl;
-
+const HOST_URL: string = config.host.url;
 const userRouter = Router();
 
 userRouter.get('/', async (req, res, next) => {
@@ -61,10 +62,20 @@ userRouter.post('/', async (req, res, next) => {
   }
 });
 
-userRouter.put('/', async (req, res, next) => {
+userRouter.put('/', multerUpload.single('photo'), async (req, res, next) => {
   let conn: PoolConnection | null = null;
   const user: UserUpdateDto = req.body;
   try {
+    const file = req.file as Express.Multer.File;
+    if (!!file) {
+      const fileId: string = await tranSQL.postOne(
+        `
+      INSERT INTO File (name, path) 
+      VALUES (?, ?)`,
+        [file.originalname, file.filename]
+      );
+      user.profileImage = `${HOST_URL}/api/${file.filename}`;
+    }
     conn = await db.getPool().getConnection();
     return res.json(await User.update(conn, user));
   } catch (err) {
