@@ -26,9 +26,9 @@ const CommentListItem = ({ list }) => {
                         <div className='writeProfile w-10 h-10 rounded-full bg-black mr-2.5'></div>
                         <span className='writeName'>{post.nickname}</span>
                       </div>
-                      <time className='text-xs'>{days}</time>&nbsp;
+                      <time className='text-xs'>{days} ·</time>&nbsp;
                       <span className='comment text-xs'>
-                        댓글 {post.replyCnt}
+                        댓글 {post.replyCnt} ·
                       </span>
                       &nbsp;
                       <span className='hit text-xs'>조회 {post.viewCount}</span>

@@ -208,8 +208,8 @@ const CommunityDetail = () => {
                           {DetailContent.nickname}
                         </span>
                       </div>
-                      <time>{days}</time>&nbsp;
-                      <span>댓글 {replyCnt}</span>&nbsp;
+                      <time>{days}</time>&nbsp;·&nbsp;
+                      <span>댓글 {replyCnt}</span>&nbsp;·&nbsp;
                       <span className='hit'>
                         조회 {DetailContent.viewCount}
                       </span>
