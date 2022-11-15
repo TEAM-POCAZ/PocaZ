@@ -46,7 +46,9 @@ const CommunityDetail = () => {
     isLoading: replyLoading,
     isError: replyError,
     refetch,
-  } = useQuery('reply', () => getReply(category, id, setReplyCnt));
+  } = useQuery('reply', () => getReply(category, id, setReplyCnt), {
+    refetchOnWindowFocus: true,
+  });
 
   useEffect(() => {
     const Detail = async () => {
