@@ -52,6 +52,11 @@ class Socket {
         }
       });
 
+      so.on('disconnect', () => {
+        console.log('클라이언트 접속 해제', so.id);
+        clearInterval(so.interval);
+     });
+
       so.on('message', createChat);
     });
   }
