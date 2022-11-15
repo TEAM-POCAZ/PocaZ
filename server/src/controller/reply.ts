@@ -65,7 +65,8 @@ export default {
     const { category, post, id, user } = req.params;
 
     await tranSQL.putOne(
-      `DELETE FROM Reply
+      `UPDATE Reply
+          SET deleteAt = now()
         WHERE id   = ?
           AND user = ?
           AND post = ?`,
