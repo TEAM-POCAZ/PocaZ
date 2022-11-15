@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import Layout from '../../utils/Layout';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -134,7 +134,9 @@ const MarketDetail = ({ socket }) => {
               {imgs.length > 0
                 ? imgs.map((img) => (
                     <img
+                      key={img.id}
                       src={`${baseURL}/${img.path}`}
+                      alt={img.path}
                       className='relative w-full h-full object-cover mb-2.5 rounded-xl'
                       //
                       crossOrigin='anonymous'
