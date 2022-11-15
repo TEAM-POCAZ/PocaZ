@@ -37,7 +37,7 @@ const MarketListItem = ({ list }) => {
                         {post.groupName}✨
                       </p>
                       <p className='memberName text-sm'>{post.stageName}</p>
-                      <p className='pocaDetail mt-1.5 font-medium text-sm text-gray-300'>
+                      <p className='pocaDetail mt-1.5 font-medium text-sm text-gray-300 w-[180px] overflow-hidden whitespace-nowrap text-ellipsis'>
                         {post.pocaName}
                       </p>
                       <p className='pocaDetail mt-2.5 font-medium text-lg'>
