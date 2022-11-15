@@ -30,8 +30,6 @@ const ChatMain = ({ socket }) => {
       try {
         const { data } = await apis.getChatList(userInfo.id);
         data.sort((a, b) => dayjs(b.createAt) - dayjs(a.createAt));
-
-        console.log('data :>> ', data);
         setChatList(data);
         setIsLoading(false);
       } catch (e) {
@@ -53,7 +51,6 @@ const ChatMain = ({ socket }) => {
         }
       });
     });
-    // console.log('chatList :>> ', chatList);
   }, [chatList]);
 
   useEffect(() => {
