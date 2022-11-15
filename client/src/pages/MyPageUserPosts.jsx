@@ -94,68 +94,74 @@ const MyPageUserPosts = () => {
   return (
     <>
       <Layout>
-        <div className='communityListBoxWrap'>
-          <div className='font-bold text-lg'>커뮤니티 게시글</div>
-          {status === 'loading' ? (
-            <p>Loading...</p>
-          ) : status === 'error' ? (
-            <span>Error: {error.message}</span>
-          ) : (
-            <>
-              <div className='listWrap m-2.5'>
-                <CommunityListItem list={data} />
-              </div>
-              <div>
-                <button
-                  ref={ref}
-                  onClick={() => fetchNextPage()}
-                  disabled={!hasNextPage || isFetchingNextPage}
-                >
-                  {isFetchingNextPage
-                    ? 'Loading more...'
-                    : hasNextPage
-                    ? 'Load Newer'
-                    : ''}
-                </button>
-              </div>
-              <div>
-                {isFetching && !isFetchingNextPage
-                  ? 'Background Updating...'
-                  : null}
-              </div>
-            </>
-          )}
-        </div>
-        <div>
-          <div className='font-bold text-lg'>장터 게시글</div>
-          {status2 === 'loading' ? (
-            <p>Loading...</p>
-          ) : status2 === 'error' ? (
-            <span>Error: {error2.message}</span>
-          ) : (
-            <>
-              <MarketListItem list={data2} />
+        <div className='m-3.5'>
+          <div className='communityListBoxWrap'>
+            <div className='mb-2.5 font-bold text-lg text-blue-800'>
+              내가 작성한 커뮤니티 게시글
+            </div>
+            {status === 'loading' ? (
+              <p>Loading...</p>
+            ) : status === 'error' ? (
+              <span>Error: {error.message}</span>
+            ) : (
+              <>
+                <div className='listWrap'>
+                  <CommunityListItem list={data} />
+                </div>
+                <div>
+                  <button
+                    ref={ref}
+                    onClick={() => fetchNextPage()}
+                    disabled={!hasNextPage || isFetchingNextPage}
+                  >
+                    {isFetchingNextPage
+                      ? 'Loading more...'
+                      : hasNextPage
+                      ? 'Load Newer'
+                      : ''}
+                  </button>
+                </div>
+                <div>
+                  {isFetching && !isFetchingNextPage
+                    ? 'Background Updating...'
+                    : null}
+                </div>
+              </>
+            )}
+          </div>
+          <div>
+            <div className='mb-2.5 font-bold text-lg text-blue-800'>
+              내가 작성한 장터 게시글
+            </div>
+            {status2 === 'loading' ? (
+              <p>Loading...</p>
+            ) : status2 === 'error' ? (
+              <span>Error: {error2.message}</span>
+            ) : (
+              <>
+                <MarketListItem list={data2} />
 
-              <div>
-                <button
-                  ref={ref2}
-                  onClick={() => fetchNextPage2()}
-                  disabled={!hasNextPage2 || isFetchingNextPage2}
-                >
-                  {isFetchingNextPage2
-                    ? 'Loading more...'
-                    : hasNextPage2
-                    ? 'Load Newer'
-                    : ''}
-                </button>
-              </div>
-              <div>
-                {isFetching2 && !isFetchingNextPage2
-                  ? 'Background Updating...'
-                  : null}
-              </div>
-            </>
-          )}
+                <div>
+                  <button
+                    ref={ref2}
+                    onClick={() => fetchNextPage2()}
+                    disabled={!hasNextPage2 || isFetchingNextPage2}
+                  >
+                    {isFetchingNextPage2
+                      ? 'Loading more...'
+                      : hasNextPage2
+                      ? 'Load Newer'
+                      : ''}
+                  </button>
+                </div>
+                <div>
+                  {isFetching2 && !isFetchingNextPage2
+                    ? 'Background Updating...'
+                    : null}
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </Layout>
     </>

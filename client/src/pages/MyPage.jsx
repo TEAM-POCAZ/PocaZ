@@ -96,131 +96,155 @@ const MyPage = () => {
   return (
     <>
       <Layout>
-        <div>{axiosError}</div>
-        <div className='flex flex-col justify-center'>
-          <img
-            className='mx-auto'
-            crossOrigin='anonymous'
-            src={userInfo.profileImage}
-          ></img>
-        </div>
-        <form encType='multipart/form-data' onSubmit={handleSubmit}>
-          <Input
-            property='id'
-            optionalText='개발용'
-            placeholder='database primary key'
-            value={userInfo.id}
-            setValue={(id) => {
-              setUserInfo({ ...userInfo, id });
-            }}
-            disabled={true}
-          />
-          <Input
-            property='username'
-            optionalText='개발용'
-            placeholder='username by OAuth'
-            value={userInfo.username}
-            setValue={(username) => {
-              setUserInfo({ ...userInfo, username });
-            }}
-            disabled={true}
-          />
-          <Input
-            property='email'
-            optionalText='이메일을 수정한다면 인증 절차 필요'
-            placeholder='example@example.com'
-            value={userInfo.email}
-            setValue={(email) => {
-              setUserInfo({ ...userInfo, email });
-            }}
-            disabled={disabled}
-          />
-          <Input
-            property='nickname'
-            placeholder='예쁜 닉네임'
-            value={userInfo.nickname}
-            setValue={(nickname) => {
-              setUserInfo({ ...userInfo, nickname });
-            }}
-            disabled={disabled}
-          />
-          <Input
-            property='profileImage'
-            optionalText='경로에서 사진 뿌리기로 변경 필요'
-            placeholder='프로필 이미지 경로'
-            value={userInfo.profileImage}
-            setValue={(profileImage) => {
-              setUserInfo({ ...userInfo, profileImage });
-            }}
-            disabled={disabled}
-          />
-          <label>
-            프로필 파일 업로드하기
-            <input
-              type='file'
-              accept='image/*'
-              name='photo'
-              ref={fileInput}
+        <div className='m-3.5'>
+          <div>{axiosError}</div>
+          <div className='flex flex-col mb-10'>
+            <h3 className='relative mb-2.5 font-bold text-lg'>프로필 사진 </h3>
+            <div className='flex items-center justify-between'>
+              <img
+                className='w-[150px] h-[150px] object-cover border'
+                crossOrigin='anonymous'
+                src={userInfo.profileImage}
+              ></img>
+              <div className='size150 flex items-center justify-center h-full font-normal text-sm text-gray-300'>
+                150x150 사이즈가 예쁩니다♥︎
+              </div>
+            </div>
+          </div>
+          <form encType='multipart/form-data' onSubmit={handleSubmit}>
+            {/* <Input
+              property='id'
+              optionalText='개발용'
+              placeholder='database primary key'
+              value={userInfo.id}
+              setValue={(id) => {
+                setUserInfo({ ...userInfo, id });
+              }}
+              disabled={true}
+            />
+            <Input
+              property='username'
+              optionalText='개발용'
+              placeholder='username by OAuth'
+              value={userInfo.username}
+              setValue={(username) => {
+                setUserInfo({ ...userInfo, username });
+              }}
+              disabled={true}
+            /> */}
+            <Input
+              property='이메일'
+              // optionalText='이메일을 수정한다면 인증 절차 필요'
+              placeholder='example@example.com'
+              value={userInfo.email}
+              setValue={(email) => {
+                setUserInfo({ ...userInfo, email });
+              }}
               disabled={disabled}
             />
-          </label>
-          <Input
-            property='artist'
-            placeholder='최애 아이돌id'
-            value={userInfo.artist ?? ''}
-            setValue={(artistId) => {
-              setUserInfo({ ...userInfo, artist: artistId });
-            }}
-            disabled={disabled}
-          />
-          <Artist artistId={userInfo.artist}></Artist>
-          <Input
-            property='deleteAt'
-            optionalText='개발용'
-            placeholder='삭제되지 않음'
-            value={userInfo.deleteAt ?? ''}
-            setValue={(deleteAt) => {
-              setUserInfo({ ...userInfo, deleteAt });
-            }}
-            disabled={true}
-          />
-          <Input
-            property='createAt'
-            optionalText='개발용'
-            value={userInfo.createAt}
-            setValue={(createAt) => {
-              setUserInfo({ ...userInfo, createAt });
-            }}
-            disabled={true}
-          />
-          <Input
-            property='updateAt'
-            optionalText='개발용'
-            placeholder='업데이트되지 않음'
-            value={userInfo.updateAt}
-            setValue={(updateAt) => {
-              setUserInfo({ ...userInfo, updateAt });
-            }}
-            disabled={true}
-          />
-          <input
-            type='submit'
-            value={disabled ? '개인정보 수정하기' : '수정 완료'}
-            className='submit mt-5'
-          />
-        </form>
-        <div className='right'>
-          <Link to={'/MyIdol'}>최애 아이돌 변경하기</Link>
-          <br></br>
-          <Link to={'/MyPage/UserPosts'}>내가 작성한 게시글 보기</Link>
-          <br></br>
-          <button className='submit mt-5' onClick={logout}>
-            로그아웃하기
-          </button>
-          <br></br>
-          <button className='submit' onClick={withdrawal}>
-            탈퇴하기
-          </button>
+            <Input
+              property='닉네임'
+              placeholder='예쁜 닉네임'
+              value={userInfo.nickname}
+              setValue={(nickname) => {
+                setUserInfo({ ...userInfo, nickname });
+              }}
+              disabled={disabled}
+            />
+            {/* <Input
+              property='profileImage'
+              optionalText='경로에서 사진 뿌리기로 변경 필요'
+              placeholder='프로필 이미지 경로'
+              value={userInfo.profileImage}
+              setValue={(profileImage) => {
+                setUserInfo({ ...userInfo, profileImage });
+              }}
+              disabled={disabled}
+            /> */}
+            <label className='block mb-10'>
+              <h3 className='mb-2.5 font-bold text-lg'>프로필 파일 업로드</h3>
+              <input
+                type='file'
+                accept='image/*'
+                name='photo'
+                ref={fileInput}
+                disabled={disabled}
+              />
+            </label>
+            {/* <Input
+              property='최애 아이돌'
+              placeholder='최애 아이돌id'
+              value={userInfo.artist ?? ''}
+              setValue={(artistId) => {
+                setUserInfo({ ...userInfo, artist: artistId });
+              }}
+              disabled={disabled}
+            /> */}
+            <Artist artistId={userInfo.artist}></Artist>
+            {/* <Input
+              property='deleteAt'
+              optionalText='개발용'
+              placeholder='삭제되지 않음'
+              value={userInfo.deleteAt ?? ''}
+              setValue={(deleteAt) => {
+                setUserInfo({ ...userInfo, deleteAt });
+              }}
+              disabled={true}
+            />
+            <Input
+              property='createAt'
+              optionalText='개발용'
+              value={userInfo.createAt}
+              setValue={(createAt) => {
+                setUserInfo({ ...userInfo, createAt });
+              }}
+              disabled={true}
+            />
+            <Input
+              property='updateAt'
+              optionalText='개발용'
+              placeholder='업데이트되지 않음'
+              value={userInfo.updateAt}
+              setValue={(updateAt) => {
+                setUserInfo({ ...userInfo, updateAt });
+              }}
+              disabled={true}
+            /> */}
+            <input
+              type='submit'
+              value={disabled ? '개인 정보 수정할래요!' : '수정 완료할래요!'}
+              className='submit flex items-center justify-center w-full mb-5 p-2.5 font-bold border rounded cursor-pointer'
+            />
+          </form>
+
+          <div className='right'>
+            <Link
+              className='flex items-center justify-center mb-5 p-2.5 border rounded cursor-pointer'
+              to={'/MyIdol'}
+            >
+              최애 아이돌 변경하기
+            </Link>
+
+            <Link
+              className='flex items-center justify-center p-2.5 border rounded cursor-pointer'
+              to={'/MyPage/UserPosts'}
+            >
+              내가 작성한 게시글 보기
+            </Link>
+
+            <button
+              className='submit w-full mt-5 mb-4 p-2.5 border rounded cursor-pointer'
+              onClick={logout}
+            >
+              로그아웃
+            </button>
+            <button
+              className='submit block w-full mb-10 text-gray-400 text-sm text-right underline'
+              onClick={withdrawal}
+            >
+              탈퇴하기
+            </button>
+          </div>
         </div>
         <Footer />
       </Layout>

@@ -149,17 +149,19 @@
   .slideTxt { opacity:0; }
   .swiper-slide-active > .slideTxt { opacity:1; -webkit-backface-visibility:hidden; backface-visibility:hidden; -webkit-animation:VisualMotion 1s ease-in-out both; animation:VisualMotion 1s ease-in-out both; -webkit-animation-delay:0.3s; animation-delay:0.3s; }
 
-@keyframes VisualMotion {
-    0% {
-        opacity: 0;
-        -webkit-transform: translate3d(8%,0,0);
-        transform: translate3d(8%,0,0)
-    }
+  @keyframes VisualMotion {
+      0% {
+          opacity: 0;
+          -webkit-transform: translate3d(8%,0,0);
+          transform: translate3d(8%,0,0)
+      }
 
-    to {
-        opacity: 1;
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0)
-    }
-}
+      to {
+          opacity: 1;
+          -webkit-transform: translateZ(0);
+          transform: translateZ(0)
+      }
+  }
+
+  .size150 { width: calc(100% - 150px); }
 }
