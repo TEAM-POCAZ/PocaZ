@@ -153,7 +153,7 @@ const MarketDetail = ({ socket }) => {
                 />
                 <span className='font-semibold'>{content.nickname}</span>
               </div>
-              <div className='pocaDesc pt-2 min-h-[47vh]'>
+              <div className='pocaDesc pt-2 min-h-[30vh]'>
                 <h3 className='pb-2 font-semibold text-2xl mt-5'>
                   {content.title}
                 </h3>
