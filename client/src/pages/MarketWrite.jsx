@@ -80,9 +80,9 @@ const MarketWrite = () => {
 
   const onImgDelete = (e, action) => {
     const imgKey = e.target.value;
-    if (prevImgs.length + currImgs.length === 1) {
-      return toast.error('장터게시판에는 최소 1개의 사진이 필요해요');
-    }
+    // if (prevImgs.length + currImgs.length === 1) {
+    //   return toast.error('장터게시판에는 최소 1개의 사진이 필요해요');
+    // }
     if (action === 'prev') {
       setPrevImgs((prev) =>
         prev.map((img) => (img.file == imgKey ? { ...img, isDel: true } : img))
@@ -104,6 +104,17 @@ const MarketWrite = () => {
     if (prevImgs.length + currImgs.length < 1) {
       return toast.error('장터게시판에는 최소 1개의 사진이 필요해요');
     }
+    if (!pocaMemo?.id) {
+      return toast.error('선택된 포토카드가 없습니다.');
+    }
+    if (isNaN(priceRef.current.value)) {
+      return toast.error('가격은 숫자만 입력해주세요.');
+    } else if (Number(priceRef.current.value) < 1_000) {
+      return toast.error('1000원 이상으로 입력해주세요.');
+    } else if (Number(priceRef.current.value) > 5_000_000) {
+      return toast.error('500만원 이하로 입력해주세요.');
+    }
+
     let mId;
 
     if (marketInfo?.state?.MarketId) {
