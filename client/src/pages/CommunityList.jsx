@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Layout from '../utils/Layout';
 import CommunityTop from './CommunityTop';
 import SearchBox from '../components/Community/SearchBox';
@@ -23,11 +23,8 @@ const CommunityList = () => {
     error,
     isFetching,
     isFetchingNextPage,
-    // isFetchingPreviousPage,
     fetchNextPage,
-    // fetchPreviousPage,
     hasNextPage,
-    // hasPreviousPage,
   } = useInfiniteQuery(
     ['projects', sort],
     async ({ pageParam = Number.MAX_SAFE_INTEGER }) => {
@@ -62,11 +59,11 @@ const CommunityList = () => {
           <CommunityTop category={1} isLogin={userInfo?.id} />
           <div className='freeBoardSort border-b'>
             <ul className='flex justify-around text-center cursor-pointer'>
-              <li onClick={popularSort} className='flex-auto py-3'>
-                인기
+              <li className='flex-auto py-3'>
+                <button onClick={popularSort}>인기</button>
               </li>
-              <li onClick={recentSort} className='flex-auto py-3'>
-                최신
+              <li className='flex-auto py-3'>
+                <button onClick={recentSort}>최신</button>
               </li>
             </ul>
           </div>

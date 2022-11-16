@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Layout from '../utils/Layout';
 import { useNavigate } from 'react-router-dom';
 import CommunityTop from './CommunityTop';
@@ -62,7 +62,7 @@ const CommunityBoast = () => {
                   {page.postList.map((lists) => {
                     const days = dayjs(lists.createAt).format('YYYY-MM-DD');
                     return (
-                      <div
+                      <button
                         key={lists.id}
                         onClick={() => navigate(`/Community/2/${lists.id}`)}
                         className='cursor-pointer'
@@ -75,7 +75,7 @@ const CommunityBoast = () => {
                           />
                         </div>
                         <div className='boardSubject mt-1'>
-                          <p>{lists.title}</p>
+                          <p className='font-medium'>{lists.title}</p>
                           <div>
                             <div className='writeWrap'>
                               <div className='writeProfile'>
@@ -95,7 +95,7 @@ const CommunityBoast = () => {
                             </span>
                           </div>
                         </div>
-                      </div>
+                      </button>
                     );
                   })}
                 </React.Fragment>
@@ -109,12 +109,13 @@ const CommunityBoast = () => {
             ref={ref}
             onClick={() => fetchNextPage()}
             disabled={!hasNextPage || isFetchingNextPage}
+            className='flex justify-center items-center w-full'
           >
             {isFetchingNextPage
               ? 'Loading more...'
               : hasNextPage
               ? 'Load Newer'
-              : '더 이상 게시글이 없습니다'}
+              : '더 이상 불러올 게시글이 없습니다.'}
           </button>
         </div>
         <div>

@@ -1,10 +1,8 @@
-import React from 'react';
-
 const MarketWritePocaList = ({ pocas, setPocaMemo, setModal }) => {
   return (
     <>
       <div className='relative modal bg-white border w-full h-screen my-2.5'>
-        <h2>모달 리스트</h2>
+        <h2>판매할 포토카드를 선택해 주세요!</h2>
         <div className='absolute dfdfdf bg-white border-b'>
           <ul className='flex'>
             {pocas?.length > 0 ? (

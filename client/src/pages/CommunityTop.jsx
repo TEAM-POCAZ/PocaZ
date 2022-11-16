@@ -1,5 +1,3 @@
-import React from 'react';
-import { useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 
 const CommunityTop = ({ category, isLogin }) => {

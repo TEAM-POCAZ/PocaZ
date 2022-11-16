@@ -1,6 +1,5 @@
-import React from 'react';
 import Layout from '../utils/Layout';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import MarketWritePocaList from '../components/Market/MarketWritePocaList';
@@ -205,7 +204,6 @@ const MarketWrite = () => {
       axios.get(`${baseURL}/artist/group`),
       { signal },
     ])
-      //async 쓰삼***
       .then(
         axios.spread((response1, response2) => {
           setChoose({
@@ -272,9 +270,8 @@ const MarketWrite = () => {
                         <img
                           src={`${baseURL}/${img.path}`}
                           className='relative w-full h-full object-cover mb-2.5 rounded-xl'
-                          //
                           crossOrigin='anonymous'
-                          //문제가 해결되면 crossOrigin 삭제할 예정\
+                          alt='장터 이미지'
                         />
                         <button
                           className='flex items-center w-[32px] h-[32px] absolute top-5 right-5 bg-blue-700 rounded-full p-2'
