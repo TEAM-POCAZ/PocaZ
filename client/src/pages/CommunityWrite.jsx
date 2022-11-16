@@ -71,9 +71,9 @@ const CommunityWrite = () => {
    * @param {String} action: 기존 이미지인지 새 이미지인지 구분
    */
   const onImgDelete = (e, action) => {
-    if (parseInt(cate) === 2 && prevImgs.length + currImgs.length === 1) {
-      return toast.error('자랑게시판에는 최소 1개의 사진이 필요해요');
-    }
+    // if (parseInt(cate) === 2 && prevImgs.length + currImgs.length === 1) {
+    //   return toast.error('자랑게시판에는 최소 1개의 사진이 필요해요');
+    // }
     const imgKey = e.target.value;
     action === 'prev' &&
       setPrevImgs((prev) =>
