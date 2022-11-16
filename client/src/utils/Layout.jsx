@@ -27,7 +27,7 @@ const Layout = ({ children }) => {
             className='my-5 px-6 py-4 bg-zinc-800 hover:bg-zinc-900 text-white rounded-lg ease-in'
           >
             <p className='flex'>
-              <Link to='Market'>
+              <Link to='/Market'>
                 내 최애 포카 찾으러 가기
                 <i className='ri-arrow-right-s-line'></i>
               </Link>

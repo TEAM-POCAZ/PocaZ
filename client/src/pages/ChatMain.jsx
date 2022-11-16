@@ -1,10 +1,7 @@
-import React, { Fragment, useEffect, useState } from 'react';
-
-import { useQuery } from 'react-query';
+import React, { useEffect, useState } from 'react';
 
 import Layout from '../utils/Layout';
 import { useLoginStore } from '../store/store';
-
 import { Link } from 'react-router-dom';
 import { apis } from '../utils/api';
 import { source } from '../utils/api';
@@ -47,7 +44,7 @@ const ChatMain = ({ socket }) => {
     chatList?.forEach((item) => {
       socket.joinRoom(String(item.chatRoom), (res) => {
         if (res) {
-          console.log('join ===>', res);
+          // console.log('join ===>', res);
         }
       });
     });
@@ -98,14 +95,14 @@ const ChatMain = ({ socket }) => {
                       state={{
                         room: item.chatRoom,
                         sellerNickname: item.nickname,
-                        marketItemId: item.sellItemid, //FIXME 실제 chatlist api 에서 바뀐 데이터!
+                        marketItemId: item.sellItemid,
                       }}
                       className='flex py-4 border-2x'
                     >
                       <li className='flex w-full '>
                         <div className='m-3'>
                           <img
-                            className='w-10 rounded-full'
+                            className='w-10 h-8 rounded-full'
                             src={item.profileImage}
                             alt='profile'
                           />
