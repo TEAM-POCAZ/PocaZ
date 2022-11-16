@@ -7,8 +7,10 @@ class Socket {
   constructor(server: any) {
     this.io = new Server(server, {
       cors: {
-        origin: '*',
+        origin: ['http://localhost:3000'],
+        credentials: true,
       },
+      path: '/api/socket.io',
     });
 
     this.io.on('connection', (so: any) => {
@@ -55,7 +57,7 @@ class Socket {
       so.on('disconnect', () => {
         console.log('클라이언트 접속 해제', so.id);
         clearInterval(so.interval);
-     });
+      });
 
       so.on('message', createChat);
     });

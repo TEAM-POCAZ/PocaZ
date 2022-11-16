@@ -11,6 +11,7 @@ import { useRef } from 'react';
 import { useLoginStore } from '../store/store';
 import { useQuery } from 'react-query';
 import { baseURL } from '../utils/api';
+import ModifyInterface from '../components/Community/ModifyInterface';
 
 const getReply = async (category, id, setReplyCnt) => {
   try {
@@ -35,6 +36,7 @@ const CommunityDetail = () => {
   const { userInfo } = useLoginStore();
   const [DetailContent, setDetailContent] = useState(null);
   // const [comments, setComments] = useState(null);
+  const [toggle, setToggle] = useState(false);
   const replyRef = useRef();
   const [replyCnt, setReplyCnt] = useState(0);
   const navigate = useNavigate();
@@ -131,9 +133,7 @@ const CommunityDetail = () => {
     }
     if (confirm('정말 삭제할까용')) {
       try {
-        const del = await axios.delete(
-          `${baseURL}/post/${category}/${id}/${userInfo.id}`
-        );
+        await axios.delete(`${baseURL}/post/${category}/${id}/${userInfo.id}`);
         toast.success('삭제가 완료되었습니다.', {
           autoClose: 500,
           position: toast.POSITION.BOTTOM_CENTER,
@@ -164,17 +164,32 @@ const CommunityDetail = () => {
   return (
     <>
       <Layout>
-        <div className='communityDetailBoxWrap'>
+        <div className={`communityDetailBoxWrap`}>
+          {toggle ? (
+            <ModifyInterface
+              setToggle={setToggle}
+              modifyAction={modifyAction}
+              deleteAction={deleteAction}
+            />
+          ) : null}
           <div className='communitDetailTop flex justify-between px-2.5 border-b'>
             <button type='button' onClick={() => navigate(-1)}>
               <i className='ri-arrow-left-line'></i>
             </button>
-            <h2 className='text-base translate-x-2.5'>자유</h2>
-            <button type='button'>
-              <i className='ri-more-line'></i>
+            <h2 className='text-base translate-x-2.5 mb-2'>
+              {parseInt(category) === 1 ? '자유' : '자랑'}
+            </h2>
+            <button
+              type='button'
+              className={!userInfo?.id ? 'invisible z-5' : 'z-5'}
+              onClick={() => setToggle(!toggle)}
+            >
+              {userInfo?.id ? (
+                <i className='ri-more-line'></i>
+              ) : (
+                <span>&nbsp;&nbsp;&nbsp;</span>
+              )}
             </button>
-            <button onClick={modifyAction}>수정</button>
-            <button onClick={deleteAction}>삭제</button>
           </div>
           <div className='communityDetailContents my-2.5'>
             {DetailContent &&
@@ -193,8 +208,8 @@ const CommunityDetail = () => {
                           {DetailContent.nickname}
                         </span>
                       </div>
-                      <time>{days}</time>&nbsp;
-                      <span>댓글 {replyCnt}</span>&nbsp;
+                      <time>{days}</time>&nbsp;·&nbsp;
+                      <span>댓글 {replyCnt}</span>&nbsp;·&nbsp;
                       <span className='hit'>
                         조회 {DetailContent.viewCount}
                       </span>
@@ -205,7 +220,7 @@ const CommunityDetail = () => {
                             <img
                               key={`${img.id}_img`}
                               src={`${baseURL}/${img.path}`}
-                              className='relative w-full h-full object-cover mb-2.5 rounded-xl'
+                              className=' w-full h-full object-cover mb-2.5 rounded-xl'
                               alt={img.path}
                               //
                               crossOrigin='anonymous'
@@ -214,7 +229,9 @@ const CommunityDetail = () => {
                           ))
                         : null}
                       {/* {imgs ? <ImageList imgs={datum.imgs} /> : null} */}
-                      <p className='py-2.5 break-all'>{DetailContent.text}</p>
+                      <p className='py-2.5 break-all whitespace-pre-line'>
+                        {DetailContent.text}
+                      </p>
                     </div>
                     <LikeBtn
                       like={like}

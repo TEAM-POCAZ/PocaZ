@@ -70,6 +70,7 @@ const CommunityBoast = () => {
                         <div className='boastThumb rounded-lg overflow-hidden'>
                           <img
                             src={`${baseURL}/${lists.filePath}`}
+                            alt={lists.filePath}
                             crossOrigin='anonymous'
                           />
                         </div>

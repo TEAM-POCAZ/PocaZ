@@ -8,6 +8,7 @@ import { useInView } from 'react-intersection-observer';
 import { useInfiniteQuery } from 'react-query';
 import { useLoginStore } from '../store/store';
 import { baseURL } from '../utils/api';
+import { IsLoading } from '../utils/IsLoading';
 
 const NUMBER_OF_POSTS_ON_PAGE = 20;
 
@@ -56,7 +57,7 @@ const CommunityList = () => {
   return (
     <>
       <Layout>
-        <div className='communityListBoxWrap'>
+        <div className='communityListBoxWrap min-h-[89vh]'>
           <SearchBox />
           <CommunityTop category={1} isLogin={userInfo?.id} />
           <div className='freeBoardSort border-b'>
@@ -70,7 +71,7 @@ const CommunityList = () => {
             </ul>
           </div>
           {status === 'loading' ? (
-            <p>Loading...</p>
+            <IsLoading />
           ) : status === 'error' ? (
             <span>Error: {error.message}</span>
           ) : (
@@ -78,7 +79,7 @@ const CommunityList = () => {
               <div className='listWrap m-2.5'>
                 <CommunityListItem list={data} />
               </div>
-              <div>
+              <div className='flex items-center justify-center'>
                 <button
                   ref={ref}
                   onClick={() => fetchNextPage()}
@@ -88,7 +89,7 @@ const CommunityList = () => {
                     ? 'Loading more...'
                     : hasNextPage
                     ? 'Load Newer'
-                    : 'Nothing more to load'}
+                    : '더 이상 불러올 게시글이 없습니다.'}
                 </button>
               </div>
               <div>
