@@ -5,6 +5,7 @@
 
 <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FwE3lC%2FbtrRpDSVRYY%2FRpwnF1jnYPOh43UR0oUYJK%2Fimg.png" alt="포카즈 메인" />
 # 프로젝트 팀원
+
 |김만중1|김별이2|문승현3|배성재4| 🧸이호준5|
 |---|---|---|---|---|
 |내용 1|내용 2|내용 3|내용 4|내용 5|
@@ -21,6 +22,6 @@
 
 
 ## Back-end
-| TypeScript | Node<br/>JS | Express | MySQL | AWS |
-| :---: | :---: | :---: | :---: | :---: |
-| <img src="https://techstack-generator.vercel.app/ts-icon.svg" alt="typescript icon" width="65" height="65" /> | <img alt="spring-boot logo" src="https://t1.daumcdn.net/cfile/tistory/27034D4F58E660F616" width="65" height="65" >| <img alt="security logo" src="https://www.nextontop.com/assets/img/services/web/expressjs.svg" height="65" width="65" > | <img src="https://techstack-generator.vercel.app/mysql-icon.svg" alt="icon" width="65" height="65" /> |<img src="https://techstack-generator.vercel.app/aws-icon.svg" alt="icon" width="65" height="65" /> |
+| TypeScript | Node<br/>JS | Express | MySQL | AWS | SWAGGER | Passport<br/>JS | NGiNX | PM2 |
+| :---: | :---: | :---: | :---: | :---: |:---: |:---: |:---: |:---: | 
+| <img src="https://techstack-generator.vercel.app/ts-icon.svg" alt="typescript icon" width="65" height="65" /> | <img alt="spring-boot logo" src="https://t1.daumcdn.net/cfile/tistory/27034D4F58E660F616" width="65" height="65" >| <img alt="security logo" src="https://www.nextontop.com/assets/img/services/web/expressjs.svg" height="65" width="65" > | <img src="https://techstack-generator.vercel.app/mysql-icon.svg" alt="icon" width="65" height="65" /> |<img src="https://techstack-generator.vercel.app/aws-icon.svg" alt="icon" width="65" height="65" /> | <img src="https://cdn.discordapp.com/attachments/1005416392096497664/1042431974440194109/unknown.png" alt="swagger logo" width="65" height="65" /> | <img src="https://image.emojipng.com/682/6167682.jpg" alt="passport icon" width="65" height="65" /> | <img src="https://w7.pngwing.com/pngs/816/934/png-transparent-nginx-hd-logo-thumbnail.png"  alt="nginx icon" width="65" height="65" /> | <img src="https://raw.githubusercontent.com/gilbarbara/logos/9c6e5e9ef3c297da414a4809ae9f0f56a6384e91/logos/pm2-icon.svg"  alt="nginx icon" width="65" height="65" /> 
