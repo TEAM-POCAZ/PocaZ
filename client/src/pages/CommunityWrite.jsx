@@ -5,7 +5,6 @@ import 'remixicon/fonts/remixicon.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// import ImageList from '../components/Community/ImageList';
 import { baseURL } from '../utils/api';
 import ModifyInterface from '../components/Community/ModifyInterface';
 
@@ -15,7 +14,6 @@ const CommunityWrite = () => {
   const [toggle, setToggle] = useState(false);
   const titleRef = useRef();
   const contentRef = useRef();
-  // const [imgs, setImg] = useState([]);
   const [imgs, setImgs] = useState([]);
   const [prevImgs, setPrevImgs] = useState([]);
   const [currImgs, setCurrImgs] = useState([]);
@@ -40,7 +38,6 @@ const CommunityWrite = () => {
       setCate(parseInt(category));
 
       setPrevImgs(postImgs.map((postImg) => ({ ...postImg, isDel: false })));
-      // setImg(imges.map((img) => ({ ...img, isDel: false, isRecent: false })));
     }
   };
 
@@ -104,7 +101,6 @@ const CommunityWrite = () => {
       let pid;
       if (postInfo?.state?.id) {
         const { category, id } = postInfo.state;
-        // 글 제목 및 내용 수정
         await fetch(`${baseURL}/post/${category}/${id}`, {
           method: 'PUT',
           headers: {
@@ -118,7 +114,6 @@ const CommunityWrite = () => {
             },
           ]),
         });
-        // 기존 이미지 중 삭제 상태의 이미지 삭제 요청
         prevImgs.length > 0 &&
           prevImgs.filter((img) => img.isDel).length > 0 &&
           (await fetch(`${baseURL}/post/img/${cate}/${id}`, {
@@ -222,13 +217,7 @@ const CommunityWrite = () => {
                 <i className='ri-arrow-down-s-fill'></i>
               </h2>
             </button>
-            <div hidden={true}>
-              {cate}
-              {/* <select value={cate} onChange={(e) => setCate(e.target.value)}>
-                <option value={1}>자유</option>
-                <option value={2}>자랑</option>
-              </select> */}
-            </div>
+            <div hidden={true}>{cate}</div>
             <button
               onClick={submitBtn}
               type='button'
@@ -238,7 +227,6 @@ const CommunityWrite = () => {
             </button>
           </div>
           <div className='communityWriteContents mt-3.5'>
-            {/* 제목 */}
             <input
               type='text'
               className='w-full py-3 px-2.5 border-t border-b'
@@ -246,10 +234,6 @@ const CommunityWrite = () => {
               id='title'
               ref={titleRef}
             />
-
-            {/* {imgs.length > 0 ? (
-              <ImageList imgs={imgs} isWrite={true} imgDelete={imgDelete} />
-            ) : null} */}
             <div className='dfdfdf'>
               <ul className='m-5'>
                 {prevImgs.length > 0
@@ -263,9 +247,7 @@ const CommunityWrite = () => {
                             src={`${baseURL}/${img.path}`}
                             alt={img.path}
                             className='relative w-full h-full object-cover mb-2.5 rounded-xl'
-                            //
                             crossOrigin='anonymous'
-                            //문제가 해결되면 crossOrigin 삭제할 예정\
                           />
                           <button
                             className='absolute top-5 right-5 bg-blue-700 rounded p-2'

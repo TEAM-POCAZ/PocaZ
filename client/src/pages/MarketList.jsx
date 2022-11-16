@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Layout from '../utils/Layout';
 import MarketSearchBox from '../components/Market/MarketSearchBox';
 import MarketCategory from '../components/Market/MarketCategory';

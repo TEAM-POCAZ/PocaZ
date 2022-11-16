@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Autoplay, A11y } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
@@ -25,7 +23,7 @@ const MainPocaRecentItem = () => {
           : data
           ? data.map((pocas) => (
               <SwiperSlide key={pocas.id}>
-                <div
+                <button
                   onClick={() => navigate(`/Market/${pocas.id}`)}
                   className='cursor-pointer'
                 >
@@ -34,9 +32,10 @@ const MainPocaRecentItem = () => {
                       src={`${baseURL}/${pocas.filePath}`}
                       crossOrigin={'anonymous'}
                       className='w-full h-full object-cover'
+                      alt='장터 업로드 이미지'
                     />
                   </div>
-                  <div className='pocaListWrap mt-1 text-xs'>
+                  <div className='pocaListWrap mt-1 text-xs text-left'>
                     <p className='groupName font-extrabold'>
                       {pocas.groupName}
                     </p>
@@ -50,7 +49,7 @@ const MainPocaRecentItem = () => {
                       <span className='won'>원</span>
                     </p>
                   </div>
-                </div>
+                </button>
               </SwiperSlide>
             ))
           : null}

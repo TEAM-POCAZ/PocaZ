@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Layout from '../utils/Layout';
 import MarketSearchBox from '../components/Market/MarketSearchBox';
 import MarketCategory from '../components/Market/MarketCategory';
@@ -7,7 +7,7 @@ import { useInView } from 'react-intersection-observer';
 import { useInfiniteQuery } from 'react-query';
 import axios from 'axios';
 import { Link, useLocation } from 'react-router-dom';
-import { apis, baseURL } from '../utils/api';
+import { baseURL } from '../utils/api';
 import { IsLoading } from '../utils/IsLoading';
 
 const NUMBER_OF_POSTS_ON_PAGE = 10;
@@ -39,12 +39,6 @@ const MarketSearchResult = () => {
           .split(' ')
           .join('.')}&lastPostId=${pageParam}&SIZE=${NUMBER_OF_POSTS_ON_PAGE}`
       );
-
-      // const res = await apis.MarketSearch({
-      //   keyword,
-      //   pageParam,
-      //   size: NUMBER_OF_POSTS_ON_PAGE,
-      // });
       // console.log('🚀 Res=>>>>>>', res);
 
       return res.data;
