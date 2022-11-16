@@ -8,22 +8,19 @@ const Input = ({
 }) => {
   return (
     <div>
-      <div className="flex justify-between">
-        <label
-          htmlFor={property}
-          className="block text-sm font-medium text-gray-700"
-        >
+      <div className='flex justify-between'>
+        <label htmlFor={property} className='block mb-1.5 font-bold text-lg'>
           {property}
         </label>
-        <span className="text-sm text-gray-500">{optionalText}</span>
+        <span className='text-sm text-gray-500'>{optionalText}</span>
       </div>
 
-      <div className="mt-1">
+      <div className='mb-10'>
         <input
-          type="text"
+          type='text'
           name={property}
           id={property}
-          className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm disabled:bg-gray-300"
+          className='block w-full mb-2.5 p-2.5 rounded border-gray-100 border focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm disabled:bg-gray-100'
           placeholder={placeholder}
           value={value}
           aria-describedby={property}

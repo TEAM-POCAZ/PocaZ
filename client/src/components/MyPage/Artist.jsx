@@ -1,13 +1,13 @@
-import { useState } from "react";
-import axios from "axios";
-import { useQuery } from "react-query";
+import { useState } from 'react';
+import axios from 'axios';
+import { useQuery } from 'react-query';
 const API = import.meta.env.VITE_HOST_URL;
 
 const Artist = ({ artistId }) => {
   const [axiosError, setAxiosError] = useState(null);
 
   const { isLoading, data, isError, error } = useQuery(
-    ["artist", artistId],
+    ['artist', artistId],
     () => {
       return axios.get(`${API}/api/artist/${artistId}`);
     },
@@ -18,7 +18,7 @@ const Artist = ({ artistId }) => {
         if (axios.isAxiosError(err)) {
           setAxiosError(axiosError);
         } else {
-          console.log("unexpected error: ", err.response.data.error);
+          console.log('unexpected error: ', err.response.data.error);
         }
       },
     }
@@ -33,9 +33,13 @@ const Artist = ({ artistId }) => {
   return (
     <>
       <div>{axiosError}</div>
-      <div>선택된 아티스트</div>
-      <div>예명: {data?.data?.stageName}</div>
-      <div>실명: {data?.data?.realName}</div>
+      <div className='flex items-center justify-between mb-10'>
+        <h3 className='font-bold text-lg'>내가 선택한 최애 아이돌 🥰</h3>
+        <p className='text-rose-300 font-semibold'>
+          {data?.data?.stageName} 🖤
+        </p>
+      </div>
+      {/* <div>실명: {data?.data?.realName}</div> */}
     </>
   );
 };
