@@ -11,7 +11,7 @@ import { useRef } from 'react';
 import { useLoginStore } from '../store/store';
 import { useQuery } from 'react-query';
 import { baseURL } from '../utils/api';
-import ModifyInterface from '../components/Community/ModifyInterface';
+// import ModifyInterface from '../components/Community/ModifyInterface';
 
 const getReply = async (category, id, setReplyCnt) => {
   try {
@@ -165,13 +165,13 @@ const CommunityDetail = () => {
     <>
       <Layout>
         <div className={`communityDetailBoxWrap`}>
-          {toggle ? (
+          {/* {toggle ? ( css error 해결 후 적용 예정
             <ModifyInterface
               setToggle={setToggle}
               modifyAction={modifyAction}
               deleteAction={deleteAction}
             />
-          ) : null}
+          ) : null} */}
           <div className='communitDetailTop flex justify-between px-2.5 border-b'>
             <button type='button' onClick={() => navigate(-1)}>
               <i className='ri-arrow-left-line'></i>
@@ -184,10 +184,13 @@ const CommunityDetail = () => {
               className={!userInfo?.id ? 'invisible z-5' : 'z-5'}
               onClick={() => setToggle(!toggle)}
             >
-              {userInfo?.id ? (
+              {!userInfo?.id ? (
                 <i className='ri-more-line'></i>
               ) : (
-                <span>&nbsp;&nbsp;&nbsp;</span>
+                <div>
+                  <button onClick={modifyAction}>수정</button>&nbsp;&nbsp;
+                  <button onClick={deleteAction}>삭제</button>
+                </div>
               )}
             </button>
           </div>
