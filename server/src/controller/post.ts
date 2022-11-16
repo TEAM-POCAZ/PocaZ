@@ -85,10 +85,11 @@ export default {
      UPDATE Post
         SET title = ?,
             content = ?,
+            category = ?,
             updateAt = now()
       WHERE id = ?
         AND user = ?`,
-      [title, content, post, user]
+      [title, content, category, post, user]
     );
     res.send('successfully updated!');
   },

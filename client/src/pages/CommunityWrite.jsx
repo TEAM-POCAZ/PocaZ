@@ -1,16 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Layout from '../utils/Layout';
 import 'remixicon/fonts/remixicon.css';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ImageList from '../components/Community/ImageList';
+// import ImageList from '../components/Community/ImageList';
 import { baseURL } from '../utils/api';
+import ModifyInterface from '../components/Community/ModifyInterface';
 
 const CommunityWrite = () => {
   const navigate = useNavigate();
   const [cate, setCate] = useState(1);
+  const [toggle, setToggle] = useState(false);
   const titleRef = useRef();
   const contentRef = useRef();
   // const [imgs, setImg] = useState([]);
@@ -41,10 +43,6 @@ const CommunityWrite = () => {
       // setImg(imges.map((img) => ({ ...img, isDel: false, isRecent: false })));
     }
   };
-
-  useEffect(() => {
-    postInfo.state?.id ? getModifyPost() : setCate(postInfo.state.category);
-  }, []);
 
   const onImgSubmit = async (e) => {
     e.preventDefault();
@@ -82,8 +80,10 @@ const CommunityWrite = () => {
         prev.map((img) => (img.file == imgKey ? { ...img, isDel: true } : img))
       );
 
-    action === 'curr' &&
+    if (action === 'curr') {
       setCurrImgs((prev) => prev.filter((_, idx) => idx != imgKey));
+      setImgs((prev) => prev.filter((_, idx) => idx != imgKey));
+    }
   };
 
   const submitBtn = async () => {
@@ -191,32 +191,40 @@ const CommunityWrite = () => {
     }
   };
 
-  // const onChange1 = (e) => {
-  //   setCate(e.target.value);
-  //   console.log(
-  //     imgs,
-  //     prevImgs.reduce(
-  //       (result, img) => (img.isDel ? [...result, img.file] : result),
-  //       []
-  //     )
-  //   );
-  // };
-
+  useEffect(() => {
+    postInfo.state?.id ? getModifyPost() : setCate(postInfo.state.category);
+  }, []);
   return (
     <>
       <Layout>
-        <div className='communityWriteBoxWrap'>
+        <div className='communityWriteBoxWrap min-h-[89vh]'>
+          {toggle ? (
+            <ModifyInterface
+              setToggle={setToggle}
+              modifyAction={setCate}
+              isWrite={true}
+            />
+          ) : null}
           <div className='communityWriteTop flex justify-between mx-2.5'>
             <button type='button' onClick={() => navigate(-1)}>
               <i className='ri-arrow-left-line'></i>
             </button>
-            <h2 className='text-base translate-x-2.5'>등록 위치 선택</h2>
-            <div>
-              <select value={cate}>
-                {/* 추후 수정 */}
+            <button onClick={() => setToggle(!toggle)}>
+              <h2 className='text-base translate-x-2.5'>
+                {parseInt(cate) === 1
+                  ? '자유'
+                  : parseInt(cate) === 2
+                  ? '자랑'
+                  : '등록 위치 선택'}
+                <i className='ri-arrow-down-s-fill'></i>
+              </h2>
+            </button>
+            <div hidden={true}>
+              {cate}
+              {/* <select value={cate} onChange={(e) => setCate(e.target.value)}>
                 <option value={1}>자유</option>
                 <option value={2}>자랑</option>
-              </select>
+              </select> */}
             </div>
             <button
               onClick={submitBtn}
@@ -239,46 +247,57 @@ const CommunityWrite = () => {
             {/* {imgs.length > 0 ? (
               <ImageList imgs={imgs} isWrite={true} imgDelete={imgDelete} />
             ) : null} */}
-            {prevImgs.length > 0
-              ? prevImgs.map((img) =>
-                  !img.isDel ? (
-                    <div className='relative' key={img.file}>
-                      <img
-                        src={`${baseURL}/${img.path}`}
-                        className='relative w-full h-full object-cover mb-2.5 rounded-xl'
-                        //
-                        crossOrigin='anonymous'
-                        //문제가 해결되면 crossOrigin 삭제할 예정\
-                      />
-                      <button
-                        className='absolute top-5 right-5 bg-blue-700 rounded p-2'
-                        onClick={(e) => {
-                          onImgDelete(e, 'prev');
-                        }}
-                        value={img.file}
+            <div className='dfdfdf'>
+              <ul className='m-5'>
+                {prevImgs.length > 0
+                  ? prevImgs.map((img) =>
+                      !img.isDel ? (
+                        <li
+                          className='relative border-2 border-black rounded-xl'
+                          key={img.path}
+                        >
+                          <img
+                            src={`${baseURL}/${img.path}`}
+                            alt={img.path}
+                            className='relative w-full h-full object-cover mb-2.5 rounded-xl'
+                            //
+                            crossOrigin='anonymous'
+                            //문제가 해결되면 crossOrigin 삭제할 예정\
+                          />
+                          <button
+                            className='absolute top-5 right-5 bg-blue-700 rounded p-2'
+                            onClick={(e) => {
+                              onImgDelete(e, 'prev');
+                            }}
+                            value={img.file}
+                          >
+                            삭제
+                          </button>
+                        </li>
+                      ) : null
+                    )
+                  : null}
+                {currImgs.length > 0
+                  ? currImgs.map((currImg, idx) => (
+                      <li
+                        className='relative border-2 border-black rounded-xl'
+                        key={currImg.id}
                       >
-                        삭제
-                      </button>
-                    </div>
-                  ) : null
-                )
-              : null}
-            {currImgs.length > 0
-              ? currImgs.map((currImg, idx) => (
-                  <div className='relative' key={`${idx}th curr`}>
-                    <img src={currImg} alt='preview' />
-                    <button
-                      className='absolute top-5 right-5 bg-blue-700 rounded p-2'
-                      onClick={(e) => {
-                        onImgDelete(e, 'curr');
-                      }}
-                      value={idx}
-                    >
-                      삭제
-                    </button>
-                  </div>
-                ))
-              : null}
+                        <img src={currImg} alt='preview' />
+                        <button
+                          className='absolute top-5 right-5 bg-blue-700 rounded p-2'
+                          onClick={(e) => {
+                            onImgDelete(e, 'curr');
+                          }}
+                          value={idx}
+                        >
+                          삭제
+                        </button>
+                      </li>
+                    ))
+                  : null}
+              </ul>
+            </div>
             <div className='m-2.5 h-screen'>
               {/* 내용 */}
               <textarea

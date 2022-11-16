@@ -164,14 +164,14 @@ const CommunityDetail = () => {
   return (
     <>
       <Layout>
-        {toggle ? (
-          <ModifyInterface
-            setToggle={setToggle}
-            modifyAction={modifyAction}
-            deleteAction={deleteAction}
-          />
-        ) : null}
-        <div className='communityDetailBoxWrap'>
+        <div className={`communityDetailBoxWrap`}>
+          {toggle ? (
+            <ModifyInterface
+              setToggle={setToggle}
+              modifyAction={modifyAction}
+              deleteAction={deleteAction}
+            />
+          ) : null}
           <div className='communitDetailTop flex justify-between px-2.5 border-b'>
             <button type='button' onClick={() => navigate(-1)}>
               <i className='ri-arrow-left-line'></i>
