@@ -2,7 +2,10 @@ import { io } from 'socket.io-client';
 
 export default class Socket {
   constructor(baseURL) {
-    this.io = io(baseURL);
+    this.io = io(baseURL, {
+      withCredentials: true,
+      path: '/api/socket.io',
+    });
 
     // this.io.on('connect_error', (err) => {
     //   console.log('socket error', err.message)
