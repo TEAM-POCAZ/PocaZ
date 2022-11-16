@@ -93,7 +93,10 @@ const CommunityWrite = () => {
     if (!contentRef.current.value) {
       return toast.error('내용을 입력해주세요');
     }
-    if (parseInt(cate) === 2 && prevImgs.length + currImgs.length < 1) {
+    if (
+      parseInt(cate) === 2 &&
+      prevImgs.filter(({ isDel }) => !isDel).length + currImgs.length < 1
+    ) {
       return toast.error('자랑게시판에는 최소 1개의 사진이 필요해요');
     }
 
