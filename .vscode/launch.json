@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch",
+            "type": "node",
+            "port": 9229,
+            "request": "attach",
+            "skipFiles": [
+                "<node_internals>/**",
+                "${workspaceFolder}/server/node_modules/**/*.js",
+            ],
+            "restart": true,
+        }
+    ]
+}
