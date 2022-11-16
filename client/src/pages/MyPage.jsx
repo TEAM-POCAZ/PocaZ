@@ -24,6 +24,7 @@ const MyPage = () => {
     {
       retry: false,
       onSuccess: (res) => {
+        console.log('rrrr>>>', res);
         setUserInfo(res.data);
       },
       onError: (err) => {

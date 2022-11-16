@@ -24,14 +24,16 @@ const API = '/api';
 
 const app = express();
 
+app.use(cors({ origin: ['http://localhost:3000'], credentials: true }));
+app.options('*', cors());
+
+// app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 app.use(helemt());
 
 // TODO - cors 다 열어놓으면 안됨 나중에 수정필요!
-app.use(cors({ origin: ['http://localhost:3000'], credentials: true }));
-app.options('*', cors());
 app.use(
   expressSession({
     secret: [config.session.cookieKey],
