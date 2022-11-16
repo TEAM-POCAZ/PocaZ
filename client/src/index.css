@@ -1,0 +1,161 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,300;0,400;0,500;0,900;1,100;1,300;1,900&display=swap");
+  @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.5/dist/web/static/pretendard.css");
+  body {
+    background-image: url(/public/hero_jobs.png);
+    /* 백그라운드 이미지 변경 예정 */
+    background-attachment: fixed;
+  }
+
+  .bg .txtBox {
+    margin-top: -120px;
+    margin-left: -450px;
+  }
+  .bg .txtBox h3 {
+    color: #fff;
+  }
+  @-webkit-keyframes Bar {
+    0% {
+      background-position: 100% 0%;
+    }
+
+    55% {
+      background-position: 60% 100%;
+    }
+
+    100% {
+      background-position: 100% 0%;
+    }
+  }
+
+  @media only screen and (min-width: 768px) and (max-width: 1023px) {
+  }
+  @media screen and (max-width: 767px) {
+    body {
+      background: none;
+    }
+  }
+
+  @keyframes fixHeader {
+    0% {
+      top: -5rem;
+    }
+    100% {
+      top: 0;
+    }
+  }
+
+  .changeHeader {
+    position: sticky;
+    color: black;
+    background-color: #fff;
+    width: 100%;
+    top: 0;
+    left: 0;
+    border-bottom: 1px solid #ebebeb;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    animation: fixHeader 0.3s;
+    z-index: 501;
+  }
+  .logoDot {
+    color: #034ac5;
+  }
+  .bestPoca .swiper-wrapperx {
+    /* swiper-wrapper height 고정값 해제 */
+    height: auto;
+  }
+  .mainSlide .swiper-button-prev {
+    left: 0;
+  }
+  .mainSlide .swiper-button-next {
+    right: 0;
+  }
+  .mainSlide .swiper-button-next,
+  .mainSlide .swiper-button-prev {
+    color: #fff;
+  }
+  .mainSlide .swiper-button-next::after,
+  .mainSlide .swiper-button-prev::after {
+    padding: 14px;
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.5);
+  }
+  .mainSlide .swiper-pagination {
+    color: #fff;
+    font-size: 12px;
+  }
+
+  .topBtn {
+    position: absolute;
+    right: 14px;
+    width: 40px;
+    height: 40px;
+    opacity: 0;
+    transition: 0.4s;
+    border-radius: 50%;
+    background: #000;
+  }
+  .topBtn.active {
+    opacity: 1;
+    transition: 0.4s;
+  }
+  .boardList ul li:nth-child(n + 6) {
+    display: none;
+  }
+  .boastGallery ul li:nth-child(n + 10) {
+    display: none;
+  }
+  .listWrap .boardSubject {
+    width: calc(100% - 100px);
+  }
+  .likeBtn button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .likeBtn button::before {
+    padding: 3px 4px 0 0;
+    color: rgb(30 64 175);
+  }
+  .pocaListBox {
+    box-shadow: 0 2px 15px rgb(70 70 70 / 8%);
+  }
+
+  .dfdfdf ul {
+    display: flex;
+    flex-flow: row wrap;
+  }
+  .dfdfdf ul li {
+    flex: 0 1 33.33%;
+  }
+  .dfdfdf ul li img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  /* .boastListWrap ul { display:flex; flex-flow: row wrap; justify-content:space-between; }
+  .boastListWrap ul li { flex: 0 1 48%; }
+  .boastListWrap ul li img { width:100%; height:100%; object-fit:cover; } */
+  .my-masonry-grid {
+    display: -webkit-box; /* Not needed if autoprefixing */
+    display: -ms-flexbox; /* Not needed if autoprefixing */
+    display: flex;
+    margin-left: -30px; /* gutter size offset */
+    width: auto;
+  }
+  .my-masonry-grid_column {
+    padding-left: 30px; /* gutter size */
+    background-clip: padding-box;
+  }
+  
+  /* Style your items */
+  .my-masonry-grid_column > div { /* change div to reference your elements you put in <Masonry> */
+    margin-bottom: 30px;
+  }
+
+  .communityTab ul li a.active { color:#034ac5; }
+}
