@@ -31,7 +31,7 @@ const MarketSearchResult = () => {
       let keyword;
       if (location.state) {
         const { searchKeyword } = location.state;
-        console.log(searchKeyword);
+        // console.log(searchKeyword);
         keyword = searchKeyword;
       }
       const res = await axios.get(
@@ -45,7 +45,7 @@ const MarketSearchResult = () => {
       //   pageParam,
       //   size: NUMBER_OF_POSTS_ON_PAGE,
       // });
-      console.log('🚀 Res=>>>>>>', res);
+      // console.log('🚀 Res=>>>>>>', res);
 
       return res.data;
     },

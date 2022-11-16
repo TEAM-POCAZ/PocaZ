@@ -6,14 +6,14 @@ import MarketListItem from '../components/Market/MarketListItem';
 import { useInView } from 'react-intersection-observer';
 import { useInfiniteQuery } from 'react-query';
 import axios from 'axios';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useLoginStore } from '../store/store';
 import { baseURL } from '../utils/api';
+import { IsLoading } from '../utils/IsLoading';
 
 const NUMBER_OF_POSTS_ON_PAGE = 10;
 
 const MarketList = () => {
-  const location = useLocation();
   const { userInfo } = useLoginStore();
   const { ref, inView } = useInView();
   const [group, setGroup] = useState(0);
@@ -65,7 +65,7 @@ const MarketList = () => {
         <MarketCategory setGroup={setGroup} />
 
         {status === 'loading' ? (
-          <p>Loading...</p>
+          <IsLoading />
         ) : status === 'error' ? (
           <span>Error: {error.message}</span>
         ) : (

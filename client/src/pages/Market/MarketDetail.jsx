@@ -110,7 +110,7 @@ const MarketDetail = ({ socket }) => {
       <Layout>
         <div className=''>
           <div className='marketDetailTop relative flex items-center justify-between px-2.5 pb-2.5 border-b'>
-            <button type='button' onClick={() => navigate('/Market')}>
+            <button type='button' onClick={() => navigate('/Marketack')}>
               <i className='ri-arrow-left-line'></i>
             </button>
             <div className='absolute top-0 left-2/4 translate-x-[-50%] text-lg'>
@@ -147,7 +147,7 @@ const MarketDetail = ({ socket }) => {
               {/* </div> */}
               <div className='sellerInfo pt-3 items-center flex border-b'>
                 <img
-                  className='m-3 h-10 rounded-full'
+                  className='m-3 h-10 w-10 rounded-full'
                   src={content.profileImage}
                   alt='seller'
                 />
