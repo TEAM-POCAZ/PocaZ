@@ -24,10 +24,10 @@ const MyPage = () => {
     {
       retry: false,
       onSuccess: (res) => {
-        console.log('rrrr>>>', res);
         setUserInfo(res.data);
       },
       onError: (err) => {
+        // console.log('🚀 ~ file: MyPage.jsx ~ line 30 ~ MyPage ~ err', err);
         if (axios.isAxiosError(err)) {
           navigate('/login');
         } else {
