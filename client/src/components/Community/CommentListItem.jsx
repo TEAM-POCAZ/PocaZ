@@ -38,7 +38,6 @@ const CommentListItem = ({ comment, toggleReply, userId, refetch }) => {
         position: toast.POSITION.BOTTOM_CENTER,
       });
       setHidden(true);
-      // refetch();/
       window.location.reload();
     }
   };

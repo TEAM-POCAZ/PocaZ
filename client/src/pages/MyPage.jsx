@@ -88,7 +88,7 @@ const MyPage = () => {
   };
 
   if (isLoading) {
-    return <h2>Loading...</h2>;
+    return <isLoading />;
   }
   if (isError) {
     return <h2>{error.message}</h2>;

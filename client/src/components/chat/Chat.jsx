@@ -13,7 +13,7 @@ import axios from 'axios';
 
 /**
  * chatList / MarketDetail 에서 가져온 marketItemId를 활용하여 api get 송출
- * @params {Object} socket
+ * @params {object} socket
  * @returns join 으로 연결된 1:1 채팅방
  */
 
@@ -28,10 +28,6 @@ const Chat = ({ socket }) => {
   const location = useLocation();
 
   const { sellerNickname, room, marketItemId } = location.state; //FIXME 장터에서 입장했을 때...
-  console.log(
-    '🚀 ~ file: Chat.jsx ~ line 30 ~ Chat ~ marketItemId',
-    marketItemId
-  );
 
   useEffect(() => {
     // getChat();
@@ -39,40 +35,31 @@ const Chat = ({ socket }) => {
       .all([apis.getChat(room), apis.getSellItem(marketItemId)])
       .then(
         axios.spread((res1, res2) => {
-          console.log(res1.data);
-          console.log(res2.data);
+          // console.log(res1.data);
+          // console.log(res2.data);
           setChats(res1.data);
           setSellItem(res2.data);
         })
       )
       .then(() => setIsLoading(false));
 
-    // socket.joinRoom(String(room), (res) => {
-    //   if (res) {
-    //     console.log('join ===>', res);
-    //   }
-    // }); // from 장터에서 새로운 채팅방이 생겼을 때 join
-
     socket.onSync('new-message', (message) => {
       setChats((prev) => [...prev, message]);
     });
-
-    // clear up function 이라고 하며 unmount 시 실행됨
-    // return 방 join을 leave해야함
   }, []);
 
-  const getChat = async () => {
-    const { data } = await apis.getChat(room);
-    // setChats(data);
-    return data;
-  };
+  // const getChat = async () => {
+  //   const { data } = await apis.getChat(room);
+  //   // setChats(data);
+  //   return data;
+  // };
 
-  const getItemInfo = async () => {
-    if (marketItemId) {
-      const { data } = await apis.getSellItem(marketItemId);
-      return data;
-    }
-  };
+  // const getItemInfo = async () => {
+  //   if (marketItemId) {
+  //     const { data } = await apis.getSellItem(marketItemId);
+  //     return data;
+  //   }
+  // };
 
   const handleMessage = async (sendMessage) => {
     if (sendMessage) {

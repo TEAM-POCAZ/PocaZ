@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Autoplay, A11y } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
@@ -17,9 +15,6 @@ const MainPocaItem = () => {
       return a.data.sellList;
     })
   );
-
-  // const price = Number(pocas.price);
-
   return (
     <>
       <Swiper slidesPerView={2.4} spaceBetween={14} className=''>
@@ -29,10 +24,9 @@ const MainPocaItem = () => {
           'error'
         ) : result.data ? (
           result.data.map((pocas) => {
-            // console.log(typeof pocas.price);
             return (
               <SwiperSlide key={pocas.id}>
-                <div
+                <button
                   onClick={() => navigate(`/Market/${pocas.id}`)}
                   className='cursor-pointer'
                 >
@@ -40,9 +34,10 @@ const MainPocaItem = () => {
                     <img
                       src={pocas.pocaImg}
                       className='w-full h-full object-cover'
+                      alt='장터 이미지'
                     />
                   </div>
-                  <div className='pocaListWrap mt-1 text-xs'>
+                  <div className='pocaListWrap mt-1 text-xs text-left'>
                     <p className='groupName font-extrabold'>
                       {pocas.groupName}
                     </p>
@@ -57,7 +52,7 @@ const MainPocaItem = () => {
                       <span className='won'>원</span>
                     </p>
                   </div>
-                </div>
+                </button>
               </SwiperSlide>
             );
           })

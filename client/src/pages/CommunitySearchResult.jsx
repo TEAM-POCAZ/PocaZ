@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Layout from '../utils/Layout';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
@@ -20,15 +20,11 @@ const CommunitySearchResult = () => {
     error,
     isFetching,
     isFetchingNextPage,
-    // isFetchingPreviousPage,
     fetchNextPage,
-    // fetchPreviousPage,
     hasNextPage,
-    // hasPreviousPage,
   } = useInfiniteQuery(
     ['projects'],
     async ({ pageParam = Number.MAX_SAFE_INTEGER }) => {
-      // console.log(keyInfo)
       if (keyInfo.state) {
         const {
           state: { keyword },

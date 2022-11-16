@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useParams, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay, A11y } from 'swiper';
 import 'swiper/css';
@@ -20,16 +20,11 @@ import { baseURL } from '../utils/api';
 const Main = () => {
   const [users, setUsers] = useState(null);
   const [users2, setUsers2] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const { category } = useParams();
-  const postInfo = useLocation();
 
   useEffect(() => {
     axios
       .all([axios.get(`${baseURL}/post/1`), axios.get(`${baseURL}/post/2`)])
-      //async 쓰삼***
       .then(
         axios.spread((response1, response2) => {
           setUsers(response1.data.postList);
@@ -39,9 +34,6 @@ const Main = () => {
       .catch((e) => console.log(e.response.status));
   }, []);
 
-  // if (loading) return <div>로딩중...</div>
-  // if (error) return <div>에러가 발생했슈</div>
-  // if (!users) return null
   return (
     <>
       <Layout>
@@ -104,17 +96,18 @@ const Main = () => {
                     users.map((user) => {
                       const days = dayjs(user.createAt).format('YYYY-MM-DD');
                       return (
-                        <li
-                          key={user.id}
-                          onClick={() => navigate(`/Community/1/${user.id}`)}
-                          className='flex justify-between mb-1.5 cursor-pointer'
-                        >
-                          <h4 className='mr-3.5 text-sm font-normal whitespace-nowrap text-ellipsis overflow-hidden'>
-                            {user.title}
-                          </h4>
-                          <time className='timeWrap text-sm font-normal'>
-                            {days}
-                          </time>
+                        <li key={user.id}>
+                          <button
+                            onClick={() => navigate(`/Community/1/${user.id}`)}
+                            className='flex justify-between w-full mb-1.5 cursor-pointer'
+                          >
+                            <h4 className='mr-3.5 text-sm font-normal whitespace-nowrap text-ellipsis overflow-hidden'>
+                              {user.title}
+                            </h4>
+                            <time className='timeWrap text-sm font-normal'>
+                              {days}
+                            </time>
+                          </button>
                         </li>
                       );
                     })}
@@ -150,16 +143,18 @@ const Main = () => {
                 <ul className='grid grid-cols-3 grid-rows-3'>
                   {users2 &&
                     users2.map((user) => (
-                      <li
-                        key={user.id}
-                        onClick={() => navigate(`/Community/2/${user.id}`)}
-                        className='h-36 cursor-pointer'
-                      >
-                        <img
-                          src={`${baseURL}/${user.filePath}`}
-                          className='w-full h-full object-cover'
-                          crossOrigin='anonymous'
-                        />
+                      <li key={user.id} className='h-36'>
+                        <button
+                          onClick={() => navigate(`/Community/2/${user.id}`)}
+                          className='w-full h-full cursor-pointer'
+                        >
+                          <img
+                            src={`${baseURL}/${user.filePath}`}
+                            className='w-full h-full object-cover'
+                            crossOrigin='anonymous'
+                            alt='포꾸 자랑 업로드 이미지'
+                          />
+                        </button>
                       </li>
                     ))}
                 </ul>

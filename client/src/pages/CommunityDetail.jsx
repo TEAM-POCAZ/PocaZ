@@ -225,9 +225,7 @@ const CommunityDetail = () => {
                               src={`${baseURL}/${img.path}`}
                               className=' w-full h-full object-cover mb-2.5 rounded-xl'
                               alt={img.path}
-                              //
                               crossOrigin='anonymous'
-                              //문제가 해결되면 crossOrigin 삭제할 예정\
                             />
                           ))
                         : null}

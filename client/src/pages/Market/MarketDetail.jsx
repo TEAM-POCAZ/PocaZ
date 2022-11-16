@@ -147,13 +147,13 @@ const MarketDetail = ({ socket }) => {
               {/* </div> */}
               <div className='sellerInfo pt-3 items-center flex border-b'>
                 <img
-                  className='m-3 h-10 rounded-full'
+                  className='m-3 h-10 w-10 rounded-full'
                   src={content.profileImage}
                   alt='seller'
                 />
                 <span className='font-semibold'>{content.nickname}</span>
               </div>
-              <div className='pocaDesc pt-2 min-h-[47vh]'>
+              <div className='pocaDesc pt-2 min-h-[30vh]'>
                 <h3 className='pb-2 font-semibold text-2xl mt-5'>
                   {content.title}
                 </h3>
