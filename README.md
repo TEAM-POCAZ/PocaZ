@@ -34,7 +34,7 @@
 ## 공통
 | Socket.io | REST API |
 | :---: | :---: |
-
+|<img src="https://raw.githubusercontent.com/bestofjs/bestofjs-webui/dd29d40f829c2cea9cbd7ffac13a3add888e2199/public/logos/socketio.svg" alt="socket.io-icon" width="65" height="65" />|<img src="https://miro.medium.com/max/1400/1*-dbPsi8Mdqj5Y0454eGvPQ.png" alt="restapi-icon" width="65" height="65" />|
 ## Front-end
 | JavaScript | React | React<br>Query | Zustand | Tailwind<br/>CSS | esLint | Prettier |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -44,7 +44,7 @@
 ## Back-end
 | TypeScript | Node<br/>JS | Express | MySQL | AWS | SWAGGER | Passport<br/>JS | NGiNX | PM2 |
 | :---: | :---: | :---: | :---: | :---: |:---: |:---: |:---: |:---: | 
-| <img src="https://techstack-generator.vercel.app/ts-icon.svg" alt="typescript icon" width="65" height="65" /> | <img alt="spring-boot logo" src="https://t1.daumcdn.net/cfile/tistory/27034D4F58E660F616" width="65" height="65" >| <img alt="security logo" src="https://www.nextontop.com/assets/img/services/web/expressjs.svg" height="65" width="65" > | <img src="https://techstack-generator.vercel.app/mysql-icon.svg" alt="icon" width="65" height="65" /> |<img src="https://techstack-generator.vercel.app/aws-icon.svg" alt="icon" width="65" height="65" /> | <img src="https://cdn.discordapp.com/attachments/1005416392096497664/1042431974440194109/unknown.png" alt="swagger logo" width="65" height="65" /> | <img src="https://image.emojipng.com/682/6167682.jpg" alt="passport icon" width="65" height="65" /> | <img src="https://w7.pngwing.com/pngs/816/934/png-transparent-nginx-hd-logo-thumbnail.png"  alt="nginx icon" width="65" height="65" /> | <img src="https://raw.githubusercontent.com/gilbarbara/logos/9c6e5e9ef3c297da414a4809ae9f0f56a6384e91/logos/pm2-icon.svg"  alt="nginx icon" width="65" height="65" /> 
+| <img src="https://techstack-generator.vercel.app/ts-icon.svg" alt="typescript icon" width="65" height="65" /> | <img alt="spring-boot logo" src="https://t1.daumcdn.net/cfile/tistory/27034D4F58E660F616" width="65" height="65" >| <img alt="security logo" src="https://www.nextontop.com/assets/img/services/web/expressjs.svg" height="65" width="65" > | <img src="https://techstack-generator.vercel.app/mysql-icon.svg" alt="icon" width="65" height="65" /> |<img src="https://techstack-generator.vercel.app/aws-icon.svg" alt="icon" width="65" height="65" /> | <img src="https://cdn.discordapp.com/attachments/1005416392096497664/1042431974440194109/unknown.png" alt="swagger logo" width="65" height="65" /> | <img src="https://raw.githubusercontent.com/detain/svg-logos/aecbca0b533703a389211cddb0ca159a5d50553e/svg/passport.svg" alt="passport icon" width="65" height="65" /> | <img src="https://cdn.worldvectorlogo.com/logos/nginx-1.svg"  alt="nginx icon" width="65" height="65" /> | <img src="https://raw.githubusercontent.com/gilbarbara/logos/9c6e5e9ef3c297da414a4809ae9f0f56a6384e91/logos/pm2-icon.svg"  alt="nginx icon" width="65" height="65" /> 
 
 
 ### Communication
