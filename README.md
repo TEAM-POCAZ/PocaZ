@@ -3,7 +3,7 @@
 
 ## 프로젝트 소개
 > 1. 기획 의도
-#### 아이돌 팬들에게 포토카드 거래소를 제공하여 
+#### 아이돌 팬들에게 포토카드 거래소를 제공하여 거래 매칭을 
 
 ## 배포 사이트
 [POCAZ.](https://slowtest.ml/)
@@ -21,6 +21,11 @@
 
 
 # 기술 스택
+
+## 공통
+| Socket.io | REST API |
+| :---: | :---: |
+
 ## Front-end
 | JavaScript | React | React<br>Query | Zustand | Tailwind<br/>CSS | esLint | Prettier |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
