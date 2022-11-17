@@ -57,4 +57,4 @@
 <img alt="erd" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FXfR6U%2FbtrRpqsYFBI%2FxSCwe04ZqCtSMt5O5qyEU1%2Fimg.png">
 
 ## WireFrame
-[포카즈 와이어 프레임] (https://byeolikim.github.io/pocaz-frame/)
+[포카즈 와이어 프레임](https://byeolikim.github.io/pocaz-frame/)
