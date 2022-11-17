@@ -2,6 +2,8 @@
 ## POCAZ. <br/> 
 <span style="font-size:10px">PHOTO CARD A TO Z! 아이돌 포토카드 거래 플랫폼</span>
 
+# 배포 사이트
+[POCAZ.](https://slowtest.ml/)
 
 <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FwE3lC%2FbtrRpDSVRYY%2FRpwnF1jnYPOh43UR0oUYJK%2Fimg.png" alt="포카즈 메인" />
 
@@ -19,7 +21,7 @@
 ## Front-end
 | JavaScript | React | React<br>Query | Zustand | Tailwind<br/>CSS | esLint | Prettier |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| <img src="https://media.tenor.com/TReUojNlZ6wAAAAi/js-javascript.gif" alt="icon" width="65" height="65" /> | <img src="https://techstack-generator.vercel.app/react-icon.svg" alt="icon" width="65" height="65" /> | <img alt="react-query icon" src="https://raw.githubusercontent.com/TanStack/query/9511933f258b9f87f000938d1583e2b301e3d912/media/emblem-light.svg" width="65" height="65" /> | <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FztCpz%2FbtrRmTpHPx7%2F7JVKeDV3vQSN5nfk2LvDU0%2Fimg.png" alt="icon" width="65" height="65" /> | <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Tailwind_CSS_Logo.svg/1200px-Tailwind_CSS_Logo.svg.png?20211001194333" alt="tailwind icon" width="60" height="60" /> | <img src="https://techstack-generator.vercel.app/eslint-icon.svg" alt="icon" width="65" height="65" /> | <img src="https://techstack-generator.vercel.app/prettier-icon.svg" alt="icon" width="65" height="65" /> |
+| <img src="https://media.tenor.com/TReUojNlZ6wAAAAi/js-javascript.gif" alt="icon" width="65" height="65" /> | <img src="https://techstack-generator.vercel.app/react-icon.svg" alt="icon" width="65" height="65" /> | <img alt="react-query icon" src="https://raw.githubusercontent.com/TanStack/query/9511933f258b9f87f000938d1583e2b301e3d912/media/emblem-light.svg" width="65" height="65" /> | <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FztCpz%2FbtrRmTpHPx7%2F7JVKeDV3vQSN5nfk2LvDU0%2Fimg.png" alt="icon" width="80" height="65" /> | <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Tailwind_CSS_Logo.svg/1200px-Tailwind_CSS_Logo.svg.png?20211001194333" alt="tailwind icon" width="60" height="60" /> | <img src="https://techstack-generator.vercel.app/eslint-icon.svg" alt="icon" width="65" height="65" /> | <img src="https://techstack-generator.vercel.app/prettier-icon.svg" alt="icon" width="65" height="65" /> |
 
 
 ## Back-end
