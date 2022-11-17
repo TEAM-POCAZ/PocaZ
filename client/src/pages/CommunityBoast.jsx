@@ -74,7 +74,7 @@ const CommunityBoast = () => {
                             crossOrigin='anonymous'
                           />
                         </div>
-                        <div className='boardSubject mt-1'>
+                        <div className='boardSubject mt-1 text-left'>
                           <p className='font-medium'>{lists.title}</p>
                           <div>
                             <div className='writeWrap'>
