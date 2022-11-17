@@ -1,13 +1,16 @@
-# 프로젝트 소개
-## POCAZ. <br/> 
-<span style="font-size:10px">PHOTO CARD A TO Z! 아이돌 포토카드 거래 플랫폼</span>
+# POCAZ : 아이돌 포토카드 거래 플랫폼
+> IDOL PHOTO CARD A to Z.
 
-# 배포 사이트
+## 프로젝트 소개
+> 1. 기획 의도
+#### 아이돌 팬들에게 포토카드 거래소를 제공하여 
+
+## 배포 사이트
 [POCAZ.](https://slowtest.ml/)
 
 <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FwE3lC%2FbtrRpDSVRYY%2FRpwnF1jnYPOh43UR0oUYJK%2Fimg.png" alt="포카즈 메인" />
 
-# 프로젝트 팀원
+## 프로젝트 팀원
 
 |김만중(BE)|김별이(FE)|문승현(BE)|배성재(BE)|🧸이호준(FE)|
 |---|---|---|---|---|
