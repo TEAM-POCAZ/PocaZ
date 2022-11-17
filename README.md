@@ -4,9 +4,10 @@
 
 
 <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FwE3lC%2FbtrRpDSVRYY%2FRpwnF1jnYPOh43UR0oUYJK%2Fimg.png" alt="포카즈 메인" />
+
 # 프로젝트 팀원
 
-|김만중1|김별이2|문승현3|배성재4| 🧸이호준5|
+|김만중|김별이|문승현|배성재|🧸이호준|
 |---|---|---|---|---|
 |<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FzXk5q%2FbtrRnK0c4Ym%2FxEH0nCvaowTrRVbFe0rKsK%2Fimg.png" width="100"/>|<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FcqKf8T%2FbtrRn7Hv87l%2FwRCtkOKTUHhzR6OKYIYfz1%2Fimg.png" width="100"/>|<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FMgI3i%2FbtrRnKsqdTl%2FB6y0EdA3MFISYKSYrmW6R0%2Fimg.png" width="100"/>|<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FCmbsN%2FbtrRrn3xow1%2FjtL0Wl2SRkjkFRViyneFU0%2Fimg.png" width="100"/>|<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FbLE0dF%2FbtrRnjIMtCL%2F5c0RgaEKfsiZnlnO7N3wK0%2Fimg.png" width="100"/>|
 |내용 6|내용 7|내용 8|내용 9|내용 10|
