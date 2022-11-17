@@ -52,3 +52,6 @@
 | :---: | :---: | :---: | :---: |
 | <img alt="git logo" src="https://git-scm.com/images/logos/logomark-orange@2x.png" width="65" height="65" > | <img alt="github logo" src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" width="65" height="65"> | <img alt="Discord logo" src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/62595384e89d1d54d704ece7_3437c10597c1526c3dbd98c737c2bcae.svg" height="65" width="65"> | <img src="https://www.vectorlogo.zone/logos/trello/trello-icon.svg"  height="65" width="65"> |
 
+## erd diagram
+
+<img alt="erd" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fk.kakaocdn.net%2Fdn%2FXfR6U%2FbtrRpqsYFBI%2FxSCwe04ZqCtSMt5O5qyEU1%2Fimg.png">
