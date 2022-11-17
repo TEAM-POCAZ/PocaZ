@@ -34,7 +34,7 @@
 ## 공통
 | Socket.io | REST API |
 | :---: | :---: |
-
+|<img src="https://raw.githubusercontent.com/bestofjs/bestofjs-webui/dd29d40f829c2cea9cbd7ffac13a3add888e2199/public/logos/socketio.svg" alt="socket.io-icon" width="65" height="65" />|<img src="https://miro.medium.com/max/1400/1*-dbPsi8Mdqj5Y0454eGvPQ.png" alt="restapi-icon" width="65" height="65" />|
 ## Front-end
 | JavaScript | React | React<br>Query | Zustand | Tailwind<br/>CSS | esLint | Prettier |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
