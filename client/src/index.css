@@ -8,6 +8,7 @@
   body {
     background-image: url(/public/pocaz_bg.png);
     background-attachment: fixed;
+    overflow-x:hidden;
   }
 
   .bg .txtBox {
