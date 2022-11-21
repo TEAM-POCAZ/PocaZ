@@ -55,7 +55,7 @@ const Main = () => {
                   src={mainSlideBn1}
                   alt='메인 배너 01'
                 />
-                <div className='slideTxt absolute top-[60%] left-0 ml-3.5 text-white font-bold text-[30px] tracking-tighter'>
+                <div className='slideTxt absolute top-[60%] left-0 ml-3.5 text-white font-bold text-[24px] tracking-tighter'>
                   <h3>포~카즈! 런칭 기념</h3>
                   <h4>더보이즈 포카 구경하러 가기 🥰</h4>
                 </div>
@@ -66,7 +66,7 @@ const Main = () => {
                   src={mainSlideBn2}
                   alt='메인 배너 02'
                 />
-                <div className='slideTxt absolute top-[60%] left-0 ml-3.5 text-white font-bold text-[30px] tracking-tighter'>
+                <div className='slideTxt absolute top-[60%] left-0 ml-3.5 text-white font-bold text-[24px] tracking-tighter'>
                   <h3>르세라핌 컴백</h3>
                   <h4>랜덤 포토카드 5종 출시❗️</h4>
                 </div>
@@ -77,7 +77,7 @@ const Main = () => {
                   src={mainSlideBn3}
                   alt='메인 배너 03'
                 />
-                <div className='slideTxt absolute top-[60%] left-0 ml-3.5 text-white font-bold text-[30px] tracking-tighter'>
+                <div className='slideTxt absolute top-[60%] left-0 ml-3.5 text-white font-bold text-[24px] tracking-tighter'>
                   <h3>MZ 세대들의 중심</h3>
                   <h4>뉴진스 본격 분석 💙</h4>
                 </div>
