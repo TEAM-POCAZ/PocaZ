@@ -89,7 +89,7 @@ const MarketSearchResult = () => {
                   ? 'Loading more...'
                   : hasNextPage
                   ? 'Load Newer'
-                  : 'Nothing more to load'}
+                  : ' '}
               </button>
             </div>
             <div>

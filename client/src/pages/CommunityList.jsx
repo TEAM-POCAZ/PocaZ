@@ -86,7 +86,7 @@ const CommunityList = () => {
                     ? 'Loading more...'
                     : hasNextPage
                     ? 'Load Newer'
-                    : '더 이상 불러올 게시글이 없습니다.'}
+                    : ' '}
                 </button>
               </div>
               <div>

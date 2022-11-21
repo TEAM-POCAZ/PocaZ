@@ -27,6 +27,7 @@ const MyPage = () => {
         setUserInfo(res.data);
       },
       onError: (err) => {
+        // console.log('🚀 ~ file: MyPage.jsx ~ line 30 ~ MyPage ~ err', err);
         if (axios.isAxiosError(err)) {
           navigate('/login');
         } else {
@@ -87,7 +88,7 @@ const MyPage = () => {
   };
 
   if (isLoading) {
-    return <h2>Loading...</h2>;
+    return <isLoading />;
   }
   if (isError) {
     return <h2>{error.message}</h2>;

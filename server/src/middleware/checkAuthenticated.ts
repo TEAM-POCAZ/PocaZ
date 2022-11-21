@@ -10,7 +10,8 @@ function checkAuthenticated(req: Request, res: Response, next: NextFunction) {
   //next(new Error('not Authenticated User'));
   //차라리 이걸 로그인 페이지로 리다이렉션하는게?
   //--> 에러처리에서 리다이렉션하는게 나을듯. 그것도 백->프론트 전송한 다음?
-  return res.redirect(`${REACT_URL}/login`);
+  // return res.redirect(`${REACT_URL}/login`);
+  res.status(403).json({ msg: 'NotLogined' });
 }
 
 export { checkAuthenticated };

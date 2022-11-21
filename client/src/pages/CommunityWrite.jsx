@@ -68,9 +68,9 @@ const CommunityWrite = () => {
    * @param {String} action: 기존 이미지인지 새 이미지인지 구분
    */
   const onImgDelete = (e, action) => {
-    if (parseInt(cate) === 2 && prevImgs.length + currImgs.length === 1) {
-      return toast.error('자랑게시판에는 최소 1개의 사진이 필요해요');
-    }
+    // if (parseInt(cate) === 2 && prevImgs.length + currImgs.length === 1) {
+    //   return toast.error('자랑게시판에는 최소 1개의 사진이 필요해요');
+    // }
     const imgKey = e.target.value;
     action === 'prev' &&
       setPrevImgs((prev) =>
@@ -90,7 +90,10 @@ const CommunityWrite = () => {
     if (!contentRef.current.value) {
       return toast.error('내용을 입력해주세요');
     }
-    if (parseInt(cate) === 2 && prevImgs.length + currImgs.length < 1) {
+    if (
+      parseInt(cate) === 2 &&
+      prevImgs.filter(({ isDel }) => !isDel).length + currImgs.length < 1
+    ) {
       return toast.error('자랑게시판에는 최소 1개의 사진이 필요해요');
     }
 
@@ -280,13 +283,6 @@ const CommunityWrite = () => {
                   : null}
               </ul>
             </div>
-            <div className='m-2.5 h-screen'>
-              <textarea
-                className='w-full h-full py-2.5'
-                id='content'
-                ref={contentRef}
-              />
-            </div>
             <div className='attachedFileBtn py-3 border-t'>
               <label htmlFor='file'>
                 <div className='uploadBtn flex items-center justify-center cursor-pointer'>
@@ -300,6 +296,14 @@ const CommunityWrite = () => {
                 accept='image/png, image/jpeg'
                 className='hidden'
                 onChange={onImgSubmit}
+              />
+            </div>
+            <div className='m-2.5 h-screen'>
+              {/* 내용 */}
+              <textarea
+                className='w-full h-full py-2.5'
+                id='content'
+                ref={contentRef}
               />
             </div>
           </div>

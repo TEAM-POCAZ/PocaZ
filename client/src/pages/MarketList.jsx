@@ -9,6 +9,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useLoginStore } from '../store/store';
 import { baseURL } from '../utils/api';
+import { IsLoading } from '../utils/IsLoading';
 
 const NUMBER_OF_POSTS_ON_PAGE = 10;
 
@@ -64,7 +65,7 @@ const MarketList = () => {
         <MarketCategory setGroup={setGroup} />
 
         {status === 'loading' ? (
-          <p>Loading...</p>
+          <IsLoading />
         ) : status === 'error' ? (
           <span>Error: {error.message}</span>
         ) : (
@@ -81,7 +82,7 @@ const MarketList = () => {
                   ? 'Loading more...'
                   : hasNextPage
                   ? 'Load Newer'
-                  : 'Nothing more to load'}
+                  : ' '}
               </button>
             </div>
             <div>
