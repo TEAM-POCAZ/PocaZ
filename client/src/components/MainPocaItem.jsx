@@ -28,7 +28,7 @@ const MainPocaItem = () => {
               <SwiperSlide key={pocas.id}>
                 <button
                   onClick={() => navigate(`/Market/${pocas.id}`)}
-                  className='cursor-pointer'
+                  className='cursor-pointer w-full'
                 >
                   <div className='pocaThumb relative h-72 lg:h-96 mm:h-60 rounded-xl overflow-hidden'>
                     <img
