@@ -6,7 +6,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { baseURL } from '../utils/api';
-import ModifyInterface from '../components/Community/ModifyInterface';
+// import ModifyInterface from '../components/Community/ModifyInterface';
 
 const CommunityWrite = () => {
   const navigate = useNavigate();
@@ -100,8 +100,9 @@ const CommunityWrite = () => {
     try {
       let pid;
       if (postInfo?.state?.id) {
-        const { category, id } = postInfo.state;
-        await fetch(`${baseURL}/post/${category}/${id}`, {
+        const { id } = postInfo.state;
+        // 글 제목 및 내용 수정
+        await fetch(`${baseURL}/post/${cate}/${id}`, {
           method: 'PUT',
           headers: {
             'Content-type': 'application/json',
@@ -196,18 +197,18 @@ const CommunityWrite = () => {
     <>
       <Layout>
         <div className='communityWriteBoxWrap min-h-[89vh]'>
-          {toggle ? (
+          {/* {toggle ? (
             <ModifyInterface
               setToggle={setToggle}
               modifyAction={setCate}
               isWrite={true}
             />
-          ) : null}
+          ) : null} */}
           <div className='communityWriteTop flex justify-between mx-2.5'>
             <button type='button' onClick={() => navigate(-1)}>
               <i className='ri-arrow-left-line'></i>
             </button>
-            <button onClick={() => setToggle(!toggle)}>
+            {/* <button onClick={() => setToggle(!toggle)}>
               <h2 className='text-base translate-x-2.5'>
                 {parseInt(cate) === 1
                   ? '자유'
@@ -216,8 +217,11 @@ const CommunityWrite = () => {
                   : '등록 위치 선택'}
                 <i className='ri-arrow-down-s-fill'></i>
               </h2>
-            </button>
-            <div hidden={true}>{cate}</div>
+            </button> */}
+            <select value={cate} onChange={(e) => setCate(e.target.value)}>
+              <option value={1}>자유</option>
+              <option value={2}>자랑</option>
+            </select>
             <button
               onClick={submitBtn}
               type='button'

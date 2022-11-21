@@ -110,7 +110,7 @@ const MarketDetail = ({ socket }) => {
       <Layout>
         <div className=''>
           <div className='marketDetailTop relative flex items-center justify-between px-2.5 pb-2.5 border-b'>
-            <button type='button' onClick={() => navigate('/Marketack')}>
+            <button type='button' onClick={() => navigate(-1)}>
               <i className='ri-arrow-left-line'></i>
             </button>
             <div className='absolute top-0 left-2/4 translate-x-[-50%] text-lg'>
