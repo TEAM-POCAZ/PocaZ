@@ -19,7 +19,7 @@ const MarketWrite = () => {
   const [group, setGroup] = useState(1);
   const [modal, setModal] = useState(false);
   const [pocaMemo, setPocaMemo] = useState({});
-  const [artist, setArtist] = useState(1);
+  const [artist, setArtist] = useState('1');
   const [imgs, setImgs] = useState([]);
   const [prevImgs, setPrevImgs] = useState([]);
   const [currImgs, setCurrImgs] = useState([]);
@@ -47,6 +47,7 @@ const MarketWrite = () => {
       axios.get(`${baseURL}/artist/poca?artist=${artist}`).then((a) => a.data),
     {
       enabled: !marketInfo?.state?.MarketId,
+      staleTime: Infinity,
     }
   );
   /**
