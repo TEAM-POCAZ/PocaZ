@@ -28,17 +28,20 @@ const CommentListItem = ({ comment, toggleReply, userId, refetch }) => {
     refetch();
   };
 
-  const clickDelete = () => {
+  const clickDelete = async () => {
     if (confirm('정말 삭제할까용')) {
-      fetch(`${baseURL}/post/reply/${category}/${id}/${userId}/${comment.id}`, {
-        method: 'DELETE',
-      });
+      await fetch(
+        `${baseURL}/post/reply/${category}/${id}/${userId}/${comment.id}`,
+        {
+          method: 'DELETE',
+        }
+      );
       toast.success('삭제가 완료되었습니다.', {
         autoClose: 500,
         position: toast.POSITION.BOTTOM_CENTER,
       });
       setHidden(true);
-      window.location.reload();
+      refetch();
     }
   };
 
