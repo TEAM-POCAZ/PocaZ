@@ -1,23 +1,29 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Layout from '../utils/Layout';
+import { useQuery } from 'react-query';
+import { toast } from 'react-toastify';
 import axios from 'axios';
+import dayjs from 'dayjs';
+import 'react-toastify/dist/ReactToastify.css';
+
+import Layout from '../utils/Layout';
 import LikeBtn from '../components/Community/LikeBtn';
 import CommentList from '../components/Community/CommentList';
-import dayjs from 'dayjs';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { useRef } from 'react';
 import { useLoginStore } from '../store/store';
-import { useQuery } from 'react-query';
 import { baseURL } from '../utils/api';
 // import ModifyInterface from '../components/Community/ModifyInterface';
 
+/**
+ * 댓글 상태 관리 콜백 함수
+ * @param {string} category
+ * @param {string} id
+ * @param {React.Dispatch<React.SetStateAction<number>>} setReplyCnt
+ * @returns
+ */
 const getReply = async (category, id, setReplyCnt) => {
   try {
     const response = await axios.get(`${baseURL}/post/reply/${category}/${id}`);
     const [originComments, replyComments] = response.data;
-    // console.log(originComments);
     setReplyCnt(
       originComments.filter(({ deleteAt }) => !deleteAt).length +
         replyComments.filter(({ deleteAt }) => !deleteAt).length
@@ -35,7 +41,6 @@ const CommunityDetail = () => {
   const { category, id } = useParams();
   const { userInfo } = useLoginStore();
   const [DetailContent, setDetailContent] = useState(null);
-  // const [comments, setComments] = useState(null);
   const [toggle, setToggle] = useState(false);
   const replyRef = useRef();
   const [replyCnt, setReplyCnt] = useState(0);
@@ -83,10 +88,8 @@ const CommunityDetail = () => {
   }, []);
 
   const onReplySubmit = async () => {
-    // console.log(userInfo);
     if (userInfo?.id)
       try {
-        // const { data } =
         await axios.post(
           `${baseURL}/post/reply/${category}/${id}/${userInfo.id}`,
           [
@@ -248,11 +251,7 @@ const CommunityDetail = () => {
               ) : replyError ? (
                 <div>에러!</div>
               ) : comments ? (
-                <CommentList
-                  comments={comments}
-                  userId={userInfo?.id}
-                  refetch={refetch}
-                />
+                <CommentList comments={comments} userId={userInfo?.id} />
               ) : null}
               <div className='commentWriteBtn flex mt-4'>
                 <textarea className='border w-full p-2.5' ref={replyRef} />

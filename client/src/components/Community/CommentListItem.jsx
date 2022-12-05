@@ -1,49 +1,53 @@
 import { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useQueryClient, useMutation } from 'react-query';
+import axios from 'axios';
+
 import { baseURL } from '../../utils/api';
 import { getTimeDiff } from '../../utils/dayday';
 
-const CommentListItem = ({ comment, toggleReply, userId, refetch }) => {
+const CommentListItem = ({ comment, toggleReply, userId }) => {
   const [hidden, setHidden] = useState(true);
   const { category, id } = useParams();
   const modifyRef = useRef();
+  const qc = useQueryClient();
 
   const modifyToggle = (content) => {
     setHidden(!hidden);
     modifyRef.current.value = content;
   };
 
-  const clickModify = async (cid) => {
-    await fetch(`${baseURL}/post/reply/${category}/${id}/${userId}/${cid}`, {
-      method: 'PUT',
-      headers: {
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        content: modifyRef.current.value,
-      }),
-    });
-    setHidden(true);
-    refetch();
-  };
-
-  const clickDelete = async () => {
-    if (confirm('정말 삭제할까용')) {
-      await fetch(
+  const repModify = useMutation(
+    (reply) =>
+      axios.put(
         `${baseURL}/post/reply/${category}/${id}/${userId}/${comment.id}`,
-        {
-          method: 'DELETE',
-        }
-      );
-      toast.success('삭제가 완료되었습니다.', {
-        autoClose: 500,
-        position: toast.POSITION.BOTTOM_CENTER,
-      });
-      setHidden(true);
-      refetch();
+        reply
+      ),
+    {
+      onSuccess: () => {
+        qc.invalidateQueries(['reply']);
+        setHidden(true);
+      },
     }
-  };
+  );
+
+  const repDelete = useMutation(
+    () =>
+      axios.delete(
+        `${baseURL}/post/reply/${category}/${id}/${userId}/${comment.id}`
+      ),
+    {
+      onSuccess: () => {
+        qc.invalidateQueries(['reply']);
+        setHidden(true);
+        toast.success('삭제가 완료되었습니다.', {
+          autoClose: 500,
+          position: toast.POSITION.BOTTOM_CENTER,
+        });
+      },
+    }
+  );
 
   return (
     <>
@@ -78,13 +82,18 @@ const CommentListItem = ({ comment, toggleReply, userId, refetch }) => {
                   <button
                     className='mr-2.5 text-sm'
                     onClick={() => {
-                      toggleReply(0);
+                      toggleReply && toggleReply(0);
                       modifyToggle(comment.content);
                     }}
                   >
                     수정
                   </button>
-                  <button className=' text-sm' onClick={clickDelete}>
+                  <button
+                    className=' text-sm'
+                    onClick={() => {
+                      confirm('정말 삭제할까용') && repDelete.mutate();
+                    }}
+                  >
                     삭제
                   </button>
                 </>
@@ -105,9 +114,11 @@ const CommentListItem = ({ comment, toggleReply, userId, refetch }) => {
           <input className='border w-full p-2.5' type='text' ref={modifyRef} />
           <button
             className='min-w-[40px] ml-2.5 text-xs bg-slate-500 text-white'
-            onClick={() => {
+            onClick={async () => {
               userId === comment.user
-                ? clickModify(comment.id)
+                ? await repModify.mutateAsync({
+                    content: modifyRef.current.value,
+                  })
                 : toast.error('댓글 작성자만 수정할 수 있습니다.', {
                     autoClose: 500,
                     position: toast.POSITION.BOTTOM_CENTER,

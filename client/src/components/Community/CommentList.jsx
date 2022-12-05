@@ -1,14 +1,18 @@
 import { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useQueryClient, useMutation } from 'react-query';
+import axios from 'axios';
+
 import { baseURL } from '../../utils/api';
 import CommentListItem from './CommentListItem';
 import ReplyList from './ReplyList';
 
-const CommentList = ({ comments, userId, refetch }) => {
+const CommentList = ({ comments, userId }) => {
   const [isReply, setReply] = useState({});
   const { category, id } = useParams();
   const replyRef = useRef();
+  const qc = useQueryClient();
 
   const toggleReply = (pid) => {
     Object.keys(isReply).length !== 0 && Object.keys(isReply)[0] == pid
@@ -16,25 +20,32 @@ const CommentList = ({ comments, userId, refetch }) => {
       : setReply({ [pid]: true });
   };
 
+  const repPost = useMutation(
+    (reply) =>
+      axios.post(`${baseURL}/post/reply/${category}/${id}/${userId}`, reply),
+    {
+      onSuccess: () => {
+        qc.invalidateQueries(['reply']);
+        setReply({});
+        toast.success('대댓글이 등록되었습니다.', {
+          autoClose: 500,
+          position: toast.POSITION.BOTTOM_CENTER,
+        });
+      },
+    }
+  );
+
   const commentSubmit = async () => {
     if (!userId) return toast.error('로그인 유저만 댓글을 달 수 있습니다');
 
     if (replyRef.current.value)
       try {
-        await fetch(`${baseURL}/post/reply/${category}/${id}/${userId}`, {
-          method: 'POST',
-          headers: {
-            'Content-type': 'application/json',
+        await repPost.mutateAsync([
+          {
+            pid: Object.entries(isReply).filter((value) => value[1])[0][0],
+            content: replyRef.current.value,
           },
-          body: JSON.stringify([
-            {
-              pid: Object.entries(isReply).filter((value) => value[1])[0][0],
-              content: replyRef.current.value,
-            },
-          ]),
-        });
-        setReply({});
-        refetch();
+        ]);
       } catch (err) {
         console.error(err);
       }
@@ -50,7 +61,6 @@ const CommentList = ({ comments, userId, refetch }) => {
               comment={comment}
               toggleReply={toggleReply}
               userId={userId}
-              refetch={refetch}
             />
             {isReply[comment.id] ? (
               <>
@@ -72,7 +82,7 @@ const CommentList = ({ comments, userId, refetch }) => {
               </>
             ) : null}
             <div className='preply'>
-              <ReplyList comment={comment} userId={userId} refetch={refetch} />
+              <ReplyList comment={comment} userId={userId} />
             </div>
           </>
         ))}
