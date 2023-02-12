@@ -84,6 +84,18 @@ authRouter.post(
   }
 );
 
+authRouter.get('/kakao', passport.authenticate('kakao'));
+
+authRouter.get(
+  '/signin-kakao',
+  urlencoded({ extended: true }),
+  passport.authenticate('kakao'),
+  (req, res) => {
+    console.log('user in session cookie(kakao) >>> ', req.user);
+    res.redirect(`${REACT_URL}/MyPage`);
+  }
+);
+
 function jsonFriendlyErrorReplacer(key: any, value: any) {
   if (value instanceof Error) {
     return {

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Google from '../assets/img/google.png';
 import Apple from '../assets/img/apple.png';
 import Twitter from '../assets/img/twitter.png';
+import Kakao from '../assets/img/kakao.png';
 import Layout from '../utils/Layout';
 
 const Login = () => {
@@ -18,6 +19,9 @@ const Login = () => {
   };
   const apple = () => {
     window.open(`${API}/api/auth/apple`, '_self');
+  };
+  const kakao = () => {
+    window.open(`${API}/api/auth/kakao`, '_self');
   };
 
   return (
@@ -52,7 +56,7 @@ const Login = () => {
               애플로 로그인
             </div>
             <div
-              className='loginButton twitter flex items-center w-6/12 p-2.5 border rounded cursor-pointer'
+              className='loginButton twitter flex items-center w-6/12 mb-2.5 p-2.5 border rounded cursor-pointer'
               onClick={twitter}
             >
               <img
@@ -61,6 +65,17 @@ const Login = () => {
                 className='icon w-[20px] h-full mr-1.5'
               ></img>
               트위터로 로그인
+            </div>
+            <div
+              className='loginButton kakao flex items-center w-6/12 p-2.5 border rounded cursor-pointer'
+              onClick={kakao}
+            >
+              <img
+                src={Kakao}
+                alt=''
+                className='icon w-[20px] h-full mr-1.5'
+              ></img>
+              카카오로 로그인
             </div>
           </div>
         </div>

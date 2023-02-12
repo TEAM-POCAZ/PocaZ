@@ -1,12 +1,12 @@
 import passport from 'passport';
 import passport_google_oauth20 from 'passport-google-oauth20';
-
 import AppleStrategy from '@nicokaiser/passport-apple';
-
 import OAuth2Strategy, {
   StrategyOptions,
   VerifyFunction,
 } from 'passport-oauth2';
+import { Strategy as KakaoStrategy } from 'passport-kakao';
+
 import { User, UserCreationDto, UserDto } from '../entity/user';
 import * as fs from 'fs';
 import path from 'path';
@@ -39,6 +39,7 @@ function passportSetup() {
       }
     };
   }
+
   passport.use(
     new TwitterStrategy(
       {
@@ -93,23 +94,6 @@ function passportSetup() {
     )
   );
 
-  passport.serializeUser((user, done) => {
-    done(null, user.id);
-  });
-
-  passport.deserializeUser(async (id: string, done) => {
-    let conn: PoolConnection | null = null;
-    try {
-      conn = await db.getPool().getConnection();
-      const user = await User.selectById(conn, id);
-      done(null, user);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      conn?.release();
-    }
-  });
-
   passport.use(
     new GoogleStrategy(
       {
@@ -150,6 +134,7 @@ function passportSetup() {
       }
     )
   );
+
   passport.use(
     new AppleStrategy(
       {
@@ -201,6 +186,70 @@ function passportSetup() {
       }
     )
   );
+
+  passport.use(
+    new KakaoStrategy(
+      {
+        clientID: config.kakao.clientID,
+        clientSecret: config.kakao.clientSecret,
+        callbackURL: `${config.host.url}/api/auth/signin-kakao`,
+      },
+      async (
+        accessToken: string,
+        refreshToken: string,
+        profile: any,
+        done: any
+      ) => {
+        const username = `kakao#${profile.id}`;
+        let conn: PoolConnection | null = null;
+        try {
+          conn = await db.getPool().getConnection();
+
+          let user = await User.selectByUsername(conn, username);
+          if (user) {
+            console.log('kakao login user exists in DB, ', user);
+          } else {
+            const userCreationDto: UserCreationDto = {
+              username: username,
+              email: profile.email,
+              profileImage:
+                profile.profile_image_url ??
+                `${config.host.url}/api/defaultProfile.png`,
+            };
+            user = await User.create(conn, userCreationDto);
+            console.log('kakao login user created, ', user);
+          }
+          if (User.isSoftDeleted(user)) {
+            done(new WithdrawalError(JSON.stringify(user)));
+          } else {
+            done(null, user);
+          }
+        } catch (err) {
+          console.log(err);
+          done(new DbConnectionError('kakao DbConnectionError'));
+        } finally {
+          conn?.release();
+        }
+      }
+    )
+  );
+
+  passport.serializeUser((user, done) => {
+    done(null, user.id);
+  });
+
+  passport.deserializeUser(async (id: string, done) => {
+    let conn: PoolConnection | null = null;
+    try {
+      conn = await db.getPool().getConnection();
+      const user = await User.selectById(conn, id);
+      done(null, user);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      conn?.release();
+    }
+  });
 }
 
 export default passportSetup;

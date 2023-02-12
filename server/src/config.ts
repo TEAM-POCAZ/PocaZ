@@ -38,4 +38,8 @@ export const config = {
     teamID: required('APPLE_TEAM_ID'),
     keyID: required('APPLE_KEY_ID'),
   },
+  kakao: {
+    clientID: required('KAKAO_CLIENT_ID'),
+    clientSecret: required('KAKAO_CLIENT_SECRET'),
+  },
 };
