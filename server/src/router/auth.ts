@@ -84,7 +84,10 @@ authRouter.post(
   }
 );
 
-authRouter.get('/kakao', passport.authenticate('kakao'));
+authRouter.get(
+  '/kakao',
+  passport.authenticate('kakao', { scope: ['account_email', 'profile_image'] })
+);
 
 authRouter.get(
   '/signin-kakao',
