@@ -67,7 +67,7 @@ class User {
   }
   static async update(conn: PoolConnection, user: UserUpdateDto) {
     const query = `UPDATE User SET email = ?, nickname = ?, profileImage = ?, ${
-      user.artist !== 'null' ? `artist = ${user.artist} , ` : ''
+      user.artist !== 'null' ? `artist = ? , ` : ''
     } updateAt=now() WHERE id = ?`;
     if (user.artist == 'null') {
       const result = await conn.query<OkPacket>(query, [

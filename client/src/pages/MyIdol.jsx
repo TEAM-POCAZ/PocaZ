@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Layout from "../utils/Layout";
-import Input from "../components/MyPage/Input";
-import Artist from "../components/MyPage/Artist";
-import Artists from "../components/MyPage/Artists";
-import { useLoginStore } from "../store/store";
-import { useQuery } from "react-query";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Layout from '../utils/Layout';
+import Input from '../components/MyPage/Input';
+import Artist from '../components/MyPage/Artist';
+import Artists from '../components/MyPage/Artists';
+import { useLoginStore } from '../store/store';
+import { useQuery } from 'react-query';
+import axios from 'axios';
 const API = import.meta.env.VITE_HOST_URL;
 
 const MyIdol = () => {
@@ -14,7 +14,7 @@ const MyIdol = () => {
   const [axiosError, setAxiosError] = useState(null);
   const [artistId, setArtistId] = useState(userInfo.artist);
   const { isLoading, data, isError, error } = useQuery(
-    "me",
+    'me',
     () => {
       return axios.get(`${API}/api/auth/me`, { withCredentials: true });
     },
@@ -25,9 +25,9 @@ const MyIdol = () => {
       },
       onError: (err) => {
         if (axios.isAxiosError(err)) {
-          navigate("/login");
+          navigate('/login');
         } else {
-          console.log("unexpected error: ", err.response.data.error);
+          console.log('unexpected error: ', err.response.data.error);
         }
       },
     }
@@ -41,17 +41,19 @@ const MyIdol = () => {
       profileImage: userInfo.profileImage,
       artist: artistId,
     };
+    console.log('요청:', data);
     try {
       const res = await axios.put(`${API}/api/user`, data, {
         retry: false,
         withCredentials: true,
       });
+      console.log('응답:', res.data);
       setUserInfo(res.data);
     } catch (err) {
       if (axios.isAxiosError(err)) {
         setAxiosError(err.response.data.error);
       } else {
-        console.log("unexpected error: ", err.response.data.error);
+        console.log('unexpected error: ', err.response.data.error);
       }
     }
   };
@@ -67,21 +69,21 @@ const MyIdol = () => {
     <>
       <Layout>
         <div>{axiosError}</div>
-        <div className="flex flex-col justify-center"></div>
+        <div className='flex flex-col justify-center'></div>
         <form onSubmit={handleSubmit}>
           <Input
-            property="artist"
-            placeholder="최애 아이돌id"
-            value={artistId ?? ""}
+            property='artist'
+            placeholder='최애 아이돌id'
+            value={artistId ?? ''}
             setValue={setArtistId}
             disabled={false}
           />
           <Artist artistId={artistId}></Artist>
           <Artists setArtistId={setArtistId}></Artists>
           <input
-            type="submit"
-            value="최애 아이돌 수정하기"
-            className="submit mt-5"
+            type='submit'
+            value='최애 아이돌 수정하기'
+            className='submit mt-5'
           />
         </form>
       </Layout>
